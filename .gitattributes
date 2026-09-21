@@ -1,0 +1,18 @@
+# Normalização de fim de linha — evita que o checkout de outra máquina
+# altere bytes de arquivos que vão para a pedaleira ou para o usuário final.
+* text=auto
+
+# .prst = XML que a GP-100 importa. O arquivo validado no aparelho é o export
+# do GP-100 Edits com CRLF: fixe CRLF em qualquer clone (Windows/Linux/macOS).
+*.prst text eol=crlf
+
+# Documentação gerada pelo pipeline (o gerador escreve CRLF de propósito).
+patches/**/*.md text eol=crlf
+
+# Binários: nunca normalizar, nunca tentar diff de texto.
+*.wav binary
+*.mp3 binary
+*.pdf binary
+*.png binary
+*.jpg binary
+*.jpeg binary

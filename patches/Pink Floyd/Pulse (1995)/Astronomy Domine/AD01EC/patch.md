@@ -163,9 +163,9 @@ _Legenda: **🔴** ligado · ⚪ desligado — a ordem é o caminho do sinal._
 
 | Módulo | Modelo | Valores |
 |---|---|---|
-| AMP | Knights CL | p0: 42 · p1: 62 · p2: 62 · p3: 48 · p4: 52 · p5: 58 |
+| AMP | Knights CL | Gain: 42 · Vol: 62 · Bass: 62 · Middle: 48 · Treble: 52 · p5: 58 |
 | NR | Gate 1 | Thr: 26 |
-| CAB | UK-LD 4x12 | p0: 78 · p1: 62 |
+| CAB | UK-LD 4x12 | Level: 78 · High Cut: 62 |
 | DLY | Sweet | Fdbk: 30 · Delay ms: 180 · High Cut: 22 |
 | RVB | Room | Decay*: 22 · Pre-D*: 20 · Damp*: 31 · Mix*: 0 |
 
@@ -183,11 +183,11 @@ _Legenda: **🔴** ligado · ⚪ desligado — a ordem é o caminho do sinal._
 
 | Parâmetro | Valor |
 |---|---|
-| p0 | 42 |
-| p1 | 62 |
-| p2 | 62 |
-| p3 | 48 |
-| p4 | 52 |
+| Gain | 42 |
+| Vol | 62 |
+| Bass | 62 |
+| Middle | 48 |
+| Treble | 52 |
 | p5 | 58 |
 
 ### NR — Gate 1
@@ -200,8 +200,8 @@ _Legenda: **🔴** ligado · ⚪ desligado — a ordem é o caminho do sinal._
 
 | Parâmetro | Valor |
 |---|---|
-| p0 | 78 |
-| p1 | 62 |
+| Level | 78 |
+| High Cut | 62 |
 
 ### DLY — Sweet
 
@@ -219,6 +219,8 @@ _Legenda: **🔴** ligado · ⚪ desligado — a ordem é o caminho do sinal._
 | Pre-D* | 20 |
 | Damp* | 31 |
 | Mix* | 0 |
+
+> ℹ️ **`pN`** = slot de parâmetro deste modelo **sem nome oficial documentado** (o manual V1.8 só cobre os modelos antigos) — ajuste por orelha, comparando com o bypass; os demais nomes seguem o manual da GP-100.
 
 
 ### Globais da sessão
@@ -242,7 +244,7 @@ _Legenda: **🔴** ligado · ⚪ desligado — a ordem é o caminho do sinal._
 2. **Digitar no painel** (receita na ordem dos menus):
 
 ```
-**AMP** `Knights CL` (p0 42 / p1 62 / p2 62 / p3 48 / p4 52 / p5 58) → **NR** `Gate 1` (Thr 26) → **CAB** `UK-LD 4x12` (p0 78 / p1 62) → **DLY** `Sweet` (Fdbk 30 / Delay ms 180 / High Cut 22) → **RVB** `Room` (ajuste fino no painel — seção 3 📡)
+**AMP** `Knights CL` (Gain 42 / Vol 62 / Bass 62 / Middle 48 / Treble 52 / p5 58) → **NR** `Gate 1` (Thr 26) → **CAB** `UK-LD 4x12` (Level 78 / High Cut 62) → **DLY** `Sweet` (Fdbk 30 / Delay ms 180 / High Cut 22) → **RVB** `Room` (ajuste fino no painel — seção 3 📡)
 ```
 
 3. **SAVE** no slot → renomeie para `AD01EC`.

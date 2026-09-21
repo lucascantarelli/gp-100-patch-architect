@@ -52,8 +52,6 @@ import time
 import xml.etree.ElementTree as ET
 from pathlib import Path
 
-out_path = Path(sys.argv[2]) if len(sys.argv) > 2 else None
-
 CATALOG = Path(__file__).parent / 'factory-catalog.json'
 
 GENRE_CODES = {
@@ -98,7 +96,7 @@ def load_templates():
     fábrica; servem de base para o patch — só os params declarados no JSON do
     usuário sobrescrevem. Primeira ocorrência de cada (módulo, modelo) vence.
     """
-    data = json.load(open(CATALOG, encoding='utf-8'))
+    data = json.loads(CATALOG.read_text(encoding='utf-8'))
     templates = {}
     for p in data['patches']:
         for e in p['effects']:
@@ -190,10 +188,16 @@ def build_effect(module, spec, templates):
 
 
 def main():
+    """CLI: python generate_prst.py <spec.json> <saida.prst>.
+
+    Os argumentos são lidos AQUI (não no import) para o módulo poder ser
+    importado por testes e por outros scripts sem efeito colateral.
+    """
     if len(sys.argv) < 3:
         print(__doc__)
         sys.exit(1)
-    spec = json.load(open(sys.argv[1], encoding='utf-8'))
+    out_path = Path(sys.argv[2])
+    spec = json.loads(Path(sys.argv[1]).read_text(encoding='utf-8'))
     templates = load_templates()
     out_path.parent.mkdir(parents=True, exist_ok=True)
 

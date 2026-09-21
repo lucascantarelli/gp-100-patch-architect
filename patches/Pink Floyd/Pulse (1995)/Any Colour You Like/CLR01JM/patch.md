@@ -164,9 +164,9 @@ _Legenda: **🔴** ligado · ⚪ desligado — a ordem é o caminho do sinal._
 | Módulo | Modelo | Valores |
 |---|---|---|
 | DST | Red Haze | p0: 55 · p1: 50 · p2: 55 |
-| AMP | Flagman | p0: 40 · p1: 50 · p2: 58 · p3: 50 · p4: 52 · p5: 56 |
+| AMP | Flagman | Gain: 40 · PRSE: 50 · Master: 58 · Bass: 50 · Middle: 52 · Treble: 56 |
 | NR | Gate 1 | Thr: 30 |
-| CAB | UK-LD 4x12 | p0: 78 · p1: 62 |
+| CAB | UK-LD 4x12 | Level: 78 · High Cut: 62 |
 | DLY | Sweet | Fdbk: 35 · Delay ms: 570 · High Cut: 28 |
 | RVB | Hall | Decay*: 55 · Pre-D*: 50 · Damp*: 50 · Mix*: 1 |
 
@@ -193,12 +193,12 @@ _Legenda: **🔴** ligado · ⚪ desligado — a ordem é o caminho do sinal._
 
 | Parâmetro | Valor |
 |---|---|
-| p0 | 40 |
-| p1 | 50 |
-| p2 | 58 |
-| p3 | 50 |
-| p4 | 52 |
-| p5 | 56 |
+| Gain | 40 |
+| PRSE | 50 |
+| Master | 58 |
+| Bass | 50 |
+| Middle | 52 |
+| Treble | 56 |
 
 ### NR — Gate 1
 
@@ -210,8 +210,8 @@ _Legenda: **🔴** ligado · ⚪ desligado — a ordem é o caminho do sinal._
 
 | Parâmetro | Valor |
 |---|---|
-| p0 | 78 |
-| p1 | 62 |
+| Level | 78 |
+| High Cut | 62 |
 
 ### DLY — Sweet
 
@@ -229,6 +229,8 @@ _Legenda: **🔴** ligado · ⚪ desligado — a ordem é o caminho do sinal._
 | Pre-D* | 50 |
 | Damp* | 50 |
 | Mix* | 1 |
+
+> ℹ️ **`pN`** = slot de parâmetro deste modelo **sem nome oficial documentado** (o manual V1.8 só cobre os modelos antigos) — ajuste por orelha, comparando com o bypass; os demais nomes seguem o manual da GP-100.
 
 
 ### Globais da sessão
@@ -252,7 +254,7 @@ _Legenda: **🔴** ligado · ⚪ desligado — a ordem é o caminho do sinal._
 2. **Digitar no painel** (receita na ordem dos menus):
 
 ```
-**DST** `Red Haze` (p0 55 / p1 50 / p2 55) → **AMP** `Flagman` (p0 40 / p1 50 / p2 58 / p3 50 / p4 52 / p5 56) → **NR** `Gate 1` (Thr 30) → **CAB** `UK-LD 4x12` (p0 78 / p1 62) → **DLY** `Sweet` (Fdbk 35 / Delay ms 570 / High Cut 28) → **RVB** `Hall` (ajuste fino no painel — seção 3 📡)
+**DST** `Red Haze` (p0 55 / p1 50 / p2 55) → **AMP** `Flagman` (Gain 40 / PRSE 50 / Master 58 / Bass 50 / Middle 52 / Treble 56) → **NR** `Gate 1` (Thr 30) → **CAB** `UK-LD 4x12` (Level 78 / High Cut 62) → **DLY** `Sweet` (Fdbk 35 / Delay ms 570 / High Cut 28) → **RVB** `Hall` (ajuste fino no painel — seção 3 📡)
 ```
 
 3. **SAVE** no slot → renomeie para `CLR01JM`.

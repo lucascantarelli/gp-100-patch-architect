@@ -14,13 +14,14 @@ Nota: foi este script que drenou o export de fábrica do aparelho para
 `tools/factory-catalog.json` (99 presets · 891 effects · 117 modelos). O
 export original foi removido do repositório na limpeza — exporte a biblioteca
 no GP-100 Edits se precisar regenerar o catálogo.
+
+Valores de preenchimento observados nos slots não usados dos efeitos de fábrica:
+65535, 12800 e 65280 (o gerador os trata em `is_junk`, em generate_prst.py).
 """
 import sys
 import json
 import xml.etree.ElementTree as ET
-from collections import defaultdict, OrderedDict
-
-FILLERS = {65535, 12800, 65280}  # valores de preenchimento observados nos slots não usados
+from collections import defaultdict
 
 def parse(path):
     """Lê um export .prst (XML) e devolve (info, irs, patches).

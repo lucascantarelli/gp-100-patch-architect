@@ -9,3 +9,18 @@ node_modules/
 
 # Python cache
 __pycache__/
+*.pyc
+
+# Ambientes virtuais
+.venv/
+venv/
+
+# Lixo de sistema operacional
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Estado local do Freebuff / IDEs
+.freebuff/
+.idea/
+.vscode/

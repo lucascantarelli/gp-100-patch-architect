@@ -167,9 +167,9 @@ _Legenda: **🔴** ligado · ⚪ desligado — a ordem é o caminho do sinal._
 
 | Módulo | Modelo | Valores |
 |---|---|---|
-| AMP | Flagman | p0: 44 · p1: 55 · p2: 62 · p3: 50 · p4: 55 · p5: 58 |
+| AMP | Flagman | Gain: 44 · PRSE: 55 · Master: 62 · Bass: 50 · Middle: 55 · Treble: 58 |
 | NR | Gate 1 | Thr: 26 |
-| CAB | UK-LD 4x12 | p0: 78 · p1: 62 |
+| CAB | UK-LD 4x12 | Level: 78 · High Cut: 62 |
 | DLY | Sweet | Fdbk: 35 · Delay ms: 450 · High Cut: 30 |
 | RVB | Plate | Decay*: 30 · Pre-D*: 40 · Damp*: 50 · Mix*: 1 |
 
@@ -187,12 +187,12 @@ _Legenda: **🔴** ligado · ⚪ desligado — a ordem é o caminho do sinal._
 
 | Parâmetro | Valor |
 |---|---|
-| p0 | 44 |
-| p1 | 55 |
-| p2 | 62 |
-| p3 | 50 |
-| p4 | 55 |
-| p5 | 58 |
+| Gain | 44 |
+| PRSE | 55 |
+| Master | 62 |
+| Bass | 50 |
+| Middle | 55 |
+| Treble | 58 |
 
 ### NR — Gate 1
 
@@ -204,8 +204,8 @@ _Legenda: **🔴** ligado · ⚪ desligado — a ordem é o caminho do sinal._
 
 | Parâmetro | Valor |
 |---|---|
-| p0 | 78 |
-| p1 | 62 |
+| Level | 78 |
+| High Cut | 62 |
 
 ### DLY — Sweet
 
@@ -246,7 +246,7 @@ _Legenda: **🔴** ligado · ⚪ desligado — a ordem é o caminho do sinal._
 2. **Digitar no painel** (receita na ordem dos menus):
 
 ```
-**AMP** `Flagman` (p0 44 / p1 55 / p2 62 / p3 50 / p4 55 / p5 58) → **NR** `Gate 1` (Thr 26) → **CAB** `UK-LD 4x12` (p0 78 / p1 62) → **DLY** `Sweet` (Fdbk 35 / Delay ms 450 / High Cut 30) → **RVB** `Plate` (ajuste fino no painel — seção 3 📡)
+**AMP** `Flagman` (Gain 44 / PRSE 55 / Master 62 / Bass 50 / Middle 55 / Treble 58) → **NR** `Gate 1` (Thr 26) → **CAB** `UK-LD 4x12` (Level 78 / High Cut 62) → **DLY** `Sweet` (Fdbk 35 / Delay ms 450 / High Cut 30) → **RVB** `Plate` (ajuste fino no painel — seção 3 📡)
 ```
 
 3. **SAVE** no slot → renomeie para `RLH01RI`.

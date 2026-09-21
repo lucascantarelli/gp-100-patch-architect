@@ -39,7 +39,7 @@ Exemplos: `STH01BA` = Something 01 · Base · `CT01RIF` = Come Together 01 · Ri
 |---|---|---|---|---|
 | 🎸 **The Beatles** | **Abbey Road (1969)** | 14 | 20 | [`MAPA-DO-ALBUM.md`](Beatles/Abbey%20Road%20(1969)/MAPA-DO-ALBUM.md) |
 | 🎸 **Frank Zappa** | **Apostrophe (’) (1974)** | 1 | 2 | [`MAPA-DO-ALBUM.md`](Frank%20Zappa/Apostrophe%20(1974)/MAPA-DO-ALBUM.md) |
-| 🎸 **Janis Joplin** | **Cheap Thrills — Piece of My Heart (1968)** | 1 | 2 | [`MAPA-DO-ALBUM.md`](Janis%20Joplin/Piece%20of%20My%20Heart%20(1968)/MAPA-DO-ALBUM.md) |
+| 🎸 **Janis Joplin (Big Brother & The Holding Company)** | **Cheap Thrills — Piece of My Heart (1968)** | 1 | 2 | [`MAPA-DO-ALBUM.md`](Janis%20Joplin/Piece%20of%20My%20Heart%20(1968)/MAPA-DO-ALBUM.md) |
 | 🎸 **Pink Floyd** | **Pulse (1995)** | 24 | 38 | [`MAPA-DO-ALBUM.md`](Pink%20Floyd/Pulse%20(1995)/MAPA-DO-ALBUM.md) |
 
 ## 📄 Cada patch contém

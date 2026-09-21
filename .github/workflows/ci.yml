@@ -1,0 +1,69 @@
+# CI do GP-100 Patch Architect.
+#
+# dados   — roda TODOS os scripts que escrevem dados (IR → seeders → momentos →
+#           construtor → índices) e reprova se os artefatos commitados não forem
+#           exatamente o que o pipeline produz agora. É o guarda de "elemento
+#           novo sem regenerar": música, camada, patch, efeito, momento de
+#           toggle ou pack de IR que entrou no PR sem rodar o pipeline.
+# python  — compila os scripts e roda a suíte que valida os .prst, as docs e os
+#           índices (inclui a coerência mapa × patch.md sobre IR e o drift dos índices).
+# agentes — typecheck dos .agents/*.ts com o tsconfig.json do projeto.
+#
+# Rode a mesma sequência localmente:
+#   python tools/ir_library.py && python tools/add_pulse_defs.py \
+#     && python tools/build_song_patches.py && python tools/gen_indexes.py \
+#     && python tools/check_data_freshness.py
+
+name: pipeline
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  dados:
+    name: pipeline de dados regenerado
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.14'
+      - name: Rodar os scripts que atualizam dados
+        run: |
+          python tools/ir_library.py
+          python tools/add_pulse_defs.py
+          python tools/add_momentos.py
+          python tools/build_song_patches.py
+          python tools/gen_indexes.py
+      - name: Reprovar se algum artefato gerado ficou fora do commit
+        run: python tools/check_data_freshness.py
+
+  python:
+    name: patches, docs e indices
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ['3.14']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Compilar os scripts
+        run: python -m py_compile tools/*.py tests/*.py
+      - name: Validar a biblioteca (unittest, sem dependencias)
+        run: python -m unittest discover -s tests -v
+
+  agentes:
+    name: typecheck dos agentes
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: tsc --noEmit (.agents)
+        run: npx -y -p typescript@5.9.2 tsc --noEmit -p tsconfig.json

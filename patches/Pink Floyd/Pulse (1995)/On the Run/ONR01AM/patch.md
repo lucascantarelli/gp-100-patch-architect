@@ -166,8 +166,8 @@ _Legenda: **🔴** ligado · ⚪ desligado — a ordem é o caminho do sinal._
 
 | Módulo | Modelo | Valores |
 |---|---|---|
-| AMP | Flagman | p0: 25 · p1: 50 · p2: 55 · p3: 50 · p4: 50 · p5: 55 |
-| CAB | UK-LD 4x12 | p0: 78 · p1: 62 |
+| AMP | Flagman | Gain: 25 · PRSE: 50 · Master: 55 · Bass: 50 · Middle: 50 · Treble: 55 |
+| CAB | UK-LD 4x12 | Level: 78 · High Cut: 62 |
 | DLY | T-Echo | p0: 40 · p1: 590 · p2: 30 |
 | RVB | Hall | Decay*: 55 · Pre-D*: 50 · Damp*: 50 · Mix*: 1 |
 
@@ -184,19 +184,19 @@ _Legenda: **🔴** ligado · ⚪ desligado — a ordem é o caminho do sinal._
 
 | Parâmetro | Valor |
 |---|---|
-| p0 | 25 |
-| p1 | 50 |
-| p2 | 55 |
-| p3 | 50 |
-| p4 | 50 |
-| p5 | 55 |
+| Gain | 25 |
+| PRSE | 50 |
+| Master | 55 |
+| Bass | 50 |
+| Middle | 50 |
+| Treble | 55 |
 
 ### CAB — UK-LD 4x12
 
 | Parâmetro | Valor |
 |---|---|
-| p0 | 78 |
-| p1 | 62 |
+| Level | 78 |
+| High Cut | 62 |
 
 ### DLY — T-Echo
 
@@ -214,6 +214,8 @@ _Legenda: **🔴** ligado · ⚪ desligado — a ordem é o caminho do sinal._
 | Pre-D* | 50 |
 | Damp* | 50 |
 | Mix* | 1 |
+
+> ℹ️ **`pN`** = slot de parâmetro deste modelo **sem nome oficial documentado** (o manual V1.8 só cobre os modelos antigos) — ajuste por orelha, comparando com o bypass; os demais nomes seguem o manual da GP-100.
 
 
 ### Globais da sessão
@@ -237,7 +239,7 @@ _Legenda: **🔴** ligado · ⚪ desligado — a ordem é o caminho do sinal._
 2. **Digitar no painel** (receita na ordem dos menus):
 
 ```
-**AMP** `Flagman` (p0 25 / p1 50 / p2 55 / p3 50 / p4 50 / p5 55) → **CAB** `UK-LD 4x12` (p0 78 / p1 62) → **DLY** `T-Echo` (p0 40 / p1 590 / p2 30) → **RVB** `Hall` (ajuste fino no painel — seção 3 📡)
+**AMP** `Flagman` (Gain 25 / PRSE 50 / Master 55 / Bass 50 / Middle 50 / Treble 55) → **CAB** `UK-LD 4x12` (Level 78 / High Cut 62) → **DLY** `T-Echo` (p0 40 / p1 590 / p2 30) → **RVB** `Hall` (ajuste fino no painel — seção 3 📡)
 ```
 
 3. **SAVE** no slot → renomeie para `ONR01AM`.

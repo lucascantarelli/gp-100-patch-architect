@@ -40,10 +40,21 @@ def chain(pre=None, dst=None, amp=None, nr=None, cab=None, eq=None, modfx=None, 
 def ref(role, src, conf="alta"):
     return {"role": role, "conf": conf, "src": src}
 
-def song(id_, song_name, bpm, resumo, refs, patches):
-    return {"id": id_, "song": song_name, "idAlbum": "PL", "bpm": bpm,
-            "resumo": resumo, "referencias": refs, "patches": patches,
-            "banda": "Pink Floyd", "album": "Pulse (live)", "ano": 1995}
+def song(id_, song_name, bpm, resumo, refs, patches, pasta=None, display=None):
+    """Uma música do Pulse no schema vigente do defs.
+
+    `pasta`/`display` só entram quando diferem de `song` (nome de pasta com
+    separador, título por extenso na tabela). São a FONTE do nome de pasta e
+    do título no mapa — build_song_patches.py e gen_indexes.py leem daqui.
+    """
+    out = {"id": id_, "song": song_name, "idAlbum": "PL", "bpm": bpm,
+           "resumo": resumo, "referencias": refs, "patches": patches,
+           "banda": "Pink Floyd", "album": "Pulse (live)", "ano": 1995}
+    if pasta and pasta != song_name:
+        out['pasta'] = pasta
+    if display and display != song_name:
+        out['display'] = display
+    return out
 
 def P(camada, suf, nome, emoji, timbre, spec, riff, drum, escutar, ajustes, evite, irnota,
       sel, selc, vol, tone, rec, tec, tipo='Rock', bpm=120):
@@ -562,6 +573,7 @@ PULSE_SONGS.append(song('ABIETW01', 'Another Brick in the Wall, Part 2', 123,
        ["Riff com palhetada firme",
         "Mute com a mão direita no groove"],
     )],
+    pasta='Another Brick in the Wall', display='Another Brick in the Wall',
 ))
 
 PULSE_SONGS[-1]['patches'].append(P('Solo', 'SO', 'ABIETWSO', '🎓',

@@ -18,6 +18,62 @@
       "Uma música = um conjunto exclusivo de patches; nada de reutilizar o mesmo patch em músicas diferentes."
     ]
   },
+  "albums": {
+    "AR": {
+      "banda": "The Beatles",
+      "album": "Abbey Road",
+      "ano": 1969,
+      "display": "Abbey Road (1969)",
+      "pasta": "Beatles/Abbey Road (1969)",
+      "rig": "## 📚 Rig real do álbum (fontes)\n\n- **John**: Casino (P90) — Come Together direto no canal da mesa; AC30 no crunch; Leslie nos lentos.\n- **George**: Les Paul **Lucy**, Strat e Tele — Twin/Bassman/AC30; **Leslie 147RV** nos solos de Something/Because/Sun King.\n- **Paul**: Casino no AC30 (Oh! Darling), baixo no resto; primeiro solo de The End.\n- **Zero pedais** — todo ganho vem de amp estufado ou do canal da mesa.\n- 📖 Fontes: Guitar World *\"Abbey Road guitar gear: the complete guide\"* (Geoff Emerick) · boostguitarpedals.co.uk."
+    },
+    "ZP": {
+      "banda": "Frank Zappa",
+      "album": "Apostrophe (')",
+      "ano": 1974,
+      "display": "Apostrophe (’) (1974)",
+      "pasta": "Frank Zappa/Apostrophe (1974)",
+      "rig": "## 📚 Rig real (fontes)\n\n- **Tony Duran**: slide/rhythm guitar (créditos de Apostrophe ('); MusicBrainz) — brilho agudo com ataque crocante.\n- **Frank Zappa**: solos cirúrgicos e secos (Rock & Roll Globe: \"scalpel-sharp guitar solos\") — sem reverb, médios à frente.\n- **George Duke**: piano elétrico e clavinet preenchendo o meio (co-autor da faixa).\n- Sessões: basic track 1972 (Paramount Studios, LA) + overdubs 1973–74.\n- 📖 Fontes: Rock & Roll Globe (\"How Frank Zappa Embraced the Mainstream with Apostrophe (')\", 2024) · MusicBrainz (créditos) · Wikipedia (Apostrophe ('))."
+    },
+    "PMH": {
+      "banda": "Janis Joplin (Big Brother & The Holding Company)",
+      "album": "Cheap Thrills",
+      "ano": 1968,
+      "display": "Cheap Thrills — Piece of My Heart (1968)",
+      "pasta": "Janis Joplin/Piece of My Heart (1968)",
+      "rig": ""
+    },
+    "PL": {
+      "banda": "Pink Floyd",
+      "album": "Pulse (live)",
+      "ano": 1995,
+      "display": "Pulse (1995)",
+      "pasta": "Pink Floyd/Pulse (1995)",
+      "rig": "## 📚 Rig real da turnê (fontes)\n\n- **David Gilmour 1994**: Hiwatt **DR103** + preamp Alembic F-2B → WEM Starfinder 4x12 (Fane) **+ Marshall 4x12**; Yamaha RA-200 (rotary) na base limpa.\n- **Pedalboard**: Boss CS-2/DynaComp (compressão) · BK Butler Tube Driver (overdrive) · Big Muff \"Civil War\" (fuzz) · Electric Mistress (flanger) · Uni-Vibe · Boss CE-2 (chorus) · Tremulator · GE-7 · delays TC 2290 + PCM-70 (efeito Binson Echorec).\n- **Tim Geaney / Chester Kamen**: guitarras base nos refrões e camadas rítmicas.\n- Assinaturas: solos com **delay duração da nota** (1 repetição), espaço entre as frases, **sem speed** — a mão fala.\n- 📖 Fontes: gilmourish.com (seção Division Bell Tour 1994 — equipamento confirmado faixa a faixa) · Wikipedia (Pulse, 1995) · Discogs (tracklist)."
+    }
+  },
+  "ir_local": {
+    "DarkTW 2x12": {
+      "captura": "American Twin 2x12",
+      "slot": "User IR 1"
+    },
+    "Foxy 1x12": {
+      "captura": "Brown Deluxe 1x12",
+      "slot": "User IR 2"
+    },
+    "TWD 2x12": {
+      "captura": "Tweed Combo 1x12",
+      "slot": "User IR 3"
+    },
+    "UK-GN 2x12": {
+      "captura": "British Straight 4x12",
+      "slot": "User IR 4"
+    },
+    "UK-LD 4x12": {
+      "captura": "British Straight 4x12",
+      "slot": "User IR 4"
+    }
+  },
   "songs": [
     {
       "id": "CT01",
@@ -1877,7 +1933,8 @@
             }
           }
         }
-      ]
+      ],
+      "pasta": "Sun King - Mean Mr. Mustard"
     },
     {
       "id": "YNG01",
@@ -2261,7 +2318,9 @@
             }
           }
         }
-      ]
+      ],
+      "pasta": "Polythene Pam - Bathroom Window",
+      "display": "Polythene Pam / Bathroom Window"
     },
     {
       "id": "GSC01",
@@ -2400,7 +2459,8 @@
             }
           }
         }
-      ]
+      ],
+      "pasta": "Golden Slumbers - Carry That Weight"
     },
     {
       "id": "END01",
@@ -5585,7 +5645,9 @@
       ],
       "banda": "Pink Floyd",
       "album": "Pulse (live)",
-      "ano": 1995
+      "ano": 1995,
+      "pasta": "Another Brick in the Wall",
+      "display": "Another Brick in the Wall"
     },
     {
       "id": "OEOD01",

@@ -30,81 +30,50 @@ if hasattr(sys.stdout, 'reconfigure'):
     sys.stdout.reconfigure(encoding='utf-8', errors='replace')
 
 ROOT = Path(__file__).parent.parent
-DEFS = json.load(open(ROOT / 'tools' / 'patches-defs.json', encoding='utf-8'))
+DEFS = json.loads((ROOT / 'tools' / 'patches-defs.json').read_text(encoding='utf-8'))
 
-ALBUM_DIR = {
-    'AR': ROOT / 'patches' / 'Beatles' / 'Abbey Road (1969)',
-    'PMH': ROOT / 'patches' / 'Janis Joplin' / 'Piece of My Heart (1968)',
-    'ZP': ROOT / 'patches' / 'Frank Zappa' / 'Apostrophe (1974)',
-    'PL': ROOT / 'patches' / 'Pink Floyd' / 'Pulse (1995)',
-}
-SONG_FOLDER = {
-    'CT01': 'Come Together',
-    'STH01': 'Something',
-    'MAX01': "Maxwell's Silver Hammer",
-    'OHB01': 'Oh! Darling',
-    'OTG01': "Octopus's Garden",
-    'IWY01': "I Want You (She's So Heavy)",
-    'HCTS01': 'Here Comes the Sun',
-    'BCS01': 'Because',
-    'SKG01': 'Sun King - Mean Mr. Mustard',
-    'YNG01': 'You Never Give Me Your Money',
-    'PTP01': 'Polythene Pam - Bathroom Window',
-    'GSC01': 'Golden Slumbers - Carry That Weight',
-    'END01': 'The End',
-    'HM201': 'Her Majesty',
-    'PMH01': 'Piece of My Heart',
-    'URM01': 'Uncle Remus',
-    'AD01': 'Astronomy Domine',
-    'WDF01': 'What Do You Want From Me',
-    'LTF01': 'Learning to Fly',
-    'KTB01': 'Keep Talking',
-    'SOF01': 'Shine On You Crazy Diamond',
-    'BRT01': 'Breathe',
-    'TM01': 'Time',
-    'BTK02': 'Breathe (Reprise)',
-    'MNY01': 'Money',
-    'USAT01': 'Us and Them',
-    'CLR01': 'Any Colour You Like',
-    'BD01': 'Brain Damage',
-    'ECL01': 'Eclipse',
-    'WYWH01': 'Wish You Were Here',
-    'CNW01': 'Comfortably Numb',
-    'SFTM01': 'Speak to Me',
-    'ABIETW01': 'Another Brick in the Wall',
-    'MOTB01': 'Mother',
-    'SIA01': 'Sorrow',
-    'OEOD01': 'One of These Days',
-    'CBK01': 'Coming Back to Life',
-    'RLH01': 'Run Like Hell',
-    'ONR01': 'On the Run',
-    'GGS01': 'The Great Gig in the Sky',
-}
+# ---- FONTE ÚNICA: tudo abaixo é DERIVADO de tools/patches-defs.json --------
+# (antes estas tabelas eram literais aqui E em gen_indexes.py e divergiram —
+#  o mapa do álbum passou a recomendar "fábrica" onde o patch.md mandava
+#  carregar uma IR do banco local. Não reintroduza literais de música/álbum.)
+ALBUMS = DEFS['albums']                                                  # {'AR': {banda, album, ano, display, pasta, rig}}
+ALBUM_DIR = {k: ROOT / 'patches' / v['pasta'] for k, v in ALBUMS.items()}
+SONG_FOLDER = {s['id']: s.get('pasta') or s['song'] for s in DEFS['songs']}
+# captura local recomendada por CAB de fábrica: {'CAB': (captura, 'User IR n')}
+IR_LOCAL_POR_CAB = {cab: (v['captura'], v['slot']) for cab, v in DEFS['ir_local'].items()}
 
+# Nome OFICIAL de cada params_i, por (módulo, modelo).
+# Só entram nomes com origem citável: reference/03-amp.md (Flagman, Knights CL),
+# convenção do módulo (todo CAB = Level/High Cut; ver os 6 CABs da tabela) e
+# reference/01..09 (manual V1.8). Slot sem nome oficial fica de fora da lista e
+# a doc o imprime como `pN` + nota de rodapé (nunca um nome inventado).
 PARAM_NAMES = {
     ('PRE', 'COMP'): ['Sens', 'Attack', 'Sustain', 'Level'],
     ('PRE', 'COMP4'): ['Thresh', 'Attack', 'Tone', 'Level'],
-    ('PRE', 'Boost'): ['Ganho', 'Boost', '(p2)'],
+    ('PRE', 'Boost'): ['Ganho', 'Boost'],
     ('PRE', 'AC Sim'): ['Body', 'Top', 'Vol', 'Mode'],
     ('DST', 'Blues OD'): ['Gain', 'Tone', 'Level'],
     ('DST', 'Green OD'): ['Gain', 'Tone', 'Level'],
     ('DST', 'La Charger'): ['Gain', 'Tone', 'Volume'],
-    ('DST', 'Super OD'): ['Drive', 'Tone', 'Level', '(p3)', '(p4)'],
+    ('DST', 'Super OD'): ['Drive', 'Tone', 'Level'],
     ('AMP', 'Dark Twin'): ['Vol', 'Output', 'Bass', 'Middle', 'Treble', 'Bright'],
     ('AMP', 'Foxy 30TB'): ['Vol', 'Cut', 'Master', 'Bass', 'Treble', 'Char'],
-    ('AMP', 'Bellman 59N'): ['Vol', 'PRSE', 'Output', 'Bass', 'Middle', 'Treble', '(p6)'],
-    ('AMP', 'UK 45'): ['Vol', 'PRSE', 'Output', 'Bass', 'Middle', 'Treble', '(p6)'],
+    ('AMP', 'Flagman'): ['Gain', 'PRSE', 'Master', 'Bass', 'Middle', 'Treble'],
+    ('AMP', 'Knights CL'): ['Gain', 'Vol', 'Bass', 'Middle', 'Treble'],
+    ('AMP', 'Bellman 59N'): ['Vol', 'PRSE', 'Output', 'Bass', 'Middle', 'Treble'],
+    ('AMP', 'UK 45'): ['Vol', 'PRSE', 'Output', 'Bass', 'Middle', 'Treble'],
     ('NR', 'Gate 1'): ['Thr'],
-    ('NR', 'Gate 2'): ['Thr', 'Release', '(p2)'],
+    ('NR', 'Gate 2'): ['Thr', 'Release'],
     ('CAB', 'DarkTW 2x12'): ['Level', 'High Cut'],
     ('CAB', 'Foxy 1x12'): ['Level', 'High Cut'],
     ('CAB', 'TWD 2x12'): ['Level', 'High Cut'],
     ('CAB', 'J-120 2x12'): ['Level', 'High Cut'],
     ('CAB', 'UK-GN 2x12'): ['Level', 'High Cut'],
+    ('CAB', 'UK-LD 4x12'): ['Level', 'High Cut'],
     ('CAB', 'D'): ['Level', 'High Cut'],
     ('EQ', 'EQ 1'): ['Low', 'Mid', 'High', 'Mid Freq', 'Presença', 'Level'],
     ('MOD', 'A-Chorus'): ['Rate', 'Depth', 'Mix', 'Level'],
-    ('MOD', 'Vibe'): ['Intensidade', 'Velocidade', '(p2)', 'Mix', '(p4)'],
+    ('MOD', 'Vibe'): ['Intensidade', 'Velocidade', 'p2', 'Mix'],
     ('DLY', 'Sweet'): ['Fdbk', 'Delay ms', 'High Cut'],
     ('DLY', 'Slapbk'): ['Fdbk', 'Delay ms', 'High Cut'],
     ('RVB', 'Spring'): ['Decay*', 'Pre-D*', 'Damp*', 'Mix*'],
@@ -164,10 +133,18 @@ BASE_MAP = {
 #   4. FALLBACK — se nada acima entregar, mantém o CAB de fábrica.
 
 def ir_catalog():
-    """Índice (cabs -> [arquivos 44.1kHz compatíveis]) da biblioteca local de IRs."""
+    """Índice (cabs -> [arquivos 44.1kHz compatíveis]) da biblioteca local de IRs.
+
+    Se o manifesto não puder ser lido, AVISA no stderr e devolve {}: sem esse
+    aviso, a seção 📡 de todos os patches passaria a dizer "não há captura
+    melhor no banco" — foi assim que o mapa e o patch.md divergiram no passado.
+    """
     try:
-        data = json.load(open(ROOT / 'tools' / 'ir-library.json', encoding='utf-8'))
-    except Exception:
+        data = json.loads((ROOT / 'tools' / 'ir-library.json').read_text(encoding='utf-8'))
+    except Exception as exc:
+        print(f"AVISO: não li tools/ir-library.json ({exc}).\n"
+              "       A seção 📡 dos patches vai indicar só o CAB de fábrica.\n"
+              "       Rode: python tools/ir_library.py", file=sys.stderr)
         return {}
     idx = {}
     for pack in data.get('packs', {}).values():
@@ -178,15 +155,6 @@ def ir_catalog():
     return idx
 
 IR_LIB = ir_catalog()
-
-# rótulo amigável da captura local por família de CAB de fábrica
-IR_LOCAL_POR_CAB = {
-    'DarkTW 2x12': ('American Twin 2x12', 'User IR 1'),   # Fender Twin (JBL D120F)
-    'Foxy 1x12':   ('Brown Deluxe 1x12',  'User IR 2'),   # AC30 (falante alnico)
-    'TWD 2x12':    ('Tweed Combo 1x12',   'User IR 3'),   # Bassman '59 (tweed)
-    'UK-GN 2x12':  ('British Straight 4x12', 'User IR 4'),  # Marshall (Greenbacks)
-    'UK-LD 4x12':  ('British Straight 4x12', 'User IR 4'),  # Marshall 4x12 da era (Greenbacks) — mais próximo do WEM/Fane de 1994
-}
 
 
 def ir_mixes(cab_lib):
@@ -291,11 +259,13 @@ def disp(label, v):
 def detail_tables(spec):
     """Gera as tabelas "Parâmetro | Valor" por módulo ON (seções técnicas do patch.md).
 
-    Usa PARAM_NAMES para rotular cada params_i; valores sem nome viram pN e
-    switches (Bright/Char/Mode) são exibidos por extenso via disp(). Módulos
-    OFF ou ausentes são ignorados.
+    Usa PARAM_NAMES para rotular cada params_i; slots sem nome oficial viram
+    `pN` e, se houver algum, a tabela ganha uma nota de rodapé dizendo isso —
+    nunca um nome inventado. Switches (Bright/Char/Mode) saem por extenso via
+    disp(). Módulos OFF ou ausentes são ignorados.
     """
     out = []
+    tem_sem_nome = False
     for mod in CHAIN:
         m = spec['modules'].get(mod)
         if not m or not m.get('on'):
@@ -312,7 +282,14 @@ def detail_tables(spec):
             for k in sorted(params, key=int):
                 idx = int(k)
                 label = names[idx] if idx < len(names) else f'p{idx}'
+                if label.startswith('p') and label[1:].isdigit():
+                    tem_sem_nome = True
                 out.append(f'| {label} | {disp(label, params[k])} |')
+        out.append('')
+    if tem_sem_nome:
+        out.append('> ℹ️ **`pN`** = slot de parâmetro deste modelo **sem nome oficial documentado** '
+                   '(o manual V1.8 só cobre os modelos antigos) — ajuste por orelha, comparando '
+                   'com o bypass; os demais nomes seguem o manual da GP-100.')
         out.append('')
     return '\n'.join(out)
 
@@ -437,12 +414,8 @@ def build_doc(song, patch, spec, slot):
     → 💾 receita de digitação + slot. Markdown puro (sem HTML cru — o viewer
     do usuário não renderiza <div>/<br>).
     """
-    meta = DEFS['meta']
-    if song.get('idAlbum') == 'AR':
-        banda, album, ano = meta['banda'], meta['album'], meta['ano']
-    else:
-        banda = song['banda']
-        album, ano = song['album'], song['ano']
+    alb = ALBUMS[song['idAlbum']]
+    banda, album, ano = alb['banda'], alb['album'], alb['ano']
     g = patch['doc']['guitarra']
     doc = patch['doc']
 
@@ -650,7 +623,7 @@ def main():
             spec = copy.deepcopy(patch['spec'])
             slot = slot_map[patch['nome']]
             spec['author'] = 'GP-100 Patch Architect'
-            spec['notes'] = f"{song['song']} ({song.get('album', DEFS['meta']['album'])}) - {patch['camada']}"
+            spec['notes'] = f"{song['song']} ({ALBUMS[song['idAlbum']]['album']}) - {patch['camada']}"
             folder = album_root / SONG_FOLDER[song['id']] / patch['nome']
             folder.mkdir(parents=True, exist_ok=True)
 

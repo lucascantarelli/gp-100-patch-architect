@@ -2,7 +2,7 @@
 
 ### *Agente Freebuff que cria patches Valeton GP-100 a partir do rig real de qualquer música*
 
-![Release](https://img.shields.io/badge/release-1.0-e02d2d?style=flat-square) ![Firmware](https://img.shields.io/badge/firmware-2.1%20(confirmado%20no%20device)-2ea44f?style=flat-square) ![Agentes](https://img.shields.io/badge/agentes-17-e02d2d?style=flat-square) ![Patches](https://img.shields.io/badge/patches-62%20·%203%20álbuns-e02d2d?style=flat-square) ![Formato](https://img.shields.io/badge/.prst-single%20fw%202.1-2ea44f?style=flat-square) ![Python](https://img.shields.io/badge/gerador-Python%203-f3a637?style=flat-square)
+![Release](https://img.shields.io/badge/release-1.0-e02d2d?style=flat-square) ![Firmware](https://img.shields.io/badge/firmware-2.1%20(confirmado%20no%20device)-2ea44f?style=flat-square) ![Agentes](https://img.shields.io/badge/agentes-17-e02d2d?style=flat-square) ![Patches](https://img.shields.io/badge/patches-62%20·%203%20álbuns-e02d2d?style=flat-square) ![Formato](https://img.shields.io/badge/.prst-single%20fw%202.1-2ea44f?style=flat-square) ![Python](https://img.shields.io/badge/gerador-Python%203-f3a637?style=flat-square) [![CI](https://github.com/lucascantarelli/gp-100-patch-architect/actions/workflows/ci.yml/badge.svg)](https://github.com/lucascantarelli/gp-100-patch-architect/actions/workflows/ci.yml)
 
 ---
 
@@ -98,8 +98,12 @@ Cada patch entrega:
 ├── tools/              # scripts Python (ver 🔧 Ferramentas abaixo)
 ├── patches/            # biblioteca: Banda/Álbum/Música/PATCH (.prst + patch.md + spec.json)
 ├── impulse_responses/  # banco local de IRs (WAV 44.1 kHz) — indexado por ir_library.py
+├── tests/              # suíte do pipeline (unittest, sem dependências)
+├── .github/workflows/  # CI: pipeline de dados + testes + typecheck dos agentes
 ├── knowledge.md        # regras de ouro do projeto
-└── manual.pdf          # manual oficial (V1.8 impresso)
+├── manual.pdf          # manual oficial (V1.8 impresso)
+├── .gitattributes      # .prst fixado em CRLF · WAV/PDF tratados como binários
+└── .gitignore          # manual_pages/, caches Python, lixo de SO e estado local
 ```
 
 ## 🔧 Ferramentas
@@ -111,9 +115,51 @@ Cada patch entrega:
 | `tools/render_manual_page.py` | `python tools/render_manual_page.py 21 [22 …] · --all` | Renderiza páginas do `manual.pdf` **sob demanda** (PNG alta + JPG leve em `manual_pages/`, efêmero) — página impressa NN = arquivo NN+2 |
 | `tools/gen_indexes.py` | `python tools/gen_indexes.py` | Regenera os `MAPA-DO-ALBUM.md` e o `patches/README.md` — slots U01…Uxx calculados pela ordem dos defs |
 | `tools/ir_library.py` | `python tools/ir_library.py` | Indexa `impulse_responses/` (valida mono/24-bit/44.1 kHz) → `tools/ir-library.json` + `reference/16-ir-library.md` |
+| `tools/check_data_freshness.py` | `python tools/check_data_freshness.py` | **Guarda do CI** — compara os artefatos gerados no disco com o HEAD (só o `preset_info/@time` é ignorado) e reprova citando o comando de conserto quando algo gerado ficou fora do commit |
 | `tools/analyze_prst.py` | `python tools/analyze_prst.py <arquivo>.prst [--json out.json]` | Disseca qualquer export `.prst` (modelos, ranges empíricos de params, catálogo) — é dele que nasceu o catálogo fw 2.0 |
+| `tests/test_pipeline.py` | `python -m unittest discover -s tests -v` | **Suíte de validação** do pipeline: defs, formato `.prst`, docs, momentos, nomes de parâmetro e drift dos índices (é o que o CI roda) |
 
-**Cadeia típica ao acrescentar um álbum:** edite `tools/patches-defs.json` → `build_song_patches.py` → `gen_indexes.py`. **Baixou packs de IR?** Extraia em `impulse_responses/<Pack>/` → rode `ir_library.py`. Downloads recomendados: [`reference/17-free-ir-packs.md`](reference/17-free-ir-packs.md).
+**Cadeia típica ao acrescentar um álbum:** edite `tools/patches-defs.json` → `build_song_patches.py` → `gen_indexes.py` → **rode a suíte de testes** e o `check_data_freshness.py`. **Baixou packs de IR?** Extraia em `impulse_responses/<Pack>/` → rode `ir_library.py`. Downloads recomendados: [`reference/17-free-ir-packs.md`](reference/17-free-ir-packs.md).
+
+> **Acrescentou elemento novo?** (música, camada, patch, efeito, momento de toggle, pack de IR) O pipeline inteiro é obrigatório, e o job `dados` do CI reprova o PR que esquecer:
+>
+> ```bash
+> python tools/ir_library.py && python tools/add_pulse_defs.py \
+>   && python tools/build_song_patches.py && python tools/gen_indexes.py \
+>   && python tools/check_data_freshness.py
+> ```
+
+### 📍 Fonte única de dados
+
+Tudo que descreve uma música, um álbum ou uma IR vive **só** em `tools/patches-defs.json` (`albums` → banda/ano/pasta/título/dossiê do rig · `ir_local` → captura recomendada por CAB · cada música → `song`, `pasta`, `display`, patches). Os scripts são renderizadores: nenhum deles tem lista de músicas ou de cabs. Foi a duplicação dessas tabelas que fez o mapa do álbum recomendar "fábrica" enquanto o `patch.md` mandava carregar uma IR do banco nos 38 patches do Pulse — hoje o teste `TestB_FonteUnica_IR` reprova isso.
+
+## ✅ Qualidade — o que o CI garante
+
+Cada push e cada PR rodam o workflow [`pipeline`](.github/workflows/ci.yml), em três jobs:
+
+| Job | O que faz |
+|---|---|
+| **`dados`** | roda o **pipeline de dados inteiro** (IR → seeders → momentos → construtor → índices) e depois `check_data_freshness.py`: se o resultado não for o que está commitado, o build reprova com o comando exato de conserto. É o guarda de "elemento novo sem regenerar" |
+| **`python`** | compila os scripts e executa a suíte (**25 testes, sem dependências** — `unittest` da stdlib) |
+| **`agentes`** | `tsc --noEmit` nos 17 agentes |
+
+Para rodar igual na sua máquina:
+
+```bash
+python -m unittest discover -s tests -v
+```
+
+A suíte cobre as invariantes que **já quebraram uma vez** neste projeto:
+
+| Classe | O que reprova |
+|---|---|
+| `TestB_FonteUnica_IR` | mapa do álbum e seção 📡 do `patch.md` discordando sobre a IR (bug dos 38 patches do Pulse) |
+| `TestC_Prst` | `.prst` fora do formato **single fw 2.1** (`ppIRInfo`, ordem dos módulos, `x`, 15 params, `ppName` ≠ pasta) |
+| `TestD_Documentacao` | doc sem uma das 9 seções, HTML cru no Markdown ou rótulo placeholder `(pN)` |
+| `TestE_Momentos` | momento de toggle inválido (módulo inexistente, estado já ativo, ou tentativa de desligar AMP/CAB) |
+| `TestF_ParamNames` | modelo ligado em patch **sem tabela de nomes** fora da allowlist (hoje: `Saturate`, `Red Haze`, `T-Echo`) ou tabela com placeholder |
+| `TestG_Indices` | índice defasado (esqueceu de rodar `gen_indexes.py`) ou numeração de slots divergente entre os dois scripts |
+| `TestH_DadosEmSincronia` | normalização do check de frescor: `time` do `.prst` ignorado, CRLF≡LF e mudança de parâmetro **não** mascarada; e toda saída do pipeline coberta pelo check |
 
 ## 🎯 Regras de ouro
 
@@ -128,6 +174,7 @@ Cada patch entrega:
 - ✅ `.prst` comparados estruturalmente com o export **single** que importou com sucesso no aparelho (7 checks), formato firmware 2.1 — o formato está registrado no gerador.
 - ✅ 62 patches em biblioteca (Abbey Road, Apostrophe (') e Pulse — 42 músicas), XMLs validados, 0 HTML cru e slots U01–U62 mapeados; pipeline **idempotente** (regenerar não muda parâmetros — só o timestamp `preset_info/@time`, igual ao export real).
 - ✅ Seções obrigatórias presentes nos 62 docs (guitarra → ajustes finos → IR → modos de atuação → objetivo → dossiê → parâmetros → carga → evite) e 32 momentos de toggle validados contra o spec.
+- ✅ **CI + suíte de testes** ([`.github/workflows/ci.yml`](.github/workflows/ci.yml)): 25 testes em `tests/` validam defs, formato dos 62 `.prst`, docs, momentos, cobertura de nomes de parâmetro e drift dos índices — stdlib pura (nenhuma dependência para instalar). O job **`dados`** roda o pipeline completo a cada push/PR e reprova se algum artefato gerado ficar fora do commit (só o timestamp `preset_info/@time` é ignorado — o pipeline é reprodutível em 194 artefatos).
 - ✅ Typecheck `tsc --noEmit` limpo nos 17 agentes.
 - ✅ Manual V1.8 transcrito página a página para `reference/` + catálogo empírico extraído do export de fábrica (`tools/factory-catalog.json`, 99 presets · 117 modelos).
 - ✅ Banco local de IRs indexado (291 WAVs — Origin Effects IR-Cab Library V3).

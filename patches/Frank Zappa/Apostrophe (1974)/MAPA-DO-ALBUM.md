@@ -36,7 +36,7 @@ Cada faixa foi analisada isoladamente: o que a guitarra faz em cada seção e se
 ## 📥 Importação
 
 1. **GP-100 Edits** (≥ 1.2.0) conectado à pedaleira (firmware 2.1).
-2. Importe cada `patches/<Banda>/Apostrophe (’) (1974)/<Música>/<NOME>/<NOME>.prst` no slot da tabela acima.
+2. Importe cada `patches/Frank Zappa/Apostrophe (1974)/<Música>/<NOME>/<NOME>.prst` no slot da tabela acima.
 3. Sem PC: receita de digitação na seção 8 de cada `patch.md` (sobressalentes incluídos).
 4. **Opcional (som de referência)**: carregue os WAVs 📁 da tabela nos slots **User IR 1–4** (GP-100 Edits → IR Manager) e troque o CAB do patch para o User IR correspondente — passo a passo na seção **📡 3** de cada `patch.md`.
 

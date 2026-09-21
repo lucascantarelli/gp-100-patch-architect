@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<GP-100>
+  <preset_info software="1.2.0" firmware="2.1" product="GP-100" count="1" platform="WINDOWS" time="1789936148492" />
+  <presets ppBank="0" ppName="MM1001BA" ppVolume="61" ppID="0" ppBPM="100" ppIRNum="27" ppType="4" ppAuthor="GP-100 Patch Architect" ppNotes="Sun King / Mean Mr. Mustard (Abbey Road) - Base (Mean Mr. Mustard)" ppTypeName="Rock">
+    <Effect effectModuleName="RVB" effectName="Room" effectState="1" effectCode="201326592" params_0="20" x="8" y="0" params_1="19" params_2="31" params_3="0" params_4="65535" params_5="65535" params_6="65535" params_7="65535" params_8="65535" params_9="65535" params_10="65535" params_11="65535" params_12="0" params_13="0" params_14="0" />
+    <Effect effectModuleName="DLY" effectName="Sweet" effectState="0" effectCode="184549389" params_0="25" x="7" y="0" params_1="400" params_2="20" params_3="0" params_4="1" params_5="0" params_6="65535" params_7="65535" params_8="65535" params_9="65535" params_10="65535" params_11="65535" params_12="0" params_13="0" params_14="0" />
+    <Effect effectModuleName="MOD" effectName="A-Chorus" effectState="0" effectCode="67108864" params_0="30" x="6" y="0" params_1="0.5" params_2="50" params_3="0" params_4="65535" params_5="65535" params_6="65535" params_7="65535" params_8="65535" params_9="65535" params_10="65535" params_11="65535" params_12="0" params_13="0" params_14="0" />
+    <Effect effectModuleName="EQ" effectName="EQ 1" effectState="1" effectCode="16777269" params_0="0" x="5" y="0" params_1="1" params_2="0" params_3="5" params_4="5" params_5="50" params_6="65535" params_7="65535" params_8="65535" params_9="65535" params_10="65535" params_11="65535" params_12="0" params_13="0" params_14="0" />
+    <Effect effectModuleName="CAB" effectName="Foxy 1x12" effectState="1" effectCode="167772168" params_0="75" x="4" y="0" params_1="50" params_2="65535" params_3="65535" params_4="65535" params_5="65535" params_6="65535" params_7="65535" params_8="65535" params_9="65535" params_10="65535" params_11="65535" params_12="0" params_13="0" params_14="0" />
+    <Effect effectModuleName="NR" effectName="Gate 1" effectState="1" effectCode="27" params_0="28" x="3" y="0" params_1="65535" params_2="65535" params_3="65535" params_4="65535" params_5="65535" params_6="65535" params_7="65535" params_8="65535" params_9="65535" params_10="65535" params_11="65535" params_12="0" params_13="0" params_14="0" />
+    <Effect effectModuleName="AMP" effectName="Foxy 30TB" effectState="1" effectCode="117440551" params_0="68" x="2" y="0" params_1="35" params_2="65" params_3="50" params_4="55" params_5="1" params_6="49" params_7="65535" params_8="65535" params_9="65535" params_10="65535" params_11="65535" params_12="0" params_13="0" params_14="0" />
+    <Effect effectModuleName="DST" effectName="Green OD" effectState="1" effectCode="50331648" params_0="45" x="1" y="0" params_1="55" params_2="62" params_3="65535" params_4="65535" params_5="65535" params_6="65535" params_7="65535" params_8="65535" params_9="65535" params_10="65535" params_11="65535" params_12="0" params_13="0" params_14="0" />
+    <Effect effectModuleName="PRE" effectName="COMP" effectState="0" effectCode="0" params_0="25" x="0" y="0" params_1="40" params_2="50" params_3="0" params_4="65535" params_5="65535" params_6="65535" params_7="65535" params_8="65535" params_9="65535" params_10="65535" params_11="65535" params_12="0" params_13="0" params_14="0" />
+    <ppCtrl c11="65535" c12="1" c13="65535" c21="65535" c22="65535" c23="8" />
+    <ppEXP1 expTarget="0" expVolume="0" expVolumeMin="0" expVolumeMax="99">
+      <ppEXP1_0 expMId="65535" expCode="524295" expIndex="0" expMin="0" expMax="99" />
+      <ppEXP1_1 expMId="65535" expCode="524295" expIndex="0" expMin="0" expMax="99" />
+      <ppEXP1_2 expMId="65535" expCode="524295" expIndex="0" expMin="0" expMax="99" />
+    </ppEXP1>
+  </presets>
+</GP-100>

@@ -1,0 +1,79 @@
+{
+  "name": "END01SO",
+  "type": "Rock",
+  "bpm": 124,
+  "volume": 63,
+  "ir_slot": null,
+  "modules": {
+    "PRE": {
+      "name": "COMP",
+      "on": false
+    },
+    "DST": {
+      "name": "Green OD",
+      "on": true,
+      "params": {
+        "0": 48,
+        "1": 55,
+        "2": 64
+      }
+    },
+    "AMP": {
+      "name": "Bellman 59N",
+      "on": true,
+      "params": {
+        "0": 80,
+        "1": 55,
+        "2": 62,
+        "3": 55,
+        "4": 55,
+        "5": 50
+      }
+    },
+    "NR": {
+      "name": "Gate 1",
+      "on": true,
+      "params": {
+        "0": 30
+      }
+    },
+    "CAB": {
+      "name": "TWD 2x12",
+      "on": true,
+      "params": {
+        "0": 75,
+        "1": 50
+      }
+    },
+    "EQ": {
+      "name": "EQ 1",
+      "on": true,
+      "params": {
+        "0": 0,
+        "1": 2,
+        "2": 0,
+        "5": 50
+      }
+    },
+    "MOD": {
+      "name": "A-Chorus",
+      "on": false
+    },
+    "DLY": {
+      "name": "Sweet",
+      "on": false
+    },
+    "RVB": {
+      "name": "Room",
+      "on": true,
+      "params": {
+        "0": 20,
+        "1": 19,
+        "2": 31,
+        "3": 0
+      }
+    }
+  },
+  "author": "GP-100 Patch Architect",
+  "notes": "The End (Abbey Road) - Solos"
+}

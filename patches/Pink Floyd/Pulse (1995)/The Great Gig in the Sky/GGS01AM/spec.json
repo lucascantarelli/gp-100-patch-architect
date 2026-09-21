@@ -1,0 +1,75 @@
+{
+  "name": "GGS01AM",
+  "type": "Rock",
+  "bpm": 120,
+  "volume": 60,
+  "ir_slot": null,
+  "modules": {
+    "PRE": {
+      "name": "Boost",
+      "on": false,
+      "params": {}
+    },
+    "DST": {
+      "name": "Blues OD",
+      "on": false,
+      "params": {}
+    },
+    "AMP": {
+      "name": "Knights CL",
+      "on": true,
+      "params": {
+        "0": 38,
+        "1": 62,
+        "2": 62,
+        "3": 48,
+        "4": 52,
+        "5": 58
+      }
+    },
+    "NR": {
+      "name": "Gate 1",
+      "on": false,
+      "params": {}
+    },
+    "CAB": {
+      "name": "UK-LD 4x12",
+      "on": true,
+      "params": {
+        "0": 78,
+        "1": 62
+      }
+    },
+    "EQ": {
+      "name": "EQ 1",
+      "on": false,
+      "params": {}
+    },
+    "MOD": {
+      "name": "A-Chorus",
+      "on": true,
+      "params": {
+        "0": 28,
+        "1": 0.5,
+        "2": 28
+      }
+    },
+    "DLY": {
+      "name": "Sweet",
+      "on": false,
+      "params": {}
+    },
+    "RVB": {
+      "name": "Hall",
+      "on": true,
+      "params": {
+        "0": 55,
+        "1": 50,
+        "2": 50,
+        "3": 1
+      }
+    }
+  },
+  "author": "GP-100 Patch Architect",
+  "notes": "The Great Gig in the Sky (Pulse (live)) - Texturas"
+}

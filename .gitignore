@@ -1,0 +1,11 @@
+# Páginas renderizadas do manual (regeneráveis com pymupdf)
+manual_pages/
+
+# Dependências locais
+node_modules/
+
+# Segredos
+.env
+
+# Python cache
+__pycache__/

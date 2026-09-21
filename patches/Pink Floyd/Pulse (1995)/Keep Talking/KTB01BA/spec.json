@@ -1,0 +1,81 @@
+{
+  "name": "KTB01BA",
+  "type": "Rock",
+  "bpm": 120,
+  "volume": 60,
+  "ir_slot": null,
+  "modules": {
+    "PRE": {
+      "name": "Saturate",
+      "on": true,
+      "params": {
+        "0": 35,
+        "1": 55,
+        "2": 60
+      }
+    },
+    "DST": {
+      "name": "Blues OD",
+      "on": false,
+      "params": {}
+    },
+    "AMP": {
+      "name": "Flagman",
+      "on": true,
+      "params": {
+        "0": 44,
+        "1": 55,
+        "2": 62,
+        "3": 50,
+        "4": 55,
+        "5": 58
+      }
+    },
+    "NR": {
+      "name": "Gate 1",
+      "on": true,
+      "params": {
+        "0": 26
+      }
+    },
+    "CAB": {
+      "name": "UK-LD 4x12",
+      "on": true,
+      "params": {
+        "0": 78,
+        "1": 62
+      }
+    },
+    "EQ": {
+      "name": "EQ 1",
+      "on": false,
+      "params": {}
+    },
+    "MOD": {
+      "name": "A-Chorus",
+      "on": false,
+      "params": {}
+    },
+    "DLY": {
+      "name": "Sweet",
+      "on": false,
+      "params": {
+        "0": 20,
+        "1": 570,
+        "2": 30
+      }
+    },
+    "RVB": {
+      "name": "Plate",
+      "on": true,
+      "params": {
+        "0": 30,
+        "1": 40,
+        "2": 50,
+        "3": 1
+      }
+    }
+  },
+  "author": "GP-100 Patch Architect",
+  "notes": "Keep Talking (Pulse (live)) - Base"
+}

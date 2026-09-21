@@ -1,0 +1,75 @@
+{
+  "name": "CT01VOX",
+  "type": "Rock",
+  "bpm": 104,
+  "volume": 62,
+  "ir_slot": null,
+  "modules": {
+    "PRE": {
+      "name": "Boost",
+      "on": true,
+      "params": {
+        "0": 22,
+        "1": 1
+      }
+    },
+    "DST": {
+      "name": "La Charger",
+      "on": true,
+      "params": {
+        "0": 32,
+        "1": 52,
+        "2": 62
+      }
+    },
+    "AMP": {
+      "name": "Dark Twin",
+      "on": false
+    },
+    "NR": {
+      "name": "Gate 1",
+      "on": true,
+      "params": {
+        "0": 28
+      }
+    },
+    "CAB": {
+      "name": "J-120 2x12",
+      "on": true,
+      "params": {
+        "0": 75,
+        "1": 50
+      }
+    },
+    "EQ": {
+      "name": "EQ 1",
+      "on": true,
+      "params": {
+        "0": -1,
+        "1": 3,
+        "2": -1,
+        "5": 50
+      }
+    },
+    "MOD": {
+      "name": "A-Chorus",
+      "on": false
+    },
+    "DLY": {
+      "name": "Sweet",
+      "on": false
+    },
+    "RVB": {
+      "name": "Room",
+      "on": true,
+      "params": {
+        "0": 20,
+        "1": 19,
+        "2": 31,
+        "3": 0
+      }
+    }
+  },
+  "author": "GP-100 Patch Architect",
+  "notes": "Come Together (Abbey Road) - Voz-líder (solo/final)"
+}

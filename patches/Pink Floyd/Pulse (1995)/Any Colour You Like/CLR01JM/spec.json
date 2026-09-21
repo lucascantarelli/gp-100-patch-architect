@@ -1,0 +1,81 @@
+{
+  "name": "CLR01JM",
+  "type": "Rock",
+  "bpm": 120,
+  "volume": 60,
+  "ir_slot": null,
+  "modules": {
+    "PRE": {
+      "name": "Boost",
+      "on": false,
+      "params": {}
+    },
+    "DST": {
+      "name": "Red Haze",
+      "on": true,
+      "params": {
+        "0": 55,
+        "1": 50,
+        "2": 55
+      }
+    },
+    "AMP": {
+      "name": "Flagman",
+      "on": true,
+      "params": {
+        "0": 40,
+        "1": 50,
+        "2": 58,
+        "3": 50,
+        "4": 52,
+        "5": 56
+      }
+    },
+    "NR": {
+      "name": "Gate 1",
+      "on": true,
+      "params": {
+        "0": 30
+      }
+    },
+    "CAB": {
+      "name": "UK-LD 4x12",
+      "on": true,
+      "params": {
+        "0": 78,
+        "1": 62
+      }
+    },
+    "EQ": {
+      "name": "EQ 1",
+      "on": false,
+      "params": {}
+    },
+    "MOD": {
+      "name": "A-Chorus",
+      "on": false,
+      "params": {}
+    },
+    "DLY": {
+      "name": "Sweet",
+      "on": true,
+      "params": {
+        "0": 35,
+        "1": 570,
+        "2": 28
+      }
+    },
+    "RVB": {
+      "name": "Hall",
+      "on": true,
+      "params": {
+        "0": 55,
+        "1": 50,
+        "2": 50,
+        "3": 1
+      }
+    }
+  },
+  "author": "GP-100 Patch Architect",
+  "notes": "Any Colour You Like (Pulse (live)) - Jam Espacial"
+}

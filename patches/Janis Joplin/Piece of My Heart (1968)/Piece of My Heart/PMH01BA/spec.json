@@ -1,0 +1,79 @@
+{
+  "name": "PMH01BA",
+  "type": "Rock",
+  "bpm": 128,
+  "volume": 60,
+  "ir_slot": null,
+  "modules": {
+    "PRE": {
+      "name": "COMP",
+      "on": false
+    },
+    "DST": {
+      "name": "Blues OD",
+      "on": true,
+      "params": {
+        "0": 45,
+        "1": 55,
+        "2": 65
+      }
+    },
+    "AMP": {
+      "name": "Dark Twin",
+      "on": true,
+      "params": {
+        "0": 72,
+        "1": 62,
+        "2": 55,
+        "3": 50,
+        "4": 52,
+        "5": 0
+      }
+    },
+    "NR": {
+      "name": "Gate 1",
+      "on": true,
+      "params": {
+        "0": 28
+      }
+    },
+    "CAB": {
+      "name": "DarkTW 2x12",
+      "on": true,
+      "params": {
+        "0": 75,
+        "1": 50
+      }
+    },
+    "EQ": {
+      "name": "EQ 1",
+      "on": true,
+      "params": {
+        "0": -1,
+        "1": 2,
+        "2": -1,
+        "5": 50
+      }
+    },
+    "MOD": {
+      "name": "A-Chorus",
+      "on": false
+    },
+    "DLY": {
+      "name": "Sweet",
+      "on": false
+    },
+    "RVB": {
+      "name": "Spring",
+      "on": true,
+      "params": {
+        "0": 40,
+        "1": 99,
+        "2": 50,
+        "3": 0
+      }
+    }
+  },
+  "author": "GP-100 Patch Architect",
+  "notes": "Piece of My Heart (Cheap Thrills) - Base"
+}

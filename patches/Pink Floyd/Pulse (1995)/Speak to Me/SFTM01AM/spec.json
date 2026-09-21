@@ -1,0 +1,75 @@
+{
+  "name": "SFTM01AM",
+  "type": "Rock",
+  "bpm": 120,
+  "volume": 60,
+  "ir_slot": null,
+  "modules": {
+    "PRE": {
+      "name": "Boost",
+      "on": false,
+      "params": {}
+    },
+    "DST": {
+      "name": "Blues OD",
+      "on": false,
+      "params": {}
+    },
+    "AMP": {
+      "name": "Flagman",
+      "on": true,
+      "params": {
+        "0": 25,
+        "1": 50,
+        "2": 55,
+        "3": 50,
+        "4": 50,
+        "5": 55
+      }
+    },
+    "NR": {
+      "name": "Gate 1",
+      "on": false,
+      "params": {}
+    },
+    "CAB": {
+      "name": "UK-LD 4x12",
+      "on": true,
+      "params": {
+        "0": 78,
+        "1": 62
+      }
+    },
+    "EQ": {
+      "name": "EQ 1",
+      "on": false,
+      "params": {}
+    },
+    "MOD": {
+      "name": "A-Chorus",
+      "on": false,
+      "params": {}
+    },
+    "DLY": {
+      "name": "Sweet",
+      "on": true,
+      "params": {
+        "0": 45,
+        "1": 620,
+        "2": 35
+      }
+    },
+    "RVB": {
+      "name": "Hall",
+      "on": true,
+      "params": {
+        "0": 55,
+        "1": 50,
+        "2": 50,
+        "3": 1
+      }
+    }
+  },
+  "author": "GP-100 Patch Architect",
+  "notes": "Speak to Me (Pulse (live)) - Texturas"
+}

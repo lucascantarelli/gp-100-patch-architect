@@ -15,6 +15,12 @@
 #                        ESCREVER no repositório — o job de dados tem
 #                        `contents: write` e commita no main.
 #
+# Runner e runtime: `ubuntu-24.04` (não o label mutável `-latest`) e actions de
+# primeira parte no major que já declara `using: node24`. As duas regras vivem no
+# auditor `.github/scripts/audit_workflows.py` e existem por causa do que ele
+# agora reprova: imagem de runner que troca sem commit e o aviso "Node.js 20 is
+# deprecated", que aparecia em todo job e ninguém lia.
+#
 # Rode o endurecimento localmente:
 #   python .github/scripts/audit_workflows.py
 
@@ -42,7 +48,7 @@ jobs:
   # ── 1 · Análise estática ────────────────────────────────────────────────────
   codeql:
     name: 🔐 CodeQL — ${{ matrix.language }}
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 25
     permissions:
       contents: read
@@ -69,7 +75,7 @@ jobs:
         # diretório oculto (ou se `.agents/` virar caminho visível).
         language: [python, actions]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       # Python e JavaScript/TypeScript são interpretados/jit: não há passo de
       # build. O init + analyze é o template suportado para esses idiomas.
@@ -98,16 +104,16 @@ jobs:
   dependency-review:
     name: 📦 Revisão de dependências
     if: github.event_name == 'pull_request'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 10
     permissions:
       contents: read
       pull-requests: write          # comenta o resumo no PR
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Reprovar dependência vulnerável introduzida no PR
-        uses: actions/dependency-review-action@v4
+        uses: actions/dependency-review-action@v5
         with:
           fail-on-severity: high
           comment-summary-in-pr: on-failure
@@ -115,12 +121,12 @@ jobs:
   # ── 3 · Endurecimento dos workflows ────────────────────────────────────────
   workflow-hardening:
     name: 🛡️ Endurecimento dos workflows
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v7
         with:
           python-version: '3.14'
 

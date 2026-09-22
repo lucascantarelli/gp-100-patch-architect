@@ -54,6 +54,7 @@ como questão de segurança:
 | Abuso do auto-commit do CI | O job de dados tem `contents: write`; um PR que consiga escrever no `main` fora do pipeline é um achado válido |
 | Segredos expostos no histórico ou nos logs | Tokens, credenciais ou chaves em qualquer arquivo versionado |
 | Cadeia de suprimentos das GitHub Actions | Actions não fixadas por SHA ou workflow com permissões largas demais |
+| Runner ou runtime de Action obsoleto | Runner em label mutável (`-latest`) troca de imagem sem commit aqui, e Action que ainda declara Node 20 recebe aviso de depreciação a cada job |
 | Injeção em workflows (`${{ }}` de contexto não confiável) | Título de issue/PR, nome de branch ou de arquivo interpolado em `run:` |
 
 ## Fora do escopo
@@ -80,6 +81,7 @@ Não são tratados como vulnerabilidades de segurança deste projeto:
 | CodeQL (SAST) | ✅ via [`security.yml`](.github/workflows/security.yml) |
 | Revisão de dependências em PR | ✅ via [`security.yml`](.github/workflows/security.yml) |
 | Aferição de permissões dos workflows | ✅ via [`security.yml`](.github/workflows/security.yml) |
+| Runner fixo (`ubuntu-24.04`) e Actions em runtime suportado | ✅ via [`audit_workflows.py`](.github/scripts/audit_workflows.py), que **reprova** label de runner mutável e Action de primeira parte abaixo do `node24` |
 | Verificação de integridade dos dados em cada push/PR | ✅ via [`ci.yml`](.github/workflows/ci.yml) |
 | Branch protection em `main` | ✅ aplicar com [`setup_repo.sh`](setup_repo.sh) |
 

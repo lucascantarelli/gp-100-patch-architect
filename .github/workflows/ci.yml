@@ -17,6 +17,12 @@
 #     ci-gate       — veredito único do CI: reprova se qualquer job da fase 1
 #                     falhou. É o check para "exigir" nas regras do GitHub.
 #
+# Runner e runtime: `ubuntu-24.04` (não o label mutável `-latest`) e actions de
+# primeira parte no major que já declara `using: node24`. As duas regras vivem no
+# auditor `.github/scripts/audit_workflows.py` e existem por causa do que ele
+# agora reprova: imagem de runner que troca sem commit e o aviso "Node.js 20 is
+# deprecated", que aparecia em todo job e ninguém lia.
+#
 # Rode a mesma sequência localmente:
 #   python tools/ir_library.py && python tools/add_pulse_defs.py \
 #     && python tools/add_momentos.py && python tools/build_song_patches.py \
@@ -44,14 +50,14 @@ jobs:
   # ── Fase 1 · dados ─────────────────────────────────────────────────────────
   data-pipeline:
     name: 📊 Dados — pipeline completo e sincronização
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 10
     permissions:
       contents: write          # necessário para o auto-commit no main
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v7
         with:
           python-version: '3.14'
 
@@ -102,12 +108,12 @@ jobs:
   # ── Fase 1 · testes ────────────────────────────────────────────────────────
   test-suite:
     name: 🧪 Testes — suíte do pipeline
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v7
         with:
           python-version: '3.14'
 
@@ -120,17 +126,17 @@ jobs:
   # ── Fase 1 · agentes ───────────────────────────────────────────────────────
   typecheck:
     name: 🔍 Agentes — tsc --noEmit
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: '26'
 
       - name: Cache do TypeScript baixado via npx
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: ~/.npm
           key: npm-typescript-5.9.2-${{ runner.os }}
@@ -143,7 +149,7 @@ jobs:
     name: 🚦 Veredito do CI
     needs: [data-pipeline, test-suite, typecheck]
     if: always()               # roda mesmo com job falho — para dar o veredito
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 5
     steps:
       - name: Reprovar se qualquer job da fase 1 não passou

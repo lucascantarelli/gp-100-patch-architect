@@ -24,11 +24,23 @@ Regras que REPROVAM:
                            de branch ou de arquivo) dentro do shell é
                            script injection.
   4. `pull_request_target` — dá segredos e token de escrita a código de fork.
+  5. Runner flutuante (`*-latest`) — a imagem do runner troca por decisão do
+                           GitHub, sem nenhum commit aqui: o label de Ubuntu
+                           migra para a 26 em out/2026 e o job passa a rodar em
+                           outra toolchain do dia para a noite. A regra existe
+                           porque esse aviso ("ubuntu-latest will migrate")
+                           aparecia no CI e ninguém o lia.
+  6. Action de primeira parte em runtime depreciado — o GitHub força actions
+                           que declaram `node20` a rodar em `node24` e emite
+                           "Node.js 20 is deprecated" a cada job. A tabela
+                           `NODE24_MINIMO` guarda o major que já declara
+                           `using: node24`, verificado no `action.yml` de cada
+                           tag — não é chute de calendário.
 
 Regra que AVISA (não reprova):
-  5. `uses:` de terceiro sem SHA fixo. O Dependabot (`.github/dependabot.yml`)
-     mantém as Actions atualizadas, então fixar por SHA é viável — mas a
-     migração é gradual, e reprovar hoje deixaria todos os workflows vermelhos.
+  7. `uses:` sem SHA fixo. O Dependabot (`.github/dependabot.yml`) mantém as
+     Actions atualizadas, então fixar por SHA é viável — mas a migração é
+     gradual, e reprovar hoje deixaria todos os workflows vermelhos.
 """
 import re
 import sys
@@ -51,6 +63,26 @@ UNTRUSTED = re.compile(
 
 SHA_PINNED = re.compile(r'@[0-9a-f]{40}$')
 JOB_KEY = re.compile(r'^  ([A-Za-z0-9_-]+):\s*$')
+USES = re.compile(r'^\s*(?:- )?uses:\s*(\S+)')
+RUNNER = re.compile(r'^\s*runs-on:\s*(\S+)')
+MAJOR = re.compile(r'^v(\d+)')
+
+# Label de runner que flutua: "<algo>-latest". A imagem por trás dele é decisão
+# do GitHub, não do repositório.
+RUNNER_FLUTUANTE = re.compile(r'^[a-z0-9._-]+-latest$')
+
+# Menor major de cada action de primeira parte que já declara `using: node24`
+# (lido do `action.yml` da tag). Abaixo disso, o runner força a action a rodar
+# em Node 24 e emite aviso de depreciação a cada job. Action fora desta tabela é
+# ignorada — a regra não inventa política para o que não foi verificado.
+NODE24_MINIMO = {
+    'actions/checkout': 5,
+    'actions/setup-python': 6,
+    'actions/setup-node': 5,
+    'actions/cache': 5,
+    'actions/dependency-review-action': 5,
+    'github/codeql-action': 4,
+}
 
 
 def audit(path: Path):
@@ -101,16 +133,37 @@ def audit(path: Path):
                 falhas.append((i, f'contexto não confiável interpolado em `run:` '
                                   f'(script injection): {l.strip()[:60]}'))
 
-    # ── 4 e 5. gatilho proibido e pinagem ──────────────────────────────────
+    # ── 4 a 7. gatilho proibido, runner, runtime e pinagem ─────────────────
     for i, l in enumerate(linhas, start=1):
         if re.match(r'^\s*(pull_request_target|workflow_run):', l):
             falhas.append((i, 'gatilho `pull_request_target`/`workflow_run` — dá '
                               'segredos e escrita a código de fork'))
-        m = re.match(r'^\s*(?:- )?uses:\s*(\S+)', l)
+
+        # 5. runner flutuante. Ignora lista/expressão (`[self-hosted, linux]`,
+        #    `${{ matrix.os }}`): só o label simples é verificável aqui.
+        mr = RUNNER.match(l)
+        if mr:
+            label = mr.group(1).strip('"\'')
+            if RUNNER_FLUTUANTE.match(label):
+                falhas.append((i, f'runner `{label}` flutua — a imagem troca sem '
+                                  f'commit neste repositório; fixe a versão '
+                                  f'(ex.: `ubuntu-24.04`)'))
+
+        m = USES.match(l)
         if m:
             alvo = m.group(1)
             if alvo.startswith('./') or alvo.startswith('docker://'):
                 continue                          # local / imagem: fora do escopo
+
+            # 6. runtime. `owner/repo/caminho@ref` → `owner/repo`.
+            repo = '/'.join(alvo.split('@')[0].split('/')[:2])
+            ref = alvo.split('@')[1] if '@' in alvo else ''
+            minimo = NODE24_MINIMO.get(repo)
+            mv = MAJOR.match(ref)
+            if minimo is not None and mv and int(mv.group(1)) < minimo:
+                falhas.append((i, f'`{alvo}` ainda declara Node 20 (depreciado) — '
+                                  f'use `{repo}@v{minimo}` ou maior'))
+
             if not SHA_PINNED.search(alvo):
                 avisos.append((i, f'`{alvo}` não está fixado por SHA'))
     return falhas, avisos

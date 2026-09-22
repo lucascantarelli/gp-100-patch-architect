@@ -16,6 +16,17 @@
 #
 # Idempotência: reexecutar o job de uma tag já publicada não falha — os assets
 # são reenviados com `--clobber` e as notas são atualizadas.
+#
+# Runner e runtime: `ubuntu-24.04` (não o label mutável `-latest`) e actions de
+# primeira parte no major que já declara `using: node24`. As duas regras vivem no
+# auditor `.github/scripts/audit_workflows.py` e existem por causa do que ele
+# agora reprova: imagem de runner que troca sem commit e o aviso "Node.js 20 is
+# deprecated", que aparecia em todo job e ninguém lia.
+#
+# `actions/checkout@v7` guarda as credenciais num arquivo em `$RUNNER_TEMP` em vez
+# de dentro do `.git/config` (postura melhor para o token), e o próprio README da
+# action confirma que `git push` continua funcionando sem mudar o workflow — que é
+# o que os passos 6/7 abaixo fazem.
 
 name: Release
 
@@ -41,16 +52,16 @@ concurrency:
 jobs:
   release:
     name: 🚀 Publicar release
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 20
     permissions:
       contents: write              # commit da versão, criação da tag e da Release
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0           # o changelog precisa da história e das tags
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v7
         with:
           python-version: '3.14'
 

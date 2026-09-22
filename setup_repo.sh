@@ -23,7 +23,7 @@
 #    `github-actions` entra em `bypass_pull_request_allowances`.
 #
 # 2. NÃO habilitamos `sha_pinning_required` nas Actions.
-#    Os workflows existentes usam tags (`actions/checkout@v4`). Exigir SHA fixo
+#    Os workflows existentes usam tags (`actions/checkout@v7`). Exigir SHA fixo
 #    tornaria todos eles inválidos de uma vez. O caminho certo é o que este repo
 #    já tem: o `audit_workflows.py` avisa a cada execução e o Dependabot
 #    (`.github/dependabot.yml`) mantém as Actions atualizadas, o que torna a

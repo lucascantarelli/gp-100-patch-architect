@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <GP-100>
-  <preset_info software="1.2.0" firmware="2.1" product="GP-100" count="1" platform="WINDOWS" time="1790038084416" />
+  <preset_info software="1.2.0" firmware="2.1" product="GP-100" count="1" platform="WINDOWS" time="1790092644233" />
   <presets ppBank="0" ppName="WDF01SO" ppVolume="60" ppID="0" ppBPM="120" ppIRNum="27" ppType="4" ppAuthor="GP-100 Patch Architect" ppNotes="What Do You Want From Me (Pulse (live)) - Solo" ppTypeName="Rock">
     <Effect effectModuleName="RVB" effectName="Hall" effectState="1" effectCode="201326593" params_0="38" x="8" y="0" params_1="45" params_2="50" params_3="1" params_4="65535" params_5="65535" params_6="65535" params_7="65535" params_8="65535" params_9="65535" params_10="65535" params_11="65535" params_12="0" params_13="0" params_14="0" />
     <Effect effectModuleName="DLY" effectName="Sweet" effectState="1" effectCode="184549389" params_0="15" x="7" y="0" params_1="430" params_2="25" params_3="0" params_4="1" params_5="0" params_6="65535" params_7="65535" params_8="65535" params_9="65535" params_10="65535" params_11="65535" params_12="0" params_13="0" params_14="0" />

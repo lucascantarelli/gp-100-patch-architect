@@ -338,7 +338,8 @@ class TestG_Indices(unittest.TestCase):
 # tocar no working tree — o `preset_info/@time` muda a cada build de propósito).
 PIPELINE = (
     'tools/ir_library.py',             # indexa impulse_responses/ (se baixou pack)
-    'tools/add_pulse_defs.py',         # seeders de álbum (já encadeia add_momentos)
+    'tools/add_pulse_defs.py',         # seeders de álbum (re-appendam o álbum no fim do defs)
+    'tools/add_wishkah_defs.py',       # Nirvana — Wishkah (já encadeia add_momentos)
     'tools/add_momentos.py',           # momentos de toggle por patch
     'tools/build_song_patches.py',     # patch.md + .prst (+ spec.json local)
     'tools/gen_indexes.py',            # MAPA-DO-ALBUM.md + patches/README.md

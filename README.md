@@ -121,6 +121,7 @@ Cada patch entrega:
 
 | Script | Uso | O que faz |
 |---|---|---|
+| `tools/gp100.py` | `python tools/gp100.py find <termo>` | **CLI unificada** — `find` (busca por música/artista/captador), `show` (resumo do patch com cadeia e params), `diff` (compara dois patches), `export` (pasta de importação USB em ordem de slot), `build` e `verify` |
 | `tools/build_song_patches.py` | `python tools/build_song_patches.py` | **Construtor principal** — a partir de `patches-defs.json`, gera `patch.md` + `.prst` (e o `spec.json` intermediário, não versionado) de todos os patches e valida (nome ≤ 12 chars, XML conforme) |
 | `tools/generate_prst.py` | `python tools/generate_prst.py spec.json saida.prst` | Gera **um** `.prst` single-patch fw 2.1 — réplica exata do formato single validado no aparelho (sem `<ppIRInfo>`, com `<ppCtrl>`/`<ppEXP1>`, cadeia x=0–8) |
 | `tools/render_manual_page.py` | `python tools/render_manual_page.py 21 [22 …] · --all` | Renderiza páginas do `manual.pdf` **sob demanda** (PNG alta + JPG leve em `manual_pages/`, efêmero) — página impressa NN = arquivo NN+2 |
@@ -153,7 +154,7 @@ Cada PR (e cada push em `main` e `develop`) roda o workflow [`CI`](.github/workf
 | Job | O que faz |
 |---|---|
 | **🚦 `ci-gate`** | **Portão do CI** — reprova se qualquer job da fase 1 falhou e publica o resumo dos resultados |
-| **🧪 `test-suite`** | compila os scripts e executa a suíte (**31 testes, sem dependências** — `unittest` da stdlib), incluindo o **guarda de sincronia**: o pipeline roda numa cópia temporária e é comparado com o commitado. **Nada é escrito no repositório:** o workflow roda com `contents: read`, então nenhum ator automatizado pode empurrar no `main` e a branch protection não precisa de exceção para o bot |
+| **🧪 `test-suite`** | compila os scripts e executa a suíte (**43 testes, sem dependências** — `unittest` da stdlib), incluindo o **guarda de sincronia**: o pipeline roda numa cópia temporária e é comparado com o commitado. **Nada é escrito no repositório:** o workflow roda com `contents: read`, então nenhum ator automatizado pode empurrar no `main` e a branch protection não precisa de exceção para o bot |
 | **🔍 `typecheck`** | `tsc --noEmit` nos 17 agentes, com cache do TypeScript |
 
 Todos os jobs têm `timeout` e o resultado da sincronia dos dados é publicado no **resumo da execução** (Step Summary) do GitHub.
@@ -192,7 +193,7 @@ A suíte cobre as invariantes que **já quebraram uma vez** neste projeto:
 - ✅ Seções obrigatórias presentes nos 97 docs (guitarra → ajustes finos → IR → modos de atuação → objetivo → dossiê → parâmetros → carga → evite) e 67 momentos de toggle validados contra o spec.
 - ✅ **Zero rótulo `pN` nos 97 docs**: os 40 `patch.md` do Pulse e as 28 menções em textos de ajustes/evite passaram a usar os nomes do manual V2.0 (rótulos acima); os slots **internos** do firmware (que o editor não expõe) não são setados nem rotulados — ficam no default de fábrica.
 - ✅ **Dossiê de rig de Cheap Thrills** (Big Brother & The Holding Company): duas guitarras em **Gibson SG** (Gurley e Andrew), **Fender Twin Reverb**, Maestro FZ-1 no Gurley — e o achado que fecha o timbre da faixa: **Piece of My Heart sem fuzz** (Gurley limpo, Sam sujo no Twin estourado); o mapa da Janis voltou a ter seção de rig, com fontes.
-- ✅ **CI + suíte de testes** ([`.github/workflows/ci.yml`](.github/workflows/ci.yml)): 31 testes em `tests/` validam defs, formato dos 97 `.prst`, docs, momentos, nomes de parâmetro, drift dos índices, a ordem estável entre OS e a **sincronia dos derivados** — o `TestH` roda o pipeline completo numa cópia temporária e compara com o commitado (só o timestamp `preset_info/@time` é ignorado — são reprodutíveis em 204 artefatos, com timestamp determinístico); **nenhum job escreve no repositório**, e o portão **`ci-gate`** concentra o veredito final.
+- ✅ **CI + suíte de testes** ([`.github/workflows/ci.yml`](.github/workflows/ci.yml)): **43 testes** em `tests/` validam defs, formato dos 97 `.prst`, docs, momentos, nomes de parâmetro, drift dos índices, a ordem estável entre OS e a **sincronia dos derivados** — o `TestH` roda o pipeline completo numa cópia temporária e compara com o commitado (só o timestamp `preset_info/@time` é ignorado — são reprodutíveis em 204 artefatos, com timestamp determinístico); **nenhum job escreve no repositório**, e o portão **`ci-gate`** concentra o veredito final.
 - ✅ **Pipeline reprodutível entre sistemas**: a ordem dos artefatos derivados não depende do SO — a comparação de `Path` usa `normcase` (minúsculas no Windows, identidade no Linux) e fazia o manifesto de IRs divergir entre a máquina e o CI; a ordenação agora é por string (ordem de code point), com teste travando a regressão (`TestI_OrdemEstavel`).
 - ✅ Typecheck `tsc --noEmit` limpo nos 17 agentes.
 - ✅ Manual V1.8 transcrito página a página para `reference/` + catálogo empírico extraído do export de fábrica (`tools/factory-catalog.json`, 99 presets · 117 modelos).
@@ -320,7 +321,7 @@ O que o repositório roda sozinho, a cada push, PR e semanalmente:
 
 | Workflow | O que garante |
 |---|---|
-| [`ci.yml`](.github/workflows/ci.yml) | Dados em sincronia + 31 testes + typecheck dos agentes |
+| [`ci.yml`](.github/workflows/ci.yml) | Dados em sincronia + 43 testes + typecheck dos agentes |
 | [`security.yml`](.github/workflows/security.yml) | CodeQL (Python e TypeScript), revisão de dependências em PR e auditoria de permissões dos próprios workflows |
 | [`release.yml`](.github/workflows/release.yml) | Release **automática no merge para a `main`**: tag SemVer a partir do `VERSION` e ZIPs publicados |
 

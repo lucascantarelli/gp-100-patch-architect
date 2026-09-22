@@ -10,7 +10,7 @@
 | Dimensão | Estado |
 |---|---|
 | Biblioteca | **66 patches / 41 músicas / 5 álbuns** (Abbey Road 20 · Pulse 38 · Supernatural 4 · Apostrophe 2 · Cheap Thrills 2) |
-| Pipeline | Reprodutível e guardado pela suíte (31 testes, incluindo o `TestH` de sincronia) |
+| Pipeline | Reprodutível e guardado pela suíte (43 testes, incluindo o `TestH` de sincronia) · CLI unificada `gp100.py` |
 | Em voo | **Wishkah (Nirvana)**: 17 músicas / 31 patches prontos em branch própria, aguardando merge |
 | Em voo | **Smooth (Santana)**: 4 patches com stomps, à frente da `develop` |
 | Gestão | Taxonomia, milestones, Project v2 e guardian definidos no repo (doc 18) — **bootstrap ainda não rodado contra o GitHub** |

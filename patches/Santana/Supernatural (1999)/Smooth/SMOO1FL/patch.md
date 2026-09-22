@@ -181,7 +181,7 @@ _Legenda: **🔴** ligado · ⚪ desligado — a ordem é o caminho do sinal._
 - Controle de hum (single coils + ganho) → `Gate 1`
 - Combo vintage 1x12 do Lone Star → `L-Star 2x12`
 - Delay com 1 repetição na duração da nota (eco do solo) → `Sweet`
-- Sala curta e seca (Abbey Road, groove de timba) → `Room`
+- Sala curta e seca — corpo curto que sustenta sem lambear → `Room`
 
 ### Parâmetros módulo a módulo
 

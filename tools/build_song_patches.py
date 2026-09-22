@@ -146,7 +146,7 @@ BASE_MAP = {
     ('DLY', 'T-Echo'): 'O efeito Binson Echorec das jams espaciais → `T-Echo`',
     ('RVB', 'Spring'): 'Mola do Twin/Fender → `Spring`',
     ('RVB', 'Plate'): 'Plate de estúdio ("splash" da faixa) → `Plate`',
-    ('RVB', 'Room'): 'Sala curta e seca (Abbey Road, groove de timba) → `Room`',
+    ('RVB', 'Room'): 'Sala curta e seca — corpo curto que sustenta sem lambear → `Room`',
     ('RVB', 'Hall'): 'Hall etéreo das seções lentas → `Hall`',
     ('NR', 'Gate 1'): 'Controle de hum (single coils + ganho) → `Gate 1`',
     ('EQ', 'EQ 1'): 'Esculpir o som para fone/PC → `EQ 1`',

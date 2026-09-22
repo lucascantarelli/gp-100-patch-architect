@@ -184,7 +184,7 @@ _Legenda: **🔴** ligado · ⚪ desligado — a ordem é o caminho do sinal._
 - Combo vintage 1x12 do Lone Star → `L-Star 2x12`
 - Leslie/rotary lento da gravação → `A-Chorus` (velocidade baixa)
 - Delay com 1 repetição na duração da nota (eco do solo) → `Sweet`
-- Sala curta e seca (Abbey Road, groove de timba) → `Room`
+- Sala curta e seca — corpo curto que sustenta sem lambear → `Room`
 
 ### Parâmetros módulo a módulo
 

@@ -47,8 +47,8 @@ Base de templates de params: export de fábrica (tools/factory-catalog.json).
 Somente parâmetros declarados no JSON sobrescrevem o template.
 """
 import json
+import os
 import sys
-import time
 import xml.etree.ElementTree as ET
 from pathlib import Path
 
@@ -213,7 +213,10 @@ def main():
     info.set('product', 'GP-100')
     info.set('count', '1')
     info.set('platform', 'WINDOWS')
-    info.set('time', str(int(time.time() * 1000)))
+    # timestamp DETERMINÍSTICO (epoch ms): vem do ambiente — build reprodutível.
+    # O .prst só muda quando um parâmetro muda de verdade; sem churn em 97+ arquivos
+    # a cada regeneração (e sem conflito de merge em linha que não é conteúdo).
+    info.set('time', os.environ.get('GP100_BUILD_TIME', '1688207360000'))
 
     genre = spec.get('type', 'Rock')
     if genre not in GENRE_CODES:

@@ -176,7 +176,7 @@ _Legenda: **🔴** ligado · ⚪ desligado — a ordem é o caminho do sinal._
 - Controle de hum (single coils + ganho) → `Gate 1`
 - Gabinete do AC30 → `Foxy 1x12`
 - Esculpir o som para fone/PC → `EQ 1`
-- Sala curta e seca (Abbey Road, groove de timba) → `Room`
+- Sala curta e seca — corpo curto que sustenta sem lambear → `Room`
 
 ### Parâmetros módulo a módulo
 

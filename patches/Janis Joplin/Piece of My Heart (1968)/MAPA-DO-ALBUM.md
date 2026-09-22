@@ -25,7 +25,15 @@
 
 Cada faixa foi analisada isoladamente: o que a guitarra faz em cada seção e se o timbre muda entre elas. Só há mais de um patch quando o **timbre muda de verdade** na gravação.
 
+## 📚 Rig real do álbum (fontes)
 
+- **Duas guitarras, dois papéis**: **James Gurley** (o pai da guitarra psicodélica de San Francisco — cerca de 60% dos leads) e **Sam Andrew** (formação clássica, rítmica cravada por trás dele).
+- **Guitarra**: **Gibson SG** nos dois — o instrumento padrão da cena de 67–68, citado nominalmente com Gurley e Andrew; Gurley chegou ao SG depois de perder a Les Paul Junior modificada (com o fuzz embutido dentro da guitarra).
+- **AMP**: **Fender Twin Reverb** — o amp do álbum para as duas guitarras. O sujo de Sam vem do próprio Twin estourado, não de pedal.
+- **Efeitos**: **Maestro FZ-1 (Fuzz Tone)** no Gurley (solos de Summertime e I Need a Man to Love) · **Fender Dimension IV Sound Expander** (eco a óleo — a textura psicodélica dessas duas faixas). Em **Piece of My Heart NÃO há fuzz**: Gurley faz a parte limpa e Sam a parte suja, provavelmente só um Twin estourado.
+- **Gravação**: seis meses entre estúdios de Nova York e Los Angeles, base ao vivo e muitas sobreposições; **Ball and Chain** é a única faixa totalmente ao vivo (Winterland — Gurley na Telecaster e Sam na Jazzmaster); disco **#1 por seis semanas**.
+- Sem pitch fixo no ensaio: a afinação solta e o vibrato/bend são a assinatura do álbum — não tente imitar com chorus.
+- 📖 Fontes: Guitar Player / Jas Obrecht (entrevista de 1978 com Sam Andrew e James Gurley, arquivo FoundSF) · Vintage Guitar, Pop 'N Hiss: Quicksilver Messenger Service (jun/2025 — SG de Gurley e Andrew) · The Gear Page, Big Brother… Fuzz Pedal? (2022, análise com fotos de estúdio) · Equipboard (band page).
 
 ## 📥 Importação
 

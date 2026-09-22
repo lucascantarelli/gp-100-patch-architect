@@ -38,7 +38,7 @@ Só mexa na pedaleira **depois** de acertar a guitarra — ela resolve 80% do so
 
 | Se você ouvir… | Faça isto |
 |---|---|
-| mais mordida | DST p0 +2 |
+| mais mordida | DST Gain +2 |
 
 ### Protocolo universal (vale para todos os patches)
 
@@ -166,7 +166,7 @@ _Legenda: **🔴** ligado · ⚪ desligado — a ordem é o caminho do sinal._
 | NR | Gate 1 | Thr: 28 |
 | CAB | Foxy 1x12 | Level: 75 · High Cut: 50 |
 | EQ | EQ 1 | Low: 0 · Mid: 2 · High: 0 · Level: 50 |
-| RVB | Room | Decay*: 20 · Pre-D*: 19 · Damp*: 31 · Mix*: 0 |
+| RVB | Room | Mix: 20 · Pre Delay: 19 ms · Decay: 31 · Trail: Off |
 
 ### Mapeamento rig real → GP-100
 
@@ -223,10 +223,10 @@ _Legenda: **🔴** ligado · ⚪ desligado — a ordem é o caminho do sinal._
 
 | Parâmetro | Valor |
 |---|---|
-| Decay* | 20 |
-| Pre-D* | 19 |
-| Damp* | 31 |
-| Mix* | 0 |
+| Mix | 20 |
+| Pre Delay | 19 ms |
+| Decay | 31 |
+| Trail | Off |
 
 
 ### Globais da sessão

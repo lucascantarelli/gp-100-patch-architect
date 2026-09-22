@@ -38,8 +38,8 @@ Só mexa na pedaleira **depois** de acertar a guitarra — ela resolve 80% do so
 
 | Se você ouvir… | Faça isto |
 |---|---|
-| leslie rápido demais | MOD p1 (speed) menor |
-| gordo demais | DST p0 -3 |
+| leslie rápido demais | MOD Velocidade menor |
+| gordo demais | DST Gain -3 |
 
 ### Protocolo universal (vale para todos os patches)
 
@@ -169,8 +169,8 @@ _Legenda: **🔴** ligado · ⚪ desligado — a ordem é o caminho do sinal._
 | NR | Gate 1 | Thr: 26 |
 | CAB | DarkTW 2x12 | Level: 75 · High Cut: 50 |
 | EQ | EQ 1 | Low: 0 · Mid: 2 · High: 0 · Level: 50 |
-| MOD | Vibe | Intensidade: 49 · Velocidade: 0.5 · p2: 0 · Mix: 50 |
-| RVB | Hall | Decay*: 50 · Pre-D*: 50 · Damp*: 50 · Mix*: 1 |
+| MOD | Vibe | Intensidade: 49 · Velocidade: 0.5 · Sync: Off |
+| RVB | Hall | Mix: 50 · Pre Delay: 50 ms · Decay: 50 · Trail: On |
 
 ### Mapeamento rig real → GP-100
 
@@ -231,19 +231,16 @@ _Legenda: **🔴** ligado · ⚪ desligado — a ordem é o caminho do sinal._
 |---|---|
 | Intensidade | 49 |
 | Velocidade | 0.5 |
-| p2 | 0 |
-| Mix | 50 |
+| Sync | Off |
 
 ### RVB — Hall
 
 | Parâmetro | Valor |
 |---|---|
-| Decay* | 50 |
-| Pre-D* | 50 |
-| Damp* | 50 |
-| Mix* | 1 |
-
-> ℹ️ **`pN`** = slot de parâmetro deste modelo **sem nome oficial documentado** (o manual V1.8 só cobre os modelos antigos) — ajuste por orelha, comparando com o bypass; os demais nomes seguem o manual da GP-100.
+| Mix | 50 |
+| Pre Delay | 50 ms |
+| Decay | 50 |
+| Trail | On |
 
 
 ### Globais da sessão
@@ -267,7 +264,7 @@ _Legenda: **🔴** ligado · ⚪ desligado — a ordem é o caminho do sinal._
 2. **Digitar no painel** (receita na ordem dos menus):
 
 ```
-**DST** `Green OD` (Gain 32 / Tone 52 / Level 60) → **AMP** `Dark Twin` (Vol 66 / Output 62 / Bass 50 / Middle 52 / Treble 52 / Bright Off) → **NR** `Gate 1` (Thr 26) → **CAB** `DarkTW 2x12` (Level 75 / High Cut 50) → **EQ** `EQ 1` (Low 0 / Mid 2 / High 0 / Level 50) → **MOD** `Vibe` (Intensidade 49 / Velocidade 0.5 / p2 0 / Mix 50) → **RVB** `Hall` (ajuste fino no painel — seção 3 📡)
+**DST** `Green OD` (Gain 32 / Tone 52 / Level 60) → **AMP** `Dark Twin` (Vol 66 / Output 62 / Bass 50 / Middle 52 / Treble 52 / Bright Off) → **NR** `Gate 1` (Thr 26) → **CAB** `DarkTW 2x12` (Level 75 / High Cut 50) → **EQ** `EQ 1` (Low 0 / Mid 2 / High 0 / Level 50) → **MOD** `Vibe` (Intensidade 49 / Velocidade 0.5 / Sync Off) → **RVB** `Hall` (ajuste fino no painel — seção 3 📡)
 ```
 
 3. **SAVE** no slot → renomeie para `STH01SO`.

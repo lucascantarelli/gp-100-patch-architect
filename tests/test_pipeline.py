@@ -12,11 +12,11 @@ máquina. Cobre as invariantes que **já quebraram uma vez** neste projeto:
   C. .prst     — formato single fw 2.1 (sem ppIRInfo, com ppCtrl/ppEXP1, 9 módulos
                  na ordem PRE..RVB), ppName = nome da pasta, 15 params por módulo
   D. patch.md  — as 9 seções obrigatórias, zero HTML cru e zero rótulo
-                 placeholder "(pN)" (só `pN`, com a nota de rodapé)
+                 placeholder (nem "(pN)" nem `pN`: todo slot setado tem nome oficial)
   E. momentos  — liga/desliga válido: módulo existe, estado é o inverso do atual
                  e nunca toca AMP/CAB
-  F. cobertura — modelos sem nome oficial ficam numa allowlist explícita: um
-                 modelo novo sem tabela de nomes faz o teste falhar
+  F. cobertura — todo modelo ligado num patch tem tabela de nomes; a allowlist
+                 (hoje vazia) existe para um modelo novo sem nome falhar alto
   G. índices   — os arquivos em disco são exatamente o que o gerador produz hoje
                  (pega "esqueci de rodar gen_indexes.py")
   H. frescor  — a normalização do `tools/check_data_freshness.py` (o check que o
@@ -54,11 +54,13 @@ SECOES = [
     '## 💾 8. Carregar na pedaleira',
     '## 🚫 9. Evite com este patch',
 ]
-# Modelos REAIS do fw 2.0 sem nome oficial de parâmetro documentado. A doc os
-# imprime como `pN` + nota. Ao acrescentar um modelo novo com params, ele precisa
-# entrar aqui E em PARAM_NAMES — este teste existe para a decisão ser consciente,
-# não por esquecimento.
-SEM_NOME_OFICIAL = {('PRE', 'Saturate'), ('DST', 'Red Haze'), ('DLY', 'T-Echo')}
+# Modelos REAIS do fw 2.0 sem nome oficial de parâmetro documentado. Hoje é
+# VAZIO: o manual oficial do firmware V2.0 deu nome a todos (Saturate =
+# Gain/Mix/Output/H-Cut, Red Haze = Fuzz/VOL, T-Echo = Mix/Time/Fdbk) e os slots
+# internos que sobravam deixaram de ser setados. Ao acrescentar um modelo novo
+# com params, ele precisa entrar aqui E em PARAM_NAMES — este teste existe para a
+# decisão ser consciente, não por esquecimento.
+SEM_NOME_OFICIAL = set()
 PATCHES_DIR = ROOT / 'patches'
 
 
@@ -211,12 +213,14 @@ class TestD_Documentacao(unittest.TestCase):
             self.assertNotIn('# {', doc, f"{patch['nome']}: f-string não interpolada")
 
     def test_sem_rotulo_placeholder(self):
+        """Nem `(pN)` nem `pN` solto: todo slot setado tem nome oficial do manual."""
         ruins = []
         for song, patch in todas_as_musicas():
             doc = (pasta_do_patch(song, patch) / 'patch.md').read_text(encoding='utf-8')
-            if re.search(r'\| \(p\d+\) \|', doc):
-                ruins.append(patch['nome'])
-        self.assertEqual(ruins, [], f'rótulo placeholder "(pN)" nos docs: {ruins}')
+            achados = re.findall(r'\(p\d+\)|\bp\d+\b', doc)
+            if achados:
+                ruins.append(f"{patch['nome']}{achados[:3]}")
+        self.assertEqual(ruins, [], f'rótulo placeholder nos docs: {ruins}')
 
     def test_guitarra_vem_antes_do_tecnico(self):
         for song, patch in todas_as_musicas():
@@ -273,7 +277,7 @@ class TestF_ParamNames(unittest.TestCase):
 
     def test_tabelas_sem_placeholder_nem_buraco(self):
         for (mod, nome), labels in BSP.PARAM_NAMES.items():
-            self.assertNotIn('(p', ' '.join(labels), f'{mod} {nome}: rótulo placeholder')
+            self.assertNotRegex(' '.join(labels), r'\bp\d+\b|\(p', f'{mod} {nome}: rótulo placeholder')
             self.assertTrue(all(l.strip() for l in labels), f'{mod} {nome}: rótulo vazio')
             self.assertEqual(len(set(labels)), len(labels), f'{mod} {nome}: rótulo repetido')
 

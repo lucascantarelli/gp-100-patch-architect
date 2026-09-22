@@ -166,12 +166,12 @@ _Legenda: **🔴** ligado · ⚪ desligado — a ordem é o caminho do sinal._
 
 | Módulo | Modelo | Valores |
 |---|---|---|
-| PRE | Saturate | p0: 50 · p1: 60 · p2: 62 |
+| PRE | Saturate | Gain: 50 · Mix: 60 · Output: 62 |
 | AMP | Flagman | Gain: 50 · PRSE: 58 · Master: 64 · Bass: 50 · Middle: 55 · Treble: 58 |
 | NR | Gate 1 | Thr: 30 |
 | CAB | UK-LD 4x12 | Level: 78 · High Cut: 62 |
-| DLY | Sweet | Fdbk: 20 · Delay ms: 530 · High Cut: 28 |
-| RVB | Hall | Decay*: 38 · Pre-D*: 45 · Damp*: 50 · Mix*: 1 |
+| DLY | Sweet | Mix: 20 · Time: 530 ms · Fdbk: 28 |
+| RVB | Hall | Mix: 38 · Pre Delay: 45 ms · Decay: 50 · Trail: On |
 
 ### Mapeamento rig real → GP-100
 
@@ -187,9 +187,9 @@ _Legenda: **🔴** ligado · ⚪ desligado — a ordem é o caminho do sinal._
 
 | Parâmetro | Valor |
 |---|---|
-| p0 | 50 |
-| p1 | 60 |
-| p2 | 62 |
+| Gain | 50 |
+| Mix | 60 |
+| Output | 62 |
 
 ### AMP — Flagman
 
@@ -219,20 +219,18 @@ _Legenda: **🔴** ligado · ⚪ desligado — a ordem é o caminho do sinal._
 
 | Parâmetro | Valor |
 |---|---|
-| Fdbk | 20 |
-| Delay ms | 530 |
-| High Cut | 28 |
+| Mix | 20 |
+| Time | 530 ms |
+| Fdbk | 28 |
 
 ### RVB — Hall
 
 | Parâmetro | Valor |
 |---|---|
-| Decay* | 38 |
-| Pre-D* | 45 |
-| Damp* | 50 |
-| Mix* | 1 |
-
-> ℹ️ **`pN`** = slot de parâmetro deste modelo **sem nome oficial documentado** (o manual V1.8 só cobre os modelos antigos) — ajuste por orelha, comparando com o bypass; os demais nomes seguem o manual da GP-100.
+| Mix | 38 |
+| Pre Delay | 45 ms |
+| Decay | 50 |
+| Trail | On |
 
 
 ### Globais da sessão
@@ -256,7 +254,7 @@ _Legenda: **🔴** ligado · ⚪ desligado — a ordem é o caminho do sinal._
 2. **Digitar no painel** (receita na ordem dos menus):
 
 ```
-**PRE** `Saturate` (p0 50 / p1 60 / p2 62) → **AMP** `Flagman` (Gain 50 / PRSE 58 / Master 64 / Bass 50 / Middle 55 / Treble 58) → **NR** `Gate 1` (Thr 30) → **CAB** `UK-LD 4x12` (Level 78 / High Cut 62) → **DLY** `Sweet` (Fdbk 20 / Delay ms 530 / High Cut 28) → **RVB** `Hall` (ajuste fino no painel — seção 3 📡)
+**PRE** `Saturate` (Gain 50 / Mix 60 / Output 62) → **AMP** `Flagman` (Gain 50 / PRSE 58 / Master 64 / Bass 50 / Middle 55 / Treble 58) → **NR** `Gate 1` (Thr 30) → **CAB** `UK-LD 4x12` (Level 78 / High Cut 62) → **DLY** `Sweet` (Mix 20 / Time 530 ms / Fdbk 28) → **RVB** `Hall` (ajuste fino no painel — seção 3 📡)
 ```
 
 3. **SAVE** no slot → renomeie para `SOF01SO`.

@@ -38,8 +38,8 @@ Só mexa na pedaleira **depois** de acertar a guitarra — ela resolve 80% do so
 
 | Se você ouvir… | Faça isto |
 |---|---|
-| chorus rápido demais | p1 0.3 |
-| mais girar | MOD p2 (mix) 60 |
+| chorus rápido demais | MOD Rate 0.3 |
+| mais girar | MOD Mix 60 |
 
 ### Protocolo universal (vale para todos os patches)
 
@@ -168,7 +168,7 @@ _Legenda: **🔴** ligado · ⚪ desligado — a ordem é o caminho do sinal._
 | CAB | DarkTW 2x12 | Level: 75 · High Cut: 50 |
 | EQ | EQ 1 | Low: 0 · Mid: 0 · High: 0 · Level: 50 |
 | MOD | A-Chorus | Rate: 30 · Depth: 0.5 · Mix: 50 · Level: 0 |
-| RVB | Hall | Decay*: 55 · Pre-D*: 50 · Damp*: 50 · Mix*: 1 |
+| RVB | Hall | Mix: 55 · Pre Delay: 50 ms · Decay: 50 · Trail: On |
 
 ### Mapeamento rig real → GP-100
 
@@ -227,10 +227,10 @@ _Legenda: **🔴** ligado · ⚪ desligado — a ordem é o caminho do sinal._
 
 | Parâmetro | Valor |
 |---|---|
-| Decay* | 55 |
-| Pre-D* | 50 |
-| Damp* | 50 |
-| Mix* | 1 |
+| Mix | 55 |
+| Pre Delay | 50 ms |
+| Decay | 50 |
+| Trail | On |
 
 
 ### Globais da sessão

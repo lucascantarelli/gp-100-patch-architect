@@ -38,8 +38,8 @@ Só mexa na pedaleira **depois** de acertar a guitarra — ela resolve 80% do so
 
 | Se você ouvir… | Faça isto |
 |---|---|
-| pesado demais | DST p0 -5 |
-| afogado | RVB mix -5 |
+| pesado demais | DST Fuzz -5 |
+| afogado | RVB Mix -5 |
 
 ### Protocolo universal (vale para todos os patches)
 
@@ -166,12 +166,12 @@ _Legenda: **🔴** ligado · ⚪ desligado — a ordem é o caminho do sinal._
 
 | Módulo | Modelo | Valores |
 |---|---|---|
-| DST | Red Haze | p0: 45 · p1: 52 · p2: 58 |
+| DST | Red Haze | Fuzz: 45 · VOL: 52 |
 | AMP | Flagman | Gain: 50 · PRSE: 58 · Master: 64 · Bass: 50 · Middle: 55 · Treble: 58 |
 | NR | Gate 1 | Thr: 30 |
 | CAB | UK-LD 4x12 | Level: 78 · High Cut: 62 |
-| DLY | Sweet | Fdbk: 20 · Delay ms: 570 · High Cut: 30 |
-| RVB | Hall | Decay*: 38 · Pre-D*: 45 · Damp*: 50 · Mix*: 1 |
+| DLY | Sweet | Mix: 20 · Time: 570 ms · Fdbk: 30 |
+| RVB | Hall | Mix: 38 · Pre Delay: 45 ms · Decay: 50 · Trail: On |
 
 ### Mapeamento rig real → GP-100
 
@@ -188,9 +188,8 @@ _Legenda: **🔴** ligado · ⚪ desligado — a ordem é o caminho do sinal._
 
 | Parâmetro | Valor |
 |---|---|
-| p0 | 45 |
-| p1 | 52 |
-| p2 | 58 |
+| Fuzz | 45 |
+| VOL | 52 |
 
 ### AMP — Flagman
 
@@ -220,20 +219,18 @@ _Legenda: **🔴** ligado · ⚪ desligado — a ordem é o caminho do sinal._
 
 | Parâmetro | Valor |
 |---|---|
-| Fdbk | 20 |
-| Delay ms | 570 |
-| High Cut | 30 |
+| Mix | 20 |
+| Time | 570 ms |
+| Fdbk | 30 |
 
 ### RVB — Hall
 
 | Parâmetro | Valor |
 |---|---|
-| Decay* | 38 |
-| Pre-D* | 45 |
-| Damp* | 50 |
-| Mix* | 1 |
-
-> ℹ️ **`pN`** = slot de parâmetro deste modelo **sem nome oficial documentado** (o manual V1.8 só cobre os modelos antigos) — ajuste por orelha, comparando com o bypass; os demais nomes seguem o manual da GP-100.
+| Mix | 38 |
+| Pre Delay | 45 ms |
+| Decay | 50 |
+| Trail | On |
 
 
 ### Globais da sessão
@@ -257,7 +254,7 @@ _Legenda: **🔴** ligado · ⚪ desligado — a ordem é o caminho do sinal._
 2. **Digitar no painel** (receita na ordem dos menus):
 
 ```
-**DST** `Red Haze` (p0 45 / p1 52 / p2 58) → **AMP** `Flagman` (Gain 50 / PRSE 58 / Master 64 / Bass 50 / Middle 55 / Treble 58) → **NR** `Gate 1` (Thr 30) → **CAB** `UK-LD 4x12` (Level 78 / High Cut 62) → **DLY** `Sweet` (Fdbk 20 / Delay ms 570 / High Cut 30) → **RVB** `Hall` (ajuste fino no painel — seção 3 📡)
+**DST** `Red Haze` (Fuzz 45 / VOL 52) → **AMP** `Flagman` (Gain 50 / PRSE 58 / Master 64 / Bass 50 / Middle 55 / Treble 58) → **NR** `Gate 1` (Thr 30) → **CAB** `UK-LD 4x12` (Level 78 / High Cut 62) → **DLY** `Sweet` (Mix 20 / Time 570 ms / Fdbk 30) → **RVB** `Hall` (ajuste fino no painel — seção 3 📡)
 ```
 
 3. **SAVE** no slot → renomeie para `SIA01SO`.

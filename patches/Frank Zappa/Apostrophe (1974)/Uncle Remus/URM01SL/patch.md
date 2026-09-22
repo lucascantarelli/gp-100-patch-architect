@@ -40,8 +40,8 @@ Só mexa na pedaleira **depois** de acertar a guitarra — ela resolve 80% do so
 | Se você ouvir… | Faça isto |
 |---|---|
 | estridente | CAB High Cut 60 ou Tone da guitarra -1 |
-| slide sem sustain | COMP4 p0 +5 |
-| crocante demais | DST p0 -3 |
+| slide sem sustain | COMP4 Thresh +5 |
+| crocante demais | DST Gain -3 |
 
 ### Protocolo universal (vale para todos os patches)
 
@@ -177,7 +177,7 @@ _Legenda: **🔴** ligado · ⚪ desligado — a ordem é o caminho do sinal._
 | NR | Gate 1 | Thr: 26 |
 | CAB | DarkTW 2x12 | Level: 75 · High Cut: 55 |
 | EQ | EQ 1 | Low: 0 · Mid: 2 · High: 1 · Level: 50 |
-| RVB | Plate | Decay*: 30 · Pre-D*: 40 · Damp*: 50 · Mix*: 1 |
+| RVB | Plate | Mix: 30 · Decay: 40 · H-Damp: 50 · Trail: On |
 
 ### Mapeamento rig real → GP-100
 
@@ -245,10 +245,10 @@ _Legenda: **🔴** ligado · ⚪ desligado — a ordem é o caminho do sinal._
 
 | Parâmetro | Valor |
 |---|---|
-| Decay* | 30 |
-| Pre-D* | 40 |
-| Damp* | 50 |
-| Mix* | 1 |
+| Mix | 30 |
+| Decay | 40 |
+| H-Damp | 50 |
+| Trail | On |
 
 
 ### Globais da sessão

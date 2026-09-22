@@ -58,7 +58,7 @@ python check_data_freshness.py              # falha se um artefato estiver defas
 python -m unittest discover -s tests -v      # 19 testes, stdlib pura (nada a instalar)
 ```
 
-`tests/test_pipeline.py` valida as invariantes que já quebraram uma vez: defs (ids/nomes únicos, nome ≤ 12 chars), **coerência mapa × `patch.md` sobre IR** (a divergência dos 38 patches do Pulse), formato `.prst` single fw 2.1, as 9 seções obrigatórias + zero HTML cru + zero rótulo placeholder `(pN)`, momentos de toggle válidos (nunca AMP/CAB), cobertura de `PARAM_NAMES` (allowlist explícita para os modelos do fw 2.0 sem nome oficial), **drift dos índices** e a normalização do check de frescor (`TestH_DadosEmSincronia`: ignora o `time`, equipara CRLF/LF e não mascara mudança de parâmetro).
+`tests/test_pipeline.py` valida as invariantes que já quebraram uma vez: defs (ids/nomes únicos, nome ≤ 12 chars), **coerência mapa × `patch.md` sobre IR** (a divergência dos 38 patches do Pulse), formato `.prst` single fw 2.1, as 9 seções obrigatórias + zero HTML cru + **zero rótulo placeholder** (`(pN)` e `pN` solto — todo slot setado tem nome oficial, ver `reference/15`), momentos de toggle válidos (nunca AMP/CAB), cobertura de `PARAM_NAMES` (allowlist hoje **vazia** — modelo novo sem nome de parâmetro reprova), **drift dos índices** e a normalização do check de frescor (`TestH_DadosEmSincronia`: ignora o `time`, equipara CRLF/LF e não mascara mudança de parâmetro).
 
 Rodam no CI a cada push (`.github/workflows/ci.yml`), que também roda o **pipeline de dados inteiro** e o `check_data_freshness.py` (job `dados`) e faz `tsc --noEmit` nos agentes.
 

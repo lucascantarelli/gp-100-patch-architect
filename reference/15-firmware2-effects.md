@@ -136,7 +136,7 @@ CAB params: p0=Level (0–99), p1=High Cut-ish (50–99 observados), demais slot
 | `Sine Trem` | — | 67108902 | 87/0.5/59 |
 
 ## DLY (10 modelos reais)
-| Nome real | manual V1.8 | code | params (p0=Fdbk %, p1=Delay ms, p2=High Cut…) |
+| Nome real | manual V1.8 | code | params (p0=**Mix** · p1=**Time** ms · p2=**Fdbk**) |
 |---|---|---|---|
 | `Sweet` | Dly Mono | 184549389 | 25/400/20 (56 usos — padrão) |
 | `M-Echo` | Analog | 184549378 | 13/258/26 |
@@ -150,17 +150,17 @@ CAB params: p0=Level (0–99), p1=High Cut-ish (50–99 observados), demais slot
 | `Vin-Rack` | — (vinyl rack, tempos múltiplos) | 184549396 | 15/15/500/50/30 |
 
 ## RVB (9 modelos reais)
-| Nome real | manual V1.8 | code | params (p0=Decay?, p1, p2, p3=?) |
+| Nome real | manual V1.8 | code | params (p0=**Mix** — o manual lista Mix primeiro) |
 |---|---|---|---|
-| `Room` | Room | 201326592 | 20/19/31/0 |
-| `Hall` | Hall | 201326593 | 50/50/50/1 (39 usos) |
-| `Church` | Church | 201326594 | 25/57/50/0 |
-| `Plate` | Plate | 201326595 | 30/40/50/1 (19 usos) |
-| `Spring` | Spring | 201326596 | 40/99/50/0 |
-| `Clear Sky` | Air | 201326597 | 39/87/0/0 |
-| `N-Star` | — | 201326598 | 30/80/0/0 |
-| `Deep Sea` | — | 201326599 | 31/49/0/0 |
-| `Mod Verb` | — (modulado) | 201326600 | 30/50/85/0 |
+| `Room` | Room | 201326592 | Mix 20 · Pre Delay 19 · Decay 31 · Trail 0 |
+| `Hall` | Hall | 201326593 | Mix 50 · Pre Delay 50 · Decay 50 · Trail 1 (39 usos) |
+| `Church` | Church | 201326594 | Mix 25 · Pre Delay 57 · Decay 50 · Trail 0 |
+| `Plate` | Plate | 201326595 | Mix 30 · Decay 40 · H-Damp 50 · Trail 1 (19 usos) |
+| `Spring` | Spring | 201326596 | Mix 40 · Decay 99 · [interno] · Trail 0 |
+| `Clear Sky` | Air | 201326597 | Mix 39 · Decay 87 · Trail 0 |
+| `N-Star` | — | 201326598 | Mix 30 · Decay 80 · Trail 0 |
+| `Deep Sea` | — | 201326599 | Mix 31 · Decay 49 · Trail 0 |
+| `Mod Verb` | — (modulado) | 201326600 | Mix 30 · Pre Delay 50 · Decay 85 · Lo/Hi End · Trail |
 
 ## Estrutura do .prst (para geração)
 ```xml
@@ -176,7 +176,28 @@ CAB params: p0=Level (0–99), p1=High Cut-ish (50–99 observados), demais slot
 - `ppVolume` 0–99 · `ppBPM` · `ppType`/`ppTypeName` do mapa de gênero · `ppIRNum` = 168820736+slot (0–19) OU um número de IR de fábrica (ex.: 27) · `effectState` "1"=ON "0"=OFF · `x` = posição na cadeia 0–8 · CRLF line endings.
 - **Importante**: ppIRCRC dos slots de IR deve ser copiado do export de fábrica (o editor recalcula ao carregar IRs novas).
 
+## Nomes OFICIAIS de parâmetro (manual oficial do firmware V2.0)
+Extraídos das tabelas *Parameters & Ranges* do **manual oficial da revisão V2.0** (valeton.net, `gp-100_online-manual_en_firmware-v2-0` — a revisão que casa com os nomes deste catálogo). São estes os nomes que os agentes usam no `patch.md`; nunca invente um nome.
+
+| Modelo | Parâmetros (na ordem documentada) | Observação |
+|---|---|---|
+| `Saturate` (PRE) | Gain · Mix · Output · H-Cut | saturação de fita "vintage" |
+| `Red Haze` (DST) | Fuzz (0~100) · VOL (0~100) | Fuzz Face (Dallas-Arbiter) |
+| `T-Echo` (DLY) | Mix · Time (20ms–4000ms) · Fdbk | ver EXCEÇÃO abaixo |
+| família DLY | Mix · Time · Fdbk (+ Sync/Trail como switches) | 999 Echo, M-Echo, P-Echo, Slapbk, Sweet, T-Echo |
+| `Vibe` (MOD) | Depth · Rate · Sync | Uni-Vibe (Voodoo Lab Micro Vibe) |
+| `Knights CL` (AMP) | Gain · VOL · Bass · Middle · Treble | Grindrod Pendragon PG20C |
+| `Flagman` (AMP) | Gain · PRES · Master · Bass · Middle · Treble | Brown Eye BE |
+| `Room`/`Hall`/`Church` (RVB) | Mix · Pre Delay (0–100ms) · Decay · Trail | — |
+| `Plate` (RVB) | Mix · Decay · H-Damp · Trail | — |
+| `Spring`/`N-Star`/`Deep Sea`/`Clear Sky` (RVB) | Mix · Decay · Trail | — |
+
+**REGRA DOS SLOTS INTERNOS** — o array `params_0..14` de um modelo segue a ordem documentada e depois traz **1+ slot interno** que o editor não expõe (fica ≈50 nos presets de fábrica; ex.: `Flagman` tem 7 slots para 6 knobs, `Knights CL` 6 para 5, `Vibe` 4 para 3, `Red Haze` 3 para 2, `Spring` 4 para 2 knobs + Trail). Slot interno **não é parâmetro do usuário**: os defs não o setam (fica no default do template) e a doc não o mostra. Nunca rotule um slot interno.
+
+**EXCEÇÃO DOCUMENTADA — `T-Echo`**: o manual lista Mix, Fdbk, Time, mas os valores de fábrica provam que **`params_1` é o Time** (415 ms; Fdbk é 0~99 e não comporta 415). A família de delays documenta e usa Mix, Time, Fdbk, logo a linha do T-Echo está com os dois últimos rótulos trocados: `p0`=Mix · `p1`=Time · `p2`=Fdbk. (`Rev Echo` e `Vin-Rack` têm layout próprio, com Time em `p2`.)
+
 ## Regra de precedência
-1. **Export de fábrica** (drenado em `tools/factory-catalog.json` + este documento) — nomes/codes/estrutura
-2. `manual.pdf` V1.8 — descrições e "based on"
-3. `reference/01–09` — estratégia, ranges humanos e receitas (ajustar nomes para os reais conforme esta tabela)
+0. **Manual oficial do firmware V2.0** (valeton.net) — nomes/ranges de parâmetro desta seção
+1. **Export de fábrica** (drenado em `tools/factory-catalog.json` + este documento) — nomes/codes/estrutura e a ordem REAL dos slots
+2. `manual.pdf` do usuário (transcrito em `reference/01–09`) — descrições, "based on" e receitas por estilo
+3. `reference/01–09` — estratégia e ranges humanos (ajustar nomes para os reais conforme esta tabela)

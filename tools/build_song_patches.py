@@ -43,19 +43,35 @@ SONG_FOLDER = {s['id']: s.get('pasta') or s['song'] for s in DEFS['songs']}
 IR_LOCAL_POR_CAB = {cab: (v['captura'], v['slot']) for cab, v in DEFS['ir_local'].items()}
 
 # Nome OFICIAL de cada params_i, por (módulo, modelo).
-# Só entram nomes com origem citável: reference/03-amp.md (Flagman, Knights CL),
-# convenção do módulo (todo CAB = Level/High Cut; ver os 6 CABs da tabela) e
-# reference/01..09 (manual V1.8). Slot sem nome oficial fica de fora da lista e
-# a doc o imprime como `pN` + nota de rodapé (nunca um nome inventado).
+# Só entram nomes com origem citável: o **manual oficial do firmware V2.0**
+# (valeton.net — tabelas "Parameters & Ranges"; é a revisão que casa com o
+# aparelho e com os nomes do catálogo em reference/15), reference/15,
+# reference/03/06 (transcrição do manual do usuário) e a convenção do módulo
+# (todo CAB = Level/High Cut). Nunca um nome inventado.
+#
+# REGRA DOS SLOTS (medida nos valores de fábrica): o array params_0..14 de um
+# modelo segue a ORDEM documentada no manual, seguido de 1+ slot INTERNO que o
+# editor não expõe (fica ≈50 nos presets de fábrica; ex.: Flagman 7 slots para 6
+# knobs, Knights CL 6 para 5, Vibe 4 para 3, Red Haze 3 para 2). Slot interno não
+# é parâmetro do usuário: os defs NÃO o setam (fica no default do template) — e
+# por isso não existe nome para ele. Nunca rotule um slot interno.
+#
+# Exceção DOCUMENTADA — `T-Echo`: o manual lista Mix, Fdbk, Time, mas os valores
+# de fábrica provam que params_1 é o Time (415 ms; Fdbk é 0~99 e não comporta
+# 415 ms). Toda a família de delays documenta e usa Mix, Time, Fdbk (Sweet,
+# P-Echo, M-Echo, 999 Echo, Slapbk), logo a linha do T-Echo trocou a ordem dos
+# dois últimos rótulos: aqui p0=Mix · p1=Time · p2=Fdbk.
 PARAM_NAMES = {
     ('PRE', 'COMP'): ['Sens', 'Attack', 'Sustain', 'Level'],
     ('PRE', 'COMP4'): ['Thresh', 'Attack', 'Tone', 'Level'],
     ('PRE', 'Boost'): ['Ganho', 'Boost'],
     ('PRE', 'AC Sim'): ['Body', 'Top', 'Vol', 'Mode'],
+    ('PRE', 'Saturate'): ['Gain', 'Mix', 'Output', 'H-Cut'],
     ('DST', 'Blues OD'): ['Gain', 'Tone', 'Level'],
     ('DST', 'Green OD'): ['Gain', 'Tone', 'Level'],
     ('DST', 'La Charger'): ['Gain', 'Tone', 'Volume'],
     ('DST', 'Super OD'): ['Drive', 'Tone', 'Level'],
+    ('DST', 'Red Haze'): ['Fuzz', 'VOL'],
     ('AMP', 'Dark Twin'): ['Vol', 'Output', 'Bass', 'Middle', 'Treble', 'Bright'],
     ('AMP', 'Foxy 30TB'): ['Vol', 'Cut', 'Master', 'Bass', 'Treble', 'Char'],
     ('AMP', 'Flagman'): ['Gain', 'PRSE', 'Master', 'Bass', 'Middle', 'Treble'],
@@ -73,13 +89,17 @@ PARAM_NAMES = {
     ('CAB', 'D'): ['Level', 'High Cut'],
     ('EQ', 'EQ 1'): ['Low', 'Mid', 'High', 'Mid Freq', 'Presença', 'Level'],
     ('MOD', 'A-Chorus'): ['Rate', 'Depth', 'Mix', 'Level'],
-    ('MOD', 'Vibe'): ['Intensidade', 'Velocidade', 'p2', 'Mix'],
-    ('DLY', 'Sweet'): ['Fdbk', 'Delay ms', 'High Cut'],
-    ('DLY', 'Slapbk'): ['Fdbk', 'Delay ms', 'High Cut'],
-    ('RVB', 'Spring'): ['Decay*', 'Pre-D*', 'Damp*', 'Mix*'],
-    ('RVB', 'Room'): ['Decay*', 'Pre-D*', 'Damp*', 'Mix*'],
-    ('RVB', 'Plate'): ['Decay*', 'Pre-D*', 'Damp*', 'Mix*'],
-    ('RVB', 'Hall'): ['Decay*', 'Pre-D*', 'Damp*', 'Mix*'],
+    ('MOD', 'Vibe'): ['Intensidade', 'Velocidade', 'Sync'],
+    ('DLY', 'Sweet'): ['Mix', 'Time', 'Fdbk'],
+    ('DLY', 'Slapbk'): ['Mix', 'Time', 'Fdbk'],
+    ('DLY', 'T-Echo'): ['Mix', 'Time', 'Fdbk'],
+    # RVB: o manual (fw V2.0) lista Mix PRIMEIRO e cada modelo tem seu conjunto —
+    # Room/Hall/Church = Mix · Pre Delay · Decay · Trail; Plate = Mix · Decay ·
+    # H-Damp · Trail; Spring/N-Star/Deep Sea = Mix · Decay · Trail (+ slot interno).
+    ('RVB', 'Room'): ['Mix', 'Pre Delay', 'Decay', 'Trail'],
+    ('RVB', 'Hall'): ['Mix', 'Pre Delay', 'Decay', 'Trail'],
+    ('RVB', 'Plate'): ['Mix', 'Decay', 'H-Damp', 'Trail'],
+    ('RVB', 'Spring'): ['Mix', 'Decay'],       # Trail fica no default (Off); slot 2 é interno
 }
 CHAIN = ['PRE', 'DST', 'AMP', 'NR', 'CAB', 'EQ', 'MOD', 'DLY', 'RVB']
 DOT, CIRCLE = '**🔴**', '~~⚪~~'
@@ -246,13 +266,20 @@ def fmt_val(v):
 
 
 def disp(label, v):
-    """Exibição amigável de switches (Bright, Char, Mode)."""
+    """Exibição amigável de switches (Bright, Char, Mode, Sync) e unidades (Time)."""
     if label == 'Bright' and str(v) in ('0', '1'):
         return 'Off' if str(v) == '0' else 'On'
     if label == 'Char' and str(v) in ('0', '1'):
         return 'Cool' if str(v) == '0' else 'Hot'
     if label == 'Mode' and str(v) in ('0', '1', '2', '3'):
         return ('STD', 'Jumbo', 'ENH', 'Piezo')[int(str(v))]
+    if label in ('Sync', 'Trail') and str(v) in ('0', '1'):
+        return 'Off' if str(v) == '0' else 'On'
+    if label in ('Time', 'Pre Delay'):             # faixas do manual: 20ms-4000ms / 0ms-100ms
+        try:
+            return f'{int(float(str(v)))} ms'
+        except ValueError:
+            return fmt_val(v)
     return fmt_val(v)
 
 

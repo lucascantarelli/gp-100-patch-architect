@@ -168,8 +168,8 @@ _Legenda: **🔴** ligado · ⚪ desligado — a ordem é o caminho do sinal._
 |---|---|---|
 | AMP | Flagman | Gain: 25 · PRSE: 50 · Master: 55 · Bass: 50 · Middle: 50 · Treble: 55 |
 | CAB | UK-LD 4x12 | Level: 78 · High Cut: 62 |
-| DLY | T-Echo | p0: 40 · p1: 590 · p2: 30 |
-| RVB | Hall | Decay*: 55 · Pre-D*: 50 · Damp*: 50 · Mix*: 1 |
+| DLY | T-Echo | Mix: 40 · Time: 590 ms · Fdbk: 30 |
+| RVB | Hall | Mix: 55 · Pre Delay: 50 ms · Decay: 50 · Trail: On |
 
 ### Mapeamento rig real → GP-100
 
@@ -202,20 +202,18 @@ _Legenda: **🔴** ligado · ⚪ desligado — a ordem é o caminho do sinal._
 
 | Parâmetro | Valor |
 |---|---|
-| p0 | 40 |
-| p1 | 590 |
-| p2 | 30 |
+| Mix | 40 |
+| Time | 590 ms |
+| Fdbk | 30 |
 
 ### RVB — Hall
 
 | Parâmetro | Valor |
 |---|---|
-| Decay* | 55 |
-| Pre-D* | 50 |
-| Damp* | 50 |
-| Mix* | 1 |
-
-> ℹ️ **`pN`** = slot de parâmetro deste modelo **sem nome oficial documentado** (o manual V1.8 só cobre os modelos antigos) — ajuste por orelha, comparando com o bypass; os demais nomes seguem o manual da GP-100.
+| Mix | 55 |
+| Pre Delay | 50 ms |
+| Decay | 50 |
+| Trail | On |
 
 
 ### Globais da sessão
@@ -239,7 +237,7 @@ _Legenda: **🔴** ligado · ⚪ desligado — a ordem é o caminho do sinal._
 2. **Digitar no painel** (receita na ordem dos menus):
 
 ```
-**AMP** `Flagman` (Gain 25 / PRSE 50 / Master 55 / Bass 50 / Middle 50 / Treble 55) → **CAB** `UK-LD 4x12` (Level 78 / High Cut 62) → **DLY** `T-Echo` (p0 40 / p1 590 / p2 30) → **RVB** `Hall` (ajuste fino no painel — seção 3 📡)
+**AMP** `Flagman` (Gain 25 / PRSE 50 / Master 55 / Bass 50 / Middle 50 / Treble 55) → **CAB** `UK-LD 4x12` (Level 78 / High Cut 62) → **DLY** `T-Echo` (Mix 40 / Time 590 ms / Fdbk 30) → **RVB** `Hall` (ajuste fino no painel — seção 3 📡)
 ```
 
 3. **SAVE** no slot → renomeie para `ONR01AM`.

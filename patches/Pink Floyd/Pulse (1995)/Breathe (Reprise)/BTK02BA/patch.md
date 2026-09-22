@@ -166,11 +166,11 @@ _Legenda: **🔴** ligado · ⚪ desligado — a ordem é o caminho do sinal._
 
 | Módulo | Modelo | Valores |
 |---|---|---|
-| PRE | Saturate | p0: 30 · p1: 55 · p2: 60 |
+| PRE | Saturate | Gain: 30 · Mix: 55 · Output: 60 |
 | AMP | Flagman | Gain: 44 · PRSE: 55 · Master: 62 · Bass: 50 · Middle: 55 · Treble: 58 |
 | NR | Gate 1 | Thr: 26 |
 | CAB | UK-LD 4x12 | Level: 78 · High Cut: 62 |
-| RVB | Plate | Decay*: 30 · Pre-D*: 40 · Damp*: 50 · Mix*: 1 |
+| RVB | Plate | Mix: 30 · Decay: 40 · H-Damp: 50 · Trail: On |
 
 ### Mapeamento rig real → GP-100
 
@@ -185,9 +185,9 @@ _Legenda: **🔴** ligado · ⚪ desligado — a ordem é o caminho do sinal._
 
 | Parâmetro | Valor |
 |---|---|
-| p0 | 30 |
-| p1 | 55 |
-| p2 | 60 |
+| Gain | 30 |
+| Mix | 55 |
+| Output | 60 |
 
 ### AMP — Flagman
 
@@ -217,12 +217,10 @@ _Legenda: **🔴** ligado · ⚪ desligado — a ordem é o caminho do sinal._
 
 | Parâmetro | Valor |
 |---|---|
-| Decay* | 30 |
-| Pre-D* | 40 |
-| Damp* | 50 |
-| Mix* | 1 |
-
-> ℹ️ **`pN`** = slot de parâmetro deste modelo **sem nome oficial documentado** (o manual V1.8 só cobre os modelos antigos) — ajuste por orelha, comparando com o bypass; os demais nomes seguem o manual da GP-100.
+| Mix | 30 |
+| Decay | 40 |
+| H-Damp | 50 |
+| Trail | On |
 
 
 ### Globais da sessão
@@ -246,7 +244,7 @@ _Legenda: **🔴** ligado · ⚪ desligado — a ordem é o caminho do sinal._
 2. **Digitar no painel** (receita na ordem dos menus):
 
 ```
-**PRE** `Saturate` (p0 30 / p1 55 / p2 60) → **AMP** `Flagman` (Gain 44 / PRSE 55 / Master 62 / Bass 50 / Middle 55 / Treble 58) → **NR** `Gate 1` (Thr 26) → **CAB** `UK-LD 4x12` (Level 78 / High Cut 62) → **RVB** `Plate` (ajuste fino no painel — seção 3 📡) → SOBRESSALENTE **DLY** `Sweet` (template de fábrica — ajuste por orelha ao ligar)
+**PRE** `Saturate` (Gain 30 / Mix 55 / Output 60) → **AMP** `Flagman` (Gain 44 / PRSE 55 / Master 62 / Bass 50 / Middle 55 / Treble 58) → **NR** `Gate 1` (Thr 26) → **CAB** `UK-LD 4x12` (Level 78 / High Cut 62) → **RVB** `Plate` (ajuste fino no painel — seção 3 📡) → SOBRESSALENTE **DLY** `Sweet` (template de fábrica — ajuste por orelha ao ligar)
 ```
 
 3. **SAVE** no slot → renomeie para `BTK02BA`.

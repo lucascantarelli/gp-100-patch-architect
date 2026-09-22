@@ -155,15 +155,16 @@ A suíte cobre as invariantes que **já quebraram uma vez** neste projeto:
 |---|---|
 | `TestB_FonteUnica_IR` | mapa do álbum e seção 📡 do `patch.md` discordando sobre a IR (bug dos 38 patches do Pulse) |
 | `TestC_Prst` | `.prst` fora do formato **single fw 2.1** (`ppIRInfo`, ordem dos módulos, `x`, 15 params, `ppName` ≠ pasta) |
-| `TestD_Documentacao` | doc sem uma das 9 seções, HTML cru no Markdown ou rótulo placeholder `(pN)` |
+| `TestD_Documentacao` | doc sem uma das 9 seções, HTML cru no Markdown ou rótulo placeholder (`(pN)`/`pN` solto em ajustes e tabelas) |
 | `TestE_Momentos` | momento de toggle inválido (módulo inexistente, estado já ativo, ou tentativa de desligar AMP/CAB) |
-| `TestF_ParamNames` | modelo ligado em patch **sem tabela de nomes** fora da allowlist (hoje: `Saturate`, `Red Haze`, `T-Echo`) ou tabela com placeholder |
+| `TestF_ParamNames` | modelo ligado em patch **sem tabela de nomes** fora da allowlist (hoje vazia: o manual oficial do fw V2.0 deu nome a `Saturate`, `Red Haze` e `T-Echo`) ou tabela com placeholder |
 | `TestG_Indices` | índice defasado (esqueceu de rodar `gen_indexes.py`) ou numeração de slots divergente entre os dois scripts |
 | `TestH_DadosEmSincronia` | normalização do check de frescor: `time` do `.prst` ignorado, CRLF≡LF e mudança de parâmetro **não** mascarada; e toda saída do pipeline coberta pelo check |
 
 ## 🎯 Regras de ouro
 
 - Precedência do catálogo **fw 2.0/2.1** (nomes reais: `Blues OD`, `Green OD`, `Dark Twin`, `DarkTW 2x12`, `Spring`...) sobre o manual impresso V1.8 — ver `reference/15-firmware2-effects.md`.
+- **Nomes de parâmetro 100% oficiais** (manual do firmware V2.0): `Saturate` = Gain/Mix/Output/H-Cut · `Red Haze` = Fuzz/VOL · família DLY = **Mix/Time/Fdbk** · RVB começa por **Mix** · `Vibe` = Depth/Rate/Sync. Zero rótulo `pN` na documentação: os slots **internos** do firmware (que o editor não expõe) não são setados nem rotulados — tabela completa e a exceção do `T-Echo` em `reference/15-firmware2-effects.md`.
 - **Patches por música, nunca compartilhados**; camadas separadas quando o timbre muda de verdade — e **momentos de toggle** documentados: a GP-100 liga/desliga módulos em tempo real (painel ou modo STOMP), então um patch de base com DLY sobressalente vira solo ao ligar o eco, sem trocar de patch.
 - NR obrigatório com ganho ≥ 55; um efeito espacial dominante por patch.
 - Perfis por captador da Strat single coil (bridge/neck/posições 2–4).
@@ -174,6 +175,8 @@ A suíte cobre as invariantes que **já quebraram uma vez** neste projeto:
 - ✅ `.prst` comparados estruturalmente com o export **single** que importou com sucesso no aparelho (7 checks), formato firmware 2.1 — o formato está registrado no gerador.
 - ✅ 62 patches em biblioteca (Abbey Road, Apostrophe (') e Pulse — 42 músicas), XMLs validados, 0 HTML cru e slots U01–U62 mapeados; pipeline **idempotente** (regenerar não muda parâmetros — só o timestamp `preset_info/@time`, igual ao export real).
 - ✅ Seções obrigatórias presentes nos 62 docs (guitarra → ajustes finos → IR → modos de atuação → objetivo → dossiê → parâmetros → carga → evite) e 32 momentos de toggle validados contra o spec.
+- ✅ **Zero rótulo `pN` nos 62 docs**: os 40 `patch.md` do Pulse e as 28 menções em textos de ajustes/evite passaram a usar os nomes do manual V2.0 (rótulos acima); os slots **internos** do firmware (que o editor não expõe) não são setados nem rotulados — ficam no default de fábrica.
+- ✅ **Dossiê de rig de Cheap Thrills** (Big Brother & The Holding Company): duas guitarras em **Gibson SG** (Gurley e Andrew), **Fender Twin Reverb**, Maestro FZ-1 no Gurley — e o achado que fecha o timbre da faixa: **Piece of My Heart sem fuzz** (Gurley limpo, Sam sujo no Twin estourado); o mapa da Janis voltou a ter seção de rig, com fontes.
 - ✅ **CI + suíte de testes** ([`.github/workflows/ci.yml`](.github/workflows/ci.yml)): 25 testes em `tests/` validam defs, formato dos 62 `.prst`, docs, momentos, cobertura de nomes de parâmetro e drift dos índices — stdlib pura (nenhuma dependência para instalar). O job **`dados`** roda o pipeline completo a cada push/PR e reprova se algum artefato gerado ficar fora do commit (só o timestamp `preset_info/@time` é ignorado — o pipeline é reprodutível em 194 artefatos).
 - ✅ Typecheck `tsc --noEmit` limpo nos 17 agentes.
 - ✅ Manual V1.8 transcrito página a página para `reference/` + catálogo empírico extraído do export de fábrica (`tools/factory-catalog.json`, 99 presets · 117 modelos).

@@ -167,7 +167,7 @@ _Legenda: **🔴** ligado · ⚪ desligado — a ordem é o caminho do sinal._
 | NR | Gate 1 | Thr: 22 |
 | CAB | DarkTW 2x12 | Level: 75 · High Cut: 50 |
 | EQ | EQ 1 | Low: 0 · Mid: 0 · High: 0 · Level: 50 |
-| RVB | Plate | Decay*: 30 · Pre-D*: 40 · Damp*: 45 · Mix*: 1 |
+| RVB | Plate | Mix: 30 · Decay: 40 · H-Damp: 45 · Trail: On |
 
 ### Mapeamento rig real → GP-100
 
@@ -216,10 +216,10 @@ _Legenda: **🔴** ligado · ⚪ desligado — a ordem é o caminho do sinal._
 
 | Parâmetro | Valor |
 |---|---|
-| Decay* | 30 |
-| Pre-D* | 40 |
-| Damp* | 45 |
-| Mix* | 1 |
+| Mix | 30 |
+| Decay | 40 |
+| H-Damp | 45 |
+| Trail | On |
 
 
 ### Globais da sessão

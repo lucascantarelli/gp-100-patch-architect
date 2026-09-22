@@ -73,8 +73,8 @@ AMP_FLAG_CLEAN = mod('Flagman', True, 35, 55, 62, 50, 55, 58)
 AMP_FLAG_CRUNCH = mod('Flagman', True, 44, 55, 62, 50, 55, 58)
 AMP_FLAG_LEAD = mod('Flagman', True, 50, 58, 64, 50, 55, 58)
 AMP_FLAG_FUZZ = mod('Flagman', True, 40, 50, 58, 50, 52, 56)
-AMP_KN_CLEAN = mod('Knights CL', True, 38, 62, 62, 48, 52, 58)
-AMP_KN_LEAD = mod('Knights CL', True, 42, 62, 62, 48, 52, 58)
+AMP_KN_CLEAN = mod('Knights CL', True, 38, 62, 62, 48, 52)
+AMP_KN_LEAD = mod('Knights CL', True, 42, 62, 62, 48, 52)
 CAB_UKLD = mod('UK-LD 4x12', True, 78, 62)
 NR_26 = mod('Gate 1', True, 26)
 NR_30 = mod('Gate 1', True, 30)
@@ -238,11 +238,11 @@ PULSE_SONGS[-1]['patches'].append(P('Solo 1 (TD)', 'SO', 'KTB01SO', '🗣️',
 
 PULSE_SONGS[-1]['patches'].append(P('Solo 2 (Fuzz)', 'FZ', 'KTB01FZ', '🌪️',
     "Solo psicotélico: Big Muff saturado — o uivo de fuzz do clímax",
-    chain(dst=mod('Red Haze', True, 62, 45, 55), amp=AMP_FLAG_FUZZ, nr=NR_30,
+    chain(dst=mod('Red Haze', True, 62, 45), amp=AMP_FLAG_FUZZ, nr=NR_30,   # Fuzz/VOL
           cab=CAB_UKLD, dly=mod('Sweet', True, 12, 570, 22), rvb=RVB_HALL),
     "2º solo (clímax)", "Rock épico",
     ["fuzz sustentado sem virar ruído", "notas definidas dentro do fuzz"],
-    ["fuzz embolando → DST p1 -5", "sibilo entre frases → NR Thr +2"],
+    ["fuzz embolando → DST VOL -5", "sibilo entre frases → NR Thr +2"],
     ["Reduzir o ganho do amp: o fuzz já satura"],
     IR_UKLD,
     "Posição 2 (middle+bridge)", "middle+bridge", "10", "8",
@@ -449,11 +449,11 @@ PULSE_SONGS.append(song('CLR01', 'Any Colour You Like', 120,
     [ref("Fuzz + delays espaciais; jam improvisada", "Pulse (1995) · gilmourish.com"), REF_GIL],
     [P('Jam Espacial', 'JM', 'CLR01JM', '🎨',
        "Jam espacial: fuzz + delay longo — a guitarra conversa com os sintetizadores",
-       chain(dst=mod('Red Haze', True, 55, 50, 55), amp=AMP_FLAG_FUZZ, nr=NR_30,
+       chain(dst=mod('Red Haze', True, 55, 50), amp=AMP_FLAG_FUZZ, nr=NR_30,   # Fuzz/VOL
              cab=CAB_UKLD, dly=mod('Sweet', True, 35, 570, 28), rvb=RVB_HALL_LONG),
        "jam improvisada", "Instrumental espacial",
        ["fuzz sustentado", "delay criando padrões"],
-       ["fuzz embolando → DST p1 -5", "delay embolando → Fdbk -8"],
+       ["fuzz embolando → DST VOL -5", "delay embolando → Fdbk -8"],
        ["Tocar de forma corrida: a jam pede espaço e improviso"],
        IR_UKLD,
        "Posição 2 (middle+bridge)", "middle+bridge", "10", "8",
@@ -615,11 +615,11 @@ PULSE_SONGS.append(song('SIA01', 'Sorrow', 116,
     [ref("Intro/feitiço: Big Muff + intervalos largos; solo final pesado", "Pulse (1995) · gilmourish.com"), REF_GIL],
     [P('Intro (Fuzz)', 'FZ', 'SIA01FZ', '⚡',
        "Intro gigante: Big Muff em acordes com intervalos largos — o feitiço que abre o show",
-       chain(dst=mod('Red Haze', True, 58, 48, 56), amp=AMP_FLAG_FUZZ, nr=NR_30,
+       chain(dst=mod('Red Haze', True, 58, 48), amp=AMP_FLAG_FUZZ, nr=NR_30,   # Fuzz/VOL
              cab=CAB_UKLD, rvb=RVB_HALL),
        "intro e feitiço", "Épico 116 BPM",
        ["acordes de fuzz gigantes", "sustain sem fim"],
-       ["fuzz embolando → DST p1 -5", "sibilo → NR Thr +2"],
+       ["fuzz embolando → DST VOL -5", "sibilo → NR Thr +2"],
        ["Reduzir o ganho do amp: o fuzz já satura"],
        IR_UKLD,
        "Posição 2 (middle+bridge)", "middle+bridge", "10", "8",
@@ -631,11 +631,11 @@ PULSE_SONGS.append(song('SIA01', 'Sorrow', 116,
 
 PULSE_SONGS[-1]['patches'].append(P('Solo', 'SO', 'SIA01SO', '⛈️',
     "Solo final: Tube Driver + fuzz no mesmo patch — a tempestade do fechamento",
-    chain(dst=mod('Red Haze', True, 45, 52, 58), amp=AMP_FLAG_LEAD, nr=NR_30,
+    chain(dst=mod('Red Haze', True, 45, 52), amp=AMP_FLAG_LEAD, nr=NR_30,   # Fuzz/VOL
           cab=CAB_UKLD, dly=DLY_NOTA_570, rvb=RVB_HALL),
     "solo final", "Épico 116 BPM",
     ["peso e sustain", "frases largas com vibrato"],
-    ["pesado demais → DST p0 -5", "afogado → RVB mix -5"],
+    ["pesado demais → DST Fuzz -5", "afogado → RVB Mix -5"],
     ["Tocar de forma corrida: o solo é épico e pesado"],
     IR_UKLD,
     "Posição 2 (middle+bridge)", "middle+bridge", "10", "9",

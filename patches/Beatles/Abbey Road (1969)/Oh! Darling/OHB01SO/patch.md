@@ -38,7 +38,7 @@ Só mexa na pedaleira **depois** de acertar a guitarra — ela resolve 80% do so
 
 | Se você ouvir… | Faça isto |
 |---|---|
-| mais sustain | Boost p0 +5 |
+| mais sustain | Boost Ganho +5 |
 | fizz | CAB High Cut 55 |
 
 ### Protocolo universal (vale para todos os patches)
@@ -169,8 +169,8 @@ _Legenda: **🔴** ligado · ⚪ desligado — a ordem é o caminho do sinal._
 | NR | Gate 1 | Thr: 30 |
 | CAB | Foxy 1x12 | Level: 75 · High Cut: 50 |
 | EQ | EQ 1 | Low: 0 · Mid: 3 · High: 0 · Level: 50 |
-| DLY | Slapbk | Fdbk: 11 · Delay ms: 160 · High Cut: 20 |
-| RVB | Room | Decay*: 20 · Pre-D*: 19 · Damp*: 31 · Mix*: 0 |
+| DLY | Slapbk | Mix: 11 · Time: 160 ms · Fdbk: 20 |
+| RVB | Room | Mix: 20 · Pre Delay: 19 ms · Decay: 31 · Trail: Off |
 
 ### Mapeamento rig real → GP-100
 
@@ -236,18 +236,18 @@ _Legenda: **🔴** ligado · ⚪ desligado — a ordem é o caminho do sinal._
 
 | Parâmetro | Valor |
 |---|---|
-| Fdbk | 11 |
-| Delay ms | 160 |
-| High Cut | 20 |
+| Mix | 11 |
+| Time | 160 ms |
+| Fdbk | 20 |
 
 ### RVB — Room
 
 | Parâmetro | Valor |
 |---|---|
-| Decay* | 20 |
-| Pre-D* | 19 |
-| Damp* | 31 |
-| Mix* | 0 |
+| Mix | 20 |
+| Pre Delay | 19 ms |
+| Decay | 31 |
+| Trail | Off |
 
 
 ### Globais da sessão
@@ -271,7 +271,7 @@ _Legenda: **🔴** ligado · ⚪ desligado — a ordem é o caminho do sinal._
 2. **Digitar no painel** (receita na ordem dos menus):
 
 ```
-**PRE** `Boost` (Ganho 25 / Boost 1) → **DST** `Green OD` (Gain 52 / Tone 58 / Level 65) → **AMP** `Foxy 30TB` (Vol 72 / Cut 35 / Master 65 / Bass 50 / Treble 55) → **NR** `Gate 1` (Thr 30) → **CAB** `Foxy 1x12` (Level 75 / High Cut 50) → **EQ** `EQ 1` (Low 0 / Mid 3 / High 0 / Level 50) → **DLY** `Slapbk` (Fdbk 11 / Delay ms 160 / High Cut 20) → **RVB** `Room` (ajuste fino no painel — seção 3 📡)
+**PRE** `Boost` (Ganho 25 / Boost 1) → **DST** `Green OD` (Gain 52 / Tone 58 / Level 65) → **AMP** `Foxy 30TB` (Vol 72 / Cut 35 / Master 65 / Bass 50 / Treble 55) → **NR** `Gate 1` (Thr 30) → **CAB** `Foxy 1x12` (Level 75 / High Cut 50) → **EQ** `EQ 1` (Low 0 / Mid 3 / High 0 / Level 50) → **DLY** `Slapbk` (Mix 11 / Time 160 ms / Fdbk 20) → **RVB** `Room` (ajuste fino no painel — seção 3 📡)
 ```
 
 3. **SAVE** no slot → renomeie para `OHB01SO`.

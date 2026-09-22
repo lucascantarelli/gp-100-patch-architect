@@ -38,7 +38,7 @@ Só mexa na pedaleira **depois** de acertar a guitarra — ela resolve 80% do so
 
 | Se você ouvir… | Faça isto |
 |---|---|
-| fuzz embolando | DST p1 -5 |
+| fuzz embolando | DST VOL -5 |
 | sibilo | NR Thr +2 |
 
 ### Protocolo universal (vale para todos os patches)
@@ -167,11 +167,11 @@ _Legenda: **🔴** ligado · ⚪ desligado — a ordem é o caminho do sinal._
 
 | Módulo | Modelo | Valores |
 |---|---|---|
-| DST | Red Haze | p0: 58 · p1: 48 · p2: 56 |
+| DST | Red Haze | Fuzz: 58 · VOL: 48 |
 | AMP | Flagman | Gain: 40 · PRSE: 50 · Master: 58 · Bass: 50 · Middle: 52 · Treble: 56 |
 | NR | Gate 1 | Thr: 30 |
 | CAB | UK-LD 4x12 | Level: 78 · High Cut: 62 |
-| RVB | Hall | Decay*: 38 · Pre-D*: 45 · Damp*: 50 · Mix*: 1 |
+| RVB | Hall | Mix: 38 · Pre Delay: 45 ms · Decay: 50 · Trail: On |
 
 ### Mapeamento rig real → GP-100
 
@@ -187,9 +187,8 @@ _Legenda: **🔴** ligado · ⚪ desligado — a ordem é o caminho do sinal._
 
 | Parâmetro | Valor |
 |---|---|
-| p0 | 58 |
-| p1 | 48 |
-| p2 | 56 |
+| Fuzz | 58 |
+| VOL | 48 |
 
 ### AMP — Flagman
 
@@ -219,12 +218,10 @@ _Legenda: **🔴** ligado · ⚪ desligado — a ordem é o caminho do sinal._
 
 | Parâmetro | Valor |
 |---|---|
-| Decay* | 38 |
-| Pre-D* | 45 |
-| Damp* | 50 |
-| Mix* | 1 |
-
-> ℹ️ **`pN`** = slot de parâmetro deste modelo **sem nome oficial documentado** (o manual V1.8 só cobre os modelos antigos) — ajuste por orelha, comparando com o bypass; os demais nomes seguem o manual da GP-100.
+| Mix | 38 |
+| Pre Delay | 45 ms |
+| Decay | 50 |
+| Trail | On |
 
 
 ### Globais da sessão
@@ -248,7 +245,7 @@ _Legenda: **🔴** ligado · ⚪ desligado — a ordem é o caminho do sinal._
 2. **Digitar no painel** (receita na ordem dos menus):
 
 ```
-**DST** `Red Haze` (p0 58 / p1 48 / p2 56) → **AMP** `Flagman` (Gain 40 / PRSE 50 / Master 58 / Bass 50 / Middle 52 / Treble 56) → **NR** `Gate 1` (Thr 30) → **CAB** `UK-LD 4x12` (Level 78 / High Cut 62) → **RVB** `Hall` (ajuste fino no painel — seção 3 📡)
+**DST** `Red Haze` (Fuzz 58 / VOL 48) → **AMP** `Flagman` (Gain 40 / PRSE 50 / Master 58 / Bass 50 / Middle 52 / Treble 56) → **NR** `Gate 1` (Thr 30) → **CAB** `UK-LD 4x12` (Level 78 / High Cut 62) → **RVB** `Hall` (ajuste fino no painel — seção 3 📡)
 ```
 
 3. **SAVE** no slot → renomeie para `SIA01FZ`.

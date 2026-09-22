@@ -163,10 +163,10 @@ _Legenda: **🔴** ligado · ⚪ desligado — a ordem é o caminho do sinal._
 
 | Módulo | Modelo | Valores |
 |---|---|---|
-| AMP | Knights CL | Gain: 38 · Vol: 62 · Bass: 62 · Middle: 48 · Treble: 52 · p5: 58 |
+| AMP | Knights CL | Gain: 38 · Vol: 62 · Bass: 62 · Middle: 48 · Treble: 52 |
 | CAB | UK-LD 4x12 | Level: 78 · High Cut: 62 |
 | MOD | A-Chorus | Rate: 28 · Depth: 0.5 · Mix: 28 |
-| RVB | Hall | Decay*: 55 · Pre-D*: 50 · Damp*: 50 · Mix*: 1 |
+| RVB | Hall | Mix: 55 · Pre Delay: 50 ms · Decay: 50 · Trail: On |
 
 ### Mapeamento rig real → GP-100
 
@@ -186,7 +186,6 @@ _Legenda: **🔴** ligado · ⚪ desligado — a ordem é o caminho do sinal._
 | Bass | 62 |
 | Middle | 48 |
 | Treble | 52 |
-| p5 | 58 |
 
 ### CAB — UK-LD 4x12
 
@@ -207,12 +206,10 @@ _Legenda: **🔴** ligado · ⚪ desligado — a ordem é o caminho do sinal._
 
 | Parâmetro | Valor |
 |---|---|
-| Decay* | 55 |
-| Pre-D* | 50 |
-| Damp* | 50 |
-| Mix* | 1 |
-
-> ℹ️ **`pN`** = slot de parâmetro deste modelo **sem nome oficial documentado** (o manual V1.8 só cobre os modelos antigos) — ajuste por orelha, comparando com o bypass; os demais nomes seguem o manual da GP-100.
+| Mix | 55 |
+| Pre Delay | 50 ms |
+| Decay | 50 |
+| Trail | On |
 
 
 ### Globais da sessão
@@ -236,7 +233,7 @@ _Legenda: **🔴** ligado · ⚪ desligado — a ordem é o caminho do sinal._
 2. **Digitar no painel** (receita na ordem dos menus):
 
 ```
-**AMP** `Knights CL` (Gain 38 / Vol 62 / Bass 62 / Middle 48 / Treble 52 / p5 58) → **CAB** `UK-LD 4x12` (Level 78 / High Cut 62) → **MOD** `A-Chorus` (Rate 28 / Depth 0.5 / Mix 28) → **RVB** `Hall` (ajuste fino no painel — seção 3 📡)
+**AMP** `Knights CL` (Gain 38 / Vol 62 / Bass 62 / Middle 48 / Treble 52) → **CAB** `UK-LD 4x12` (Level 78 / High Cut 62) → **MOD** `A-Chorus` (Rate 28 / Depth 0.5 / Mix 28) → **RVB** `Hall` (ajuste fino no painel — seção 3 📡)
 ```
 
 3. **SAVE** no slot → renomeie para `GGS01AM`.

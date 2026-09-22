@@ -38,7 +38,7 @@ Só mexa na pedaleira **depois** de acertar a guitarra — ela resolve 80% do so
 
 | Se você ouvir… | Faça isto |
 |---|---|
-| sustain curto | Boost p0 +5, AMP Vol +2 |
+| sustain curto | Boost Ganho +5, AMP Vol +2 |
 | embolou | AMP Bass -2 |
 | piou | AMP Treble -2 |
 
@@ -173,7 +173,7 @@ _Legenda: **🔴** ligado · ⚪ desligado — a ordem é o caminho do sinal._
 | NR | Gate 1 | Thr: 30 |
 | CAB | DarkTW 2x12 | Level: 75 · High Cut: 50 |
 | EQ | EQ 1 | Low: -1 · Mid: 3 · High: -1 · Level: 50 |
-| RVB | Spring | Decay*: 40 · Pre-D*: 99 · Damp*: 50 · Mix*: 0 |
+| RVB | Spring | Mix: 40 · Decay: 99 |
 
 ### Mapeamento rig real → GP-100
 
@@ -239,10 +239,8 @@ _Legenda: **🔴** ligado · ⚪ desligado — a ordem é o caminho do sinal._
 
 | Parâmetro | Valor |
 |---|---|
-| Decay* | 40 |
-| Pre-D* | 99 |
-| Damp* | 50 |
-| Mix* | 0 |
+| Mix | 40 |
+| Decay | 99 |
 
 
 ### Globais da sessão

@@ -40,7 +40,7 @@ Só mexa na pedaleira **depois** de acertar a guitarra — ela resolve 80% do so
 |---|---|
 | acorde embolado | EQ Low -2 |
 | hum audível | NR Thr 32 |
-| ataque seco | DST p0 +3 |
+| ataque seco | DST Gain +3 |
 
 ### Protocolo universal (vale para todos os patches)
 
@@ -171,7 +171,7 @@ _Legenda: **🔴** ligado · ⚪ desligado — a ordem é o caminho do sinal._
 | NR | Gate 1 | Thr: 28 |
 | CAB | DarkTW 2x12 | Level: 75 · High Cut: 50 |
 | EQ | EQ 1 | Low: -1 · Mid: 2 · High: -1 · Level: 50 |
-| RVB | Spring | Decay*: 40 · Pre-D*: 99 · Damp*: 50 · Mix*: 0 |
+| RVB | Spring | Mix: 40 · Decay: 99 |
 
 ### Mapeamento rig real → GP-100
 
@@ -229,10 +229,8 @@ _Legenda: **🔴** ligado · ⚪ desligado — a ordem é o caminho do sinal._
 
 | Parâmetro | Valor |
 |---|---|
-| Decay* | 40 |
-| Pre-D* | 99 |
-| Damp* | 50 |
-| Mix* | 0 |
+| Mix | 40 |
+| Decay | 99 |
 
 
 ### Globais da sessão
@@ -265,7 +263,7 @@ _Legenda: **🔴** ligado · ⚪ desligado — a ordem é o caminho do sinal._
 
 ## 🚫 9. Evite com este patch
 
-- ⛔ DST p0 ≥ 60 — vira pedal audível
+- ⛔ DST Gain ≥ 60 — vira pedal audível
 - ⛔ Bright ON
 - ⛔ Reverb Mix > 30
 

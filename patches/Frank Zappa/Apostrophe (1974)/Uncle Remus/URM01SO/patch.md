@@ -39,7 +39,7 @@ Só mexa na pedaleira **depois** de acertar a guitarra — ela resolve 80% do so
 
 | Se você ouvir… | Faça isto |
 |---|---|
-| gordo demais | Super OD p0 -4 |
+| gordo demais | Super OD Drive -4 |
 | sem mordida | EQ Mid +4 |
 | com 'eco' | RVB OFF (a referência é seca) |
 
@@ -173,7 +173,7 @@ _Legenda: **🔴** ligado · ⚪ desligado — a ordem é o caminho do sinal._
 | NR | Gate 1 | Thr: 28 |
 | CAB | UK-GN 2x12 | Level: 75 · High Cut: 55 |
 | EQ | EQ 1 | Low: -1 · Mid: 3 · High: 0 · Level: 50 |
-| RVB | Room | Decay*: 20 · Pre-D*: 19 · Damp*: 31 · Mix*: 0 |
+| RVB | Room | Mix: 20 · Pre Delay: 19 ms · Decay: 31 · Trail: Off |
 
 ### Mapeamento rig real → GP-100
 
@@ -231,10 +231,10 @@ _Legenda: **🔴** ligado · ⚪ desligado — a ordem é o caminho do sinal._
 
 | Parâmetro | Valor |
 |---|---|
-| Decay* | 20 |
-| Pre-D* | 19 |
-| Damp* | 31 |
-| Mix* | 0 |
+| Mix | 20 |
+| Pre Delay | 19 ms |
+| Decay | 31 |
+| Trail | Off |
 
 
 ### Globais da sessão

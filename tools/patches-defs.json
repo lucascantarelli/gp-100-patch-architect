@@ -41,7 +41,7 @@
       "ano": 1968,
       "display": "Cheap Thrills — Piece of My Heart (1968)",
       "pasta": "Janis Joplin/Piece of My Heart (1968)",
-      "rig": ""
+      "rig": "## 📚 Rig real do álbum (fontes)\n\n- **Duas guitarras, dois papéis**: **James Gurley** (o pai da guitarra psicodélica de San Francisco — cerca de 60% dos leads) e **Sam Andrew** (formação clássica, rítmica cravada por trás dele).\n- **Guitarra**: **Gibson SG** nos dois — o instrumento padrão da cena de 67–68, citado nominalmente com Gurley e Andrew; Gurley chegou ao SG depois de perder a Les Paul Junior modificada (com o fuzz embutido dentro da guitarra).\n- **AMP**: **Fender Twin Reverb** — o amp do álbum para as duas guitarras. O sujo de Sam vem do próprio Twin estourado, não de pedal.\n- **Efeitos**: **Maestro FZ-1 (Fuzz Tone)** no Gurley (solos de Summertime e I Need a Man to Love) · **Fender Dimension IV Sound Expander** (eco a óleo — a textura psicodélica dessas duas faixas). Em **Piece of My Heart NÃO há fuzz**: Gurley faz a parte limpa e Sam a parte suja, provavelmente só um Twin estourado.\n- **Gravação**: seis meses entre estúdios de Nova York e Los Angeles, base ao vivo e muitas sobreposições; **Ball and Chain** é a única faixa totalmente ao vivo (Winterland — Gurley na Telecaster e Sam na Jazzmaster); disco **#1 por seis semanas**.\n- Sem pitch fixo no ensaio: a afinação solta e o vibrato/bend são a assinatura do álbum — não tente imitar com chorus.\n- 📖 Fontes: Guitar Player / Jas Obrecht (entrevista de 1978 com Sam Andrew e James Gurley, arquivo FoundSF) · Vintage Guitar, Pop 'N Hiss: Quicksilver Messenger Service (jun/2025 — SG de Gurley e Andrew) · The Gear Page, Big Brother… Fuzz Pedal? (2022, análise com fotos de estúdio) · Equipboard (band page)."
     },
     "PL": {
       "banda": "Pink Floyd",
@@ -186,7 +186,7 @@
             },
             "ajustes": [
               "raspando demais → DST Tone +3",
-              "mole no ataque → DST p0 +3",
+              "mole no ataque → DST Gain +3",
               "harmônico agudo irritando → CAB High Cut 55"
             ],
             "evite": [
@@ -301,7 +301,7 @@
               ]
             },
             "ajustes": [
-              "sustain fraco → Boost p0 +5",
+              "sustain fraco → Boost Ganho +5",
               "muito agudo → CAB High Cut 55"
             ],
             "evite": [
@@ -535,8 +535,7 @@
                 "params": {
                   "0": 49,
                   "1": 0.5,
-                  "2": 0,
-                  "3": 50
+                  "2": 0
                 }
               },
               "DLY": {
@@ -569,8 +568,8 @@
               ]
             },
             "ajustes": [
-              "leslie rápido demais → MOD p1 (speed) menor",
-              "gordo demais → DST p0 -3"
+              "leslie rápido demais → MOD Velocidade menor",
+              "gordo demais → DST Gain -3"
             ],
             "evite": [
               "Vibe em velocidade alta — o Leslie da gravação gira devagar"
@@ -706,7 +705,7 @@
             },
             "ajustes": [
               "mais jump → COMP ON (Sens 40)",
-              "mais ar → RVB p1 +5"
+              "mais ar → RVB Pre Delay +5"
             ],
             "evite": [
               "Drive: a faixa é 100% limpa"
@@ -850,7 +849,7 @@
               ]
             },
             "ajustes": [
-              "quer mais gritado → AMP Vol +3 e DST p0 +2",
+              "quer mais gritado → AMP Vol +3 e DST Gain +2",
               "embolou → AMP Cut +5 (escurece menos) "
             ],
             "evite": [
@@ -977,7 +976,7 @@
               ]
             },
             "ajustes": [
-              "mais sustain → Boost p0 +5",
+              "mais sustain → Boost Ganho +5",
               "fizz → CAB High Cut 55"
             ],
             "evite": [
@@ -1198,8 +1197,7 @@
                 "params": {
                   "0": 30,
                   "1": 0.4,
-                  "2": 0,
-                  "3": 40
+                  "2": 0
                 }
               },
               "DLY": {
@@ -1232,8 +1230,8 @@
               ]
             },
             "ajustes": [
-              "vibe forte demais → MOD p0 -5",
-              "mais vida → DST ON (p0 25)"
+              "vibe forte demais → MOD Intensidade -5",
+              "mais vida → DST ON (Gain 25)"
             ],
             "evite": [
               "Overdrive: o solo é quase limpo"
@@ -1655,8 +1653,8 @@
               ]
             },
             "ajustes": [
-              "chorus rápido demais → p1 0.3",
-              "mais girar → MOD p2 (mix) 60"
+              "chorus rápido demais → MOD Rate 0.3",
+              "mais girar → MOD Mix 60"
             ],
             "evite": [
               "Drive: a faixa é etérea e limpa"
@@ -1796,7 +1794,7 @@
               ]
             },
             "ajustes": [
-              "mais éter → RVB p0 60",
+              "mais éter → RVB Mix 60",
               "menos girar → Chorus OFF"
             ],
             "evite": [
@@ -1913,7 +1911,7 @@
               ]
             },
             "ajustes": [
-              "mais rasgado → DST p0 +3"
+              "mais rasgado → DST Gain +3"
             ],
             "evite": [
               "Reverb longo — a faixa é seca"
@@ -2049,7 +2047,7 @@
               ]
             },
             "ajustes": [
-              "mais ar → RVB p1 25",
+              "mais ar → RVB Pre Delay 25",
               "mais corpo → EQ Low +1"
             ],
             "evite": [
@@ -2165,7 +2163,7 @@
               ]
             },
             "ajustes": [
-              "mais mordida → DST p0 +2"
+              "mais mordida → DST Gain +2"
             ],
             "evite": [
               "Fuzz — é overdrive de amp"
@@ -2439,7 +2437,7 @@
             },
             "ajustes": [
               "Golden limpa demais → foxy Vol +4",
-              "Carry mole → DST p0 +3"
+              "Carry mole → DST Gain +3"
             ],
             "evite": [
               "Usar AC Sim ON junto com drive forte — fica artificial"
@@ -2580,8 +2578,8 @@
               ]
             },
             "ajustes": [
-              "mais sustain → Boost ON p0 25",
-              "mais áspero (John) → DST p0 +4"
+              "mais sustain → Boost ON Ganho 25",
+              "mais áspero (John) → DST Gain +4"
             ],
             "evite": [
               "Reverb grande — a sala era seca, o sustain vem do amp"
@@ -2881,8 +2879,8 @@
             },
             "ajustes": [
               "estridente → CAB High Cut 60 ou Tone da guitarra -1",
-              "slide sem sustain → COMP4 p0 +5",
-              "crocante demais → DST p0 -3"
+              "slide sem sustain → COMP4 Thresh +5",
+              "crocante demais → DST Gain -3"
             ],
             "evite": [
               "Reverb longo — a produção de Zappa é seca até na base",
@@ -3015,7 +3013,7 @@
               ]
             },
             "ajustes": [
-              "gordo demais → Super OD p0 -4",
+              "gordo demais → Super OD Drive -4",
               "sem mordida → EQ Mid +4",
               "com 'eco' → RVB OFF (a referência é seca)"
             ],
@@ -3144,9 +3142,7 @@
                 "on": true,
                 "params": {
                   "0": 40,
-                  "1": 99,
-                  "2": 50,
-                  "3": 0
+                  "1": 99
                 }
               }
             }
@@ -3167,10 +3163,10 @@
             "ajustes": [
               "acorde embolado → EQ Low -2",
               "hum audível → NR Thr 32",
-              "ataque seco → DST p0 +3"
+              "ataque seco → DST Gain +3"
             ],
             "evite": [
-              "DST p0 ≥ 60 — vira pedal audível",
+              "DST Gain ≥ 60 — vira pedal audível",
               "Bright ON",
               "Reverb Mix > 30"
             ],
@@ -3269,9 +3265,7 @@
                 "on": true,
                 "params": {
                   "0": 40,
-                  "1": 99,
-                  "2": 50,
-                  "3": 0
+                  "1": 99
                 }
               }
             }
@@ -3292,7 +3286,7 @@
               ]
             },
             "ajustes": [
-              "sustain curto → Boost p0 +5, AMP Vol +2",
+              "sustain curto → Boost Ganho +5, AMP Vol +2",
               "embolou → AMP Bass -2",
               "piou → AMP Treble -2"
             ],
@@ -3367,8 +3361,7 @@
                   "1": 62,
                   "2": 62,
                   "3": 48,
-                  "4": 52,
-                  "5": 58
+                  "4": 52
                 }
               },
               "NR": {
@@ -3491,8 +3484,7 @@
                   "1": 62,
                   "2": 62,
                   "3": 48,
-                  "4": 52,
-                  "5": 58
+                  "4": 52
                 }
               },
               "NR": {
@@ -3767,8 +3759,7 @@
                   "1": 62,
                   "2": 62,
                   "3": 48,
-                  "4": 52,
-                  "5": 58
+                  "4": 52
                 }
               },
               "NR": {
@@ -4185,8 +4176,7 @@
                   "1": 62,
                   "2": 62,
                   "3": 48,
-                  "4": 52,
-                  "5": 58
+                  "4": 52
                 }
               },
               "NR": {
@@ -4312,8 +4302,7 @@
                   "1": 62,
                   "2": 62,
                   "3": 48,
-                  "4": 52,
-                  "5": 58
+                  "4": 52
                 }
               },
               "NR": {
@@ -4713,8 +4702,7 @@
                 "on": true,
                 "params": {
                   "0": 62,
-                  "1": 45,
-                  "2": 55
+                  "1": 45
                 }
               },
               "AMP": {
@@ -4797,7 +4785,7 @@
               ]
             },
             "ajustes": [
-              "fuzz embolando → DST p1 -5",
+              "fuzz embolando → DST VOL -5",
               "sibilo entre frases → NR Thr +2"
             ],
             "evite": [
@@ -4874,8 +4862,7 @@
                   "1": 62,
                   "2": 62,
                   "3": 48,
-                  "4": 52,
-                  "5": 58
+                  "4": 52
                 }
               },
               "NR": {
@@ -5129,8 +5116,7 @@
                 "on": true,
                 "params": {
                   "0": 58,
-                  "1": 48,
-                  "2": 56
+                  "1": 48
                 }
               },
               "AMP": {
@@ -5209,7 +5195,7 @@
               ]
             },
             "ajustes": [
-              "fuzz embolando → DST p1 -5",
+              "fuzz embolando → DST VOL -5",
               "sibilo → NR Thr +2"
             ],
             "evite": [
@@ -5254,8 +5240,7 @@
                 "on": true,
                 "params": {
                   "0": 45,
-                  "1": 52,
-                  "2": 58
+                  "1": 52
                 }
               },
               "AMP": {
@@ -5338,8 +5323,8 @@
               ]
             },
             "ajustes": [
-              "pesado demais → DST p0 -5",
-              "afogado → RVB mix -5"
+              "pesado demais → DST Fuzz -5",
+              "afogado → RVB Mix -5"
             ],
             "evite": [
               "Tocar de forma corrida: o solo é épico e pesado"
@@ -5699,8 +5684,7 @@
                   "1": 62,
                   "2": 62,
                   "3": 48,
-                  "4": 52,
-                  "5": 58
+                  "4": 52
                 }
               },
               "NR": {
@@ -5984,8 +5968,7 @@
                   "1": 62,
                   "2": 62,
                   "3": 48,
-                  "4": 52,
-                  "5": 58
+                  "4": 52
                 }
               },
               "NR": {
@@ -6711,8 +6694,7 @@
                   "1": 62,
                   "2": 62,
                   "3": 48,
-                  "4": 52,
-                  "5": 58
+                  "4": 52
                 }
               },
               "NR": {
@@ -7127,8 +7109,7 @@
                   "1": 62,
                   "2": 62,
                   "3": 48,
-                  "4": 52,
-                  "5": 58
+                  "4": 52
                 }
               },
               "NR": {
@@ -7254,8 +7235,7 @@
                   "1": 62,
                   "2": 62,
                   "3": 48,
-                  "4": 52,
-                  "5": 58
+                  "4": 52
                 }
               },
               "NR": {
@@ -7393,8 +7373,7 @@
                 "on": true,
                 "params": {
                   "0": 55,
-                  "1": 50,
-                  "2": 55
+                  "1": 50
                 }
               },
               "AMP": {
@@ -7477,7 +7456,7 @@
               ]
             },
             "ajustes": [
-              "fuzz embolando → DST p1 -5",
+              "fuzz embolando → DST VOL -5",
               "delay embolando → Fdbk -8"
             ],
             "evite": [
@@ -7541,8 +7520,7 @@
                   "1": 62,
                   "2": 62,
                   "3": 48,
-                  "4": 52,
-                  "5": 58
+                  "4": 52
                 }
               },
               "NR": {
@@ -7820,8 +7798,7 @@
                   "1": 62,
                   "2": 62,
                   "3": 48,
-                  "4": 52,
-                  "5": 58
+                  "4": 52
                 }
               },
               "NR": {
@@ -8254,8 +8231,7 @@
                   "1": 62,
                   "2": 62,
                   "3": 48,
-                  "4": 52,
-                  "5": 58
+                  "4": 52
                 }
               },
               "NR": {

@@ -168,8 +168,8 @@ _Legenda: **🔴** ligado · ⚪ desligado — a ordem é o caminho do sinal._
 |---|---|---|
 | AMP | Flagman | Gain: 25 · PRSE: 50 · Master: 55 · Bass: 50 · Middle: 50 · Treble: 55 |
 | CAB | UK-LD 4x12 | Level: 78 · High Cut: 62 |
-| DLY | Sweet | Fdbk: 45 · Delay ms: 620 · High Cut: 35 |
-| RVB | Hall | Decay*: 55 · Pre-D*: 50 · Damp*: 50 · Mix*: 1 |
+| DLY | Sweet | Mix: 45 · Time: 620 ms · Fdbk: 35 |
+| RVB | Hall | Mix: 55 · Pre Delay: 50 ms · Decay: 50 · Trail: On |
 
 ### Mapeamento rig real → GP-100
 
@@ -202,18 +202,18 @@ _Legenda: **🔴** ligado · ⚪ desligado — a ordem é o caminho do sinal._
 
 | Parâmetro | Valor |
 |---|---|
-| Fdbk | 45 |
-| Delay ms | 620 |
-| High Cut | 35 |
+| Mix | 45 |
+| Time | 620 ms |
+| Fdbk | 35 |
 
 ### RVB — Hall
 
 | Parâmetro | Valor |
 |---|---|
-| Decay* | 55 |
-| Pre-D* | 50 |
-| Damp* | 50 |
-| Mix* | 1 |
+| Mix | 55 |
+| Pre Delay | 50 ms |
+| Decay | 50 |
+| Trail | On |
 
 
 ### Globais da sessão
@@ -237,7 +237,7 @@ _Legenda: **🔴** ligado · ⚪ desligado — a ordem é o caminho do sinal._
 2. **Digitar no painel** (receita na ordem dos menus):
 
 ```
-**AMP** `Flagman` (Gain 25 / PRSE 50 / Master 55 / Bass 50 / Middle 50 / Treble 55) → **CAB** `UK-LD 4x12` (Level 78 / High Cut 62) → **DLY** `Sweet` (Fdbk 45 / Delay ms 620 / High Cut 35) → **RVB** `Hall` (ajuste fino no painel — seção 3 📡)
+**AMP** `Flagman` (Gain 25 / PRSE 50 / Master 55 / Bass 50 / Middle 50 / Treble 55) → **CAB** `UK-LD 4x12` (Level 78 / High Cut 62) → **DLY** `Sweet` (Mix 45 / Time 620 ms / Fdbk 35) → **RVB** `Hall` (ajuste fino no painel — seção 3 📡)
 ```
 
 3. **SAVE** no slot → renomeie para `SFTM01AM`.

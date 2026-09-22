@@ -38,8 +38,8 @@ Só mexa na pedaleira **depois** de acertar a guitarra — ela resolve 80% do so
 
 | Se você ouvir… | Faça isto |
 |---|---|
-| vibe forte demais | MOD p0 -5 |
-| mais vida | DST ON (p0 25) |
+| vibe forte demais | MOD Intensidade -5 |
+| mais vida | DST ON (Gain 25) |
 
 ### Protocolo universal (vale para todos os patches)
 
@@ -167,8 +167,8 @@ _Legenda: **🔴** ligado · ⚪ desligado — a ordem é o caminho do sinal._
 | NR | Gate 1 | Thr: 24 |
 | CAB | DarkTW 2x12 | Level: 75 · High Cut: 50 |
 | EQ | EQ 1 | Low: 0 · Mid: 2 · High: 0 · Level: 50 |
-| MOD | Vibe | Intensidade: 30 · Velocidade: 0.4 · p2: 0 · Mix: 40 |
-| RVB | Plate | Decay*: 30 · Pre-D*: 40 · Damp*: 50 · Mix*: 1 |
+| MOD | Vibe | Intensidade: 30 · Velocidade: 0.4 · Sync: Off |
+| RVB | Plate | Mix: 30 · Decay: 40 · H-Damp: 50 · Trail: On |
 
 ### Mapeamento rig real → GP-100
 
@@ -220,19 +220,16 @@ _Legenda: **🔴** ligado · ⚪ desligado — a ordem é o caminho do sinal._
 |---|---|
 | Intensidade | 30 |
 | Velocidade | 0.4 |
-| p2 | 0 |
-| Mix | 40 |
+| Sync | Off |
 
 ### RVB — Plate
 
 | Parâmetro | Valor |
 |---|---|
-| Decay* | 30 |
-| Pre-D* | 40 |
-| Damp* | 50 |
-| Mix* | 1 |
-
-> ℹ️ **`pN`** = slot de parâmetro deste modelo **sem nome oficial documentado** (o manual V1.8 só cobre os modelos antigos) — ajuste por orelha, comparando com o bypass; os demais nomes seguem o manual da GP-100.
+| Mix | 30 |
+| Decay | 40 |
+| H-Damp | 50 |
+| Trail | On |
 
 
 ### Globais da sessão
@@ -256,7 +253,7 @@ _Legenda: **🔴** ligado · ⚪ desligado — a ordem é o caminho do sinal._
 2. **Digitar no painel** (receita na ordem dos menus):
 
 ```
-**AMP** `Dark Twin` (Vol 58 / Output 62 / Bass 52 / Middle 50 / Treble 55 / Bright Off) → **NR** `Gate 1` (Thr 24) → **CAB** `DarkTW 2x12` (Level 75 / High Cut 50) → **EQ** `EQ 1` (Low 0 / Mid 2 / High 0 / Level 50) → **MOD** `Vibe` (Intensidade 30 / Velocidade 0.4 / p2 0 / Mix 40) → **RVB** `Plate` (ajuste fino no painel — seção 3 📡)
+**AMP** `Dark Twin` (Vol 58 / Output 62 / Bass 52 / Middle 50 / Treble 55 / Bright Off) → **NR** `Gate 1` (Thr 24) → **CAB** `DarkTW 2x12` (Level 75 / High Cut 50) → **EQ** `EQ 1` (Low 0 / Mid 2 / High 0 / Level 50) → **MOD** `Vibe` (Intensidade 30 / Velocidade 0.4 / Sync Off) → **RVB** `Plate` (ajuste fino no painel — seção 3 📡)
 ```
 
 3. **SAVE** no slot → renomeie para `OTG01SO`.

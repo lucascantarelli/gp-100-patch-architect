@@ -161,7 +161,7 @@ _Legenda: **🔴** ligado · ⚪ desligado — a ordem é o caminho do sinal._
 | NR | Gate 1 | Thr: 20 |
 | CAB | D | Level: 75 · High Cut: 50 |
 | EQ | EQ 1 | Low: -1 · Mid: 0 · High: 1 · Level: 50 |
-| RVB | Hall | Decay*: 50 · Pre-D*: 50 · Damp*: 50 · Mix*: 1 |
+| RVB | Hall | Mix: 50 · Pre Delay: 50 ms · Decay: 50 · Trail: On |
 
 ### Mapeamento rig real → GP-100
 
@@ -208,10 +208,10 @@ _Legenda: **🔴** ligado · ⚪ desligado — a ordem é o caminho do sinal._
 
 | Parâmetro | Valor |
 |---|---|
-| Decay* | 50 |
-| Pre-D* | 50 |
-| Damp* | 50 |
-| Mix* | 1 |
+| Mix | 50 |
+| Pre Delay | 50 ms |
+| Decay | 50 |
+| Trail | On |
 
 
 ### Globais da sessão

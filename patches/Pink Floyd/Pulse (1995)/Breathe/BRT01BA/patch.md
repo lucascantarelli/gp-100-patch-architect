@@ -166,10 +166,10 @@ _Legenda: **🔴** ligado · ⚪ desligado — a ordem é o caminho do sinal._
 
 | Módulo | Modelo | Valores |
 |---|---|---|
-| AMP | Knights CL | Gain: 38 · Vol: 62 · Bass: 62 · Middle: 48 · Treble: 52 · p5: 58 |
+| AMP | Knights CL | Gain: 38 · Vol: 62 · Bass: 62 · Middle: 48 · Treble: 52 |
 | CAB | UK-LD 4x12 | Level: 78 · High Cut: 62 |
 | MOD | A-Chorus | Rate: 25 · Depth: 0.5 · Mix: 25 |
-| RVB | Hall | Decay*: 38 · Pre-D*: 45 · Damp*: 50 · Mix*: 1 |
+| RVB | Hall | Mix: 38 · Pre Delay: 45 ms · Decay: 50 · Trail: On |
 
 ### Mapeamento rig real → GP-100
 
@@ -189,7 +189,6 @@ _Legenda: **🔴** ligado · ⚪ desligado — a ordem é o caminho do sinal._
 | Bass | 62 |
 | Middle | 48 |
 | Treble | 52 |
-| p5 | 58 |
 
 ### CAB — UK-LD 4x12
 
@@ -210,12 +209,10 @@ _Legenda: **🔴** ligado · ⚪ desligado — a ordem é o caminho do sinal._
 
 | Parâmetro | Valor |
 |---|---|
-| Decay* | 38 |
-| Pre-D* | 45 |
-| Damp* | 50 |
-| Mix* | 1 |
-
-> ℹ️ **`pN`** = slot de parâmetro deste modelo **sem nome oficial documentado** (o manual V1.8 só cobre os modelos antigos) — ajuste por orelha, comparando com o bypass; os demais nomes seguem o manual da GP-100.
+| Mix | 38 |
+| Pre Delay | 45 ms |
+| Decay | 50 |
+| Trail | On |
 
 
 ### Globais da sessão
@@ -239,7 +236,7 @@ _Legenda: **🔴** ligado · ⚪ desligado — a ordem é o caminho do sinal._
 2. **Digitar no painel** (receita na ordem dos menus):
 
 ```
-**AMP** `Knights CL` (Gain 38 / Vol 62 / Bass 62 / Middle 48 / Treble 52 / p5 58) → **CAB** `UK-LD 4x12` (Level 78 / High Cut 62) → **MOD** `A-Chorus` (Rate 25 / Depth 0.5 / Mix 25) → **RVB** `Hall` (ajuste fino no painel — seção 3 📡) → SOBRESSALENTE **DLY** `Sweet` (template de fábrica — ajuste por orelha ao ligar)
+**AMP** `Knights CL` (Gain 38 / Vol 62 / Bass 62 / Middle 48 / Treble 52) → **CAB** `UK-LD 4x12` (Level 78 / High Cut 62) → **MOD** `A-Chorus` (Rate 25 / Depth 0.5 / Mix 25) → **RVB** `Hall` (ajuste fino no painel — seção 3 📡) → SOBRESSALENTE **DLY** `Sweet` (template de fábrica — ajuste por orelha ao ligar)
 ```
 
 3. **SAVE** no slot → renomeie para `BRT01BA`.

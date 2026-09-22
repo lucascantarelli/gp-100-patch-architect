@@ -14,7 +14,7 @@
 
 | Controle na guitarra | Ajuste |
 |---|---|
-| **Seletor de captadores** | Posição 2 (bridge) |
+| **Seletor de captadores** | Posição 1 (bridge) |
 | **Volume** | 10 |
 | **Tone** | 9 |
 

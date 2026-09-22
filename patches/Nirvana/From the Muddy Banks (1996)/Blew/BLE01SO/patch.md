@@ -14,7 +14,7 @@
 
 | Controle na guitarra | Ajuste |
 |---|---|
-| **Seletor de captadores** | Posição 2 (bridge) |
+| **Seletor de captadores** | Posição 1 (bridge) |
 | **Volume** | 10 |
 | **Tone** | 7 |
 
@@ -108,9 +108,12 @@ A GP-100 liga/desliga **qualquer módulo em tempo real**: no **painel**, slot a 
 | DLY | ⚪ OFF | `Slapbk` |
 | RVB | **🔴 ON** | `Room` |
 
-### 🎭 Momentos desta música
+### 🎭 Momentos desta música (validados para este patch)
 
-Este patch foi afinado para **um** papel — use os sobressalentes da tabela acima para variar na hora (ex.: desligar o DLY para uma seção seca). Momentos dedicados estão nos patches irmãos da mesma música (veja o mapa do álbum).
+Mude SÓ os módulos indicados — o resto permanece como na tabela acima:
+
+1. **Solo estourando** — **EQ → ON**
+   *Quando*: Harmônicos e bends: realce sobre o fuzz.
 
 ### 🦶 Ligar/desligar ao vivo (modo STOMP)
 
@@ -241,7 +244,7 @@ _Legenda: **🔴** ligado · ⚪ desligado — a ordem é o caminho do sinal._
 2. **Digitar no painel** (receita na ordem dos menus):
 
 ```
-**DST** `Red Haze` (Fuzz 66 / VOL 48) → **AMP** `Dark Twin` (Vol 55 / Output 62 / Bass 52 / Middle 48 / Treble 55 / Bright Off) → **NR** `Gate 1` (Thr 26) → **CAB** `DarkTW 2x12` (Level 75 / High Cut 50) → **RVB** `Room` (ajuste fino no painel — seção 3 📡)
+**DST** `Red Haze` (Fuzz 66 / VOL 48) → **AMP** `Dark Twin` (Vol 55 / Output 62 / Bass 52 / Middle 48 / Treble 55 / Bright Off) → **NR** `Gate 1` (Thr 26) → **CAB** `DarkTW 2x12` (Level 75 / High Cut 50) → **RVB** `Room` (ajuste fino no painel — seção 3 📡) → SOBRESSALENTE **EQ** `EQ 1` (template de fábrica — ajuste por orelha ao ligar)
 ```
 
 3. **SAVE** no slot → renomeie para `BLE01SO`.

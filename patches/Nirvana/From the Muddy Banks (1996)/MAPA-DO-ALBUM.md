@@ -25,7 +25,7 @@
 | **Negative Creep** | [`⚡ NEG01RI`](./Negative%20Creep/NEG01RI/patch.md) (Riff) · [`🎸 NEG01SO`](./Negative%20Creep/NEG01SO/patch.md) (Feedback) | Riff: bridge+middle · Feedback: bridge | 📁 `American Twin 2x12 — American Twin 2x12 Medium Mix.wav` · 📁 `American Twin 2x12 — American Twin 2x12 Medium Mix.wav` | U87, U88 |
 | **Polly** | [`🧺 POL01CL`](./Polly/POL01CL/patch.md) (Clean) | Clean: middle+neck | 📁 `American Twin 2x12 — American Twin 2x12 Medium Mix.wav` | U89 |
 | **Breed** | [`⚡ BRE01RI`](./Breed/BRE01RI/patch.md) (Riff) | Riff: bridge+middle | 📁 `American Twin 2x12 — American Twin 2x12 Medium Mix.wav` | U90 |
-| **tourette's** | [`⚡ TOU01RI`](./tourette's/TOU01RI/patch.md) (Riff) | Riff: bridge+middle | 📁 `American Twin 2x12 — American Twin 2x12 Medium Mix.wav` | U91 |
+| **Tourette's** | [`⚡ TOU01RI`](./Tourette's/TOU01RI/patch.md) (Riff) | Riff: bridge+middle | 📁 `American Twin 2x12 — American Twin 2x12 Medium Mix.wav` | U91 |
 | **Blew** | [`🌊 BLE01RI`](./Blew/BLE01RI/patch.md) (Riff) · [`🎸 BLE01SO`](./Blew/BLE01SO/patch.md) (Solo) | Riff: bridge+middle · Solo: bridge | 📁 `American Twin 2x12 — American Twin 2x12 Medium Mix.wav` · 📁 `American Twin 2x12 — American Twin 2x12 Medium Mix.wav` | U92, U93 |
 
 > **📡 IR**: 📁 = o banco local (`impulse_responses/`) tem captura melhor do gabinete real — arquivo indicado na seção 3 do `patch.md`. ⚙️ = o CAB de fábrica já é o alvo correto. Em ambos os casos o `.prst` funciona imediatamente, sem carregar IR.
@@ -62,7 +62,7 @@
 | U88 | `NEG01SO` | Negative Creep — Feedback Solo | 📁 `American Twin 2x12 — American Twin 2x12 Medium Mix.wav` |
 | U89 | `POL01CL` | Polly — Clean Espanhol | 📁 `American Twin 2x12 — American Twin 2x12 Medium Mix.wav` |
 | U90 | `BRE01RI` | Breed — Riff Lo-Fi | 📁 `American Twin 2x12 — American Twin 2x12 Medium Mix.wav` |
-| U91 | `TOU01RI` | tourette's — Riff Caótico | 📁 `American Twin 2x12 — American Twin 2x12 Medium Mix.wav` |
+| U91 | `TOU01RI` | Tourette's — Riff Caótico | 📁 `American Twin 2x12 — American Twin 2x12 Medium Mix.wav` |
 | U92 | `BLE01RI` | Blew — Riff Fuzz | 📁 `American Twin 2x12 — American Twin 2x12 Medium Mix.wav` |
 | U93 | `BLE01SO` | Blew — Solo Psicodélico | 📁 `American Twin 2x12 — American Twin 2x12 Medium Mix.wav` |
 

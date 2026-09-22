@@ -93,6 +93,18 @@ MOMENTOS = {
     'NEG01RI': [('Solo com feedback', [('EQ', 'ON')], 'Sobressalente: realce para o grito de guitarra.', '')],
     'BLE01RI': [('Solo psicodélico', [('EQ', 'ON')], 'Solo final: realce de presença para os harmônicos sobre o fuzz.', '')],
     'TOU01RI': [('Meio-tempo', [('DST', 'OFF')], 'Se ensaiar mais devagar, DST OFF = crunch limpo.', 'Caos volta com DST ON.')],
+    # ---- Nirvana (Wishkah): stomps dos patches sem dinâmica própria
+    'WIS01AM': [('Feedback livre', [('NR', 'OFF')], 'Aquecimento: solte o gate e deixe o feedback crescer sob a fala.', 'Religue para controlar o caos.')],
+    'SCH01RI': [('Solo sujo', [('EQ', 'ON')], 'Sobressalente: realce de médios para o solo central.', '')],
+    'SCH01SO': [('Solo cortando', [('EQ', 'ON')], 'O solo é quase um outro riff — realce para morder.', '')],
+    'DRY01SO': [('Solo com presença', [('EQ', 'ON')], 'Realce pronto: ligue para o lead cortar o paredão.', '')],
+    'ANE01RI': [('Verso limpo', [('DST', 'OFF'), ('MOD', 'ON')], 'O verso é arpejo limpo com chorus — um stomp só.', 'Refrão volta com DST ON.')],
+    'ANE01SO': [('Solo mordendo', [('EQ', 'ON')], 'Jam livre: realce para o lead vencedor.', '')],
+    'SLT01SO': [('Solo cortando', [('EQ', 'ON')], 'A melodia gaguejada pede médios à frente.', '')],
+    'BEE01SO': [('Solo espectral', [('EQ', 'ON')], 'Realce para o solo curto e doente.', '')],
+    'LIT01SO': [('Solo cortando', [('EQ', 'ON')], 'Frases curtas com presença no seletor da ponte.', '')],
+    'NEG01SO': [('Feedback livre', [('NR', 'OFF')], 'O grito de guitarra precisa de feedback: solte o gate.', 'Religue o gate para controlar.')],
+    'BLE01SO': [('Solo estourando', [('EQ', 'ON')], 'Harmônicos e bends: realce sobre o fuzz.', '')],
 }
 
 data = json.loads(DEFS_PATH.read_text(encoding='utf-8'))

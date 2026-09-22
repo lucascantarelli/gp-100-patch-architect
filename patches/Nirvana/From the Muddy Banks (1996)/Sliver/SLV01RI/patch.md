@@ -14,7 +14,7 @@
 
 | Controle na guitarra | Ajuste |
 |---|---|
-| **Seletor de captadores** | Posição 3 (bridge+middle) |
+| **Seletor de captadores** | Posição 2 (bridge+middle) |
 | **Volume** | 10 |
 | **Tone** | 10 |
 
@@ -249,7 +249,7 @@ _Legenda: **🔴** ligado · ⚪ desligado — a ordem é o caminho do sinal._
 2. **Digitar no painel** (receita na ordem dos menus):
 
 ```
-**DST** `La Charger` (Gain 64 / Tone 48 / Volume 62) → **AMP** `Dark Twin` (Vol 55 / Output 62 / Bass 52 / Middle 48 / Treble 55 / Bright Off) → **NR** `Gate 1` (Thr 26) → **CAB** `DarkTW 2x12` (Level 75 / High Cut 50) → **RVB** `Room` (ajuste fino no painel — seção 3 📡) → SOBRESSALENTE **MOD** `A-Chorus` (template de fábrica — ajuste por orelha ao ligar)
+**DST** `La Charger` (Gain 64 / Tone 48 / Volume 62) → **AMP** `Dark Twin` (Vol 55 / Output 62 / Bass 52 / Middle 48 / Treble 55 / Bright Off) → **NR** `Gate 1` (Thr 26) → **CAB** `DarkTW 2x12` (Level 75 / High Cut 50) → **RVB** `Room` (ajuste fino no painel — seção 3 📡) → SOBRESSALENTE **MOD** `A-Chorus` (Rate 30 / Depth 0.5 / Mix 50 / Level 0)
 ```
 
 3. **SAVE** no slot → renomeie para `SLV01RI`.

@@ -14,7 +14,7 @@
 
 | Controle na guitarra | Ajuste |
 |---|---|
-| **Seletor de captadores** | Posição 2 (bridge) |
+| **Seletor de captadores** | Posição 1 (bridge) |
 | **Volume** | 10 |
 | **Tone** | 10 |
 
@@ -108,9 +108,13 @@ A GP-100 liga/desliga **qualquer módulo em tempo real**: no **painel**, slot a 
 | DLY | ⚪ OFF | `Slapbk` |
 | RVB | **🔴 ON** | `Room` |
 
-### 🎭 Momentos desta música
+### 🎭 Momentos desta música (validados para este patch)
 
-Este patch foi afinado para **um** papel — use os sobressalentes da tabela acima para variar na hora (ex.: desligar o DLY para uma seção seca). Momentos dedicados estão nos patches irmãos da mesma música (veja o mapa do álbum).
+Mude SÓ os módulos indicados — o resto permanece como na tabela acima:
+
+1. **Feedback livre** — **NR → OFF**
+   *Quando*: O grito de guitarra precisa de feedback: solte o gate.
+   *Dica*: Religue o gate para controlar.
 
 ### 🦶 Ligar/desligar ao vivo (modo STOMP)
 

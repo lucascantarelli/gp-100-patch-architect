@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <GP-100>
-  <preset_info software="1.2.0" firmware="2.1" product="GP-100" count="1" platform="WINDOWS" time="1790091011416" />
+  <preset_info software="1.2.0" firmware="2.1" product="GP-100" count="1" platform="WINDOWS" time="1790092661061" />
   <presets ppBank="0" ppName="HSB01AR" ppVolume="60" ppID="0" ppBPM="120" ppIRNum="27" ppType="4" ppAuthor="GP-100 Patch Architect" ppNotes="Heart-Shaped Box (From the Muddy Banks of the Wishkah (live)) - Verso Claro" ppTypeName="Rock">
     <Effect effectModuleName="RVB" effectName="Room" effectState="1" effectCode="201326592" params_0="20" x="8" y="0" params_1="17" params_2="30" params_3="0" params_4="65535" params_5="65535" params_6="65535" params_7="65535" params_8="65535" params_9="65535" params_10="65535" params_11="65535" params_12="0" params_13="0" params_14="0" />
     <Effect effectModuleName="DLY" effectName="Slapbk" effectState="0" effectCode="184549381" params_0="11" x="7" y="0" params_1="160" params_2="20" params_3="0" params_4="0" params_5="0" params_6="0" params_7="65535" params_8="65535" params_9="65535" params_10="65535" params_11="65535" params_12="0" params_13="0" params_14="0" />
@@ -10,7 +10,7 @@
     <Effect effectModuleName="CAB" effectName="DarkTW 2x12" effectState="1" effectCode="167772178" params_0="75" x="4" y="0" params_1="50" params_2="65535" params_3="65535" params_4="65535" params_5="65535" params_6="65535" params_7="65535" params_8="65535" params_9="65535" params_10="65535" params_11="65535" params_12="0" params_13="0" params_14="0" />
     <Effect effectModuleName="NR" effectName="Gate 1" effectState="0" effectCode="27" params_0="30" x="3" y="0" params_1="65535" params_2="65535" params_3="65535" params_4="65535" params_5="65535" params_6="65535" params_7="65535" params_8="65535" params_9="65535" params_10="65535" params_11="65535" params_12="0" params_13="0" params_14="0" />
     <Effect effectModuleName="AMP" effectName="Dark Twin" effectState="1" effectCode="117440516" params_0="55" x="2" y="0" params_1="62" params_2="52" params_3="48" params_4="55" params_5="0" params_6="50" params_7="65535" params_8="65535" params_9="65535" params_10="65535" params_11="65535" params_12="0" params_13="0" params_14="0" />
-    <Effect effectModuleName="DST" effectName="Blues OD" effectState="0" effectCode="50331657" params_0="72" x="1" y="0" params_1="92" params_2="73" params_3="0" params_4="50" params_5="65535" params_6="65535" params_7="65535" params_8="65535" params_9="65535" params_10="65535" params_11="65535" params_12="0" params_13="0" params_14="0" />
+    <Effect effectModuleName="DST" effectName="La Charger" effectState="0" effectCode="50331696" params_0="66" x="1" y="0" params_1="48" params_2="62" params_3="65535" params_4="65535" params_5="65535" params_6="65535" params_7="65535" params_8="65535" params_9="65535" params_10="65535" params_11="65535" params_12="0" params_13="0" params_14="0" />
     <Effect effectModuleName="PRE" effectName="Boost" effectState="0" effectCode="26" params_0="10" x="0" y="0" params_1="1" params_2="65535" params_3="65535" params_4="65535" params_5="65535" params_6="65535" params_7="65535" params_8="65535" params_9="65535" params_10="65535" params_11="65535" params_12="0" params_13="0" params_14="0" />
     <ppCtrl c11="65535" c12="1" c13="65535" c21="65535" c22="65535" c23="8" />
     <ppEXP1 expTarget="0" expVolume="0" expVolumeMin="0" expVolumeMax="99">

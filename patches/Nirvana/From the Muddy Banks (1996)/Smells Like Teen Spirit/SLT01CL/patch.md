@@ -14,7 +14,7 @@
 
 | Controle na guitarra | Ajuste |
 |---|---|
-| **Seletor de captadores** | Posição 3 (bridge+middle) |
+| **Seletor de captadores** | Posição 2 (bridge+middle) |
 | **Volume** | 9 |
 | **Tone** | 9 |
 
@@ -99,7 +99,7 @@ A GP-100 liga/desliga **qualquer módulo em tempo real**: no **painel**, slot a 
 | Módulo | Estado no `.prst` | Modelo |
 |---|---|---|
 | PRE | ⚪ OFF | `Boost` |
-| DST | ⚪ OFF | `Blues OD` |
+| DST | ⚪ OFF | `La Charger` |
 | AMP | **🔴 ON** | `Dark Twin` |
 | NR | ⚪ OFF | `Gate 1` |
 | CAB | **🔴 ON** | `DarkTW 2x12` |
@@ -242,7 +242,7 @@ _Legenda: **🔴** ligado · ⚪ desligado — a ordem é o caminho do sinal._
 2. **Digitar no painel** (receita na ordem dos menus):
 
 ```
-**AMP** `Dark Twin` (Vol 55 / Output 62 / Bass 52 / Middle 48 / Treble 55 / Bright Off) → **CAB** `DarkTW 2x12` (Level 75 / High Cut 50) → **MOD** `A-Chorus` (Rate 30 / Depth 0.5 / Mix 50 / Level 0) → **RVB** `Room` (ajuste fino no painel — seção 3 📡) → SOBRESSALENTE **DST** `Blues OD` (template de fábrica — ajuste por orelha ao ligar) · SOBRESSALENTE **EQ** `EQ 1` (template de fábrica — ajuste por orelha ao ligar)
+**AMP** `Dark Twin` (Vol 55 / Output 62 / Bass 52 / Middle 48 / Treble 55 / Bright Off) → **CAB** `DarkTW 2x12` (Level 75 / High Cut 50) → **MOD** `A-Chorus` (Rate 30 / Depth 0.5 / Mix 50 / Level 0) → **RVB** `Room` (ajuste fino no painel — seção 3 📡) → SOBRESSALENTE **DST** `La Charger` (Gain 66 / Tone 48 / Volume 62) · SOBRESSALENTE **EQ** `EQ 1` (Mid 3 / Level 56)
 ```
 
 3. **SAVE** no slot → renomeie para `SLT01CL`.

@@ -98,7 +98,7 @@ A GP-100 liga/desliga **qualquer módulo em tempo real**: no **painel**, slot a 
 | Módulo | Estado no `.prst` | Modelo |
 |---|---|---|
 | PRE | ⚪ OFF | `Boost` |
-| DST | ⚪ OFF | `Blues OD` |
+| DST | ⚪ OFF | `La Charger` |
 | AMP | **🔴 ON** | `Dark Twin` |
 | NR | ⚪ OFF | `Gate 1` |
 | CAB | **🔴 ON** | `DarkTW 2x12` |
@@ -240,7 +240,7 @@ _Legenda: **🔴** ligado · ⚪ desligado — a ordem é o caminho do sinal._
 2. **Digitar no painel** (receita na ordem dos menus):
 
 ```
-**AMP** `Dark Twin` (Vol 55 / Output 62 / Bass 52 / Middle 48 / Treble 55 / Bright Off) → **CAB** `DarkTW 2x12` (Level 75 / High Cut 50) → **MOD** `Vibe` (Intensidade 45 / Velocidade 0.5 / Sync Off) → **RVB** `Room` (ajuste fino no painel — seção 3 📡) → SOBRESSALENTE **DST** `Blues OD` (template de fábrica — ajuste por orelha ao ligar)
+**AMP** `Dark Twin` (Vol 55 / Output 62 / Bass 52 / Middle 48 / Treble 55 / Bright Off) → **CAB** `DarkTW 2x12` (Level 75 / High Cut 50) → **MOD** `Vibe` (Intensidade 45 / Velocidade 0.5 / Sync Off) → **RVB** `Room` (ajuste fino no painel — seção 3 📡) → SOBRESSALENTE **DST** `La Charger` (Gain 70 / Tone 48 / Volume 62)
 ```
 
 3. **SAVE** no slot → renomeie para `SLV01AR`.

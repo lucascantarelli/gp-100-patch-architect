@@ -1,5 +1,5 @@
 # ⚡ TOU01RI
-### tourette's — Riff Caótico
+### Tourette's — Riff Caótico
 ##### Nirvana · From the Muddy Banks of the Wishkah (live) (1996)
 
 ![Genero](https://img.shields.io/badge/Genero-Rock-e02d2d?style=flat-square) ![Camada](https://img.shields.io/badge/Camada-Riff-f3a637?style=flat-square) ![Captador](https://img.shields.io/badge/Captador-bridge+middle-2ea44f?style=flat-square) ![Contexto](https://img.shields.io/badge/Contexto-fone%20%2B%20PC-6f42c1?style=flat-square) ![Formato](https://img.shields.io/badge/.prst-single%20fw%202.1-2ea44f?style=flat-square)
@@ -14,7 +14,7 @@
 
 | Controle na guitarra | Ajuste |
 |---|---|
-| **Seletor de captadores** | Posição 3 (bridge+middle) |
+| **Seletor de captadores** | Posição 2 (bridge+middle) |
 | **Volume** | 10 |
 | **Tone** | 10 |
 

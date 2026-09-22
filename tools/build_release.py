@@ -119,7 +119,6 @@ def package(version: str):
     # ---- notas da release ----
     defs = json.loads((ROOT / 'tools' / 'patches-defs.json').read_text(encoding='utf-8'))
     n_songs = len(defs.get('songs', []))
-    mapa_geral = PATCHES_DIR / 'README.md'
     linhas = [
         f'# GP-100 Patches v{version}', '',
         f'**{n} patches · {n_songs} músicas · {len(albums)} álbuns** — formato single, '

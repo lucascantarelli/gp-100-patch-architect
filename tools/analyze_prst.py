@@ -35,7 +35,11 @@ def parse(path):
     tree = ET.parse(path)
     root = tree.getroot()
     info = root.find('preset_info').attrib
-    irs = [ir.attrib for ir in root.find('ppIRInfo')]
+    # <ppIRInfo> existe só no export "all" — o formato single fw 2.1 (o que este
+    # projeto gera) não o tem. Sem o guarda, `for ir in None` estourava TypeError
+    # em todos os 62 patches da própria biblioteca.
+    ir_node = root.find('ppIRInfo')
+    irs = [ir.attrib for ir in ir_node] if ir_node is not None else []
     patches = []
     for p in root.findall('presets'):
         effects = []
@@ -114,6 +118,8 @@ def fmt_stat(sets_by_idx):
             try:
                 nums.append(float(v))
             except ValueError:
+                # Valor não numérico (ex.: 'Sync', 'OFF') — não é erro: o
+                # parâmetro aceita não-números e eles ficam fora do min/max.
                 pass
         if len(vals) == 1:
             lines.append(f'  p{i}: fixo={next(iter(vals))}')

@@ -73,14 +73,24 @@ jobs:
 
       # Python e JavaScript/TypeScript são interpretados/jit: não há passo de
       # build. O init + analyze é o template suportado para esses idiomas.
+      # v4: a v3 do CodeQL Action é depreciada em dezembro de 2026 e o próprio
+      # init emite o aviso a cada execução.
       - name: Inicializar o CodeQL (${{ matrix.language }})
-        uses: github/codeql-action/init@v3
+        uses: github/codeql-action/init@v4
         with:
           languages: ${{ matrix.language }}
-          queries: security-and-quality
+          # `security-extended` e não `security-and-quality`: a suíte "and-quality"
+          # inclui consultas de manutenibilidade e, neste repositório, elas disparam
+          # em cima de um estilo deliberado — a prosa dos docs é escrita como
+          # literais adjacentes dentro de listas ("...texto " "continuação"), o que
+          # gera seis avisos de "maybe missing a comma?" que nunca serão corrigidos
+          # (juntar com vírgula multiplicaria as entradas da lista e quebraria o
+          # markdown gerado). `security-extended` cobre TODAS as consultas de
+          # segurança da `and-quality`, sem as de estilo — mais sinal, menos ruído.
+          queries: security-extended
 
       - name: Analisar
-        uses: github/codeql-action/analyze@v3
+        uses: github/codeql-action/analyze@v4
         with:
           category: /language:${{ matrix.language }}
 

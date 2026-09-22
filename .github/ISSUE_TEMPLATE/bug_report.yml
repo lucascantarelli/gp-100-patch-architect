@@ -1,0 +1,118 @@
+name: 🐛 Relatar um problema
+description: Um patch não importa, o timbre não bate, uma doc está errada ou o pipeline falhou.
+title: "[Bug]: "
+labels: ["bug", "needs triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Obrigado por reportar. Este template pede o que realmente acelera o diagnóstico
+        aqui: **versão de firmware**, **nome exato do patch** e **como você carregou**.
+
+        > ⚠️ **Falha de segurança não vem por aqui.** Use
+        > [Security Advisories](https://github.com/lucascantarelli/gp-100-patch-architect/security/advisories/new)
+        > conforme o [SECURITY.md](https://github.com/lucascantarelli/gp-100-patch-architect/blob/main/SECURITY.md).
+
+  - type: dropdown
+    id: categoria
+    attributes:
+      label: Que tipo de problema é?
+      description: Escolha o mais próximo — isso decide quem olha o report primeiro.
+      options:
+        - O arquivo .prst não importa na pedaleira ou no GP-100 Edits
+        - O patch importa, mas o som não corresponde à seção 🔊 do patch.md
+        - A documentação do patch (patch.md) tem informação errada
+        - Um script do pipeline (tools/) falha ou produz saída inesperada
+        - O CI ficou vermelho e não entendi o motivo
+        - Erro no README, em reference/ ou em outro texto
+        - Outro (descreva abaixo)
+    validations:
+      required: true
+
+  - type: input
+    id: patch
+    attributes:
+      label: Patch afetado (se aplicável)
+      description: "Nome no painel (≤ 12 caracteres) e/ou slot — ex.: `STH01BA`, `U25`."
+      placeholder: "STH01BA — Something / base — slot U25"
+    validations:
+      required: false
+
+  - type: input
+    id: firmware
+    attributes:
+      label: Versão de firmware da GP-100
+      description: Encontrada no menu Global/System da pedaleira. O projeto tem precedência no catálogo 2.0/2.1.
+      placeholder: "2.1"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: carga
+    attributes:
+      label: Como você carregou o arquivo?
+      options:
+        - GP-100 Edits no computador (import de .prst)
+        - Direto na pedaleira (USB / armazenamento)
+        - Ainda não consegui carregar — o problema está na importação
+    validations:
+      required: true
+
+  - type: input
+    id: guitarra
+    attributes:
+      label: Guitarra e captador usados
+      description: Os patches documentam perfil por captador (bridge / neck / posições 2–4), então isso muda o resultado.
+      placeholder: "Strat single coil — bridge"
+    validations:
+      required: false
+
+  - type: textarea
+    id: esperado
+    attributes:
+      label: O que você esperava
+      description: Cite a seção do `patch.md` que você seguiu (🔊 Objetivo do som, 📡 IR, 🔧 Ajustes finos…).
+    validations:
+      required: true
+
+  - type: textarea
+    id: aconteceu
+    attributes:
+      label: O que aconteceu de fato
+      description: Seja concreto. Para problema de timbre, descreva a diferença (ganho, brilho, graves, ruído, falta de cauda…).
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproducao
+    attributes:
+      label: Passos para reproduzir
+      description: Numere. Quanto mais curto o caminho até o problema, mais rápido a correção.
+      placeholder: |
+        1. Importei [...]
+        2. Selecionei o patch [...]
+        3. Liguei o módulo [...]
+        4. ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: ambiente
+    attributes:
+      label: Ambiente (só se o problema for em script ou CI)
+      description: Sistema operacional, `python --version`, `node --version` e o comando exato que falhou, com a saída.
+      render: shell
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: confirmacoes
+    attributes:
+      label: Antes de enviar
+      options:
+        - label: Verifiquei que o `.prst` está no formato single fw 2.1 e que não é uma cópia editada à mão.
+          required: true
+        - label: Se é problema de script, rodei `python -m unittest discover -s tests -v` e vou colar a saída.
+          required: false
+        - label: Não anexei WAV de pack pago, PDF de fabricante nem outro material de terceiros.
+          required: true

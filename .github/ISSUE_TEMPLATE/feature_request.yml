@@ -1,0 +1,87 @@
+name: 💡 Sugerir conteúdo ou melhoria
+description: Peça um patch novo, uma música, um álbum, uma capability do pipeline ou uma doc.
+title: "[Feat]: "
+labels: ["enhancement", "needs triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Antes de abrir: confira se a música ou a camada já existe em
+        [`patches/README.md`](https://github.com/lucascantarelli/gp-100-patch-architect/blob/main/patches/README.md)
+        — a biblioteca tem 62 patches em 42 músicas.
+
+        **A parte mais importante deste pedido é o dossiê de rig.** O projeto exige
+        lastro pesquisável para cada timbre, não impressão pessoal.
+
+  - type: dropdown
+    id: tipo
+    attributes:
+      label: O que você quer?
+      options:
+        - Camada nova em uma música que já está na biblioteca
+        - Música nova em um álbum que já está na biblioteca
+        - Álbum novo
+        - Melhoria no pipeline / nos scripts de tools/
+        - Correção ou ampliação de documentação (reference/, README, knowledge.md)
+        - Nova skill ou agente em .agents/
+        - Outro (descreva abaixo)
+    validations:
+      required: true
+
+  - type: input
+    id: alvo
+    attributes:
+      label: Artista / música / álbum alvo
+      description: O mais específico possível. Uma camada por pedido mantém a revisão sã.
+      placeholder: "Pink Floyd — Time · camada: solo"
+    validations:
+      required: true
+
+  - type: textarea
+    id: rig
+    attributes:
+      label: Dossiê do rig real (com fontes)
+      description: |
+        O que se sabe do rig original? Amplificador, gabinete, captador, pedais
+        e **links das fontes** (entrevistas, rig rundowns, fotos de palco, vídeos,
+        fóruns especializados). Sem fonte, o pedido vira conversa sobre preferência
+        e não entra na biblioteca.
+      placeholder: |
+        - Amp: ...
+        - Cab: ...
+        - Captador: ...
+        - Pedais: ...
+        - Fontes: https://... , https://...
+    validations:
+      required: true
+
+  - type: textarea
+    id: ir
+    attributes:
+      label: IR relevante (se você souber)
+      description: |
+        O gabinete real tem captura no seu banco local (`impulse_responses/`) ou
+        existe pack gratuito conhecido? O `.prst` sempre sai com CAB de fábrica;
+        IR de terceiro é apenas documentada.
+    validations:
+      required: false
+
+  - type: textarea
+    id: porque
+    attributes:
+      label: Por que isso agrega
+      description: Contexto de uso (gravar em casa, ensaio, show) e o que falta hoje na biblioteca para essa música.
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: confirmacoes
+    attributes:
+      label: Antes de enviar
+      options:
+        - label: Verifiquei que não é um pedido duplicado em patches/README.md.
+          required: true
+        - label: As fontes que citei são públicas e eu consigo linká-las.
+          required: true
+        - label: Entendo que o patch final é gerado pelo pipeline e revisado antes do merge.
+          required: false

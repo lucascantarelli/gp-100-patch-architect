@@ -1,0 +1,47 @@
+# CODEOWNERS — quem é chamado para revisar cada parte do repositório.
+# https://docs.github.com/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+#
+# Com um único mantenedor o efeito prático é "sempre eu" — mas o arquivo já
+# registra a INTENÇÃO de domínio por módulo, para que a revisão continue correta
+# quando houver mais gente no projeto. Revisão obrigatória é exigida pela
+# branch protection (ver setup_repo.sh).
+
+# ── Padrão: qualquer arquivo não listado abaixo ───────────────────────────────
+*                       @lucascantarelli
+
+# ── Núcleo do motor: pipeline de dados e formato .prst ────────────────────────
+# Mudança aqui pode regenerar centenas de artefatos; exige leitura atenta do diff.
+/tools/                 @lucascantarelli
+/tests/                 @lucascantarelli
+
+# ── Formato do dispositivo: o codec do XML single fw 2.1 ──────────────────────
+# Se este arquivo quebrar, os patches deixam de importar na pedaleira.
+/tools/generate_prst.py     @lucascantarelli
+/tools/analyze_prst.py      @lucascantarelli
+/tools/patches-defs.json    @lucascantarelli
+
+# ── Gates de integridade: não podem ser afrouxados sem justificativa ──────────
+/tools/check_data_freshness.py  @lucascantarelli
+
+# ── Conteúdo da biblioteca: patches, mapas e dossiês de rig ──────────────────
+/patches/               @lucascantarelli
+/reference/             @lucascantarelli
+/templates/             @lucascantarelli
+/prompts/               @lucascantarelli
+/knowledge.md           @lucascantarelli
+
+# ── Agentes (contrato com o Freebuff) ────────────────────────────────────────
+/.agents/               @lucascantarelli
+
+# ── Superfície de segurança: CI, workflows e governança ─────────────────────
+# Ninguém fora do mantenedor deveria poder alterar pipelines ou política.
+/.github/               @lucascantarelli
+/SECURITY.md            @lucascantarelli
+/LICENSE                @lucascantarelli
+/setup_repo.sh          @lucascantarelli
+
+# ── Release: o que sai para o usuário final ──────────────────────────────────
+/VERSION                @lucascantarelli
+/CHANGELOG.md           @lucascantarelli
+/tools/build_release.py @lucascantarelli
+/tools/gen_changelog.py @lucascantarelli

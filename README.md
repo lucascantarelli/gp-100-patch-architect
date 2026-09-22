@@ -2,7 +2,7 @@
 
 ### *Agente Freebuff que cria patches Valeton GP-100 a partir do rig real de qualquer música*
 
-![Release](https://img.shields.io/badge/release-1.0-e02d2d?style=flat-square) ![Firmware](https://img.shields.io/badge/firmware-2.1%20(confirmado%20no%20device)-2ea44f?style=flat-square) ![Agentes](https://img.shields.io/badge/agentes-17-e02d2d?style=flat-square) ![Patches](https://img.shields.io/badge/patches-62%20·%203%20álbuns-e02d2d?style=flat-square) ![Formato](https://img.shields.io/badge/.prst-single%20fw%202.1-2ea44f?style=flat-square) ![Python](https://img.shields.io/badge/gerador-Python%203-f3a637?style=flat-square) [![CI](https://github.com/lucascantarelli/gp-100-patch-architect/actions/workflows/ci.yml/badge.svg)](https://github.com/lucascantarelli/gp-100-patch-architect/actions/workflows/ci.yml)
+![Release](https://img.shields.io/badge/release-1.0-e02d2d?style=flat-square) ![Firmware](https://img.shields.io/badge/firmware-2.1%20(confirmado%20no%20device)-2ea44f?style=flat-square) ![Agentes](https://img.shields.io/badge/agentes-17-e02d2d?style=flat-square) ![Patches](https://img.shields.io/badge/patches-62%20·%203%20álbuns-e02d2d?style=flat-square) ![Formato](https://img.shields.io/badge/.prst-single%20fw%202.1-2ea44f?style=flat-square) ![Python](https://img.shields.io/badge/gerador-Python%203-f3a637?style=flat-square) [![CI](https://github.com/lucascantarelli/gp-100-patch-architect/actions/workflows/ci.yml/badge.svg)](https://github.com/lucascantarelli/gp-100-patch-architect/actions/workflows/ci.yml) [![Security](https://github.com/lucascantarelli/gp-100-patch-architect/actions/workflows/security.yml/badge.svg)](https://github.com/lucascantarelli/gp-100-patch-architect/actions/workflows/security.yml) [![CodeQL](https://img.shields.io/badge/CodeQL-Python%20·%20TypeScript-2f6fdd?style=flat-square)](https://github.com/lucascantarelli/gp-100-patch-architect/security/code-scanning) [![License: MIT](https://img.shields.io/badge/license-MIT-2ea44f?style=flat-square)](LICENSE) [![PRs welcome](https://img.shields.io/badge/PRs-welcome-e02d2d?style=flat-square)](CONTRIBUTING.md)
 
 ---
 
@@ -98,13 +98,26 @@ Cada patch entrega:
 ├── tools/              # scripts Python (ver 🔧 Ferramentas abaixo)
 ├── patches/            # biblioteca: Banda/Álbum/Música/PATCH (.prst + patch.md + spec.json)
 ├── impulse_responses/  # banco local de IRs (WAV 44.1 kHz) — indexado por ir_library.py
+│                       # ⚠️ os WAV NÃO são versionados (licença de terceiro)
 ├── tests/              # suíte do pipeline (unittest, sem dependências)
-├── .github/workflows/  # CI: pipeline de dados + testes + typecheck dos agentes
+├── .github/            # CI · segurança (CodeQL) · release · templates de issue/PR · CODEOWNERS
 ├── knowledge.md        # regras de ouro do projeto
-├── manual.pdf          # manual oficial (V1.8 impresso)
+├── CONTRIBUTING.md     # ambiente, pipeline obrigatório, Conventional Commits, fluxo de PR
+├── SECURITY.md         # escopo de segurança, prazos e canal de divulgação privada
+├── CODE_OF_CONDUCT.md  # Contributor Covenant 2.1
+├── CHANGELOG.md        # gerado por tools/gen_changelog.py a partir dos commits
+├── VERSION             # fonte única da versão (SemVer) — lida pelo CI de release
+├── manual.pdf          # manual oficial (V1.8) — NÃO versionado: obtenha no site do fabricante
+├── .editorconfig       # indentação e fim de linha (CRLF em .prst e docs de patch)
 ├── .gitattributes      # .prst fixado em CRLF · WAV/PDF tratados como binários
-└── .gitignore          # manual_pages/, caches Python, lixo de SO e estado local
+└── .gitignore          # banco de IRs e manual.pdf fora do git · caches · estado local
 ```
+
+> **📡 O banco de IRs e o `manual.pdf` não vivem no repositório.** As licenças são de
+> terceiros — a IR-Cab Library V3 é gratuita com cadastro no site da Origin Effects,
+> mas não concede redistribuição. O que **é** versionado é o catálogo derivado
+> (`tools/ir-library.json` + `reference/16-ir-library.md`), porque é ele que diz a cada
+> `patch.md` qual arquivo exato do banco usar. Detalhes: [`impulse_responses/README.md`](impulse_responses/README.md).
 
 ## 🔧 Ferramentas
 
@@ -118,6 +131,9 @@ Cada patch entrega:
 | `tools/check_data_freshness.py` | `python tools/check_data_freshness.py` | **Guarda do CI** — compara os artefatos gerados no disco com o HEAD (só o `preset_info/@time` é ignorado) e reprova citando o comando de conserto quando algo gerado ficou fora do commit |
 | `tools/analyze_prst.py` | `python tools/analyze_prst.py <arquivo>.prst [--json out.json]` | Disseca qualquer export `.prst` (modelos, ranges empíricos de params, catálogo) — é dele que nasceu o catálogo fw 2.0 |
 | `tests/test_pipeline.py` | `python -m unittest discover -s tests -v` | **Suíte de validação** do pipeline: defs, formato `.prst`, docs, momentos, nomes de parâmetro, drift dos índices e a ordem estável entre sistemas operacionais (é o que o CI roda) |
+| `tools/build_release.py` | `python tools/build_release.py [versão]` | **Empacota a Release** — ZIP da biblioteca completa + um por álbum, validando cada `.prst`, e escreve as notas em `dist/`. A versão vem de `VERSION` se você não passar nenhuma |
+| `tools/gen_changelog.py` | `python tools/gen_changelog.py [--version X.Y.Z] [--write]` | **Changelog derivado dos commits** (Conventional Commits): agrupa por tipo, isola breaking changes e sugere o bump SemVer |
+| `.github/scripts/audit_workflows.py` | `python .github/scripts/audit_workflows.py` | **Guarda dos workflows** — reprova permissões ausentes, job sem `timeout`, injeção em `run:` e `pull_request_target`; avisa sobre Action não fixada por SHA |
 
 **Cadeia típica ao acrescentar um álbum:** edite `tools/patches-defs.json` → `build_song_patches.py` → `gen_indexes.py` → **rode a suíte de testes** e o `check_data_freshness.py`. **Baixou packs de IR?** Extraia em `impulse_responses/<Pack>/` → rode `ir_library.py`. Downloads recomendados: [`reference/17-free-ir-packs.md`](reference/17-free-ir-packs.md).
 
@@ -187,11 +203,74 @@ A suíte cobre as invariantes que **já quebraram uma vez** neste projeto:
 - ✅ Banco local de IRs indexado (291 WAVs — Origin Effects IR-Cab Library V3).
 - ✅ Limpeza: export de fábrica, arquivos de exemplo e páginas pré-renderizadas do manual removidos — todo o conhecimento drenado para `reference/` + `tools/`; manual renderizável sob demanda.
 
+## ❓ FAQ
+
+**Preciso instalar ou baixar alguma coisa para usar os patches?**
+Não. O `.prst` sai com **CAB de fábrica** e funciona ao importar. IR de terceiro é
+uma camada **opcional** de refinamento — a seção 📡 do `patch.md` explica qual usar.
+
+**O patch não importou na pedaleira. Por onde começo?**
+Confira três coisas, nesta ordem: (1) o firmware é **2.1** (o formato é single fw 2.1);
+(2) o arquivo veio de `patches/**` sem edição manual — os `.prst` são gerados e validados
+pelo pipeline; (3) você está importando em **SYSTEM → USB → Import**, com o GP-100 Edits
+atualizado. Se ainda falhar, abra uma issue com o template de bug ([`bug_report.yml`](.github/ISSUE_TEMPLATE/bug_report.yml))
+informando o nome do patch e a versão de firmware.
+
+**O som não ficou igual ao disco. O patch está errado?**
+Provavelmente não — e a diferença costuma ter causa identificável. Compare o
+**captador** (cada patch documenta o perfil: bridge, neck, posições 2–4), o **volume e
+o tone da guitarra**, a **técnica** (palhetada, posição da mão) e o **monitor**: fone e
+monitor de estúdio mostram um som bem mais aberto que um amp real acima do volume de
+ensaio. Só depois disso a diferença é do patch.
+
+**Onde estão os arquivos `.prst`?**
+Em `patches/<Banda>/<Álbum>/<Música>/<PATCH>/`. Para achar rápido pela música, use o
+mapa por álbum (`MAPA-DO-ALBUM.md`) ou a [biblioteca completa](patches/README.md), que
+lista os 62 patches com nome, captador, IR recomendada e slot.
+
+**Os patches servem para outra pedaleira?**
+Não. O formato é o XML single da GP-100, com os modelos e ranges do firmware **2.0/2.1**.
+A documentação (`patch.md`) é útil como receita de timbre em qualquer plataforma, mas o
+`.prst` só importa na GP-100.
+
+**Preciso do banco de IRs que você indexou?**
+Não é obrigatório — e ele **não está no repositório**, por licença. Os catálogos
+(`tools/ir-library.json` e `reference/16-ir-library.md`) ficam versionados e continuam
+dizendo qual arquivo exato usar. O fluxo de download está em
+[`impulse_responses/README.md`](impulse_responses/README.md).
+
+**Por que os patches são por música e não compartilhados?**
+Porque o ponto do projeto é o timbre **daquela faixa**: divisões de amplificador,
+pedais e captadores mudam de música para música, e até entre camadas da mesma música.
+Um patch "genérico de Pink Floyd" não tem a informação que faz a diferença.
+
+**O que é "momento de toggle"?**
+É a instrução de ligar/desligar um módulo **em tempo real** (painel ou modo STOMP)
+durante a música — por exemplo, um patch de base com DLY sobressalente vira solo ao
+ligar o eco, sem trocar de patch. Os momentos estão no `spec.json` e validados pelos
+testes `TestE_Momentos`.
+
+**O projeto tem dependências?**
+Não. Os scripts usam só a biblioteca padrão do Python; o TypeScript dos agentes é baixado
+sob demanda pelo `npx` no typecheck. Isso é uma decisão consciente — e é também por isso
+que as Actions são praticamente o único item que o Dependabot vigia.
+
+**Posso usar os patches em show/gravação comercial?**
+O código e a documentação são MIT (ver [`LICENSE`](LICENSE)). Nomes de artista, título de
+música, marca e modelo são citados de forma **nominativa e descritiva**, e nada aqui é
+afiliado ou endossado pelos fabricantes. Se você redistribuir os packs de IR, a licença
+deles é que manda.
+
 ## 📚 Toda a documentação
 
 | Documento | Conteúdo |
 |---|---|
 | [`knowledge.md`](knowledge.md) | Regras de ouro e convenções que os agentes seguem |
+| [`CONTRIBUTING.md`](CONTRIBUTING.md) | Ambiente, pipeline obrigatório, Conventional Commits e fluxo de PR |
+| [`SECURITY.md`](SECURITY.md) | Escopo de segurança, prazos de resposta e canal privado |
+| [`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md) | Contributor Covenant 2.1 |
+| [`CHANGELOG.md`](CHANGELOG.md) | Histórico de versões (gerado dos commits) |
+| [`LICENSE`](LICENSE) | MIT — e o que **não** é coberto (marcas, títulos, packs de IR) |
 | [`.agents/README.md`](.agents/README.md) | Arquitetura dos 17 agentes e como criar um novo |
 | [`tools/README.md`](tools/README.md) | Scripts de geração/análise, arquivos de dados e armadilhas do formato |
 | [`reference/README.md`](reference/README.md) | Índice da base de conhecimento + ordem de precedência das fontes |
@@ -207,6 +286,56 @@ A suíte cobre as invariantes que **já quebraram uma vez** neste projeto:
 | [`reference/17-free-ir-packs.md`](reference/17-free-ir-packs.md) | Packs de IR gratuitos para download |
 | [`prompts/`](prompts/) | Fluxos prontos de pedido ao agente |
 | [`patches/README.md`](patches/README.md) | Biblioteca completa + nomenclatura + mapas |
+
+## 🤝 Contribuindo
+
+Contribuições são bem-vindas — conteúdo (patch novo, música, álbum) e código
+(scripts, agentes, docs). O ponto de partida é o [`CONTRIBUTING.md`](CONTRIBUTING.md),
+e ele tem uma regra que muda tudo: **`patches/**` é saída de script**.
+
+```bash
+# Antes de abrir um PR, rode o que o CI roda:
+python -m unittest discover -s tests -v
+
+# Se você mexeu em dados, o pipeline inteiro + o guarda de sincronia:
+python tools/ir_library.py && python tools/add_pulse_defs.py \
+  && python tools/add_momentos.py && python tools/build_song_patches.py \
+  && python tools/gen_indexes.py && python tools/check_data_freshness.py
+```
+
+Fluxo: **GitHub Flow**, `main` protegido, PR com título em Conventional Commit
+(que alimenta o [`CHANGELOG.md`](CHANGELOG.md)), merge por **squash** e o portão
+`🚦 Veredito do CI` verde. Nada de editar à mão arquivo gerado — a
+[`.github/PULL_REQUEST_TEMPLATE.md`](.github/PULL_REQUEST_TEMPLATE.md) traz o
+checklist completo das invariantes do projeto.
+
+Participando, você aceita o [`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md).
+
+## 🔐 Segurança
+
+**Não abra issue pública para vulnerabilidade.** Use o
+[Security Advisory privado](https://github.com/lucascantarelli/gp-100-patch-architect/security/advisories/new)
+— escopo, prazos e controles ativos estão no [`SECURITY.md`](SECURITY.md).
+
+O que o repositório roda sozinho, a cada push, PR e semanalmente:
+
+| Workflow | O que garante |
+|---|---|
+| [`ci.yml`](.github/workflows/ci.yml) | Dados em sincronia + 28 testes + typecheck dos agentes |
+| [`security.yml`](.github/workflows/security.yml) | CodeQL (Python e TypeScript), revisão de dependências em PR e auditoria de permissões dos próprios workflows |
+| [`release.yml`](.github/workflows/release.yml) | SemVer a partir de `VERSION`, changelog gerado, ZIPs publicados na Release |
+
+Além disso: secret scanning com **push protection**, alertas e correções
+automáticas do Dependabot, e branch protection em `main` (aplicável com
+[`setup_repo.sh`](setup_repo.sh)).
+
+## 📄 Licença
+
+[MIT](LICENSE) — código, scripts, agentes, documentação e os `.prst` gerados por
+este projeto. **Não** são cobertos: marcas e modelos de equipamento, nomes de
+artistas e títulos de músicas (citados de forma nominativa e descritiva), o manual
+da Valeton e os packs de IR de terceiros — que por isso **não** são versionados
+aqui. Nada neste repositório é afiliado ou endossado pelos fabricantes citados.
 
 ---
 

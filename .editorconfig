@@ -1,0 +1,59 @@
+# EditorConfig — https://editorconfig.org
+#
+# Ponto único de verdade sobre indentação e fim de linha. Atenção ao casamento
+# com o .gitattributes: os `.prst` e os `.md` de patches são **CRLF por
+# determinação do formato** (o export que importou no aparelho é CRLF). Um
+# editor configurado para LF nesses arquivos desfaz essa garantia.
+
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+indent_style = space
+indent_size = 2
+
+# ── Python: PEP 8 (4 espaços). Vale para tools/, tests/ e o codec do formato.
+[*.py]
+indent_size = 4
+max_line_length = 100
+
+# ── TypeScript dos agentes
+[*.{ts,json}]
+indent_size = 2
+
+# ── YAML: workflows e templates de issue
+[*.{yml,yaml}]
+indent_size = 2
+# YAML não aceita tabulação em nenhuma hipótese — o `indent_style` global põe
+# o editor em espaços, o que é o correto aqui.
+
+# ── Markdown: quebra manual é significativa nos docs de patch
+[*.md]
+indent_size = 2
+trim_trailing_whitespace = false
+
+# ── Formato GP-100: XML single-patch, CRLF, sem normalização de espaços
+[*.prst]
+end_of_line = crlf
+indent_size = 2
+insert_final_newline = false
+
+# ── Documentação gerada pelo pipeline (o gerador escreve CRLF de propósito)
+[patches/**/*.md]
+end_of_line = crlf
+
+# ── Binários e artefatos: o editor não deve mexer
+[*.{wav,pdf,png,jpg,jpeg,zip}]
+insert_final_newline = false
+trim_trailing_whitespace = false
+
+# ── Scripts de shell
+[*.sh]
+indent_size = 2
+
+# ── Makefiles exigem tabulação real
+[{Makefile,makefile}]
+indent_style = tab

@@ -1,0 +1,77 @@
+<!--
+Título do PR: use Conventional Commit — ele vira a linha do CHANGELOG.md.
+  feat(pulse): adiciona camada de solo em Time
+  fix(ir): corrige cab recomendado no mapa do Abbey Road
+  docs(contributing): detalha o fluxo de commit
+Detalhes em CONTRIBUTING.md. Abra em draft enquanto o pipeline estiver instável.
+-->
+
+## O que muda
+
+<!-- Duas ou três frases. O que o usuário final ganha com isso? -->
+
+Closes #
+
+## Tipo de mudança
+
+- [ ] `feat` — conteúdo ou capability nova (patch, camada, álbum, flag)
+- [ ] `fix` — correção de dado, script ou doc
+- [ ] `docs` — só documentação
+- [ ] `refactor` — reorganização sem mudar a saída do pipeline
+- [ ] `ci` — workflows
+- [ ] `chore` — manutenção
+- [ ] **Breaking change** — detalhe abaixo
+
+---
+
+## ✅ Checklist
+
+### Pipeline e testes
+
+- [ ] Rodei o pipeline completo e commitei a saída:
+      `ir_library.py` → `add_pulse_defs.py` → `add_momentos.py` → `build_song_patches.py` → `gen_indexes.py`
+- [ ] `python tools/check_data_freshness.py` passa (disco × HEAD em sincronia)
+- [ ] `python -m unittest discover -s tests -v` passa — **sem pular nem comentar teste**
+- [ ] `npx -y -p typescript@5.9.2 tsc --noEmit -p tsconfig.json` passa (se toquei em `.agents/`)
+- [ ] **Não editei à mão** arquivo gerado: `patches/**/*.prst`, `patch.md`, `spec.json`,
+      `MAPA-DO-ALBUM.md`, `patches/README.md`, `tools/patches-defs.json`,
+      `tools/ir-library.json`, `reference/16-ir-library.md`
+- [ ] Se acrescentei um seeder, encadeei em `PIPELINE` (`check_data_freshness.py`) e no
+      passo de dados de `ci.yml` — seeder fora da lista não roda no CI
+
+### Invariantes do projeto
+
+- [ ] Todo patch novo é **por música** (não compartilhado) e o nome no painel tem **≤ 12 caracteres**
+- [ ] Toda mudança de timbre de verdade virou **camada separada**, com **momento de toggle** documentado
+- [ ] **Zero rótulo `pN`** em qualquer texto — nomes de parâmetro são os oficiais do manual V2.0
+- [ ] Catálogo **fw 2.0/2.1** tem precedência sobre o manual impresso V1.8
+- [ ] NR presente com **ganho ≥ 55**; **um** efeito espacial dominante por patch
+- [ ] `.prst` continua no formato **single fw 2.1** com **CAB de fábrica**
+- [ ] IR de terceiro está **documentada**, nunca embutida (seção 📡 na ordem:
+      fábrica → banco local → internet gratuito → fábrica)
+- [ ] A seção 📡 do `patch.md` e o `MAPA-DO-ALBUM.md` **concordam** sobre a IR
+      (é a divergência que o `TestB_FonteUnica_IR` pega)
+
+### Documentação e licença
+
+- [ ] `README.md` / `reference/` / `knowledge.md` atualizados se o comportamento ou o
+      catálogo mudaram
+- [ ] Dossiê de rig novo tem **fontes linkadas** — nada de timbre por impressão pessoal
+- [ ] Não comitei binário de terceiro (WAV de pack pago, PDF de fabricante, `manual.pdf`)
+- [ ] `VERSION` / `CHANGELOG.md` só mudam em PR de release
+
+### Revisão
+
+- [ ] Descrevi como **verifiquei** que funciona (o que você ouviu/rodou, não só "deve funcionar")
+- [ ] Sei que o job `data-pipeline` tem escrita e pode **commitar no `main`** em push —
+      os dados regenerados que eu vi no diff são os que quero publicados
+
+---
+
+## Breaking change / migração
+
+<!-- Só se marcou breaking change: o que quebra, quem é afetado e como migrar. -->
+
+## Notas para o revisor
+
+<!-- Onde olhar primeiro, o que ficou em dúvida, o que deixou fora de propósito. -->

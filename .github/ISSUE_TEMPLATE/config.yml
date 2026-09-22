@@ -1,0 +1,19 @@
+# Configuração do seletor de issues.
+blank_issues_enabled: false
+
+contact_links:
+  - name: 🎸 Não sei qual patch usar / dúvida de timbre
+    url: https://github.com/lucascantarelli/gp-100-patch-architect/blob/main/patches/README.md
+    about: A biblioteca completa está em patches/README.md — 62 patches com nome de música, camada e slot. Comece por lá.
+
+  - name: 📚 Dúvida sobre um parâmetro, módulo ou modelo
+    url: https://github.com/lucascantarelli/gp-100-patch-architect/blob/main/reference/15-firmware2-effects.md
+    about: O catálogo real do firmware 2.0/2.1 (fonte de precedência do projeto) responde a maior parte das perguntas sobre efeitos e parâmetros.
+
+  - name: 🐛 O patch não importa na pedaleira
+    url: https://github.com/lucascantarelli/gp-100-patch-architect/blob/main/impulse_responses/README.md
+    about: Confira o formato aceito e o fluxo de importação antes de abrir issue — use o template de bug se o problema persistir.
+
+  - name: 🔐 Reportar uma vulnerabilidade
+    url: https://github.com/lucascantarelli/gp-100-patch-architect/security/advisories/new
+    about: NÃO abra issue pública para falhas de segurança. Canal privado, conforme SECURITY.md.

@@ -65,7 +65,7 @@ Não são tratados como vulnerabilidades de segurança deste projeto:
 - **Compatibilidade com o hardware.** Divergência entre a documentação e o
   comportamento real da GP-100 em um firmware específico é issue, não CVE.
 - **Licenciamento de conteúdo de terceiros** (marcas, títulos de música, packs
-  de IR, manual da Valeton) — ver a seção de escopo do [`LICENSE`](LICENSE).
+  de IR, manual da Valeton) — ver o [`NOTICE.md`](NOTICE.md).
   Correções de atribuição são bem-vindas como PR.
 - **Packs de IR que você baixou.** Este repositório não distribui IRs de
   terceiros; a origem e a licença de cada pack são responsabilidade de quem

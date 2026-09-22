@@ -270,7 +270,8 @@ deles é que manda.
 | [`SECURITY.md`](SECURITY.md) | Escopo de segurança, prazos de resposta e canal privado |
 | [`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md) | Contributor Covenant 2.1 |
 | [`CHANGELOG.md`](CHANGELOG.md) | Histórico de versões (gerado dos commits) |
-| [`LICENSE`](LICENSE) | MIT — e o que **não** é coberto (marcas, títulos, packs de IR) |
+| [`LICENSE`](LICENSE) | MIT (texto canônico, para detecção automática) |
+| [`NOTICE.md`](NOTICE.md) | Escopo da licença: o que **não** é coberto (marcas, títulos, manual, packs de IR) |
 | [`.agents/README.md`](.agents/README.md) | Arquitetura dos 17 agentes e como criar um novo |
 | [`tools/README.md`](tools/README.md) | Scripts de geração/análise, arquivos de dados e armadilhas do formato |
 | [`reference/README.md`](reference/README.md) | Índice da base de conhecimento + ordem de precedência das fontes |
@@ -336,6 +337,7 @@ este projeto. **Não** são cobertos: marcas e modelos de equipamento, nomes de
 artistas e títulos de músicas (citados de forma nominativa e descritiva), o manual
 da Valeton e os packs de IR de terceiros — que por isso **não** são versionados
 aqui. Nada neste repositório é afiliado ou endossado pelos fabricantes citados.
+O detalhamento de cada caso está em [`NOTICE.md`](NOTICE.md).
 
 ---
 

@@ -19,26 +19,3 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-
----
-
-## Escopo desta licença
-
-O MIT acima cobre **o código e a documentação originais deste repositório**:
-os scripts em `tools/`, os testes em `tests/`, os agentes em `.agents/`, os
-templates e os textos em `reference/`, `prompts/` e `knowledge.md`.
-
-**Não cobertos** — continuam de seus respectivos titulares:
-
-- **Marcas, modelos de equipamento e nomes de produtos** citados de forma
-  nominativa e descritiva (Valeton, GP-100, Fender, Marshall, Vox, amplificadores,
-  pedais) — ver `reference/14-glossario.md`. Nada aqui é afiliado ou endossado
-  pelos fabricantes.
-- **Títulos de músicas, nomes de artistas e de álbuns** usados como referência
-  para identificar o timbre documentado em cada patch.
-- **Packs de Impulse Response de terceiros** — não são versionados neste
-  repositório justamente por isso; veja `impulse_responses/README.md`.
-- **O manual oficial da Valeton** — obtenha no site do fabricante.
-
-Os arquivos `.prst` da biblioteca `patches/` são **gerados por este projeto**
-(`tools/build_song_patches.py`) e, portanto, entram no escopo do MIT.

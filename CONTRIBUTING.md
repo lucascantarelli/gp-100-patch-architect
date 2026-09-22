@@ -158,8 +158,8 @@ seção 📡 de `patch.md` segue **esta ordem**, sem pular etapa:
 4. **Fallback garantido** — o CAB de fábrica, sempre.
 
 Duas regras que não se negociam: **não embutimos WAV de terceiro no repositório**
-(licença alheia — ver [`LICENSE`](LICENSE)) e **não pesquisamos na internet** se
-a captura já existe no banco local.
+(licença alheia — ver [`NOTICE.md`](NOTICE.md)) e **não pesquisamos na internet**
+se a captura já existe no banco local.
 
 ## 📝 Padrão de commits — Conventional Commits
 
@@ -242,5 +242,6 @@ os dados regenerados sozinho. Consequências práticas para quem contribui:
 ## 📄 Licença
 
 Ao contribuir, você aceita que sua contribuição seja licenciada sob o
-[`LICENSE`](LICENSE) do projeto (MIT). Não envie material de terceiros cuja
-licença não permita redistribuição.
+[`LICENSE`](LICENSE) do projeto (MIT). O que o MIT **não** cobre — marcas, títulos
+de música, manual do fabricante e packs de IR — está em [`NOTICE.md`](NOTICE.md).
+Não envie material de terceiros cuja licença não permita redistribuição.

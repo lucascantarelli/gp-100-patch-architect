@@ -38,6 +38,7 @@
 /.github/               @lucascantarelli
 /SECURITY.md            @lucascantarelli
 /LICENSE                @lucascantarelli
+/NOTICE.md              @lucascantarelli
 /setup_repo.sh          @lucascantarelli
 
 # ── Release: o que sai para o usuário final ──────────────────────────────────

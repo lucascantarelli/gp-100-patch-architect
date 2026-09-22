@@ -1,0 +1,115 @@
+# Security — SAST, revisão de dependências e endurecimento dos workflows.
+#
+# Por que este workflow existe separado do CI: o `ci.yml` responde "os dados e os
+# testes estão coerentes?". Este responde outra pergunta: "a superfície de
+# segurança do repositório continua sob controle?".
+#
+#   codeql             — análise estática (SAST) de Python e TypeScript.
+#                        O repositório não tem dependências de terceiros, então
+#                        o risco real é nos scripts que geram/validam arquivos.
+#   dependency-review  — SCA por PR: reprova a introdução de dependência com
+#                        vulnerabilidade alta/crítica. Hoje passa trivialmente
+#                        (não há manifesto); existe para o dia em que houver.
+#   workflow-hardening — audita os próprios workflows (permissões, timeout,
+#                        injeção, pinagem). É o guarda da superfície que pode
+#                        ESCREVER no repositório — o job de dados tem
+#                        `contents: write` e commita no main.
+#
+# Rode o endurecimento localmente:
+#   python .github/scripts/audit_workflows.py
+
+name: Security
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  schedule:
+    # Varredura semanal: a base de consultas do CodeQL e as advisories do
+    # Dependabot mudam sem que o repositório mude.
+    - cron: '0 6 * * 1'
+  workflow_dispatch:
+
+# Piso de permissões: cada job eleva só o que precisa.
+permissions:
+  contents: read
+
+concurrency:
+  group: security-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  # ── 1 · Análise estática ────────────────────────────────────────────────────
+  codeql:
+    name: 🔐 CodeQL — ${{ matrix.language }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    permissions:
+      contents: read
+      actions: read
+      security-events: write        # necessário para publicar os resultados
+    strategy:
+      fail-fast: false              # um idioma falhando não esconde o outro
+      matrix:
+        language: [python, javascript-typescript]
+    steps:
+      - uses: actions/checkout@v4
+
+      # Python e JavaScript/TypeScript são interpretados/jit: não há passo de
+      # build. O init + analyze é o template suportado para esses idiomas.
+      - name: Inicializar o CodeQL (${{ matrix.language }})
+        uses: github/codeql-action/init@v3
+        with:
+          languages: ${{ matrix.language }}
+          queries: security-and-quality
+
+      - name: Analisar
+        uses: github/codeql-action/analyze@v3
+        with:
+          category: /language:${{ matrix.language }}
+
+  # ── 2 · Revisão de dependências (só PR) ────────────────────────────────────
+  dependency-review:
+    name: 📦 Revisão de dependências
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      pull-requests: write          # comenta o resumo no PR
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Reprovar dependência vulnerável introduzida no PR
+        uses: actions/dependency-review-action@v4
+        with:
+          fail-on-severity: high
+          comment-summary-in-pr: on-failure
+
+  # ── 3 · Endurecimento dos workflows ────────────────────────────────────────
+  workflow-hardening:
+    name: 🛡️ Endurecimento dos workflows
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.14'
+
+      - name: Auditar permissões, timeout, injeção e pinagem
+        run: |
+          set -o pipefail
+          python .github/scripts/audit_workflows.py 2>&1 | tee hardening.log
+
+      - name: Publicar o relatório no resumo da execução
+        if: always()
+        run: |
+          {
+            echo "### 🛡️ Endurecimento dos workflows"
+            echo ""
+            echo '```text'
+            cat hardening.log 2>/dev/null || echo 'auditoria não chegou a rodar'
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"

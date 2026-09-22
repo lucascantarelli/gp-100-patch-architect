@@ -1,0 +1,60 @@
+# Dependabot — o que este repositório realmente tem para atualizar.
+#
+# Contexto que explica este arquivo enxuto: o projeto é deliberadamente
+# **sem dependências**. Os scripts em tools/ e tests/ usam só a biblioteca
+# padrão do Python, e não existe package.json nem requirements.txt — o TypeScript
+# dos agentes é baixado sob demanda por `npx -p typescript@5.9.2` no CI.
+#
+# Logo, o único ecossistema real aqui são as **GitHub Actions** dos workflows.
+# Mantê-las atualizadas é justamente o que permite fixá-las por SHA (a
+# recomendação de hardening em SECURITY.md) sem que elas envelheçam sozinhas.
+
+version: 2
+updates:
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "America/Sao_Paulo"
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: "ci"
+      include: "scope"
+    labels:
+      - "dependencies"
+      - "ci"
+    # Um PR por semana com todas as actions juntas: menos ruído, revisão única.
+    groups:
+      github-actions:
+        patterns:
+          - "*"
+        update-types:
+          - "minor"
+          - "patch"
+    # Bump de major de action muda contrato (inputs, permissões) — PR separado,
+    # para ser lido com atenção em vez de mergeado no lote semanal.
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
+
+  # ── Habilitar quando houver manifesto de dependências ──────────────────────
+  # O projeto hoje não tem nenhum. Se um dia entrar, descomente o bloco
+  # correspondente para o Dependabot passar a vigiar vulnerabilidades dele.
+  #
+  # - package-ecosystem: "pip"
+  #   directory: "/"
+  #   schedule:
+  #     interval: "weekly"
+  #   commit-message:
+  #     prefix: "chore"
+  #   labels: ["dependencies", "python"]
+  #
+  # - package-ecosystem: "npm"
+  #   directory: "/"
+  #   schedule:
+  #     interval: "weekly"
+  #   commit-message:
+  #     prefix: "chore"
+  #   labels: ["dependencies", "javascript"]

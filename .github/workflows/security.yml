@@ -51,7 +51,23 @@ jobs:
     strategy:
       fail-fast: false              # um idioma falhando não esconde o outro
       matrix:
-        language: [python, javascript-typescript]
+        # `javascript-typescript` foi removido de propósito, e o motivo importa:
+        # o único TS do repositório vive em `.agents/` (diretório com ponto). O
+        # extrator JS/TS do CodeQL não o indexa — na prática ele varria só os
+        # .yml do .github/ e o tsconfig.json, terminando em "CodeQL detected code
+        # written in JavaScript/TypeScript but could not process any of it" e
+        # deixando o check vermelho com ZERO achados. Scan de fachada é pior que
+        # scan ausente: o contrato dos agentes já é verificado por `tsc --noEmit`
+        # no ci.yml.
+        #
+        # `actions` entrou no lugar e cobre o que de fato interessa aqui: os
+        # próprios workflows — a superfície que tem `contents: write`, commita no
+        # main e interpola contexto de PR. É a versão automática do que o
+        # `audit_workflows.py` checa por regra.
+        #
+        # Reative `javascript-typescript` se um dia houver JS/TS fora de
+        # diretório oculto (ou se `.agents/` virar caminho visível).
+        language: [python, actions]
     steps:
       - uses: actions/checkout@v4
 

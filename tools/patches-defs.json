@@ -57,7 +57,7 @@
       "ano": 1999,
       "display": "Supernatural (1999)",
       "pasta": "Santana/Supernatural (1999)",
-      "rig": "## 📚 Rig real (fontes)\n\n- **Carlos Santana**: PRS Santana signature (humbuckers gordos, sustain longo) direto na **Mesa/Boogie** — o Mark I é o clássico dele desde Woodstock; em estúdio o tom do *Smooth* é o 'gordo e liso' de Mesa com gain moderado.\n- **Groove**: riff festonado em Am–D sobre percussão afro (timba/conga); o baixo dokiisha dobra o riff — por isso a base do patch acompanha, não disputa.\n- **Solo**: pentatônica menor de Am com frases longas e vibrato largo — sustain de amp + sustain do dedo, sem pedal de distorção extra.\n- 📖 Fontes: guitarchalk.com ('Amp Settings for \"Smooth\"' — PRS Santana + Mesa) · tonesmatch.com (Smooth riff tone) · Supernatural (1999), Arista · Wikipedia."
+      "rig": "## 📚 Rig real (fontes)\n\n- **Carlos Santana**: PRS Santana signature (humbuckers gordos, sustain longo) direto na **Mesa/Boogie** — o Mark I é o clássico dele desde Woodstock; em estúdio o tom do *Smooth* é o 'gordo e liso' de Mesa com gain moderado.\n- **Groove**: riff festonado em Am–D sobre percussão afro (timba/conga); o baixo dobra o riff — por isso a base do patch acompanha, não disputa.\n- **Solo**: pentatônica menor de Am com frases longas e vibrato largo — sustain de amp + sustain do dedo, sem pedal de distorção extra.\n- 📖 Fontes: guitarchalk.com ('Amp Settings for \"Smooth\"' — PRS Santana + Mesa) · tonesmatch.com (Smooth riff tone) · Supernatural (1999), Arista · Wikipedia."
     }
   },
   "ir_local": {
@@ -80,6 +80,14 @@
     "UK-LD 4x12": {
       "captura": "British Straight 4x12",
       "slot": "User IR 4"
+    },
+    "Mess-D 4x12": {
+      "captura": "Modern Boutique 4x12",
+      "slot": "User IR 5"
+    },
+    "L-Star 2x12": {
+      "captura": "Magma Vintage 1x12",
+      "slot": "User IR 6"
     }
   },
   "songs": [
@@ -8737,14 +8745,14 @@
             },
             "ajustes": [
               "lamacento → CAB High Cut -5 ou EQ Mid -2",
-              "seco/durpo → Yellow OD Tone +5",
+              "seco/duro → Yellow OD Tone +5",
               "falta sustain → L-Star CL Vol +3"
             ],
             "evite": [
               "Hi-gain moderno: a mordida do Smooth é de amp aberto, não de distorção",
               "Reverb longo: o groove é seco"
             ],
-            "irNota": "Recomendada: Magma Vintage 1x12 Medium Mix (User IR 5) — a alma vintage 1x12 do combo do Santana (Low Cut 5 · High Cut 8500 · Level 0).",
+            "irNota": "Recomendada: Magma Vintage 1x12 (User IR 6) — a alma vintage 1x12 do combo do Santana (Low Cut 5 · High Cut 8500 · Level 0).",
             "momentos": [
               {
                 "nome": "Refrão aberto (sem drive)",
@@ -8877,14 +8885,14 @@
             },
             "ajustes": [
               "brigar com o vocal → Volume da guitarra -2",
-              "chorus forte → A-Chorus Depth -10",
+              "chorus forte → A-Chorus Mix -10",
               "falta corpo → L-Star CL Vol +4"
             ],
             "evite": [
               "Clima 'molhado' demais: a base seca segura o verso",
               "Triângulo de agudos: Tone 7 já é suficiente"
             ],
-            "irNota": "Recomendada: Magma Vintage 1x12 Medium Mix (User IR 5) — a alma vintage 1x12 do combo do Santana (Low Cut 5 · High Cut 8500 · Level 0).",
+            "irNota": "Recomendada: Magma Vintage 1x12 (User IR 6) — a alma vintage 1x12 do combo do Santana (Low Cut 5 · High Cut 8500 · Level 0).",
             "momentos": [
               {
                 "nome": "Levante para frases (drive)",
@@ -8973,7 +8981,11 @@
               "MOD": {
                 "name": "A-Chorus",
                 "on": false,
-                "params": {}
+                "params": {
+                  "0": 35,
+                  "1": 0.5,
+                  "2": 30
+                }
               },
               "DLY": {
                 "name": "Sweet",
@@ -9027,7 +9039,7 @@
               "Delay longo: o eco do solo é curto e discreto",
               "Distorção extra no DST: o sustain já vem do amp + sustain do dedo"
             ],
-            "irNota": "Ambos valem aqui: Modern Boutique 4x12 Medium Mix (User IR 4) para o recorte de mesa de gravação, ou fique no Mess-D de fábrica (o mapa registra as duas rotas).",
+            "irNota": "Ambos valem aqui: Modern Boutique 4x12 (User IR 5) para o recorte de mesa de gravação, ou fique no Mess-D de fábrica — o mapa registra as duas rotas.",
             "momentos": [
               {
                 "nome": "Ponte espessa (dobro)",
@@ -9037,7 +9049,7 @@
                     "ON"
                   ]
                 ],
-                "quando": "Na ponte, o chorus dá o dobro de estúdio da gravação.",
+                "quando": "Na ponte, ligue o chorus: o dobro de estúdio da gravação, com os params do sobressalente.",
                 "dica": "Religue para o solo seco."
               }
             ]
@@ -9154,13 +9166,13 @@
               ]
             },
             "ajustes": [
-              "sumir na mixagem → EQ Level +4",
+              "sumir na mixagem → L-Star CL Vol +3",
               "crocante demais → L-Star CL Vol -3"
             ],
             "evite": [
               "Fills longos: esta camada é percussiva — frases de 1 ou 2 compassos"
             ],
-            "irNota": "Recomendada: Magma Vintage 1x12 Medium Mix (User IR 5) — a alma vintage 1x12 do combo do Santana (Low Cut 5 · High Cut 8500 · Level 0).",
+            "irNota": "Recomendada: Magma Vintage 1x12 (User IR 6) — a alma vintage 1x12 do combo do Santana (Low Cut 5 · High Cut 8500 · Level 0).",
             "momentos": [
               {
                 "nome": "Solo (lead herdado)",

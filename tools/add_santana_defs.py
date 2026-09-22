@@ -75,10 +75,12 @@ REF_MESA = ref("Amp: Mesa/Boogie — o Mark I é o clássico dele desde Woodstoc
 REF_GROOVE = ref("Groove: riff festonado em Am–D sobre percussão afro (timba/conga)",
                  "Supernatural (1999), Arista · Wikipedia")
 
-IR_MESA = ('Ambos valem aqui: Modern Boutique 4x12 Medium Mix (User IR 4) para o '
-           'recorte de mesa de gravação, ou fique no Mess-D de fábrica (o mapa '
-           'registra as duas rotas).')
-IR_LOCAL_LS = ('Recomendada: Magma Vintage 1x12 Medium Mix (User IR 5) — a alma '
+IR_LOCAL_MESA = {'captura': 'Modern Boutique 4x12', 'slot': 'User IR 5'}
+IR_LOCAL_MOB = {'captura': 'Magma Vintage 1x12', 'slot': 'User IR 6'}
+IR_MESA = (f"Ambos valem aqui: {IR_LOCAL_MESA['captura']} ({IR_LOCAL_MESA['slot']}) para o "
+           'recorte de mesa de gravação, ou fique no Mess-D de fábrica — o mapa '
+           'registra as duas rotas.')
+IR_LOCAL_LS = (f"Recomendada: {IR_LOCAL_MOB['captura']} ({IR_LOCAL_MOB['slot']}) — a alma "
                'vintage 1x12 do combo do Santana (Low Cut 5 · High Cut 8500 · Level 0).')
 IR_FAB = 'Fábrica é o alvo: nenhum gabinete do banco casa melhor que o CAB já escolhido para este papel.'
 
@@ -95,7 +97,7 @@ SMOOTH.append(P(
     "riff festonado de Am–D", "Rock latino 112 BPM (groove de timba)",
     ["gordo e liso ao mesmo tempo", "midrange presente que corta sem piar",
      "graves acompanhando o baixo, sem embolar"],
-    ["lamacento → CAB High Cut -5 ou EQ Mid -2", "seco/durpo → Yellow OD Tone +5",
+    ["lamacento → CAB High Cut -5 ou EQ Mid -2", "seco/duro → Yellow OD Tone +5",
      "falta sustain → L-Star CL Vol +3"],
     ["Hi-gain moderno: a mordida do Smooth é de amp aberto, não de distorção",
      "Reverb longo: o groove é seco"],
@@ -123,7 +125,7 @@ SMOOTH.append(P(
     "acordes Am–D respondendo ao vocal", "Verso 112 BPM",
     ["limpo gordo (não estéril)", "chorus ralo — textura, não efeito",
      "espaço para o vocal respirar"],
-    ["brigar com o vocal → Volume da guitarra -2", "chorus forte → A-Chorus Depth -10",
+    ["brigar com o vocal → Volume da guitarra -2", "chorus forte → A-Chorus Mix -10",
      "falta corpo → L-Star CL Vol +4"],
     ["Clima 'molhado' demais: a base seca segura o verso",
      "Triângulo de agudos: Tone 7 já é suficiente"],
@@ -144,7 +146,7 @@ SMOOTH.append(P(
     "Solo lead: Soldano denso e cantável sobre gabinete Mesa — o sustain infinito "
     "que faz a guitarra 'cantar' por cima do vocal do Rob Thomas",
     chain(pre=mod('COMP', True, 25, 40, 50), dst=mod('Yellow OD', True, 48, 83, 55),
-          amp=SOLO_LD, nr=NR_28, cab=CAB_MESA, eq=EQ_GORDO,
+          amp=SOLO_LD, nr=NR_28, cab=CAB_MESA, eq=EQ_GORDO, modfx=CHORUS_DOBRO,
           dly=mod('Sweet', True, 20, 420, 24),
           rvb=mod('Plate', True, 30, 40, 50, 1)),
     "solo de Am pentatônica menor com frases longas", "Solo 112 BPM",
@@ -161,7 +163,7 @@ SMOOTH.append(P(
     ["Frases longas com vibrato de dedo largo (não de tremolo)",
      "Puxe a escala de Am com bends até a 12ª casa — deixe a nota CHORAR antes de resolver"],
     momentos=[('Ponte espessa (dobro)', [('MOD', 'ON')],
-               'Na ponte, o chorus dá o dobro de estúdio da gravação.',
+               'Na ponte, ligue o chorus: o dobro de estúdio da gravação, com os params do sobressalente.',
                'Religue para o solo seco.')],
 ))
 
@@ -178,7 +180,7 @@ SMOOTH.append(P(
     "fills curtos e percussivos sobre o groove", "Camada 112 BPM",
     ["crocante e curto — preenche sem ocupar o lugar da base",
      "ataque seco que 'bate' com a conga"],
-    ["sumir na mixagem → EQ Level +4", "crocante demais → L-Star CL Vol -3"],
+    ["sumir na mixagem → L-Star CL Vol +3", "crocante demais → L-Star CL Vol -3"],
     ["Fills longos: esta camada é percussiva — frases de 1 ou 2 compassos"],
     IR_LOCAL_LS,
     "Posição 2 (middle+bridge)", "middle+bridge",
@@ -200,7 +202,7 @@ ALBUM = {
             "direto na **Mesa/Boogie** — o Mark I é o clássico dele desde Woodstock; em "
             "estúdio o tom do *Smooth* é o 'gordo e liso' de Mesa com gain moderado.\n"
             "- **Groove**: riff festonado em Am–D sobre percussão afro (timba/conga); "
-            "o baixo dokiisha dobra o riff — por isso a base do patch acompanha, não disputa.\n"
+            "o baixo dobra o riff — por isso a base do patch acompanha, não disputa.\n"
             "- **Solo**: pentatônica menor de Am com frases longas e vibrato largo — "
             "sustain de amp + sustain do dedo, sem pedal de distorção extra.\n"
             "- 📖 Fontes: guitarchalk.com ('Amp Settings for \"Smooth\"' — PRS Santana + Mesa) · "
@@ -209,6 +211,8 @@ ALBUM = {
 
 data = json.loads(DEFS_PATH.read_text(encoding='utf-8'))
 data['albums']['SN'] = ALBUM
+data['ir_local']['Mess-D 4x12'] = IR_LOCAL_MESA
+data['ir_local']['L-Star 2x12'] = IR_LOCAL_MOB
 SONG = {
     "id": "SMOO1", "song": "Smooth", "idAlbum": "SN", "bpm": 112,
     "resumo": ("Santana com Rob Thomas: groove de Am–D, riff festonado sobre o groove "

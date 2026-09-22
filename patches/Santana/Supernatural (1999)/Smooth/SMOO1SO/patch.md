@@ -59,9 +59,15 @@ Só mexa na pedaleira **depois** de acertar a guitarra — ela resolve 80% do so
 >
 > Uma IR boa **substitui** o CAB — não empilha com ele.
 
-### 🔍 Não há captura melhor no nosso banco para este alvo
+### 📁 Melhor opção no nosso banco (`impulse_responses/`) — use esta
 
-O CAB de fábrica `Mess-D 4x12` **já é a representação correta** deste alvo — nenhum gabinete do banco casa melhor (o catálogo local é consultado em `reference/16-ir-library.md`).
+O banco local tem a captura **Modern Boutique 4x12** — casamento direto com o gabinete real deste patch:
+
+1. No **GP-100 Edits** → IR Manager, carregue no **User IR 5** o arquivo:
+   `impulse_responses/Origin Effects - IR-Cab Library V3/44.1kHz Origin Effects IR Cab Library/Modern Boutique 4x12/Modern Boutique 4x12 Medium Mix.wav`
+2. No patch: bloco CAB → troque `Mess-D 4x12` por **User IR 5**.
+3. Afine no próprio CAB: **High Cut 6000–8500 Hz** a gosto (fizz → baixe), **Level** comece em 0 e compare com o bypass.
+   Alternativas do mesmo gabinete no banco: `Modern Boutique 4x12 Bright Mix.wav`, `Modern Boutique 4x12 Dark Mix.wav`, `Modern Boutique 4x12 Bright 160.wav`, `Modern Boutique 4x12 Bright 421.wav`, `Modern Boutique 4x12 Bright 57.wav`, `Modern Boutique 4x12 Dark 160.wav`, `Modern Boutique 4x12 Dark 421.wav`, `Modern Boutique 4x12 Dark 57.wav`, `Modern Boutique 4x12 Medium 160.wav`, `Modern Boutique 4x12 Medium 421.wav`, `Modern Boutique 4x12 Medium 57.wav`.
 
 ### 🌍 Procurar na internet (só se quiser experimentar algo diferente)
 
@@ -78,7 +84,7 @@ python tools/ir_library.py          ← reindexa e valida os WAVs
 
 Se nenhuma IR entregar o que você quer, **mantenha o CAB de fábrica** — este patch foi afinado com ele.
 
-**Nota específica deste patch**: Ambos valem aqui: Modern Boutique 4x12 Medium Mix (User IR 4) para o recorte de mesa de gravação, ou fique no Mess-D de fábrica (o mapa registra as duas rotas).
+**Nota específica deste patch**: Ambos valem aqui: Modern Boutique 4x12 (User IR 5) para o recorte de mesa de gravação, ou fique no Mess-D de fábrica — o mapa registra as duas rotas.
 
 
 ---
@@ -108,7 +114,7 @@ A GP-100 liga/desliga **qualquer módulo em tempo real**: no **painel**, slot a 
 Mude SÓ os módulos indicados — o resto permanece como na tabela acima:
 
 1. **Ponte espessa (dobro)** — **MOD → ON**
-   *Quando*: Na ponte, o chorus dá o dobro de estúdio da gravação.
+   *Quando*: Na ponte, ligue o chorus: o dobro de estúdio da gravação, com os params do sobressalente.
    *Dica*: Religue para o solo seco.
 
 ### 🦶 Ligar/desligar ao vivo (modo STOMP)
@@ -180,7 +186,7 @@ _Legenda: **🔴** ligado · ⚪ desligado — a ordem é o caminho do sinal._
 - Controle de hum (single coils + ganho) → `Gate 1`
 - Gabinete Mesa/Boogie® Rectifier 4x12 → `Mess-D 4x12`
 - Esculpir o som para fone/PC → `EQ 1`
-- Delay com 1 repetição na duração da nota (assinatura do solo de Gilmour) → `Sweet`
+- Delay com 1 repetição na duração da nota (eco do solo) → `Sweet`
 - Plate de estúdio ("splash" da faixa) → `Plate`
 
 ### Parâmetros módulo a módulo
@@ -275,7 +281,7 @@ _Legenda: **🔴** ligado · ⚪ desligado — a ordem é o caminho do sinal._
 2. **Digitar no painel** (receita na ordem dos menus):
 
 ```
-**PRE** `COMP` (Sens 25 / Attack 40 / Sustain 50) → **DST** `Yellow OD` (Gain 48 / Tone 83 / Level 55) → **AMP** `Solo100 LD` (Vol 46 / PRSE 52 / Master 62 / Bass 55 / Middle 58 / Treble 62) → **NR** `Gate 1` (Thr 28) → **CAB** `Mess-D 4x12` (Level 85 / High Cut 80) → **EQ** `EQ 1` (Low 2 / Mid 3 / High -1 / Mid Freq 5 / Presença 5 / Level 50) → **DLY** `Sweet` (Mix 20 / Time 420 ms / Fdbk 24) → **RVB** `Plate` (ajuste fino no painel — seção 3 📡) → SOBRESSALENTE **MOD** `A-Chorus` (template de fábrica — ajuste por orelha ao ligar)
+**PRE** `COMP` (Sens 25 / Attack 40 / Sustain 50) → **DST** `Yellow OD` (Gain 48 / Tone 83 / Level 55) → **AMP** `Solo100 LD` (Vol 46 / PRSE 52 / Master 62 / Bass 55 / Middle 58 / Treble 62) → **NR** `Gate 1` (Thr 28) → **CAB** `Mess-D 4x12` (Level 85 / High Cut 80) → **EQ** `EQ 1` (Low 2 / Mid 3 / High -1 / Mid Freq 5 / Presença 5 / Level 50) → **DLY** `Sweet` (Mix 20 / Time 420 ms / Fdbk 24) → **RVB** `Plate` (ajuste fino no painel — seção 3 📡) → SOBRESSALENTE **MOD** `A-Chorus` (Rate 35 / Depth 0.5 / Mix 30)
 ```
 
 3. **SAVE** no slot → renomeie para `SMOO1SO`.

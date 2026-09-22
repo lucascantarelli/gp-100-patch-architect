@@ -38,7 +38,7 @@ Só mexa na pedaleira **depois** de acertar a guitarra — ela resolve 80% do so
 
 | Se você ouvir… | Faça isto |
 |---|---|
-| sumir na mixagem | EQ Level +4 |
+| sumir na mixagem | L-Star CL Vol +3 |
 | crocante demais | L-Star CL Vol -3 |
 
 ### Protocolo universal (vale para todos os patches)
@@ -58,9 +58,15 @@ Só mexa na pedaleira **depois** de acertar a guitarra — ela resolve 80% do so
 >
 > Uma IR boa **substitui** o CAB — não empilha com ele.
 
-### 🔍 Não há captura melhor no nosso banco para este alvo
+### 📁 Melhor opção no nosso banco (`impulse_responses/`) — use esta
 
-O CAB de fábrica `L-Star 2x12` **já é a representação correta** deste alvo — nenhum gabinete do banco casa melhor (o catálogo local é consultado em `reference/16-ir-library.md`).
+O banco local tem a captura **Magma Vintage 1x12** — casamento direto com o gabinete real deste patch:
+
+1. No **GP-100 Edits** → IR Manager, carregue no **User IR 6** o arquivo:
+   `impulse_responses/Origin Effects - IR-Cab Library V3/44.1kHz Origin Effects IR Cab Library/Magma Vintage 1x12/Magma Vintage 1x12 Medium Mix.wav`
+2. No patch: bloco CAB → troque `L-Star 2x12` por **User IR 6**.
+3. Afine no próprio CAB: **High Cut 6000–8500 Hz** a gosto (fizz → baixe), **Level** comece em 0 e compare com o bypass.
+   Alternativas do mesmo gabinete no banco: `Magma Vintage 1x12 Bright Mix.wav`, `Magma Vintage 1x12 Dark Mix.wav`, `Magma Vintage 1x12 Bright 160.wav`, `Magma Vintage 1x12 Bright 421.wav`, `Magma Vintage 1x12 Bright 87.wav`, `Magma Vintage 1x12 Dark 160.wav`, `Magma Vintage 1x12 Dark 421.wav`, `Magma Vintage 1x12 Dark 87.wav`, `Magma Vintage 1x12 Medium 160.wav`, `Magma Vintage 1x12 Medium 421.wav`, `Magma Vintage 1x12 Medium 87.wav`.
 
 ### 🌍 Procurar na internet (só se quiser experimentar algo diferente)
 
@@ -77,7 +83,7 @@ python tools/ir_library.py          ← reindexa e valida os WAVs
 
 Se nenhuma IR entregar o que você quer, **mantenha o CAB de fábrica** — este patch foi afinado com ele.
 
-**Nota específica deste patch**: Recomendada: Magma Vintage 1x12 Medium Mix (User IR 5) — a alma vintage 1x12 do combo do Santana (Low Cut 5 · High Cut 8500 · Level 0).
+**Nota específica deste patch**: Recomendada: Magma Vintage 1x12 (User IR 6) — a alma vintage 1x12 do combo do Santana (Low Cut 5 · High Cut 8500 · Level 0).
 
 
 ---
@@ -174,8 +180,8 @@ _Legenda: **🔴** ligado · ⚪ desligado — a ordem é o caminho do sinal._
 - Mesa/Boogie® Lone Star™ — o "gordo e liso" do Santana → `L-Star CL`
 - Controle de hum (single coils + ganho) → `Gate 1`
 - Combo vintage 1x12 do Lone Star → `L-Star 2x12`
-- Delay com 1 repetição na duração da nota (assinatura do solo de Gilmour) → `Sweet`
-- Sala curta da Abbey Road → `Room`
+- Delay com 1 repetição na duração da nota (eco do solo) → `Sweet`
+- Sala curta e seca (Abbey Road, groove de timba) → `Room`
 
 ### Parâmetros módulo a módulo
 

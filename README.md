@@ -2,7 +2,7 @@
 
 ### *Agente Freebuff que cria patches Valeton GP-100 a partir do rig real de qualquer música*
 
-![Release](https://img.shields.io/badge/release-1.0-e02d2d?style=flat-square) ![Firmware](https://img.shields.io/badge/firmware-2.1%20(confirmado%20no%20device)-2ea44f?style=flat-square) ![Agentes](https://img.shields.io/badge/agentes-17-e02d2d?style=flat-square) ![Patches](https://img.shields.io/badge/patches-66%20·%205%20álbuns-e02d2d?style=flat-square) ![Formato](https://img.shields.io/badge/.prst-single%20fw%202.1-2ea44f?style=flat-square) ![Python](https://img.shields.io/badge/gerador-Python%203-f3a637?style=flat-square) [![CI](https://github.com/lucascantarelli/gp-100-patch-architect/actions/workflows/ci.yml/badge.svg)](https://github.com/lucascantarelli/gp-100-patch-architect/actions/workflows/ci.yml) [![Security](https://github.com/lucascantarelli/gp-100-patch-architect/actions/workflows/security.yml/badge.svg)](https://github.com/lucascantarelli/gp-100-patch-architect/actions/workflows/security.yml) [![CodeQL](https://img.shields.io/badge/CodeQL-Python%20·%20TypeScript-2f6fdd?style=flat-square)](https://github.com/lucascantarelli/gp-100-patch-architect/security/code-scanning) [![License: MIT](https://img.shields.io/badge/license-MIT-2ea44f?style=flat-square)](LICENSE) [![PRs welcome](https://img.shields.io/badge/PRs-welcome-e02d2d?style=flat-square)](CONTRIBUTING.md)
+![Release](https://img.shields.io/badge/release-1.0-e02d2d?style=flat-square) ![Firmware](https://img.shields.io/badge/firmware-2.1%20(confirmado%20no%20device)-2ea44f?style=flat-square) ![Agentes](https://img.shields.io/badge/agentes-17-e02d2d?style=flat-square) ![Patches](https://img.shields.io/badge/patches-97%20·%206%20álbuns-e02d2d?style=flat-square) ![Formato](https://img.shields.io/badge/.prst-single%20fw%202.1-2ea44f?style=flat-square) ![Python](https://img.shields.io/badge/gerador-Python%203-f3a637?style=flat-square) [![CI](https://github.com/lucascantarelli/gp-100-patch-architect/actions/workflows/ci.yml/badge.svg)](https://github.com/lucascantarelli/gp-100-patch-architect/actions/workflows/ci.yml) [![Security](https://github.com/lucascantarelli/gp-100-patch-architect/actions/workflows/security.yml/badge.svg)](https://github.com/lucascantarelli/gp-100-patch-architect/actions/workflows/security.yml) [![CodeQL](https://img.shields.io/badge/CodeQL-Python%20·%20TypeScript-2f6fdd?style=flat-square)](https://github.com/lucascantarelli/gp-100-patch-architect/security/code-scanning) [![License: MIT](https://img.shields.io/badge/license-MIT-2ea44f?style=flat-square)](LICENSE) [![PRs welcome](https://img.shields.io/badge/PRs-welcome-e02d2d?style=flat-square)](CONTRIBUTING.md)
 
 ---
 
@@ -70,7 +70,7 @@ Contexto: <gravar em casa com fone / ensaio / show>
 IR de terceiros: pesquisar IR; caso não encontre, use uma de fábrica
 ```
 
-> Fluxos prontos em [`prompts/`](prompts/) · Exemplos reais na [biblioteca de patches](patches/README.md): **Pulse** (Pink Floyd — 24 músicas → 38 patches, ordem do álbum em U25–U62), **Abbey Road** (17 músicas → 20 patches), **Uncle Remus** (Zappa), **Piece of My Heart** (Janis Joplin) e **Smooth** (Santana — 4 patches com stomps).
+> Fluxos prontos em [`prompts/`](prompts/) · Exemplos reais na [biblioteca de patches](patches/README.md): **Pulse** (Pink Floyd — 24 músicas → 38 patches, ordem do álbum em U25–U62), **Wishkah** (Nirvana — 17 músicas → 31 patches, U63–U93), **Abbey Road** (14 músicas → 20 patches), **Uncle Remus** (Zappa), **Piece of My Heart** (Janis Joplin) e **Smooth** (Santana — 4 patches com stomps, U94–U97).
 
 ## 📦 Entrega de cada patch
 
@@ -188,11 +188,11 @@ A suíte cobre as invariantes que **já quebraram uma vez** neste projeto:
 ## 🧪 Histórico de validação
 
 - ✅ `.prst` comparados estruturalmente com o export **single** que importou com sucesso no aparelho (7 checks), formato firmware 2.1 — o formato está registrado no gerador.
-- ✅ 66 patches em biblioteca (Abbey Road, Apostrophe ('), Cheap Thrills, Pulse e Supernatural — 41 músicas), XMLs validados, 0 HTML cru e slots U01–U66 mapeados; pipeline **idempotente** (regenerar não muda parâmetros — só o timestamp `preset_info/@time`, igual ao export real).
-- ✅ Seções obrigatórias presentes nos 66 docs (guitarra → ajustes finos → IR → modos de atuação → objetivo → dossiê → parâmetros → carga → evite) e 32 momentos de toggle validados contra o spec.
-- ✅ **Zero rótulo `pN` nos 66 docs**: os 40 `patch.md` do Pulse e as 28 menções em textos de ajustes/evite passaram a usar os nomes do manual V2.0 (rótulos acima); os slots **internos** do firmware (que o editor não expõe) não são setados nem rotulados — ficam no default de fábrica.
+- ✅ 97 patches em biblioteca (Abbey Road, Apostrophe ('), Cheap Thrills, Pulse, From the Muddy Banks of the Wishkah e Supernatural — 58 músicas), XMLs validados, 0 HTML cru e slots U01–U97 mapeados; pipeline **idempotente e reprodutível** (regenerar não muda nada — o timestamp `preset_info/@time` é determinístico).
+- ✅ Seções obrigatórias presentes nos 97 docs (guitarra → ajustes finos → IR → modos de atuação → objetivo → dossiê → parâmetros → carga → evite) e 67 momentos de toggle validados contra o spec.
+- ✅ **Zero rótulo `pN` nos 97 docs**: os 40 `patch.md` do Pulse e as 28 menções em textos de ajustes/evite passaram a usar os nomes do manual V2.0 (rótulos acima); os slots **internos** do firmware (que o editor não expõe) não são setados nem rotulados — ficam no default de fábrica.
 - ✅ **Dossiê de rig de Cheap Thrills** (Big Brother & The Holding Company): duas guitarras em **Gibson SG** (Gurley e Andrew), **Fender Twin Reverb**, Maestro FZ-1 no Gurley — e o achado que fecha o timbre da faixa: **Piece of My Heart sem fuzz** (Gurley limpo, Sam sujo no Twin estourado); o mapa da Janis voltou a ter seção de rig, com fontes.
-- ✅ **CI + suíte de testes** ([`.github/workflows/ci.yml`](.github/workflows/ci.yml)): 31 testes em `tests/` validam defs, formato dos 66 `.prst`, docs, momentos, nomes de parâmetro, drift dos índices, a ordem estável entre OS e a **sincronia dos derivados** — o `TestH` roda o pipeline completo numa cópia temporária e compara com o commitado (só o timestamp `preset_info/@time` é ignorado — o pipeline é reprodutível em 194 artefatos); **nenhum job escreve no repositório**, e o portão **`ci-gate`** concentra o veredito final.
+- ✅ **CI + suíte de testes** ([`.github/workflows/ci.yml`](.github/workflows/ci.yml)): 31 testes em `tests/` validam defs, formato dos 97 `.prst`, docs, momentos, nomes de parâmetro, drift dos índices, a ordem estável entre OS e a **sincronia dos derivados** — o `TestH` roda o pipeline completo numa cópia temporária e compara com o commitado (só o timestamp `preset_info/@time` é ignorado — são reprodutíveis em 204 artefatos, com timestamp determinístico); **nenhum job escreve no repositório**, e o portão **`ci-gate`** concentra o veredito final.
 - ✅ **Pipeline reprodutível entre sistemas**: a ordem dos artefatos derivados não depende do SO — a comparação de `Path` usa `normcase` (minúsculas no Windows, identidade no Linux) e fazia o manifesto de IRs divergir entre a máquina e o CI; a ordenação agora é por string (ordem de code point), com teste travando a regressão (`TestI_OrdemEstavel`).
 - ✅ Typecheck `tsc --noEmit` limpo nos 17 agentes.
 - ✅ Manual V1.8 transcrito página a página para `reference/` + catálogo empírico extraído do export de fábrica (`tools/factory-catalog.json`, 99 presets · 117 modelos).
@@ -222,7 +222,7 @@ ensaio. Só depois disso a diferença é do patch.
 **Onde estão os arquivos `.prst`?**
 Em `patches/<Banda>/<Álbum>/<Música>/<PATCH>/`. Para achar rápido pela música, use o
 mapa por álbum (`MAPA-DO-ALBUM.md`) ou a [biblioteca completa](patches/README.md), que
-lista os 66 patches com nome, captador, IR recomendada e slot.
+lista os 97 patches com nome, captador, IR recomendada e slot.
 
 **Os patches servem para outra pedaleira?**
 Não. O formato é o XML single da GP-100, com os modelos e ranges do firmware **2.0/2.1**.

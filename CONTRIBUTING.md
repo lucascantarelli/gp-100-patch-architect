@@ -102,7 +102,7 @@ insumo da documentação: é dele que sai o caminho exato da captura citado na s
 no `patch.md` e o marcador 📁 no `MAPA-DO-ALBUM.md` de cada álbum.
 
 Consequência para o seu PR: se você rodar `ir_library.py` **sem** o pack completo
-que gerou o catálogo commitado, 62 docs perderiam a recomendação do banco local.
+que gerou o catálogo commitado, 97 docs perderiam a recomendação do banco local.
 Como o `patch.md` e o mapa cairiam para "fábrica" juntos, a suíte passaria — então
 o próprio script reprova a rodada
 (`python tools/ir_library.py --force` só quando a remoção for intencional).

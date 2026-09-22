@@ -3,7 +3,7 @@
 Obrigado pelo interesse. Este projeto tem uma característica que muda tudo:
 **metade dele é saída de script**. Os arquivos em `patches/**` são *gerados* a
 partir de `tools/patches-defs.json`, e o CI reprova quem editar o gerado à mão.
-Antes de abrir um PR, leia a seção [O pipeline é obrigatório](#-o-pipeline-é-obrigatório).
+Antes de commitar na `develop`, leia a seção [O pipeline é obrigatório](#-o-pipeline-é-obrigatório).
 
 Ao participar, você concorda com o [`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md).
 Para vulnerabilidades, **não** abra issue: siga o [`SECURITY.md`](SECURITY.md).
@@ -43,10 +43,10 @@ pip install pymupdf
 python tools/render_manual_page.py 21        # página impressa NN = arquivo NN+2
 ```
 
-## ✅ Antes de abrir um PR: rode exatamente o que o CI roda
+## ✅ Antes de commitar na `develop`: rode exatamente o que o CI roda
 
 ```bash
-# 1. Suíte de testes (28 testes, stdlib pura)
+# 1. Suíte de testes (31 testes, stdlib pura)
 python -m unittest discover -s tests -v
 
 # 2. Typecheck dos 17 agentes
@@ -200,64 +200,58 @@ migração. O `tools/gen_changelog.py` lê este padrão para montar o `CHANGELOG
 e sugerir o próximo bump de versão — commit fora do padrão **não aparece** no
 changelog.
 
-## 🌊 Fluxo de trabalho — feature → develop → main
+## 🌊 Fluxo de trabalho — develop → main
 
-Três papéis, e só um deles aceita push direto:
+Duas branches, papéis claros:
 
 | Branch | Papel | Push direto | Protegida |
 |---|---|---|---|
-| `feature/**` | onde o trabalho acontece | ✅ sim | não |
-| `develop` | integração: junta o que já passou por PR | ❌ não | ✅ sim |
-| `main` | o que foi publicado — o merge aqui dispara a Release | ❌ não | ✅ sim |
+| `develop` | onde o trabalho acontece — todo desenvolvimento novo entra aqui | ✅ sim | não |
+| `main` | o que foi publicado — só recebe release aprovada; o merge aqui dispara a Release | ❌ não | ✅ sim |
 
 ```bash
 git switch develop && git pull
-git switch -c feature/solo-time-pulse
 
 # ... edite os defs, rode o pipeline e a suíte ...
 
 git add tools/patches-defs.json patches/ reference/
 git commit -m "feat(pulse): adiciona camada de solo em Time"
-git push -u origin feature/solo-time-pulse
-gh pr create --base develop --fill
+git push
 ```
 
 | Passo | Exigência |
 |---|---|
-| Base do PR | `develop` — só o PR de release vai contra a `main` |
-| Título do PR | Conventional Commit (vira a linha do `CHANGELOG.md`) |
-| Merge | **squash** — um PR, um commit limpo na história |
-| Branch | apagada automaticamente após o merge |
+| Commits na `develop` | Conventional Commit (é o que alimenta o `CHANGELOG.md` no release) |
+| CI | roda a cada push na `develop` — o `🚦 Veredito do CI` precisa estar verde |
+| `main` | só recebe código pelo PR de release (`develop` → `main`); contribuição externa abre PR contra a `develop` |
 | Checks | `🚦 Veredito do CI` verde é obrigatório — não há merge com CI vermelho |
 
-O CI roda em **todo PR** e no **push para `develop` e `main`** — não em
-`feature/**`, porque o PR já é o gatilho e disparar nos dois daria duas execuções
-para o mesmo commit. O push na `develop` é a segunda checagem, a que pega a
-integração das features entre si.
+O CI roda no **push para `develop` e `main`** e em **todo PR**: o push na
+`develop` é a checagem primeira (quebrou, conserta lá), e o PR de release roda
+de novo sobre o merge ref antes de entrar na `main`.
 
-### Publicando uma versão
+### Publicando uma versão (a `main` só é alimentada por release aprovada)
 
-A `develop` só vai para a `main` quando houver versão a lançar:
+Na `develop`, prepara a versão; quando a release for aprovada, o PR alimenta a `main`:
 
 ```bash
-git switch -c chore/release-1.1.0
+git switch develop && git pull
 python tools/gen_changelog.py --version 1.1.0 --write   # prepende a seção no CHANGELOG.md
 printf '%s\n' 1.1.0 > VERSION
 git commit -am "chore(release): v1.1.0"
-git push -u origin chore/release-1.1.0
-gh pr create --base develop --fill && gh pr merge --squash --delete-branch
+git push
 
-# quando estiver pronto para lançar:
+# quando a release for aprovada:
 gh pr create --base main --head develop --title "chore(release): v1.1.0"
 gh pr merge --merge
 ```
 
-Repare na diferença: **`feature/**` → `develop` é squash; `develop` → `main` é merge
-commit** (e sem `--delete-branch`, que apagaria a `develop`). Não é capricho — um
-squash na entrada da `main` juntaria a release inteira num commit e as features
-que alimentam o changelog ficariam só na `develop`. Com merge commit a `main`
-contém a história da `develop`, e a `develop` continua sendo ancestral dela: não
-há nada para sincronizar de volta a cada release.
+Repare: **`develop` → `main` é merge commit** (e sem `--delete-branch`, que
+apagaria a `develop`). Não é capricho — um squash na entrada da `main` juntaria
+a release inteira num commit e as mudanças que alimentam o changelog ficariam só
+na `develop`. Com merge commit a `main` contém a história da `develop`, e a
+`develop` continua sendo ancestral dela: não há nada para sincronizar de volta a
+cada release.
 
 No merge para a `main`, o [`release.yml`](.github/workflows/release.yml) roda
 sozinho: empacota os ZIPs, cria a tag `v1.1.0` e publica a Release. **A versão é

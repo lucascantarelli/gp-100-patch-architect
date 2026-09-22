@@ -6,10 +6,10 @@
 # publica a Release.
 #
 # Fluxo de quem publica (detalhado em CONTRIBUTING.md):
-#   1. no PR que prepara a release, para `develop`:
+#   1. na `develop`:
 #        python tools/gen_changelog.py --version X.Y.Z --write
 #        printf '%s\n' X.Y.Z > VERSION
-#   2. mergeie `develop` → `main` com MERGE COMMIT (não squash);
+#   2. quando a release for aprovada, PR `develop` → `main` com MERGE COMMIT (não squash);
 #   3. este workflow roda sozinho — empacota, tagueia e publica.
 #
 # O merge commit no passo 2 é o que faz o changelog abaixo funcionar: num squash,

@@ -100,7 +100,7 @@ Cada patch entrega:
 ├── tests/              # suíte do pipeline (unittest, sem dependências)
 ├── .github/            # CI · segurança (CodeQL) · release · templates de issue/PR · CODEOWNERS
 ├── knowledge.md        # regras de ouro do projeto
-├── CONTRIBUTING.md     # ambiente, pipeline obrigatório, Conventional Commits, fluxo feature → develop → main
+├── CONTRIBUTING.md     # ambiente, pipeline obrigatório, Conventional Commits, fluxo develop → main
 ├── SECURITY.md         # escopo de segurança, prazos e canal de divulgação privada
 ├── CODE_OF_CONDUCT.md  # Contributor Covenant 2.1
 ├── CHANGELOG.md        # gerado por tools/gen_changelog.py a partir dos commits
@@ -262,7 +262,7 @@ deles é que manda.
 | Documento | Conteúdo |
 |---|---|
 | [`knowledge.md`](knowledge.md) | Regras de ouro e convenções que os agentes seguem |
-| [`CONTRIBUTING.md`](CONTRIBUTING.md) | Ambiente, pipeline obrigatório, Conventional Commits e o fluxo feature → develop → main |
+| [`CONTRIBUTING.md`](CONTRIBUTING.md) | Ambiente, pipeline obrigatório, Conventional Commits e o fluxo develop → main |
 | [`SECURITY.md`](SECURITY.md) | Escopo de segurança, prazos de resposta e canal privado |
 | [`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md) | Contributor Covenant 2.1 |
 | [`CHANGELOG.md`](CHANGELOG.md) | Histórico de versões (gerado dos commits) |
@@ -300,8 +300,9 @@ python tools/ir_library.py && python tools/add_pulse_defs.py \
   && python tools/gen_indexes.py
 ```
 
-Fluxo: **`feature/**` → `develop` → `main`** — push direto só em `feature/**`, PR com título em Conventional Commit
-(que alimenta o [`CHANGELOG.md`](CHANGELOG.md)), merge por **squash** e o portão
+Fluxo: **desenvolve na `develop`** (push direto, CI a cada push, Conventional Commit
+que alimenta o [`CHANGELOG.md`](CHANGELOG.md)) e **release aprovada alimenta a
+`main`** via PR `develop` → `main` (merge commit) com o portão
 `🚦 Veredito do CI` verde. Nada de editar à mão arquivo gerado — a
 [`.github/PULL_REQUEST_TEMPLATE.md`](.github/PULL_REQUEST_TEMPLATE.md) traz o
 checklist completo das invariantes do projeto.
@@ -318,12 +319,12 @@ O que o repositório roda sozinho, a cada push, PR e semanalmente:
 
 | Workflow | O que garante |
 |---|---|
-| [`ci.yml`](.github/workflows/ci.yml) | Dados em sincronia + 28 testes + typecheck dos agentes |
+| [`ci.yml`](.github/workflows/ci.yml) | Dados em sincronia + 31 testes + typecheck dos agentes |
 | [`security.yml`](.github/workflows/security.yml) | CodeQL (Python e TypeScript), revisão de dependências em PR e auditoria de permissões dos próprios workflows |
 | [`release.yml`](.github/workflows/release.yml) | Release **automática no merge para a `main`**: tag SemVer a partir do `VERSION` e ZIPs publicados |
 
 Além disso: secret scanning com **push protection**, alertas e correções
-automáticas do Dependabot, e branch protection em `main` e `develop` (aplicável com
+automáticas do Dependabot, e branch protection na `main` (aplicável com
 [`setup_repo.sh`](setup_repo.sh)).
 
 ## 📄 Licença

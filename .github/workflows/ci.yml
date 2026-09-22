@@ -23,11 +23,9 @@
 # workflow do repositório (não só para este job). Sem escrita, a proteção do
 # `main` não precisa de exceção nenhuma — ver `setup_repo.sh`.
 #
-# Fluxo de branches (detalhado em CONTRIBUTING.md): `feature/**` é onde se
-# trabalha (única que aceita push direto), `develop` é a integração e `main` é o
-# que foi publicado. Push em `feature/**` NÃO dispara CI de propósito: o PR para
-# a `develop` já é o gatilho, e manter os dois causaria duas execuções para o
-# mesmo commit.
+# Fluxo de branches (detalhado em CONTRIBUTING.md): `develop` é onde se trabalha
+# (push direto liberado, CI a cada push) e `main` é o que foi publicado — só
+# recebe código pelo PR de release (develop → main, merge commit).
 #
 # O que substituiu o antigo auto-commit: nada. Ele duplicava um mecanismo que já
 # existia (o guarda de frescor reprova e diz o comando) e era a única coisa do
@@ -45,9 +43,9 @@
 name: CI
 
 on:
-  # `main` e `develop` são as branches de integração: o push nelas é o merge de
-  # um PR, e é onde o veredito precisa aparecer. Todo PR roda, sem filtro de base
-  # (feature → develop e develop → main).
+  # O push na `develop` é a checagem de cada commit de trabalho; o push na
+  # `main` é o merge da release aprovada. Todo PR roda também — sem filtro de
+  # base (o de release é develop → main).
   push:
     branches: [main, develop]
   pull_request:

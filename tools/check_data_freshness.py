@@ -117,8 +117,39 @@ def first_diff(old, new):
     return f'{abs(len(oa) - len(nb))} linha(s) a mais/menos'
 
 
+def stale_artifacts():
+    """Relança main() e devolve a lista de artefatos que o guarda reprova.
+
+    Compara disco × HEAD com a MESMA normalização do veredito (ignora
+    `preset_info/@time` e equipara fim de linha): é a lista exata do que o
+    auto-commit do CI precisa stagear — commitar por `git status` incluiria
+    `.prst` que só mudaram o timestamp, gerando ruído a cada push.
+    """
+    disco, head = on_disk(), in_head()
+    commitados = blobs_at_head([r for r in sorted(disco & head)])
+    return sorted(
+        rel for rel in (disco | head)
+        if rel not in head or rel not in disco
+        or normalize((ROOT / rel).read_text(encoding='utf-8', errors='replace'))
+        != normalize(commitados.get(rel, ''))
+    )
+
+
 def main():
-    """Compara disco × HEAD e imprime o relatório; exit 1 se houver defasagem."""
+    """Compara disco × HEAD e imprime o relatório; exit 1 se houver defasagem.
+
+    Com `--list-stale`, imprime só os caminhos defasados (um por linha, exit 0
+    mesmo defasado) — é o que o auto-commit do CI stagea, sem pegar `.prst` que
+    só mudou o timestamp.
+    """
+    if '--list-stale' in sys.argv:
+        try:
+            stale = stale_artifacts()
+        except RuntimeError as exc:
+            print(f'⚠️  não consegui ler o HEAD: {exc}', file=sys.stderr)
+            return 2
+        print('\n'.join(stale))
+        return 0
     try:
         disco, head = on_disk(), in_head()
     except RuntimeError as exc:

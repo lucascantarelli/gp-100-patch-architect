@@ -66,22 +66,24 @@ jobs:
       - name: 2/3 · Auto-commit dos dados regenerados (apenas push no main)
         if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
         run: |
-          changed="$(git status --porcelain | wc -l)"
-          if [ "$changed" -eq 0 ]; then
-            echo "✅ **Dados já em sincronia** — o pipeline não mudou nada." >> "$GITHUB_STEP_SUMMARY"
+          # stagea SÓ o que o guarda reprova (normalizado: ignora preset_info/@time).
+          # Um `git add -A` commitaria todos os .prst que só mudaram o timestamp —
+          # ruído a cada push. (O auto-commit não sobrescreve o veredito: o passo 3 roda depois.)
+          stale="$(python tools/check_data_freshness.py --list-stale 2>/dev/null || true)"
+          if [ -z "$stale" ]; then
+            echo "✅ **Dados já em sincronia** — nada real a commitar." >> "$GITHUB_STEP_SUMMARY"
             echo "Nada a commitar."
             exit 0
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -A
+          while IFS= read -r f; do git add -- "$f"; done <<< "$stale"
           git commit -m "chore: regenera os dados do pipeline [skip ci]"
-          # o checkout vem em detached HEAD: envia pelo refspec, não pela branch
           git push origin "HEAD:${GITHUB_REF_NAME}"
           {
             echo "### 🔄 Auto-commit do pipeline"
             echo ""
-            echo "- **${changed} arquivo(s)** regenerado(s) e commitado(s) como \`github-actions[bot]\`."
+            echo "- **$(wc -l <<< "$stale") arquivo(s)** defasado(s) de verdade, regenerado(s) e commitado(s) como \`github-actions[bot]\`."
             echo "- Este push não dispara novo CI (\`[skip ci]\` + \`GITHUB_TOKEN\`)."
           } >> "$GITHUB_STEP_SUMMARY"
 

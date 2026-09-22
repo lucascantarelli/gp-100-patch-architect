@@ -10,7 +10,7 @@
 
 | Música | Patches (camada) | Captador (Strat) | IR recomendada | Slots |
 |---|---|---|---|---|
-| **Smooth** | [`🔥 SMOO1RI`](./Smooth/SMOO1RI/patch.md) (Riff) · [`✨ SMOO1CL`](./Smooth/SMOO1CL/patch.md) (Base) · [`🎺 SMOO1SO`](./Smooth/SMOO1SO/patch.md) (Solo) · [`🪘 SMOO1FL`](./Smooth/SMOO1FL/patch.md) (Camada) | Riff: middle · Base: middle+neck · Solo: bridge · Camada: middle+bridge | 📁 `Magma Vintage 1x12 — Magma Vintage 1x12 Medium Mix.wav` · 📁 `Magma Vintage 1x12 — Magma Vintage 1x12 Medium Mix.wav` · 📁 `Modern Boutique 4x12 — Modern Boutique 4x12 Medium Mix.wav` · 📁 `Magma Vintage 1x12 — Magma Vintage 1x12 Medium Mix.wav` | U63, U64, U65, U66 |
+| **Smooth** | [`🔥 SMOO1RI`](./Smooth/SMOO1RI/patch.md) (Riff) · [`✨ SMOO1CL`](./Smooth/SMOO1CL/patch.md) (Base) · [`🎺 SMOO1SO`](./Smooth/SMOO1SO/patch.md) (Solo) · [`🪘 SMOO1FL`](./Smooth/SMOO1FL/patch.md) (Camada) | Riff: middle · Base: middle+neck · Solo: bridge · Camada: middle+bridge | 📁 `Magma Vintage 1x12 — Magma Vintage 1x12 Medium Mix.wav` · 📁 `Magma Vintage 1x12 — Magma Vintage 1x12 Medium Mix.wav` · 📁 `Modern Boutique 4x12 — Modern Boutique 4x12 Medium Mix.wav` · 📁 `Magma Vintage 1x12 — Magma Vintage 1x12 Medium Mix.wav` | U94, U95, U96, U97 |
 
 > **📡 IR**: 📁 = o banco local (`impulse_responses/`) tem captura melhor do gabinete real — arquivo indicado na seção 3 do `patch.md`. ⚙️ = o CAB de fábrica já é o alvo correto. Em ambos os casos o `.prst` funciona imediatamente, sem carregar IR.
 
@@ -18,10 +18,10 @@
 
 | Slot | Patch | Uso | IR (se usar User IR) |
 |---|---|---|---|
-| U63 | `SMOO1RI` | Smooth — Riff | 📁 `Magma Vintage 1x12 — Magma Vintage 1x12 Medium Mix.wav` |
-| U64 | `SMOO1CL` | Smooth — Base limpa | 📁 `Magma Vintage 1x12 — Magma Vintage 1x12 Medium Mix.wav` |
-| U65 | `SMOO1SO` | Smooth — Solo | 📁 `Modern Boutique 4x12 — Modern Boutique 4x12 Medium Mix.wav` |
-| U66 | `SMOO1FL` | Smooth — Camada | 📁 `Magma Vintage 1x12 — Magma Vintage 1x12 Medium Mix.wav` |
+| U94 | `SMOO1RI` | Smooth — Riff | 📁 `Magma Vintage 1x12 — Magma Vintage 1x12 Medium Mix.wav` |
+| U95 | `SMOO1CL` | Smooth — Base limpa | 📁 `Magma Vintage 1x12 — Magma Vintage 1x12 Medium Mix.wav` |
+| U96 | `SMOO1SO` | Smooth — Solo | 📁 `Modern Boutique 4x12 — Modern Boutique 4x12 Medium Mix.wav` |
+| U97 | `SMOO1FL` | Smooth — Camada | 📁 `Magma Vintage 1x12 — Magma Vintage 1x12 Medium Mix.wav` |
 
 ## 🧬 Como as camadas foram decididas
 

@@ -25,7 +25,7 @@
 
 > 🚀 **Comece por aqui (3 passos)**:
 > 1. Ajuste a guitarra conforme a tabela acima.
-> 2. Carregue o patch no slot **U64** (seção 8).
+> 2. Carregue o patch no slot **U95** (seção 8).
 > 3. Toque *acordes Am–D respondendo ao vocal* e confira o checklist da seção 5.
 
 ---
@@ -261,9 +261,9 @@ _Legenda: **🔴** ligado · ⚪ desligado — a ordem é o caminho do sinal._
 
 ## 💾 8. Carregar na pedaleira
 
-**Nome no painel**: `SMOO1CL` · **Slot sugerido**: **U64**
+**Nome no painel**: `SMOO1CL` · **Slot sugerido**: **U95**
 
-1. **GP-100 Edits (recomendado)**: conecte a GP-100 por USB → importe `<NOME>.prst` desta pasta → salve no slot **U64**.
+1. **GP-100 Edits (recomendado)**: conecte a GP-100 por USB → importe `<NOME>.prst` desta pasta → salve no slot **U95**.
 2. **Digitar no painel** (receita na ordem dos menus):
 
 ```

@@ -51,6 +51,14 @@
       "pasta": "Pink Floyd/Pulse (1995)",
       "rig": "## 📚 Rig real da turnê (fontes)\n\n- **David Gilmour 1994**: Hiwatt **DR103** + preamp Alembic F-2B → WEM Starfinder 4x12 (Fane) **+ Marshall 4x12**; Yamaha RA-200 (rotary) na base limpa.\n- **Pedalboard**: Boss CS-2/DynaComp (compressão) · BK Butler Tube Driver (overdrive) · Big Muff \"Civil War\" (fuzz) · Electric Mistress (flanger) · Uni-Vibe · Boss CE-2 (chorus) · Tremulator · GE-7 · delays TC 2290 + PCM-70 (efeito Binson Echorec).\n- **Tim Geaney / Chester Kamen**: guitarras base nos refrões e camadas rítmicas.\n- Assinaturas: solos com **delay duração da nota** (1 repetição), espaço entre as frases, **sem speed** — a mão fala.\n- 📖 Fontes: gilmourish.com (seção Division Bell Tour 1994 — equipamento confirmado faixa a faixa) · Wikipedia (Pulse, 1995) · Discogs (tracklist)."
     },
+    "WM": {
+      "banda": "Nirvana",
+      "album": "From the Muddy Banks of the Wishkah (live)",
+      "ano": 1996,
+      "display": "Muddy Banks (1996)",
+      "pasta": "Nirvana/From the Muddy Banks (1996)",
+      "rig": "## 📚 Rig real (fontes)\n\n- **Kurt Cobain ao vivo (1989–1994)**: Fender **Jaguar / Jag-Stang / Mustang** (single coils) · pedal **Boss DS-1** (e **DST-2** de 92 em diante) → **Fender Twin Reverb** (base) ou **Mesa/Boogie Studio Preamp** (grandes shows).\n- **Chorus**: Electro-Harmonix **Small Clone** (versos limpos do período).\n- **Fuzz**: Big Muff em \"Blew\".\n- Recriação GP-100: DST **La Charger** (família DS do catálogo fw 2.0) · MOD **A-Chorus** · AMP **Dark Twin** + CAB **DarkTW 2x12** (Twin) · fuzz **Red Haze**.\n- 📖 Fontes: Wikipedia (From the Muddy Banks of the Wishkah, 1996 — tracklist e venues) · livenirvana.com (guia oficial do álbum) · groundguitar.com/kurt-cobain-gear · equipboard.com/pros/kurt-cobain."
+    },
     "SN": {
       "banda": "Santana",
       "album": "Supernatural",
@@ -8604,6 +8612,4560 @@
       "banda": "Pink Floyd",
       "album": "Pulse (live)",
       "ano": 1995
+    },
+    {
+      "id": "WIS01",
+      "song": "Intro",
+      "idAlbum": "WM",
+      "bpm": 120,
+      "resumo": "Fala do Kurt + acorde distorcido de aquecimento (Londres 1989) — patch de textura para camadas caseiras.",
+      "referencias": [
+        {
+          "role": "Show caseiro/prática: rig ao vivo do álbum (1989–1994)",
+          "conf": "alta",
+          "src": "From the Muddy Banks of the Wishkah (DGC, 1996) · Wikipedia · livenirvana.com"
+        },
+        {
+          "role": "Rig: Jaguar/Jag-Stang/Mustang · Boss DS-1 (DST-2 de 92) → Twin Reverb/Mesa",
+          "conf": "alta",
+          "src": "groundguitar.com/kurt-cobain-gear · equipboard.com/pros/kurt-cobain"
+        }
+      ],
+      "patches": [
+        {
+          "camada": "Texturas",
+          "sufixo": "AM",
+          "nome": "WIS01AM",
+          "emoji": "🎺",
+          "timbre": "O aquecimento do show: acorde distorcido + feedback sob a fala — textura para camadas caseiras",
+          "spec": {
+            "name": "WIS01AM",
+            "type": "Rock",
+            "bpm": 120,
+            "volume": 60,
+            "ir_slot": null,
+            "modules": {
+              "PRE": {
+                "name": "Boost",
+                "on": false,
+                "params": {}
+              },
+              "DST": {
+                "name": "La Charger",
+                "on": true,
+                "params": {
+                  "0": 70,
+                  "1": 48,
+                  "2": 62
+                }
+              },
+              "AMP": {
+                "name": "Dark Twin",
+                "on": true,
+                "params": {
+                  "0": 55,
+                  "1": 62,
+                  "2": 52,
+                  "3": 48,
+                  "4": 55,
+                  "5": 0
+                }
+              },
+              "NR": {
+                "name": "Gate 1",
+                "on": true,
+                "params": {
+                  "0": 26
+                }
+              },
+              "CAB": {
+                "name": "DarkTW 2x12",
+                "on": true,
+                "params": {
+                  "0": 75,
+                  "1": 50
+                }
+              },
+              "EQ": {
+                "name": "EQ 1",
+                "on": false,
+                "params": {}
+              },
+              "MOD": {
+                "name": "A-Chorus",
+                "on": false,
+                "params": {}
+              },
+              "DLY": {
+                "name": "Slapbk",
+                "on": false,
+                "params": {}
+              },
+              "RVB": {
+                "name": "Room",
+                "on": true,
+                "params": {
+                  "0": 26,
+                  "1": 22,
+                  "2": 38,
+                  "3": 0
+                }
+              }
+            }
+          },
+          "doc": {
+            "guitarra": {
+              "seletor": "Posição 1 (bridge)",
+              "seletorCurto": "bridge",
+              "volume": "10",
+              "tone": "10",
+              "receita": "SELETOR 2 · Volume 10 · Tone 10",
+              "tecnicas": [
+                "Toque o acorde e deixe o feedback crescer",
+                "O volume da guitarra controla a densidade da textura"
+              ]
+            },
+            "comoTocar": [],
+            "teste": {
+              "riff": "acorde inicial + fala",
+              "drum": "livre",
+              "escutar": [
+                "textura crescendo devagar",
+                "feedback controlado"
+              ]
+            },
+            "ajustes": [
+              "muito denso → Vol 8",
+              "sem corpo → Room Mix +4"
+            ],
+            "evite": [
+              "Não toque melodia: a faixa é a fala do Kurt com a guitarra por trás"
+            ],
+            "irNota": "Recomendada: American Twin 2x12 — Medium Mix do banco local (User IR 1) — captura do Twin Reverb, o amp do álbum (Low Cut 4 · High Cut 6500 · Level 0).",
+            "momentos": [
+              {
+                "nome": "Feedback livre",
+                "mods": [
+                  [
+                    "NR",
+                    "OFF"
+                  ]
+                ],
+                "quando": "Aquecimento: solte o gate e deixe o feedback crescer sob a fala.",
+                "dica": "Religue para controlar o caos."
+              }
+            ],
+            "slotSugestao": null
+          }
+        }
+      ]
+    },
+    {
+      "id": "SCH01",
+      "song": "School",
+      "idAlbum": "WM",
+      "bpm": 160,
+      "resumo": "O riff mais copyado do grunge: três acordes, ganho no teto, solo central.",
+      "referencias": [
+        {
+          "role": "Show caseiro/prática: rig ao vivo do álbum (1989–1994)",
+          "conf": "alta",
+          "src": "From the Muddy Banks of the Wishkah (DGC, 1996) · Wikipedia · livenirvana.com"
+        },
+        {
+          "role": "Rig: Jaguar/Jag-Stang/Mustang · Boss DS-1 (DST-2 de 92) → Twin Reverb/Mesa",
+          "conf": "alta",
+          "src": "groundguitar.com/kurt-cobain-gear · equipboard.com/pros/kurt-cobain"
+        }
+      ],
+      "patches": [
+        {
+          "camada": "Riff Punk",
+          "sufixo": "RI",
+          "nome": "SCH01RI",
+          "emoji": "🎸",
+          "timbre": "O riff mais copyado do grunge: três acordes estourados, ganho no limite do lo-fi — _DS-1 direto no Twin_",
+          "spec": {
+            "name": "SCH01RI",
+            "type": "Rock",
+            "bpm": 120,
+            "volume": 60,
+            "ir_slot": null,
+            "modules": {
+              "PRE": {
+                "name": "Boost",
+                "on": false,
+                "params": {}
+              },
+              "DST": {
+                "name": "La Charger",
+                "on": true,
+                "params": {
+                  "0": 62,
+                  "1": 42,
+                  "2": 62
+                }
+              },
+              "AMP": {
+                "name": "Dark Twin",
+                "on": true,
+                "params": {
+                  "0": 55,
+                  "1": 62,
+                  "2": 52,
+                  "3": 48,
+                  "4": 55,
+                  "5": 0
+                }
+              },
+              "NR": {
+                "name": "Gate 1",
+                "on": true,
+                "params": {
+                  "0": 26
+                }
+              },
+              "CAB": {
+                "name": "DarkTW 2x12",
+                "on": true,
+                "params": {
+                  "0": 75,
+                  "1": 50
+                }
+              },
+              "EQ": {
+                "name": "EQ 1",
+                "on": false,
+                "params": {
+                  "1": 3,
+                  "5": 56
+                }
+              },
+              "MOD": {
+                "name": "A-Chorus",
+                "on": false,
+                "params": {}
+              },
+              "DLY": {
+                "name": "Slapbk",
+                "on": false,
+                "params": {}
+              },
+              "RVB": {
+                "name": "Room",
+                "on": true,
+                "params": {
+                  "0": 20,
+                  "1": 19,
+                  "2": 31,
+                  "3": 0
+                }
+              }
+            }
+          },
+          "doc": {
+            "guitarra": {
+              "seletor": "Posição 2 (bridge+middle)",
+              "seletorCurto": "bridge+middle",
+              "volume": "10",
+              "tone": "10",
+              "receita": "SELETOR 3 · Volume 10 · Tone 10 (aberto, sem dó)",
+              "tecnicas": [
+                "Palhetada FORTE e para baixo — o DS-1 vive da agressividade da mão",
+                "Deixe as notas se embolarem um pouco: é o som do disco"
+              ]
+            },
+            "comoTocar": [],
+            "teste": {
+              "riff": "riff da intro",
+              "drum": "punk rápido 160 bpm",
+              "escutar": [
+                "três acordes estourados e embolados",
+                "ring do Room curto após o corte"
+              ]
+            },
+            "ajustes": [
+              "chipando demais → La Charger Gain -4",
+              "falta corpo → EQ Mid +3"
+            ],
+            "evite": [
+              "Não equalize o embolamento fora: ele é a assinatura"
+            ],
+            "irNota": "Recomendada: American Twin 2x12 — Medium Mix do banco local (User IR 1) — captura do Twin Reverb, o amp do álbum (Low Cut 4 · High Cut 6500 · Level 0).",
+            "momentos": [
+              {
+                "nome": "Solo sujo",
+                "mods": [
+                  [
+                    "EQ",
+                    "ON"
+                  ]
+                ],
+                "quando": "Sobressalente: realce de médios para o solo central.",
+                "dica": ""
+              }
+            ],
+            "slotSugestao": null
+          }
+        },
+        {
+          "camada": "Solo Sujo",
+          "sufixo": "SO",
+          "nome": "SCH01SO",
+          "emoji": "🎸",
+          "timbre": "Solo central: mesma distorção, seletor na ponte — _o solo é quase um outro riff_",
+          "spec": {
+            "name": "SCH01SO",
+            "type": "Rock",
+            "bpm": 120,
+            "volume": 60,
+            "ir_slot": null,
+            "modules": {
+              "PRE": {
+                "name": "Boost",
+                "on": false,
+                "params": {}
+              },
+              "DST": {
+                "name": "La Charger",
+                "on": true,
+                "params": {
+                  "0": 66,
+                  "1": 45,
+                  "2": 64
+                }
+              },
+              "AMP": {
+                "name": "Dark Twin",
+                "on": true,
+                "params": {
+                  "0": 55,
+                  "1": 62,
+                  "2": 52,
+                  "3": 48,
+                  "4": 55,
+                  "5": 0
+                }
+              },
+              "NR": {
+                "name": "Gate 1",
+                "on": true,
+                "params": {
+                  "0": 26
+                }
+              },
+              "CAB": {
+                "name": "DarkTW 2x12",
+                "on": true,
+                "params": {
+                  "0": 75,
+                  "1": 50
+                }
+              },
+              "EQ": {
+                "name": "EQ 1",
+                "on": false,
+                "params": {
+                  "1": 3,
+                  "5": 56
+                }
+              },
+              "MOD": {
+                "name": "A-Chorus",
+                "on": false,
+                "params": {}
+              },
+              "DLY": {
+                "name": "Slapbk",
+                "on": false,
+                "params": {}
+              },
+              "RVB": {
+                "name": "Room",
+                "on": true,
+                "params": {
+                  "0": 20,
+                  "1": 19,
+                  "2": 31,
+                  "3": 0
+                }
+              }
+            }
+          },
+          "doc": {
+            "guitarra": {
+              "seletor": "Posição 1 (bridge)",
+              "seletorCurto": "bridge",
+              "volume": "10",
+              "tone": "10",
+              "receita": "SELETOR 2 · Volume 10 · Tone 10",
+              "tecnicas": [
+                "Bends de tom inteiro com vibrato pesado",
+                "Use o captador da ponte: o solo precisa morder"
+              ]
+            },
+            "comoTocar": [],
+            "teste": {
+              "riff": "solo central",
+              "drum": "punk rápido",
+              "escutar": [
+                "lead cortando o embalo do riff",
+                "guia com a mão, não com o pedal"
+              ]
+            },
+            "ajustes": [
+              "some no mix → La Charger Level +4",
+              "agudo gelando → Tone da guitarra 8"
+            ],
+            "evite": [
+              "Gravar em casa: NR ON sempre que o ganho estiver alto"
+            ],
+            "irNota": "Recomendada: American Twin 2x12 — Medium Mix do banco local (User IR 1) — captura do Twin Reverb, o amp do álbum (Low Cut 4 · High Cut 6500 · Level 0).",
+            "momentos": [
+              {
+                "nome": "Solo cortando",
+                "mods": [
+                  [
+                    "EQ",
+                    "ON"
+                  ]
+                ],
+                "quando": "O solo é quase um outro riff — realce para morder.",
+                "dica": ""
+              }
+            ],
+            "slotSugestao": null
+          }
+        }
+      ]
+    },
+    {
+      "id": "DRY01",
+      "song": "Drain You",
+      "idAlbum": "WM",
+      "bpm": 122,
+      "resumo": "Verso em arpejos limpos com chorus; refrão é parede de DS-1; solo no meio.",
+      "referencias": [
+        {
+          "role": "Show caseiro/prática: rig ao vivo do álbum (1989–1994)",
+          "conf": "alta",
+          "src": "From the Muddy Banks of the Wishkah (DGC, 1996) · Wikipedia · livenirvana.com"
+        },
+        {
+          "role": "Rig: Jaguar/Jag-Stang/Mustang · Boss DS-1 (DST-2 de 92) → Twin Reverb/Mesa",
+          "conf": "alta",
+          "src": "groundguitar.com/kurt-cobain-gear · equipboard.com/pros/kurt-cobain"
+        }
+      ],
+      "patches": [
+        {
+          "camada": "Arpejo Limpo",
+          "sufixo": "AR",
+          "nome": "DRY01AR",
+          "emoji": "✨",
+          "timbre": "Verso: arpejos limpos com chorus, pós-punk — _o verso não tem distorção nenhuma_",
+          "spec": {
+            "name": "DRY01AR",
+            "type": "Rock",
+            "bpm": 120,
+            "volume": 60,
+            "ir_slot": null,
+            "modules": {
+              "PRE": {
+                "name": "Boost",
+                "on": false,
+                "params": {}
+              },
+              "DST": {
+                "name": "La Charger",
+                "on": false,
+                "params": {
+                  "0": 64,
+                  "1": 48,
+                  "2": 62
+                }
+              },
+              "AMP": {
+                "name": "Dark Twin",
+                "on": true,
+                "params": {
+                  "0": 55,
+                  "1": 62,
+                  "2": 52,
+                  "3": 48,
+                  "4": 55,
+                  "5": 0
+                }
+              },
+              "NR": {
+                "name": "Gate 1",
+                "on": false,
+                "params": {}
+              },
+              "CAB": {
+                "name": "DarkTW 2x12",
+                "on": true,
+                "params": {
+                  "0": 75,
+                  "1": 50
+                }
+              },
+              "EQ": {
+                "name": "EQ 1",
+                "on": false,
+                "params": {}
+              },
+              "MOD": {
+                "name": "A-Chorus",
+                "on": true,
+                "params": {
+                  "0": 30,
+                  "1": 0.5,
+                  "2": 50,
+                  "3": 0
+                }
+              },
+              "DLY": {
+                "name": "Slapbk",
+                "on": false,
+                "params": {}
+              },
+              "RVB": {
+                "name": "Room",
+                "on": true,
+                "params": {
+                  "0": 18,
+                  "1": 15,
+                  "2": 28,
+                  "3": 0
+                }
+              }
+            }
+          },
+          "doc": {
+            "guitarra": {
+              "seletor": "Posição 4 (middle+neck)",
+              "seletorCurto": "middle+neck",
+              "volume": "9",
+              "tone": "8",
+              "receita": "SELETOR 4 · Volume 9 · Tone 8",
+              "tecnicas": [
+                "Arpeje entre a 5ª e a 2ª cordas, palhetada alternada suave",
+                "O chorus entra DEPOIS da mão: se a mão for pesada, nenhum pedal conserta"
+              ]
+            },
+            "comoTocar": [],
+            "teste": {
+              "riff": "verso inteiro (arpejos)",
+              "drum": "grunge 122 bpm",
+              "escutar": [
+                "arpejo cristalino com brilho aquático",
+                "transição limpa → punk no refrão"
+              ]
+            },
+            "ajustes": [
+              "chorus nadando demais → A-Chorus Depth -2",
+              "sem corpo → seletor 3"
+            ],
+            "evite": [
+              "NÃO ligue o DST: o contraste limpo/distorcido é a dinâmica da música"
+            ],
+            "irNota": "Recomendada: American Twin 2x12 — Medium Mix do banco local (User IR 1) — captura do Twin Reverb, o amp do álbum (Low Cut 4 · High Cut 6500 · Level 0).",
+            "momentos": [
+              {
+                "nome": "Refrão punk",
+                "mods": [
+                  [
+                    "DST",
+                    "ON"
+                  ]
+                ],
+                "quando": "Refrão: ligue o DST e a base vira parede de som.",
+                "dica": "Volte ao arpejo desligando no verso."
+              },
+              {
+                "nome": "Solo punk",
+                "mods": [
+                  [
+                    "MOD",
+                    "OFF"
+                  ]
+                ],
+                "quando": "Para o solo central, desligue o chorus: som seco e presente.",
+                "dica": ""
+              }
+            ],
+            "slotSugestao": null
+          }
+        },
+        {
+          "camada": "Refrão Punk",
+          "sufixo": "RI",
+          "nome": "DRY01RI",
+          "emoji": "⚡",
+          "timbre": "Refrão: wall of sound de DS-1 — _do quiet-grunge para o estouro absoluto_",
+          "spec": {
+            "name": "DRY01RI",
+            "type": "Rock",
+            "bpm": 120,
+            "volume": 60,
+            "ir_slot": null,
+            "modules": {
+              "PRE": {
+                "name": "Boost",
+                "on": false,
+                "params": {}
+              },
+              "DST": {
+                "name": "La Charger",
+                "on": true,
+                "params": {
+                  "0": 64,
+                  "1": 48,
+                  "2": 62
+                }
+              },
+              "AMP": {
+                "name": "Dark Twin",
+                "on": true,
+                "params": {
+                  "0": 55,
+                  "1": 62,
+                  "2": 52,
+                  "3": 48,
+                  "4": 55,
+                  "5": 0
+                }
+              },
+              "NR": {
+                "name": "Gate 1",
+                "on": true,
+                "params": {
+                  "0": 26
+                }
+              },
+              "CAB": {
+                "name": "DarkTW 2x12",
+                "on": true,
+                "params": {
+                  "0": 75,
+                  "1": 50
+                }
+              },
+              "EQ": {
+                "name": "EQ 1",
+                "on": false,
+                "params": {
+                  "1": 3,
+                  "5": 56
+                }
+              },
+              "MOD": {
+                "name": "A-Chorus",
+                "on": false,
+                "params": {
+                  "0": 30,
+                  "1": 0.5,
+                  "2": 50,
+                  "3": 0
+                }
+              },
+              "DLY": {
+                "name": "Slapbk",
+                "on": false,
+                "params": {}
+              },
+              "RVB": {
+                "name": "Room",
+                "on": true,
+                "params": {
+                  "0": 20,
+                  "1": 19,
+                  "2": 31,
+                  "3": 0
+                }
+              }
+            }
+          },
+          "doc": {
+            "guitarra": {
+              "seletor": "Posição 2 (bridge+middle)",
+              "seletorCurto": "bridge+middle",
+              "volume": "10",
+              "tone": "10",
+              "receita": "SELETOR 3 · Volume 10 · Tone 10",
+              "tecnicas": [
+                "Acordes cheios, palhetada total (6 cordas), para baixo",
+                "Intensidade vem do braço: o ganho já está no teto útil"
+              ]
+            },
+            "comoTocar": [],
+            "teste": {
+              "riff": "refrão (\"one baby to another says I'm lucky…\")",
+              "drum": "grunge 122 bpm",
+              "escutar": [
+                "parede de ruído controlada",
+                "nada do arpejo vazando no refrão"
+              ]
+            },
+            "ajustes": [
+              "embolando demais → seletor 3 · Tone 8",
+              "grilos com ganho alto → NR Thr -2"
+            ],
+            "evite": [
+              "O stomp do DST É o refrão inteiro: ligue e afogue tudo"
+            ],
+            "irNota": "Recomendada: American Twin 2x12 — Medium Mix do banco local (User IR 1) — captura do Twin Reverb, o amp do álbum (Low Cut 4 · High Cut 6500 · Level 0).",
+            "momentos": [
+              {
+                "nome": "Verso limpo",
+                "mods": [
+                  [
+                    "DST",
+                    "OFF"
+                  ],
+                  [
+                    "MOD",
+                    "ON"
+                  ]
+                ],
+                "quando": "O verso é arpejo limpo com chorus — o inverso exato deste patch.",
+                "dica": "É o patch DRY01AR em um stomp só."
+              },
+              {
+                "nome": "Solo",
+                "mods": [
+                  [
+                    "EQ",
+                    "ON"
+                  ]
+                ],
+                "quando": "Sobressalente: um EQ realce para o solo, se tocar no mesmo patch.",
+                "dica": ""
+              }
+            ],
+            "slotSugestao": null
+          }
+        },
+        {
+          "camada": "Solo",
+          "sufixo": "SO",
+          "nome": "DRY01SO",
+          "emoji": "🎸",
+          "timbre": "Solo central: distorção com pico de médios para cortar o paredão",
+          "spec": {
+            "name": "DRY01SO",
+            "type": "Rock",
+            "bpm": 120,
+            "volume": 60,
+            "ir_slot": null,
+            "modules": {
+              "PRE": {
+                "name": "Boost",
+                "on": false,
+                "params": {}
+              },
+              "DST": {
+                "name": "La Charger",
+                "on": true,
+                "params": {
+                  "0": 68,
+                  "1": 55,
+                  "2": 64
+                }
+              },
+              "AMP": {
+                "name": "Dark Twin",
+                "on": true,
+                "params": {
+                  "0": 55,
+                  "1": 62,
+                  "2": 52,
+                  "3": 48,
+                  "4": 55,
+                  "5": 0
+                }
+              },
+              "NR": {
+                "name": "Gate 1",
+                "on": true,
+                "params": {
+                  "0": 26
+                }
+              },
+              "CAB": {
+                "name": "DarkTW 2x12",
+                "on": true,
+                "params": {
+                  "0": 75,
+                  "1": 50
+                }
+              },
+              "EQ": {
+                "name": "EQ 1",
+                "on": false,
+                "params": {
+                  "1": 3,
+                  "5": 56
+                }
+              },
+              "MOD": {
+                "name": "A-Chorus",
+                "on": false,
+                "params": {}
+              },
+              "DLY": {
+                "name": "Slapbk",
+                "on": false,
+                "params": {}
+              },
+              "RVB": {
+                "name": "Room",
+                "on": true,
+                "params": {
+                  "0": 20,
+                  "1": 19,
+                  "2": 31,
+                  "3": 0
+                }
+              }
+            }
+          },
+          "doc": {
+            "guitarra": {
+              "seletor": "Posição 1 (bridge)",
+              "seletorCurto": "bridge",
+              "volume": "10",
+              "tone": "9",
+              "receita": "SELETOR 2 · Volume 10 · Tone 9",
+              "tecnicas": [
+                "Frases curtas e deformadas — o solo é feedback e atitude, não virtuosismo",
+                "Bend forte e vibrato largo no final da frase"
+              ]
+            },
+            "comoTocar": [],
+            "teste": {
+              "riff": "solo central",
+              "drum": "grunge 122 bpm",
+              "escutar": [
+                "lead cortando o wall of sound",
+                "distorção gorda mas articulada"
+              ]
+            },
+            "ajustes": [
+              "perdido no mix → La Charger Tone +5",
+              "susto de volume → Level -3"
+            ],
+            "evite": [
+              "Entre verso e solo o seletor muda 4 → 2: meia música no seletor"
+            ],
+            "irNota": "Recomendada: American Twin 2x12 — Medium Mix do banco local (User IR 1) — captura do Twin Reverb, o amp do álbum (Low Cut 4 · High Cut 6500 · Level 0).",
+            "momentos": [
+              {
+                "nome": "Solo com presença",
+                "mods": [
+                  [
+                    "EQ",
+                    "ON"
+                  ]
+                ],
+                "quando": "Realce pronto: ligue para o lead cortar o paredão.",
+                "dica": ""
+              }
+            ],
+            "slotSugestao": null
+          }
+        }
+      ]
+    },
+    {
+      "id": "ANE01",
+      "song": "Aneurysm",
+      "idAlbum": "WM",
+      "bpm": 90,
+      "resumo": "Quiet-loud: arpejo quebrado no verso, explosão no refrão, solo de jam no final.",
+      "referencias": [
+        {
+          "role": "Show caseiro/prática: rig ao vivo do álbum (1989–1994)",
+          "conf": "alta",
+          "src": "From the Muddy Banks of the Wishkah (DGC, 1996) · Wikipedia · livenirvana.com"
+        },
+        {
+          "role": "Rig: Jaguar/Jag-Stang/Mustang · Boss DS-1 (DST-2 de 92) → Twin Reverb/Mesa",
+          "conf": "alta",
+          "src": "groundguitar.com/kurt-cobain-gear · equipboard.com/pros/kurt-cobain"
+        }
+      ],
+      "patches": [
+        {
+          "camada": "Arpejo Quebrado",
+          "sufixo": "AR",
+          "nome": "ANE01AR",
+          "emoji": "✨",
+          "timbre": "Quiet-loud: arpejo lento (\"come on over, do the twist…\") que explode no refrão",
+          "spec": {
+            "name": "ANE01AR",
+            "type": "Rock",
+            "bpm": 120,
+            "volume": 60,
+            "ir_slot": null,
+            "modules": {
+              "PRE": {
+                "name": "Boost",
+                "on": false,
+                "params": {}
+              },
+              "DST": {
+                "name": "La Charger",
+                "on": false,
+                "params": {
+                  "0": 66,
+                  "1": 48,
+                  "2": 62
+                }
+              },
+              "AMP": {
+                "name": "Dark Twin",
+                "on": true,
+                "params": {
+                  "0": 55,
+                  "1": 62,
+                  "2": 52,
+                  "3": 48,
+                  "4": 55,
+                  "5": 0
+                }
+              },
+              "NR": {
+                "name": "Gate 1",
+                "on": false,
+                "params": {}
+              },
+              "CAB": {
+                "name": "DarkTW 2x12",
+                "on": true,
+                "params": {
+                  "0": 75,
+                  "1": 50
+                }
+              },
+              "EQ": {
+                "name": "EQ 1",
+                "on": false,
+                "params": {}
+              },
+              "MOD": {
+                "name": "A-Chorus",
+                "on": true,
+                "params": {
+                  "0": 30,
+                  "1": 0.5,
+                  "2": 50,
+                  "3": 0
+                }
+              },
+              "DLY": {
+                "name": "Slapbk",
+                "on": false,
+                "params": {}
+              },
+              "RVB": {
+                "name": "Room",
+                "on": true,
+                "params": {
+                  "0": 18,
+                  "1": 15,
+                  "2": 28,
+                  "3": 0
+                }
+              }
+            }
+          },
+          "doc": {
+            "guitarra": {
+              "seletor": "Posição 4 (middle+neck)",
+              "seletorCurto": "middle+neck",
+              "volume": "9",
+              "tone": "8",
+              "receita": "SELETOR 4 · Volume 9 · Tone 8",
+              "tecnicas": [
+                "Arpejo descendo, tempo largo — é hipnose",
+                "No refrão, raiva: palhetada total e para baixo"
+              ]
+            },
+            "comoTocar": [],
+            "teste": {
+              "riff": "intro/verso (quiet)",
+              "drum": "90 bpm quiet-loud",
+              "escutar": [
+                "arpejo quebrado e hipnótico",
+                "explosão de refrão dá contraste total"
+              ]
+            },
+            "ajustes": [
+              "arpejo rápido demais → volte ao tempo: é hipnose, não corrida"
+            ],
+            "evite": [
+              "Tocar o refrão neste patch não: o contraste é o momento de toggle"
+            ],
+            "irNota": "Recomendada: American Twin 2x12 — Medium Mix do banco local (User IR 1) — captura do Twin Reverb, o amp do álbum (Low Cut 4 · High Cut 6500 · Level 0).",
+            "momentos": [
+              {
+                "nome": "Refrão pesado",
+                "mods": [
+                  [
+                    "DST",
+                    "ON"
+                  ]
+                ],
+                "quando": "A explosão do refrão é um stomp: DST ON = wall of sound.",
+                "dica": "Volte ao quiet-loud desligando."
+              },
+              {
+                "nome": "Solo livre",
+                "mods": [
+                  [
+                    "MOD",
+                    "OFF"
+                  ],
+                  [
+                    "DST",
+                    "ON"
+                  ]
+                ],
+                "quando": "Solo de fechamento: chorus sai, distorção entra.",
+                "dica": ""
+              }
+            ],
+            "slotSugestao": null
+          }
+        },
+        {
+          "camada": "Refrão Pesado",
+          "sufixo": "RI",
+          "nome": "ANE01RI",
+          "emoji": "⚡",
+          "timbre": "O refrão inteiro de DS-1 no talo, bateria e baixo por cima",
+          "spec": {
+            "name": "ANE01RI",
+            "type": "Rock",
+            "bpm": 120,
+            "volume": 60,
+            "ir_slot": null,
+            "modules": {
+              "PRE": {
+                "name": "Boost",
+                "on": false,
+                "params": {}
+              },
+              "DST": {
+                "name": "La Charger",
+                "on": true,
+                "params": {
+                  "0": 66,
+                  "1": 48,
+                  "2": 62
+                }
+              },
+              "AMP": {
+                "name": "Dark Twin",
+                "on": true,
+                "params": {
+                  "0": 55,
+                  "1": 62,
+                  "2": 52,
+                  "3": 48,
+                  "4": 55,
+                  "5": 0
+                }
+              },
+              "NR": {
+                "name": "Gate 1",
+                "on": true,
+                "params": {
+                  "0": 26
+                }
+              },
+              "CAB": {
+                "name": "DarkTW 2x12",
+                "on": true,
+                "params": {
+                  "0": 75,
+                  "1": 50
+                }
+              },
+              "EQ": {
+                "name": "EQ 1",
+                "on": false,
+                "params": {
+                  "1": 3,
+                  "5": 56
+                }
+              },
+              "MOD": {
+                "name": "A-Chorus",
+                "on": false,
+                "params": {
+                  "0": 30,
+                  "1": 0.5,
+                  "2": 50,
+                  "3": 0
+                }
+              },
+              "DLY": {
+                "name": "Slapbk",
+                "on": false,
+                "params": {}
+              },
+              "RVB": {
+                "name": "Room",
+                "on": true,
+                "params": {
+                  "0": 20,
+                  "1": 19,
+                  "2": 31,
+                  "3": 0
+                }
+              }
+            }
+          },
+          "doc": {
+            "guitarra": {
+              "seletor": "Posição 2 (bridge+middle)",
+              "seletorCurto": "bridge+middle",
+              "volume": "10",
+              "tone": "10",
+              "receita": "SELETOR 3 · Volume 10 · Tone 10",
+              "tecnicas": [
+                "Palhetada total, dinâmica no braço",
+                "Deixe o Room curto dar a sala do show ao vivo"
+              ]
+            },
+            "comoTocar": [],
+            "teste": {
+              "riff": "refrão",
+              "drum": "grunge 90 bpm",
+              "escutar": [
+                "parede de som com ataque de palhetada",
+                "corte seco no fim da frase"
+              ]
+            },
+            "ajustes": [
+              "faltou grão → La Charger Gain +3"
+            ],
+            "evite": [
+              "NÃO suavize: o refrão é propositalmente esburracado"
+            ],
+            "irNota": "Recomendada: American Twin 2x12 — Medium Mix do banco local (User IR 1) — captura do Twin Reverb, o amp do álbum (Low Cut 4 · High Cut 6500 · Level 0).",
+            "momentos": [
+              {
+                "nome": "Verso limpo",
+                "mods": [
+                  [
+                    "DST",
+                    "OFF"
+                  ],
+                  [
+                    "MOD",
+                    "ON"
+                  ]
+                ],
+                "quando": "O verso é arpejo limpo com chorus — um stomp só.",
+                "dica": "Refrão volta com DST ON."
+              }
+            ],
+            "slotSugestao": null
+          }
+        },
+        {
+          "camada": "Solo Livre",
+          "sufixo": "SO",
+          "nome": "ANE01SO",
+          "emoji": "🎸",
+          "timbre": "Solo de fechamento: jam livre — distorção solta, vibrato largo",
+          "spec": {
+            "name": "ANE01SO",
+            "type": "Rock",
+            "bpm": 120,
+            "volume": 60,
+            "ir_slot": null,
+            "modules": {
+              "PRE": {
+                "name": "Boost",
+                "on": false,
+                "params": {}
+              },
+              "DST": {
+                "name": "La Charger",
+                "on": true,
+                "params": {
+                  "0": 70,
+                  "1": 52,
+                  "2": 64
+                }
+              },
+              "AMP": {
+                "name": "Dark Twin",
+                "on": true,
+                "params": {
+                  "0": 55,
+                  "1": 62,
+                  "2": 52,
+                  "3": 48,
+                  "4": 55,
+                  "5": 0
+                }
+              },
+              "NR": {
+                "name": "Gate 1",
+                "on": true,
+                "params": {
+                  "0": 26
+                }
+              },
+              "CAB": {
+                "name": "DarkTW 2x12",
+                "on": true,
+                "params": {
+                  "0": 75,
+                  "1": 50
+                }
+              },
+              "EQ": {
+                "name": "EQ 1",
+                "on": false,
+                "params": {
+                  "1": 3,
+                  "5": 56
+                }
+              },
+              "MOD": {
+                "name": "A-Chorus",
+                "on": false,
+                "params": {}
+              },
+              "DLY": {
+                "name": "Slapbk",
+                "on": false,
+                "params": {}
+              },
+              "RVB": {
+                "name": "Room",
+                "on": true,
+                "params": {
+                  "0": 22,
+                  "1": 19,
+                  "2": 33,
+                  "3": 0
+                }
+              }
+            }
+          },
+          "doc": {
+            "guitarra": {
+              "seletor": "Posição 1 (bridge)",
+              "seletorCurto": "bridge",
+              "volume": "10",
+              "tone": "10",
+              "receita": "SELETOR 2 · Volume 10 · Tone 10",
+              "tecnicas": [
+                "Frases longas com vibrato largo, sem pressa",
+                "Deixe a distorção trabalhar os harmônicos"
+              ]
+            },
+            "comoTocar": [],
+            "teste": {
+              "riff": "solo final",
+              "drum": "grunge 90 bpm",
+              "escutar": [
+                "lead solto sobre a jam",
+                "vibrato largo carregando a frase"
+              ]
+            },
+            "ajustes": [
+              "gelando → Tone 8",
+              "engolindo o baixo → La Charger Level -3"
+            ],
+            "evite": [
+              "É o single do álbum: o patch de solo completa o de arpejo"
+            ],
+            "irNota": "Recomendada: American Twin 2x12 — Medium Mix do banco local (User IR 1) — captura do Twin Reverb, o amp do álbum (Low Cut 4 · High Cut 6500 · Level 0).",
+            "momentos": [
+              {
+                "nome": "Solo mordendo",
+                "mods": [
+                  [
+                    "EQ",
+                    "ON"
+                  ]
+                ],
+                "quando": "Jam livre: realce para o lead vencedor.",
+                "dica": ""
+              }
+            ],
+            "slotSugestao": null
+          }
+        }
+      ]
+    },
+    {
+      "id": "SLT01",
+      "song": "Smells Like Teen Spirit",
+      "idAlbum": "WM",
+      "bpm": 117,
+      "resumo": "O hino: verso limpo com chorus (o erro clássico é tocar sujo), refrão de DS-1, solo gaguejado.",
+      "referencias": [
+        {
+          "role": "Show caseiro/prática: rig ao vivo do álbum (1989–1994)",
+          "conf": "alta",
+          "src": "From the Muddy Banks of the Wishkah (DGC, 1996) · Wikipedia · livenirvana.com"
+        },
+        {
+          "role": "Rig: Jaguar/Jag-Stang/Mustang · Boss DS-1 (DST-2 de 92) → Twin Reverb/Mesa",
+          "conf": "alta",
+          "src": "groundguitar.com/kurt-cobain-gear · equipboard.com/pros/kurt-cobain"
+        }
+      ],
+      "patches": [
+        {
+          "camada": "Verso Limpo",
+          "sufixo": "CL",
+          "nome": "SLT01CL",
+          "emoji": "✨",
+          "timbre": "Verso: power chord limpo com chorus — _o erro clássico é tocar o verso sujo_",
+          "spec": {
+            "name": "SLT01CL",
+            "type": "Rock",
+            "bpm": 120,
+            "volume": 60,
+            "ir_slot": null,
+            "modules": {
+              "PRE": {
+                "name": "Boost",
+                "on": false,
+                "params": {}
+              },
+              "DST": {
+                "name": "La Charger",
+                "on": false,
+                "params": {
+                  "0": 66,
+                  "1": 48,
+                  "2": 62
+                }
+              },
+              "AMP": {
+                "name": "Dark Twin",
+                "on": true,
+                "params": {
+                  "0": 55,
+                  "1": 62,
+                  "2": 52,
+                  "3": 48,
+                  "4": 55,
+                  "5": 0
+                }
+              },
+              "NR": {
+                "name": "Gate 1",
+                "on": false,
+                "params": {}
+              },
+              "CAB": {
+                "name": "DarkTW 2x12",
+                "on": true,
+                "params": {
+                  "0": 75,
+                  "1": 50
+                }
+              },
+              "EQ": {
+                "name": "EQ 1",
+                "on": false,
+                "params": {
+                  "1": 3,
+                  "5": 56
+                }
+              },
+              "MOD": {
+                "name": "A-Chorus",
+                "on": true,
+                "params": {
+                  "0": 30,
+                  "1": 0.5,
+                  "2": 50,
+                  "3": 0
+                }
+              },
+              "DLY": {
+                "name": "Slapbk",
+                "on": false,
+                "params": {}
+              },
+              "RVB": {
+                "name": "Room",
+                "on": true,
+                "params": {
+                  "0": 18,
+                  "1": 15,
+                  "2": 28,
+                  "3": 0
+                }
+              }
+            }
+          },
+          "doc": {
+            "guitarra": {
+              "seletor": "Posição 2 (bridge+middle)",
+              "seletorCurto": "bridge+middle",
+              "volume": "9",
+              "tone": "9",
+              "receita": "SELETOR 3 · Volume 9 · Tone 9",
+              "tecnicas": [
+                "Power chords com palhetada firme, mas sem distorção",
+                "O chorus dá o \"não estou em casa\" do verso"
+              ]
+            },
+            "comoTocar": [],
+            "teste": {
+              "riff": "verso (F–Bb–Ab–Db)",
+              "drum": "grunge 117 bpm",
+              "escutar": [
+                "acordes LIMPOS com leve brilho de chorus",
+                "dinâmica de verso para pré-refrão"
+              ]
+            },
+            "ajustes": [
+              "sujo demais → Vol da guitarra 8",
+              "chorus escondido → A-Chorus Mix +4"
+            ],
+            "evite": [
+              "Nunca ligue o DST no verso: o contraste é tudo"
+            ],
+            "irNota": "Recomendada: American Twin 2x12 — Medium Mix do banco local (User IR 1) — captura do Twin Reverb, o amp do álbum (Low Cut 4 · High Cut 6500 · Level 0).",
+            "momentos": [
+              {
+                "nome": "Riff do século",
+                "mods": [
+                  [
+                    "DST",
+                    "ON"
+                  ]
+                ],
+                "quando": "Pré-refrão chegou? DST ON = o riff F–Bb–Ab–Db no talo.",
+                "dica": "O verso volta com DST OFF."
+              },
+              {
+                "nome": "Solo gaguejado",
+                "mods": [
+                  [
+                    "EQ",
+                    "ON"
+                  ]
+                ],
+                "quando": "Sobressalente: realce de médios para o solo cantado.",
+                "dica": ""
+              }
+            ],
+            "slotSugestao": null
+          }
+        },
+        {
+          "camada": "Riff Punk",
+          "sufixo": "RI",
+          "nome": "SLT01RI",
+          "emoji": "⚡",
+          "timbre": "O riff do século: F–Bb–Ab–Db com DS-1 e ataque total",
+          "spec": {
+            "name": "SLT01RI",
+            "type": "Rock",
+            "bpm": 120,
+            "volume": 60,
+            "ir_slot": null,
+            "modules": {
+              "PRE": {
+                "name": "Boost",
+                "on": false,
+                "params": {}
+              },
+              "DST": {
+                "name": "La Charger",
+                "on": true,
+                "params": {
+                  "0": 66,
+                  "1": 48,
+                  "2": 62
+                }
+              },
+              "AMP": {
+                "name": "Dark Twin",
+                "on": true,
+                "params": {
+                  "0": 55,
+                  "1": 62,
+                  "2": 52,
+                  "3": 48,
+                  "4": 55,
+                  "5": 0
+                }
+              },
+              "NR": {
+                "name": "Gate 1",
+                "on": true,
+                "params": {
+                  "0": 26
+                }
+              },
+              "CAB": {
+                "name": "DarkTW 2x12",
+                "on": true,
+                "params": {
+                  "0": 75,
+                  "1": 50
+                }
+              },
+              "EQ": {
+                "name": "EQ 1",
+                "on": false,
+                "params": {
+                  "1": 3,
+                  "5": 56
+                }
+              },
+              "MOD": {
+                "name": "A-Chorus",
+                "on": false,
+                "params": {
+                  "0": 30,
+                  "1": 0.5,
+                  "2": 50,
+                  "3": 0
+                }
+              },
+              "DLY": {
+                "name": "Slapbk",
+                "on": false,
+                "params": {}
+              },
+              "RVB": {
+                "name": "Room",
+                "on": true,
+                "params": {
+                  "0": 20,
+                  "1": 19,
+                  "2": 31,
+                  "3": 0
+                }
+              }
+            }
+          },
+          "doc": {
+            "guitarra": {
+              "seletor": "Posição 2 (bridge+middle)",
+              "seletorCurto": "bridge+middle",
+              "volume": "10",
+              "tone": "10",
+              "receita": "SELETOR 3 · Volume 10 · Tone 10",
+              "tecnicas": [
+                "Palhetada para baixo, com STOP seco no \"hello, hello…\"",
+                "Segure o acorde no staccato: o espaço é parte do riff"
+              ]
+            },
+            "comoTocar": [],
+            "teste": {
+              "riff": "riff principal",
+              "drum": "grunge 117 bpm",
+              "escutar": [
+                "quatro acordes com peso máximo",
+                "corte seco no break"
+              ]
+            },
+            "ajustes": [
+              "embolando → Tone 8",
+              "sem mordida → La Charger Tone +4"
+            ],
+            "evite": [
+              "Stomp DST = liga o peso do refrão; desligue para o verso deste mesmo patch"
+            ],
+            "irNota": "Recomendada: American Twin 2x12 — Medium Mix do banco local (User IR 1) — captura do Twin Reverb, o amp do álbum (Low Cut 4 · High Cut 6500 · Level 0).",
+            "momentos": [
+              {
+                "nome": "Verso limpo",
+                "mods": [
+                  [
+                    "DST",
+                    "OFF"
+                  ],
+                  [
+                    "MOD",
+                    "ON"
+                  ]
+                ],
+                "quando": "O verso é LIMPO com chorus — o erro clássico é tocar sujo.",
+                "dica": "Mesma ideia do SLT01CL em um stomp."
+              },
+              {
+                "nome": "Solo",
+                "mods": [
+                  [
+                    "EQ",
+                    "ON"
+                  ]
+                ],
+                "quando": "Sobressalente para o solo gaguejado.",
+                "dica": ""
+              }
+            ],
+            "slotSugestao": null
+          }
+        },
+        {
+          "camada": "Solo Gaguejado",
+          "sufixo": "SO",
+          "nome": "SLT01SO",
+          "emoji": "🎸",
+          "timbre": "Solo: a melodia do vocal gaguejada na distorção — praticável e icônico",
+          "spec": {
+            "name": "SLT01SO",
+            "type": "Rock",
+            "bpm": 120,
+            "volume": 60,
+            "ir_slot": null,
+            "modules": {
+              "PRE": {
+                "name": "Boost",
+                "on": false,
+                "params": {}
+              },
+              "DST": {
+                "name": "La Charger",
+                "on": true,
+                "params": {
+                  "0": 66,
+                  "1": 50,
+                  "2": 64
+                }
+              },
+              "AMP": {
+                "name": "Dark Twin",
+                "on": true,
+                "params": {
+                  "0": 55,
+                  "1": 62,
+                  "2": 52,
+                  "3": 48,
+                  "4": 55,
+                  "5": 0
+                }
+              },
+              "NR": {
+                "name": "Gate 1",
+                "on": true,
+                "params": {
+                  "0": 26
+                }
+              },
+              "CAB": {
+                "name": "DarkTW 2x12",
+                "on": true,
+                "params": {
+                  "0": 75,
+                  "1": 50
+                }
+              },
+              "EQ": {
+                "name": "EQ 1",
+                "on": false,
+                "params": {
+                  "1": 3,
+                  "5": 56
+                }
+              },
+              "MOD": {
+                "name": "A-Chorus",
+                "on": false,
+                "params": {
+                  "0": 30,
+                  "1": 0.5,
+                  "2": 50,
+                  "3": 0
+                }
+              },
+              "DLY": {
+                "name": "Slapbk",
+                "on": false,
+                "params": {}
+              },
+              "RVB": {
+                "name": "Room",
+                "on": true,
+                "params": {
+                  "0": 20,
+                  "1": 19,
+                  "2": 31,
+                  "3": 0
+                }
+              }
+            }
+          },
+          "doc": {
+            "guitarra": {
+              "seletor": "Posição 1 (bridge)",
+              "seletorCurto": "bridge",
+              "volume": "10",
+              "tone": "9",
+              "receita": "SELETOR 2 · Volume 10 · Tone 9",
+              "tecnicas": [
+                "Toque a melodia do vocal em blocos de duas notas",
+                "Repita a frase com pequenas variações (a gagueira é proposital)"
+              ]
+            },
+            "comoTocar": [],
+            "teste": {
+              "riff": "solo (após o 2º refrão)",
+              "drum": "grunge 117 bpm",
+              "escutar": [
+                "melodia do vocal reconhecível na distorção",
+                "blocos de duas notas"
+              ]
+            },
+            "ajustes": [
+              "falta mordida → Tone +3",
+              "passando do ponto → Gain -3"
+            ],
+            "evite": [
+              "É o solo mais praticável do álbum: comece por aqui"
+            ],
+            "irNota": "Recomendada: American Twin 2x12 — Medium Mix do banco local (User IR 1) — captura do Twin Reverb, o amp do álbum (Low Cut 4 · High Cut 6500 · Level 0).",
+            "momentos": [
+              {
+                "nome": "Solo cortando",
+                "mods": [
+                  [
+                    "EQ",
+                    "ON"
+                  ]
+                ],
+                "quando": "A melodia gaguejada pede médios à frente.",
+                "dica": ""
+              }
+            ],
+            "slotSugestao": null
+          }
+        }
+      ]
+    },
+    {
+      "id": "BEE01",
+      "song": "Been a Son",
+      "idAlbum": "WM",
+      "bpm": 160,
+      "resumo": "Base punk rápida e rasgada com solo curto e dissonante (Paradiso 1991).",
+      "referencias": [
+        {
+          "role": "Show caseiro/prática: rig ao vivo do álbum (1989–1994)",
+          "conf": "alta",
+          "src": "From the Muddy Banks of the Wishkah (DGC, 1996) · Wikipedia · livenirvana.com"
+        },
+        {
+          "role": "Rig: Jaguar/Jag-Stang/Mustang · Boss DS-1 (DST-2 de 92) → Twin Reverb/Mesa",
+          "conf": "alta",
+          "src": "groundguitar.com/kurt-cobain-gear · equipboard.com/pros/kurt-cobain"
+        }
+      ],
+      "patches": [
+        {
+          "camada": "Riff Punk",
+          "sufixo": "RI",
+          "nome": "BEE01RI",
+          "emoji": "⚡",
+          "timbre": "Base punk rápida e rasgada — a banda em modo rambo",
+          "spec": {
+            "name": "BEE01RI",
+            "type": "Rock",
+            "bpm": 120,
+            "volume": 60,
+            "ir_slot": null,
+            "modules": {
+              "PRE": {
+                "name": "Boost",
+                "on": false,
+                "params": {}
+              },
+              "DST": {
+                "name": "La Charger",
+                "on": true,
+                "params": {
+                  "0": 64,
+                  "1": 48,
+                  "2": 62
+                }
+              },
+              "AMP": {
+                "name": "Dark Twin",
+                "on": true,
+                "params": {
+                  "0": 55,
+                  "1": 62,
+                  "2": 52,
+                  "3": 48,
+                  "4": 55,
+                  "5": 0
+                }
+              },
+              "NR": {
+                "name": "Gate 1",
+                "on": true,
+                "params": {
+                  "0": 26
+                }
+              },
+              "CAB": {
+                "name": "DarkTW 2x12",
+                "on": true,
+                "params": {
+                  "0": 75,
+                  "1": 50
+                }
+              },
+              "EQ": {
+                "name": "EQ 1",
+                "on": false,
+                "params": {
+                  "1": 3,
+                  "5": 56
+                }
+              },
+              "MOD": {
+                "name": "A-Chorus",
+                "on": false,
+                "params": {
+                  "0": 30,
+                  "1": 0.5,
+                  "2": 50,
+                  "3": 0
+                }
+              },
+              "DLY": {
+                "name": "Slapbk",
+                "on": false,
+                "params": {}
+              },
+              "RVB": {
+                "name": "Room",
+                "on": true,
+                "params": {
+                  "0": 20,
+                  "1": 19,
+                  "2": 31,
+                  "3": 0
+                }
+              }
+            }
+          },
+          "doc": {
+            "guitarra": {
+              "seletor": "Posição 2 (bridge+middle)",
+              "seletorCurto": "bridge+middle",
+              "volume": "10",
+              "tone": "10",
+              "receita": "SELETOR 3 · Volume 10 · Tone 10",
+              "tecnicas": [
+                "Palhetada punk para baixo, constante",
+                "Acordes curtos, com acento no 2 e no 4"
+              ]
+            },
+            "comoTocar": [],
+            "teste": {
+              "riff": "base inteira",
+              "drum": "punk 160 bpm",
+              "escutar": [
+                "base rápida e rasgada",
+                "consistência rítmica sem perder o ataque"
+              ]
+            },
+            "ajustes": [
+              "cansando o braço → Gain +2 para compensar",
+              "embolando → Tone 8"
+            ],
+            "evite": [
+              "É uma base: o foco é o pulso, não a harmonia"
+            ],
+            "irNota": "Recomendada: American Twin 2x12 — Medium Mix do banco local (User IR 1) — captura do Twin Reverb, o amp do álbum (Low Cut 4 · High Cut 6500 · Level 0).",
+            "momentos": [
+              {
+                "nome": "Solo dissonante",
+                "mods": [
+                  [
+                    "EQ",
+                    "ON"
+                  ]
+                ],
+                "quando": "Sobressalente: realce para o solo tenso.",
+                "dica": ""
+              }
+            ],
+            "slotSugestao": null
+          }
+        },
+        {
+          "camada": "Solo Sujo",
+          "sufixo": "SO",
+          "nome": "BEE01SO",
+          "emoji": "🎸",
+          "timbre": "Solo: curto, doente e espectral — pura atitude",
+          "spec": {
+            "name": "BEE01SO",
+            "type": "Rock",
+            "bpm": 120,
+            "volume": 60,
+            "ir_slot": null,
+            "modules": {
+              "PRE": {
+                "name": "Boost",
+                "on": false,
+                "params": {}
+              },
+              "DST": {
+                "name": "La Charger",
+                "on": true,
+                "params": {
+                  "0": 68,
+                  "1": 55,
+                  "2": 62
+                }
+              },
+              "AMP": {
+                "name": "Dark Twin",
+                "on": true,
+                "params": {
+                  "0": 55,
+                  "1": 62,
+                  "2": 52,
+                  "3": 48,
+                  "4": 55,
+                  "5": 0
+                }
+              },
+              "NR": {
+                "name": "Gate 1",
+                "on": true,
+                "params": {
+                  "0": 26
+                }
+              },
+              "CAB": {
+                "name": "DarkTW 2x12",
+                "on": true,
+                "params": {
+                  "0": 75,
+                  "1": 50
+                }
+              },
+              "EQ": {
+                "name": "EQ 1",
+                "on": false,
+                "params": {
+                  "1": 3,
+                  "5": 56
+                }
+              },
+              "MOD": {
+                "name": "A-Chorus",
+                "on": false,
+                "params": {}
+              },
+              "DLY": {
+                "name": "Slapbk",
+                "on": false,
+                "params": {}
+              },
+              "RVB": {
+                "name": "Room",
+                "on": true,
+                "params": {
+                  "0": 20,
+                  "1": 19,
+                  "2": 31,
+                  "3": 0
+                }
+              }
+            }
+          },
+          "doc": {
+            "guitarra": {
+              "seletor": "Posição 1 (bridge)",
+              "seletorCurto": "bridge",
+              "volume": "10",
+              "tone": "10",
+              "receita": "SELETOR 2 · Volume 10 · Tone 10",
+              "tecnicas": [
+                "Frases dissonantes, bends furiosos",
+                "Não busque \"bonito\": busque tenso"
+              ]
+            },
+            "comoTocar": [],
+            "teste": {
+              "riff": "solo central",
+              "drum": "punk 160 bpm",
+              "escutar": [
+                "lead tenso e dissonante",
+                "atitude por cima da base rápida"
+              ]
+            },
+            "ajustes": [
+              "passando do ponto → Gain -3"
+            ],
+            "evite": [
+              "É o oposto do solo-pop de Lithium: rasgue o pick"
+            ],
+            "irNota": "Recomendada: American Twin 2x12 — Medium Mix do banco local (User IR 1) — captura do Twin Reverb, o amp do álbum (Low Cut 4 · High Cut 6500 · Level 0).",
+            "momentos": [
+              {
+                "nome": "Solo espectral",
+                "mods": [
+                  [
+                    "EQ",
+                    "ON"
+                  ]
+                ],
+                "quando": "Realce para o solo curto e doente.",
+                "dica": ""
+              }
+            ],
+            "slotSugestao": null
+          }
+        }
+      ]
+    },
+    {
+      "id": "LIT01",
+      "song": "Lithium",
+      "idAlbum": "WM",
+      "bpm": 120,
+      "resumo": "Arpejos pop no verso, \"yeah yeah\" estourado no refrão, solo curto na ponte.",
+      "referencias": [
+        {
+          "role": "Show caseiro/prática: rig ao vivo do álbum (1989–1994)",
+          "conf": "alta",
+          "src": "From the Muddy Banks of the Wishkah (DGC, 1996) · Wikipedia · livenirvana.com"
+        },
+        {
+          "role": "Rig: Jaguar/Jag-Stang/Mustang · Boss DS-1 (DST-2 de 92) → Twin Reverb/Mesa",
+          "conf": "alta",
+          "src": "groundguitar.com/kurt-cobain-gear · equipboard.com/pros/kurt-cobain"
+        }
+      ],
+      "patches": [
+        {
+          "camada": "Arpejo Pop",
+          "sufixo": "AR",
+          "nome": "LIT01AR",
+          "emoji": "✨",
+          "timbre": "Verso: arpejos pop com chorus — a base da música é um colchão limpo",
+          "spec": {
+            "name": "LIT01AR",
+            "type": "Rock",
+            "bpm": 120,
+            "volume": 60,
+            "ir_slot": null,
+            "modules": {
+              "PRE": {
+                "name": "Boost",
+                "on": false,
+                "params": {}
+              },
+              "DST": {
+                "name": "La Charger",
+                "on": false,
+                "params": {
+                  "0": 64,
+                  "1": 48,
+                  "2": 62
+                }
+              },
+              "AMP": {
+                "name": "Dark Twin",
+                "on": true,
+                "params": {
+                  "0": 55,
+                  "1": 62,
+                  "2": 52,
+                  "3": 48,
+                  "4": 55,
+                  "5": 0
+                }
+              },
+              "NR": {
+                "name": "Gate 1",
+                "on": false,
+                "params": {}
+              },
+              "CAB": {
+                "name": "DarkTW 2x12",
+                "on": true,
+                "params": {
+                  "0": 75,
+                  "1": 50
+                }
+              },
+              "EQ": {
+                "name": "EQ 1",
+                "on": false,
+                "params": {}
+              },
+              "MOD": {
+                "name": "A-Chorus",
+                "on": true,
+                "params": {
+                  "0": 30,
+                  "1": 0.5,
+                  "2": 50,
+                  "3": 0
+                }
+              },
+              "DLY": {
+                "name": "Slapbk",
+                "on": false,
+                "params": {}
+              },
+              "RVB": {
+                "name": "Room",
+                "on": true,
+                "params": {
+                  "0": 18,
+                  "1": 15,
+                  "2": 28,
+                  "3": 0
+                }
+              }
+            }
+          },
+          "doc": {
+            "guitarra": {
+              "seletor": "Posição 4 (middle+neck)",
+              "seletorCurto": "middle+neck",
+              "volume": "9",
+              "tone": "8",
+              "receita": "SELETOR 4 · Volume 9 · Tone 8",
+              "tecnicas": [
+                "Arpejo pop, palhetada alternada",
+                "Com o chorus quase imperceptível: sustentação, não efeito"
+              ]
+            },
+            "comoTocar": [],
+            "teste": {
+              "riff": "verso (\"I'm so happy…\")",
+              "drum": "grunge 120 bpm",
+              "escutar": [
+                "arpejo pop redondo",
+                "transição para o refrão sujo"
+              ]
+            },
+            "ajustes": [
+              "muito brilho → Tone 7",
+              "sem redondeza → seletor 4"
+            ],
+            "evite": [
+              "O contraste verso/refrão faz a música: seletor + stomp DST"
+            ],
+            "irNota": "Recomendada: American Twin 2x12 — Medium Mix do banco local (User IR 1) — captura do Twin Reverb, o amp do álbum (Low Cut 4 · High Cut 6500 · Level 0).",
+            "momentos": [
+              {
+                "nome": "Refrão \"yeah yeah\"",
+                "mods": [
+                  [
+                    "DST",
+                    "ON"
+                  ]
+                ],
+                "quando": "Refrão: DST ON = acordes estourados.",
+                "dica": "Arpejo volta com DST OFF."
+              },
+              {
+                "nome": "Solo",
+                "mods": [
+                  [
+                    "EQ",
+                    "ON"
+                  ]
+                ],
+                "quando": "Sobressalente para o solo curto.",
+                "dica": ""
+              }
+            ],
+            "slotSugestao": null
+          }
+        },
+        {
+          "camada": "Refrão Punk",
+          "sufixo": "RI",
+          "nome": "LIT01RI",
+          "emoji": "⚡",
+          "timbre": "Refrão: \"yeah, yeah\" com acordes estourados",
+          "spec": {
+            "name": "LIT01RI",
+            "type": "Rock",
+            "bpm": 120,
+            "volume": 60,
+            "ir_slot": null,
+            "modules": {
+              "PRE": {
+                "name": "Boost",
+                "on": false,
+                "params": {}
+              },
+              "DST": {
+                "name": "La Charger",
+                "on": true,
+                "params": {
+                  "0": 64,
+                  "1": 48,
+                  "2": 62
+                }
+              },
+              "AMP": {
+                "name": "Dark Twin",
+                "on": true,
+                "params": {
+                  "0": 55,
+                  "1": 62,
+                  "2": 52,
+                  "3": 48,
+                  "4": 55,
+                  "5": 0
+                }
+              },
+              "NR": {
+                "name": "Gate 1",
+                "on": true,
+                "params": {
+                  "0": 26
+                }
+              },
+              "CAB": {
+                "name": "DarkTW 2x12",
+                "on": true,
+                "params": {
+                  "0": 75,
+                  "1": 50
+                }
+              },
+              "EQ": {
+                "name": "EQ 1",
+                "on": false,
+                "params": {
+                  "1": 3,
+                  "5": 56
+                }
+              },
+              "MOD": {
+                "name": "A-Chorus",
+                "on": false,
+                "params": {
+                  "0": 30,
+                  "1": 0.5,
+                  "2": 50,
+                  "3": 0
+                }
+              },
+              "DLY": {
+                "name": "Slapbk",
+                "on": false,
+                "params": {}
+              },
+              "RVB": {
+                "name": "Room",
+                "on": true,
+                "params": {
+                  "0": 20,
+                  "1": 19,
+                  "2": 31,
+                  "3": 0
+                }
+              }
+            }
+          },
+          "doc": {
+            "guitarra": {
+              "seletor": "Posição 2 (bridge+middle)",
+              "seletorCurto": "bridge+middle",
+              "volume": "10",
+              "tone": "10",
+              "receita": "SELETOR 3 · Volume 10 · Tone 10",
+              "tecnicas": [
+                "Acordes cheios, palhetada total",
+                "Leve embolamento é aceitável: é grunge"
+              ]
+            },
+            "comoTocar": [],
+            "teste": {
+              "riff": "refrão",
+              "drum": "grunge 120 bpm",
+              "escutar": [
+                "acordes estourados com \"yeah, yeah\"",
+                "energia do refrão inteiro"
+              ]
+            },
+            "ajustes": [
+              "lama nos graves → Tone 8",
+              "sem corpo → seletor 3 · Gain +2"
+            ],
+            "evite": [
+              "Stomp DST = refrão inteiro; sem ele o patch é o verso limpo"
+            ],
+            "irNota": "Recomendada: American Twin 2x12 — Medium Mix do banco local (User IR 1) — captura do Twin Reverb, o amp do álbum (Low Cut 4 · High Cut 6500 · Level 0).",
+            "momentos": [
+              {
+                "nome": "Verso pop",
+                "mods": [
+                  [
+                    "DST",
+                    "OFF"
+                  ],
+                  [
+                    "MOD",
+                    "ON"
+                  ]
+                ],
+                "quando": "O verso é arpejo com chorus — este patch em um stomp.",
+                "dica": "É o LIT01AR sem trocar de patch."
+              },
+              {
+                "nome": "Solo",
+                "mods": [
+                  [
+                    "EQ",
+                    "ON"
+                  ]
+                ],
+                "quando": "Sobressalente: realce de médios.",
+                "dica": ""
+              }
+            ],
+            "slotSugestao": null
+          }
+        },
+        {
+          "camada": "Solo",
+          "sufixo": "SO",
+          "nome": "LIT01SO",
+          "emoji": "🎸",
+          "timbre": "Solo curto e direto: distorção com o seletor na ponte",
+          "spec": {
+            "name": "LIT01SO",
+            "type": "Rock",
+            "bpm": 120,
+            "volume": 60,
+            "ir_slot": null,
+            "modules": {
+              "PRE": {
+                "name": "Boost",
+                "on": false,
+                "params": {}
+              },
+              "DST": {
+                "name": "La Charger",
+                "on": true,
+                "params": {
+                  "0": 66,
+                  "1": 50,
+                  "2": 64
+                }
+              },
+              "AMP": {
+                "name": "Dark Twin",
+                "on": true,
+                "params": {
+                  "0": 55,
+                  "1": 62,
+                  "2": 52,
+                  "3": 48,
+                  "4": 55,
+                  "5": 0
+                }
+              },
+              "NR": {
+                "name": "Gate 1",
+                "on": true,
+                "params": {
+                  "0": 26
+                }
+              },
+              "CAB": {
+                "name": "DarkTW 2x12",
+                "on": true,
+                "params": {
+                  "0": 75,
+                  "1": 50
+                }
+              },
+              "EQ": {
+                "name": "EQ 1",
+                "on": false,
+                "params": {
+                  "1": 3,
+                  "5": 56
+                }
+              },
+              "MOD": {
+                "name": "A-Chorus",
+                "on": false,
+                "params": {
+                  "0": 30,
+                  "1": 0.5,
+                  "2": 50,
+                  "3": 0
+                }
+              },
+              "DLY": {
+                "name": "Slapbk",
+                "on": false,
+                "params": {}
+              },
+              "RVB": {
+                "name": "Room",
+                "on": true,
+                "params": {
+                  "0": 20,
+                  "1": 19,
+                  "2": 31,
+                  "3": 0
+                }
+              }
+            }
+          },
+          "doc": {
+            "guitarra": {
+              "seletor": "Posição 1 (bridge)",
+              "seletorCurto": "bridge",
+              "volume": "10",
+              "tone": "9",
+              "receita": "SELETOR 2 · Volume 10 · Tone 9",
+              "tecnicas": [
+                "Frases curtas, poucas notas",
+                "Bend no final para fechar"
+              ]
+            },
+            "comoTocar": [],
+            "teste": {
+              "riff": "solo (após 2º refrão)",
+              "drum": "grunge 120 bpm",
+              "escutar": [
+                "lead enxuto e direto",
+                "respirando no espaço do refrão"
+              ]
+            },
+            "ajustes": [
+              "falta presença → Tone +3"
+            ],
+            "evite": [
+              "Não estique: o solo é curto e pontual"
+            ],
+            "irNota": "Recomendada: American Twin 2x12 — Medium Mix do banco local (User IR 1) — captura do Twin Reverb, o amp do álbum (Low Cut 4 · High Cut 6500 · Level 0).",
+            "momentos": [
+              {
+                "nome": "Solo cortando",
+                "mods": [
+                  [
+                    "EQ",
+                    "ON"
+                  ]
+                ],
+                "quando": "Frases curtas com presença no seletor da ponte.",
+                "dica": ""
+              }
+            ],
+            "slotSugestao": null
+          }
+        }
+      ]
+    },
+    {
+      "id": "SLV01",
+      "song": "Sliver",
+      "idAlbum": "WM",
+      "bpm": 140,
+      "resumo": "\"Grandma take me home\": palm mute no verso, DS-1 no refrão; intro de coro com vibe (era In Utero).",
+      "referencias": [
+        {
+          "role": "Show caseiro/prática: rig ao vivo do álbum (1989–1994)",
+          "conf": "alta",
+          "src": "From the Muddy Banks of the Wishkah (DGC, 1996) · Wikipedia · livenirvana.com"
+        },
+        {
+          "role": "Rig: Jaguar/Jag-Stang/Mustang · Boss DS-1 (DST-2 de 92) → Twin Reverb/Mesa",
+          "conf": "alta",
+          "src": "groundguitar.com/kurt-cobain-gear · equipboard.com/pros/kurt-cobain"
+        }
+      ],
+      "patches": [
+        {
+          "camada": "Riff Alternado",
+          "sufixo": "RI",
+          "nome": "SLV01RI",
+          "emoji": "⚡",
+          "timbre": "\"Grandma take me home\": palm mute no verso, DS-1 no refrão — _o stomp DST troca a seção_",
+          "spec": {
+            "name": "SLV01RI",
+            "type": "Rock",
+            "bpm": 120,
+            "volume": 60,
+            "ir_slot": null,
+            "modules": {
+              "PRE": {
+                "name": "Boost",
+                "on": false,
+                "params": {}
+              },
+              "DST": {
+                "name": "La Charger",
+                "on": true,
+                "params": {
+                  "0": 64,
+                  "1": 48,
+                  "2": 62
+                }
+              },
+              "AMP": {
+                "name": "Dark Twin",
+                "on": true,
+                "params": {
+                  "0": 55,
+                  "1": 62,
+                  "2": 52,
+                  "3": 48,
+                  "4": 55,
+                  "5": 0
+                }
+              },
+              "NR": {
+                "name": "Gate 1",
+                "on": true,
+                "params": {
+                  "0": 26
+                }
+              },
+              "CAB": {
+                "name": "DarkTW 2x12",
+                "on": true,
+                "params": {
+                  "0": 75,
+                  "1": 50
+                }
+              },
+              "EQ": {
+                "name": "EQ 1",
+                "on": false,
+                "params": {}
+              },
+              "MOD": {
+                "name": "A-Chorus",
+                "on": false,
+                "params": {
+                  "0": 30,
+                  "1": 0.5,
+                  "2": 50,
+                  "3": 0
+                }
+              },
+              "DLY": {
+                "name": "Slapbk",
+                "on": false,
+                "params": {}
+              },
+              "RVB": {
+                "name": "Room",
+                "on": true,
+                "params": {
+                  "0": 20,
+                  "1": 19,
+                  "2": 31,
+                  "3": 0
+                }
+              }
+            }
+          },
+          "doc": {
+            "guitarra": {
+              "seletor": "Posição 2 (bridge+middle)",
+              "seletorCurto": "bridge+middle",
+              "volume": "10",
+              "tone": "10",
+              "receita": "SELETOR 3 · Volume 10 · Tone 10",
+              "tecnicas": [
+                "Verso: acordes secos em palm mute com o DST DESLIGADO (stomp)",
+                "Refrão: ligue o DST e afogue tudo"
+              ]
+            },
+            "comoTocar": [],
+            "teste": {
+              "riff": "verso + refrão",
+              "drum": "grunge 140 bpm",
+              "escutar": [
+                "contraste claro entre verso seco e refrão sujo",
+                "punch do palm mute"
+              ]
+            },
+            "ajustes": [
+              "refrão fraco → Gain +3",
+              "verso sujo demais → Vol da guitarra 8"
+            ],
+            "evite": [
+              "Aqui o stomp não é detalhe: É a estrutura da música"
+            ],
+            "irNota": "Recomendada: American Twin 2x12 — Medium Mix do banco local (User IR 1) — captura do Twin Reverb, o amp do álbum (Low Cut 4 · High Cut 6500 · Level 0).",
+            "momentos": [
+              {
+                "nome": "Verso seco",
+                "mods": [
+                  [
+                    "DST",
+                    "OFF"
+                  ]
+                ],
+                "quando": "\"Grandma take me home\" em palm mute SECO — DST OFF.",
+                "dica": "Refrão volta com DST ON."
+              },
+              {
+                "nome": "Intro do coro",
+                "mods": [
+                  [
+                    "MOD",
+                    "ON"
+                  ]
+                ],
+                "quando": "A intro é colchão com vibe (patch SLV01AR) — aqui é um stomp.",
+                "dica": ""
+              }
+            ],
+            "slotSugestao": null
+          }
+        },
+        {
+          "camada": "Intro do Coro",
+          "sufixo": "AR",
+          "nome": "SLV01AR",
+          "emoji": "🎺",
+          "timbre": "A intro do coro infantil (sample no show): colchão limpo com vibe",
+          "spec": {
+            "name": "SLV01AR",
+            "type": "Rock",
+            "bpm": 120,
+            "volume": 60,
+            "ir_slot": null,
+            "modules": {
+              "PRE": {
+                "name": "Boost",
+                "on": false,
+                "params": {}
+              },
+              "DST": {
+                "name": "La Charger",
+                "on": false,
+                "params": {
+                  "0": 70,
+                  "1": 48,
+                  "2": 62
+                }
+              },
+              "AMP": {
+                "name": "Dark Twin",
+                "on": true,
+                "params": {
+                  "0": 55,
+                  "1": 62,
+                  "2": 52,
+                  "3": 48,
+                  "4": 55,
+                  "5": 0
+                }
+              },
+              "NR": {
+                "name": "Gate 1",
+                "on": false,
+                "params": {}
+              },
+              "CAB": {
+                "name": "DarkTW 2x12",
+                "on": true,
+                "params": {
+                  "0": 75,
+                  "1": 50
+                }
+              },
+              "EQ": {
+                "name": "EQ 1",
+                "on": false,
+                "params": {}
+              },
+              "MOD": {
+                "name": "Vibe",
+                "on": true,
+                "params": {
+                  "0": 45,
+                  "1": 0.5,
+                  "2": 0
+                }
+              },
+              "DLY": {
+                "name": "Slapbk",
+                "on": false,
+                "params": {}
+              },
+              "RVB": {
+                "name": "Room",
+                "on": true,
+                "params": {
+                  "0": 20,
+                  "1": 19,
+                  "2": 31,
+                  "3": 0
+                }
+              }
+            }
+          },
+          "doc": {
+            "guitarra": {
+              "seletor": "Posição 4 (middle+neck)",
+              "seletorCurto": "middle+neck",
+              "volume": "8",
+              "tone": "7",
+              "receita": "SELETOR 4 · Volume 8 · Tone 7",
+              "tecnicas": [
+                "Acordes longos com swells de volume",
+                "A vibe dá o ar psicodélico do sample"
+              ]
+            },
+            "comoTocar": [],
+            "teste": {
+              "riff": "intro (antes do \"grandma\")",
+              "drum": "grunge 140 bpm",
+              "escutar": [
+                "colchão ondulante com vibe",
+                "entrada do riff com contraste total"
+              ]
+            },
+            "ajustes": [
+              "vibe enjoativa → Vibe Intensidade -5"
+            ],
+            "evite": [
+              "É um patch de textura: não brigue com o SLV01RI"
+            ],
+            "irNota": "Recomendada: American Twin 2x12 — Medium Mix do banco local (User IR 1) — captura do Twin Reverb, o amp do álbum (Low Cut 4 · High Cut 6500 · Level 0).",
+            "momentos": [
+              {
+                "nome": "Riff principal",
+                "mods": [
+                  [
+                    "DST",
+                    "ON"
+                  ],
+                  [
+                    "MOD",
+                    "OFF"
+                  ]
+                ],
+                "quando": "Entrada do riff: chorus sai, distorção entra.",
+                "dica": "Volte à textura no verso seguinte."
+              },
+              {
+                "nome": "Verso sem vibe",
+                "mods": [
+                  [
+                    "MOD",
+                    "OFF"
+                  ]
+                ],
+                "quando": "Verso \"grandma\" em palm mute, sem o colchão da vibe.",
+                "dica": ""
+              }
+            ],
+            "slotSugestao": null
+          }
+        }
+      ]
+    },
+    {
+      "id": "SPK01",
+      "song": "Spank Thru",
+      "idAlbum": "WM",
+      "bpm": 130,
+      "resumo": "Jam instrumental do show de Roma (nov/1991) — a única versão lançada dessa noite.",
+      "referencias": [
+        {
+          "role": "Show caseiro/prática: rig ao vivo do álbum (1989–1994)",
+          "conf": "alta",
+          "src": "From the Muddy Banks of the Wishkah (DGC, 1996) · Wikipedia · livenirvana.com"
+        },
+        {
+          "role": "Rig: Jaguar/Jag-Stang/Mustang · Boss DS-1 (DST-2 de 92) → Twin Reverb/Mesa",
+          "conf": "alta",
+          "src": "groundguitar.com/kurt-cobain-gear · equipboard.com/pros/kurt-cobain"
+        }
+      ],
+      "patches": [
+        {
+          "camada": "Solo Instrumental",
+          "sufixo": "SO",
+          "nome": "SPK01SO",
+          "emoji": "🎸",
+          "timbre": "A única versão lançada do show de Roma: jam instrumental do início da banda",
+          "spec": {
+            "name": "SPK01SO",
+            "type": "Rock",
+            "bpm": 120,
+            "volume": 60,
+            "ir_slot": null,
+            "modules": {
+              "PRE": {
+                "name": "Boost",
+                "on": false,
+                "params": {}
+              },
+              "DST": {
+                "name": "La Charger",
+                "on": true,
+                "params": {
+                  "0": 66,
+                  "1": 50,
+                  "2": 64
+                }
+              },
+              "AMP": {
+                "name": "Dark Twin",
+                "on": true,
+                "params": {
+                  "0": 55,
+                  "1": 62,
+                  "2": 52,
+                  "3": 48,
+                  "4": 55,
+                  "5": 0
+                }
+              },
+              "NR": {
+                "name": "Gate 1",
+                "on": true,
+                "params": {
+                  "0": 26
+                }
+              },
+              "CAB": {
+                "name": "DarkTW 2x12",
+                "on": true,
+                "params": {
+                  "0": 75,
+                  "1": 50
+                }
+              },
+              "EQ": {
+                "name": "EQ 1",
+                "on": false,
+                "params": {
+                  "1": 3,
+                  "5": 56
+                }
+              },
+              "MOD": {
+                "name": "A-Chorus",
+                "on": false,
+                "params": {}
+              },
+              "DLY": {
+                "name": "Slapbk",
+                "on": false,
+                "params": {}
+              },
+              "RVB": {
+                "name": "Room",
+                "on": true,
+                "params": {
+                  "0": 22,
+                  "1": 19,
+                  "2": 33,
+                  "3": 0
+                }
+              }
+            }
+          },
+          "doc": {
+            "guitarra": {
+              "seletor": "Posição 1 (bridge)",
+              "seletorCurto": "bridge",
+              "volume": "10",
+              "tone": "9",
+              "receita": "SELETOR 2 · Volume 10 · Tone 9",
+              "tecnicas": [
+                "Jam: toque o que a base pede, com bends e vibrato",
+                "A estrutura é solta: escute a base e responda"
+              ]
+            },
+            "comoTocar": [],
+            "teste": {
+              "riff": "música inteira (instrumental)",
+              "drum": "jam 130 bpm",
+              "escutar": [
+                "jam instrumental coesa",
+                "frases respondendo à base"
+              ]
+            },
+            "ajustes": [
+              "falta coesão → toque menos notas",
+              "gelando → Tone 8"
+            ],
+            "evite": [
+              "É a música mais antiga do set: mais improvisada, menos \"certa\""
+            ],
+            "irNota": "Recomendada: American Twin 2x12 — Medium Mix do banco local (User IR 1) — captura do Twin Reverb, o amp do álbum (Low Cut 4 · High Cut 6500 · Level 0).",
+            "momentos": [
+              {
+                "nome": "Base punk",
+                "mods": [
+                  [
+                    "DST",
+                    "OFF"
+                  ],
+                  [
+                    "MOD",
+                    "ON"
+                  ]
+                ],
+                "quando": "Para a base da jam, desligue o lead: chorus limpo.",
+                "dica": "Solo volta com DST ON."
+              }
+            ],
+            "slotSugestao": null
+          }
+        }
+      ]
+    },
+    {
+      "id": "SCE01",
+      "song": "Scentless Apprentice",
+      "idAlbum": "WM",
+      "bpm": 120,
+      "resumo": "Riff denso coescrito com Grohl (Seattle 1993, era In Utero).",
+      "referencias": [
+        {
+          "role": "Show caseiro/prática: rig ao vivo do álbum (1989–1994)",
+          "conf": "alta",
+          "src": "From the Muddy Banks of the Wishkah (DGC, 1996) · Wikipedia · livenirvana.com"
+        },
+        {
+          "role": "Rig: Jaguar/Jag-Stang/Mustang · Boss DS-1 (DST-2 de 92) → Twin Reverb/Mesa",
+          "conf": "alta",
+          "src": "groundguitar.com/kurt-cobain-gear · equipboard.com/pros/kurt-cobain"
+        }
+      ],
+      "patches": [
+        {
+          "camada": "Riff Denso",
+          "sufixo": "RI",
+          "nome": "SCE01RI",
+          "emoji": "⚡",
+          "timbre": "O riff coescrito com Grohl: denso e repetitivo — _a banda empurrando na mesma direção_",
+          "spec": {
+            "name": "SCE01RI",
+            "type": "Rock",
+            "bpm": 120,
+            "volume": 60,
+            "ir_slot": null,
+            "modules": {
+              "PRE": {
+                "name": "Boost",
+                "on": false,
+                "params": {}
+              },
+              "DST": {
+                "name": "La Charger",
+                "on": true,
+                "params": {
+                  "0": 68,
+                  "1": 42,
+                  "2": 62
+                }
+              },
+              "AMP": {
+                "name": "Dark Twin",
+                "on": true,
+                "params": {
+                  "0": 55,
+                  "1": 62,
+                  "2": 52,
+                  "3": 48,
+                  "4": 55,
+                  "5": 0
+                }
+              },
+              "NR": {
+                "name": "Gate 1",
+                "on": true,
+                "params": {
+                  "0": 26
+                }
+              },
+              "CAB": {
+                "name": "DarkTW 2x12",
+                "on": true,
+                "params": {
+                  "0": 75,
+                  "1": 50
+                }
+              },
+              "EQ": {
+                "name": "EQ 1",
+                "on": false,
+                "params": {
+                  "1": 3,
+                  "5": 56
+                }
+              },
+              "MOD": {
+                "name": "A-Chorus",
+                "on": false,
+                "params": {}
+              },
+              "DLY": {
+                "name": "Slapbk",
+                "on": false,
+                "params": {}
+              },
+              "RVB": {
+                "name": "Room",
+                "on": true,
+                "params": {
+                  "0": 20,
+                  "1": 19,
+                  "2": 31,
+                  "3": 0
+                }
+              }
+            }
+          },
+          "doc": {
+            "guitarra": {
+              "seletor": "Posição 2 (bridge+middle)",
+              "seletorCurto": "bridge+middle",
+              "volume": "10",
+              "tone": "10",
+              "receita": "SELETOR 3 · Volume 10 · Tone 10",
+              "tecnicas": [
+                "Riff em loop com acentuação forte no tempo",
+                "Deixe a distorção embolar: é densidade, não definição"
+              ]
+            },
+            "comoTocar": [],
+            "teste": {
+              "riff": "riff principal",
+              "drum": "grunge 120 bpm",
+              "escutar": [
+                "riff denso em loop",
+                "acento de braço marcando a levada"
+              ]
+            },
+            "ajustes": [
+              "lama total → Tone +4",
+              "sem peso → Gain +2"
+            ],
+            "evite": [
+              "O riff é um loop: a expressão está no ataque, não nas notas"
+            ],
+            "irNota": "Recomendada: American Twin 2x12 — Medium Mix do banco local (User IR 1) — captura do Twin Reverb, o amp do álbum (Low Cut 4 · High Cut 6500 · Level 0).",
+            "momentos": [
+              {
+                "nome": "Solo denso",
+                "mods": [
+                  [
+                    "EQ",
+                    "ON"
+                  ]
+                ],
+                "quando": "Sobressalente: realce para as frases sobre o loop.",
+                "dica": ""
+              }
+            ],
+            "slotSugestao": null
+          }
+        }
+      ]
+    },
+    {
+      "id": "HSB01",
+      "song": "Heart-Shaped Box",
+      "idAlbum": "WM",
+      "bpm": 100,
+      "resumo": "Colchão limpo no verso, parede de DS-1 no refrão (Seattle 1993).",
+      "referencias": [
+        {
+          "role": "Show caseiro/prática: rig ao vivo do álbum (1989–1994)",
+          "conf": "alta",
+          "src": "From the Muddy Banks of the Wishkah (DGC, 1996) · Wikipedia · livenirvana.com"
+        },
+        {
+          "role": "Rig: Jaguar/Jag-Stang/Mustang · Boss DS-1 (DST-2 de 92) → Twin Reverb/Mesa",
+          "conf": "alta",
+          "src": "groundguitar.com/kurt-cobain-gear · equipboard.com/pros/kurt-cobain"
+        }
+      ],
+      "patches": [
+        {
+          "camada": "Verso Claro",
+          "sufixo": "AR",
+          "nome": "HSB01AR",
+          "emoji": "✨",
+          "timbre": "Verso: o colchão limpo entre as explosões — _o quiet-loud mais famoso de In Utero_",
+          "spec": {
+            "name": "HSB01AR",
+            "type": "Rock",
+            "bpm": 120,
+            "volume": 60,
+            "ir_slot": null,
+            "modules": {
+              "PRE": {
+                "name": "Boost",
+                "on": false,
+                "params": {}
+              },
+              "DST": {
+                "name": "La Charger",
+                "on": false,
+                "params": {
+                  "0": 66,
+                  "1": 48,
+                  "2": 62
+                }
+              },
+              "AMP": {
+                "name": "Dark Twin",
+                "on": true,
+                "params": {
+                  "0": 55,
+                  "1": 62,
+                  "2": 52,
+                  "3": 48,
+                  "4": 55,
+                  "5": 0
+                }
+              },
+              "NR": {
+                "name": "Gate 1",
+                "on": false,
+                "params": {}
+              },
+              "CAB": {
+                "name": "DarkTW 2x12",
+                "on": true,
+                "params": {
+                  "0": 75,
+                  "1": 50
+                }
+              },
+              "EQ": {
+                "name": "EQ 1",
+                "on": false,
+                "params": {}
+              },
+              "MOD": {
+                "name": "A-Chorus",
+                "on": true,
+                "params": {
+                  "0": 30,
+                  "1": 0.5,
+                  "2": 50,
+                  "3": 0
+                }
+              },
+              "DLY": {
+                "name": "Slapbk",
+                "on": false,
+                "params": {}
+              },
+              "RVB": {
+                "name": "Room",
+                "on": true,
+                "params": {
+                  "0": 20,
+                  "1": 17,
+                  "2": 30,
+                  "3": 0
+                }
+              }
+            }
+          },
+          "doc": {
+            "guitarra": {
+              "seletor": "Posição 4 (middle+neck)",
+              "seletorCurto": "middle+neck",
+              "volume": "9",
+              "tone": "7",
+              "receita": "SELETOR 4 · Volume 9 · Tone 7",
+              "tecnicas": [
+                "Toque o colchão de acordes com a mão solta",
+                "Deixe o chorus e a mão direita fazerem o embalo"
+              ]
+            },
+            "comoTocar": [],
+            "teste": {
+              "riff": "verso (colchão)",
+              "drum": "grunge 100 bpm",
+              "escutar": [
+                "colchão limpo embalado",
+                "explosão do refrão por cima"
+              ]
+            },
+            "ajustes": [
+              "muito escuro → Tone 8",
+              "chorus forte demais → Depth -2"
+            ],
+            "evite": [
+              "Não ligue o DST no verso: o contraste é o refrão inteiro"
+            ],
+            "irNota": "Recomendada: American Twin 2x12 — Medium Mix do banco local (User IR 1) — captura do Twin Reverb, o amp do álbum (Low Cut 4 · High Cut 6500 · Level 0).",
+            "momentos": [
+              {
+                "nome": "Refrão pesado",
+                "mods": [
+                  [
+                    "DST",
+                    "ON"
+                  ]
+                ],
+                "quando": "Refrão: DST ON = parede de DS-1.",
+                "dica": "O colchão do verso volta com DST OFF."
+              },
+              {
+                "nome": "Solo punk",
+                "mods": [
+                  [
+                    "MOD",
+                    "OFF"
+                  ]
+                ],
+                "quando": "Solo do meio: chorus sai para o lead morder.",
+                "dica": ""
+              }
+            ],
+            "slotSugestao": null
+          }
+        },
+        {
+          "camada": "Refrão Pesado",
+          "sufixo": "RI",
+          "nome": "HSB01RI",
+          "emoji": "⚡",
+          "timbre": "Refrão: DS-1 no talo com o grave da single coil mordendo",
+          "spec": {
+            "name": "HSB01RI",
+            "type": "Rock",
+            "bpm": 120,
+            "volume": 60,
+            "ir_slot": null,
+            "modules": {
+              "PRE": {
+                "name": "Boost",
+                "on": false,
+                "params": {}
+              },
+              "DST": {
+                "name": "La Charger",
+                "on": true,
+                "params": {
+                  "0": 66,
+                  "1": 44,
+                  "2": 62
+                }
+              },
+              "AMP": {
+                "name": "Dark Twin",
+                "on": true,
+                "params": {
+                  "0": 55,
+                  "1": 62,
+                  "2": 52,
+                  "3": 48,
+                  "4": 55,
+                  "5": 0
+                }
+              },
+              "NR": {
+                "name": "Gate 1",
+                "on": true,
+                "params": {
+                  "0": 26
+                }
+              },
+              "CAB": {
+                "name": "DarkTW 2x12",
+                "on": true,
+                "params": {
+                  "0": 75,
+                  "1": 50
+                }
+              },
+              "EQ": {
+                "name": "EQ 1",
+                "on": false,
+                "params": {
+                  "1": 3,
+                  "5": 56
+                }
+              },
+              "MOD": {
+                "name": "A-Chorus",
+                "on": false,
+                "params": {
+                  "0": 30,
+                  "1": 0.5,
+                  "2": 50,
+                  "3": 0
+                }
+              },
+              "DLY": {
+                "name": "Slapbk",
+                "on": false,
+                "params": {}
+              },
+              "RVB": {
+                "name": "Room",
+                "on": true,
+                "params": {
+                  "0": 20,
+                  "1": 19,
+                  "2": 31,
+                  "3": 0
+                }
+              }
+            }
+          },
+          "doc": {
+            "guitarra": {
+              "seletor": "Posição 2 (bridge+middle)",
+              "seletorCurto": "bridge+middle",
+              "volume": "10",
+              "tone": "10",
+              "receita": "SELETOR 3 · Volume 10 · Tone 10",
+              "tecnicas": [
+                "Palhetada total e para baixo",
+                "Deixe o Room curto dar a sala do show"
+              ]
+            },
+            "comoTocar": [],
+            "teste": {
+              "riff": "refrão ('hey! wait!')",
+              "drum": "grunge 100 bpm",
+              "escutar": [
+                "parede de som com o grave presente",
+                "corte seco no fim do refrão"
+              ]
+            },
+            "ajustes": [
+              "embolando → Tone 8",
+              "sem mordida → La Charger Tone +4"
+            ],
+            "evite": [
+              "Stomp DST = o refrão; desligue e volte ao colchão do verso"
+            ],
+            "irNota": "Recomendada: American Twin 2x12 — Medium Mix do banco local (User IR 1) — captura do Twin Reverb, o amp do álbum (Low Cut 4 · High Cut 6500 · Level 0).",
+            "momentos": [
+              {
+                "nome": "Verso claro",
+                "mods": [
+                  [
+                    "DST",
+                    "OFF"
+                  ],
+                  [
+                    "MOD",
+                    "ON"
+                  ]
+                ],
+                "quando": "O verso é colchão limpo com chorus — um stomp só.",
+                "dica": "É o HSB01AR sem trocar de patch."
+              },
+              {
+                "nome": "Solo",
+                "mods": [
+                  [
+                    "EQ",
+                    "ON"
+                  ]
+                ],
+                "quando": "Sobressalente: realce para as frases do meio.",
+                "dica": ""
+              }
+            ],
+            "slotSugestao": null
+          }
+        }
+      ]
+    },
+    {
+      "id": "MIL01",
+      "song": "Milk It",
+      "idAlbum": "WM",
+      "bpm": 110,
+      "resumo": "Pausa seca → parede de DS-1: a montanha-russa quiet-loud (Seattle 1994).",
+      "referencias": [
+        {
+          "role": "Show caseiro/prática: rig ao vivo do álbum (1989–1994)",
+          "conf": "alta",
+          "src": "From the Muddy Banks of the Wishkah (DGC, 1996) · Wikipedia · livenirvana.com"
+        },
+        {
+          "role": "Rig: Jaguar/Jag-Stang/Mustang · Boss DS-1 (DST-2 de 92) → Twin Reverb/Mesa",
+          "conf": "alta",
+          "src": "groundguitar.com/kurt-cobain-gear · equipboard.com/pros/kurt-cobain"
+        }
+      ],
+      "patches": [
+        {
+          "camada": "Quiet-Loud",
+          "sufixo": "RI",
+          "nome": "MIL01RI",
+          "emoji": "⚡",
+          "timbre": "A montanha-russa de In Utero: pausa seca → parede de DS-1 — _stomp DST é a música_",
+          "spec": {
+            "name": "MIL01RI",
+            "type": "Rock",
+            "bpm": 120,
+            "volume": 60,
+            "ir_slot": null,
+            "modules": {
+              "PRE": {
+                "name": "Boost",
+                "on": false,
+                "params": {}
+              },
+              "DST": {
+                "name": "La Charger",
+                "on": true,
+                "params": {
+                  "0": 70,
+                  "1": 42,
+                  "2": 62
+                }
+              },
+              "AMP": {
+                "name": "Dark Twin",
+                "on": true,
+                "params": {
+                  "0": 55,
+                  "1": 62,
+                  "2": 52,
+                  "3": 48,
+                  "4": 55,
+                  "5": 0
+                }
+              },
+              "NR": {
+                "name": "Gate 1",
+                "on": true,
+                "params": {
+                  "0": 26
+                }
+              },
+              "CAB": {
+                "name": "DarkTW 2x12",
+                "on": true,
+                "params": {
+                  "0": 75,
+                  "1": 50
+                }
+              },
+              "EQ": {
+                "name": "EQ 1",
+                "on": false,
+                "params": {
+                  "1": 3,
+                  "5": 56
+                }
+              },
+              "MOD": {
+                "name": "A-Chorus",
+                "on": false,
+                "params": {}
+              },
+              "DLY": {
+                "name": "Slapbk",
+                "on": false,
+                "params": {}
+              },
+              "RVB": {
+                "name": "Room",
+                "on": true,
+                "params": {
+                  "0": 20,
+                  "1": 19,
+                  "2": 31,
+                  "3": 0
+                }
+              }
+            }
+          },
+          "doc": {
+            "guitarra": {
+              "seletor": "Posição 2 (bridge+middle)",
+              "seletorCurto": "bridge+middle",
+              "volume": "10",
+              "tone": "10",
+              "receita": "SELETOR 3 · Volume 10 · Tone 10",
+              "tecnicas": [
+                "Verso: acordes secos e espaçados com DST OFF (stomp)",
+                "Refrão: DST ON e a parede desce"
+              ]
+            },
+            "comoTocar": [],
+            "teste": {
+              "riff": "verso + refrão",
+              "drum": "grunge 110 bpm",
+              "escutar": [
+                "silêncio e peso alternando",
+                "punch do corte seco"
+              ]
+            },
+            "ajustes": [
+              "refrão fraco → Gain +2",
+              "verso sujo demais → Vol da guitarra 8"
+            ],
+            "evite": [
+              "A estrutura É o stomp: sem trocar de patch, a música inteira cabe aqui"
+            ],
+            "irNota": "Recomendada: American Twin 2x12 — Medium Mix do banco local (User IR 1) — captura do Twin Reverb, o amp do álbum (Low Cut 4 · High Cut 6500 · Level 0).",
+            "momentos": [
+              {
+                "nome": "Verso seco",
+                "mods": [
+                  [
+                    "DST",
+                    "OFF"
+                  ]
+                ],
+                "quando": "Pausa seca do verso — DST OFF e o patch respira.",
+                "dica": "A parede volta com DST ON."
+              },
+              {
+                "nome": "Solo",
+                "mods": [
+                  [
+                    "EQ",
+                    "ON"
+                  ]
+                ],
+                "quando": "Sobressalente: realce para o final.",
+                "dica": ""
+              }
+            ],
+            "slotSugestao": null
+          }
+        }
+      ]
+    },
+    {
+      "id": "NEG01",
+      "song": "Negative Creep",
+      "idAlbum": "WM",
+      "bpm": 110,
+      "resumo": "Drop D cromático e doente; solo é grito de guitarra com feedback (Paramount 1991).",
+      "referencias": [
+        {
+          "role": "Show caseiro/prática: rig ao vivo do álbum (1989–1994)",
+          "conf": "alta",
+          "src": "From the Muddy Banks of the Wishkah (DGC, 1996) · Wikipedia · livenirvana.com"
+        },
+        {
+          "role": "Rig: Jaguar/Jag-Stang/Mustang · Boss DS-1 (DST-2 de 92) → Twin Reverb/Mesa",
+          "conf": "alta",
+          "src": "groundguitar.com/kurt-cobain-gear · equipboard.com/pros/kurt-cobain"
+        }
+      ],
+      "patches": [
+        {
+          "camada": "Riff Drop D",
+          "sufixo": "RI",
+          "nome": "NEG01RI",
+          "emoji": "⚡",
+          "timbre": "Drop D cromático e doente: o riff mais pesado do álbum",
+          "spec": {
+            "name": "NEG01RI",
+            "type": "Rock",
+            "bpm": 120,
+            "volume": 60,
+            "ir_slot": null,
+            "modules": {
+              "PRE": {
+                "name": "Boost",
+                "on": false,
+                "params": {}
+              },
+              "DST": {
+                "name": "La Charger",
+                "on": true,
+                "params": {
+                  "0": 70,
+                  "1": 40,
+                  "2": 62
+                }
+              },
+              "AMP": {
+                "name": "Dark Twin",
+                "on": true,
+                "params": {
+                  "0": 55,
+                  "1": 62,
+                  "2": 52,
+                  "3": 48,
+                  "4": 55,
+                  "5": 0
+                }
+              },
+              "NR": {
+                "name": "Gate 1",
+                "on": true,
+                "params": {
+                  "0": 26
+                }
+              },
+              "CAB": {
+                "name": "DarkTW 2x12",
+                "on": true,
+                "params": {
+                  "0": 75,
+                  "1": 50
+                }
+              },
+              "EQ": {
+                "name": "EQ 1",
+                "on": false,
+                "params": {
+                  "1": 3,
+                  "5": 56
+                }
+              },
+              "MOD": {
+                "name": "A-Chorus",
+                "on": false,
+                "params": {}
+              },
+              "DLY": {
+                "name": "Slapbk",
+                "on": false,
+                "params": {}
+              },
+              "RVB": {
+                "name": "Room",
+                "on": true,
+                "params": {
+                  "0": 20,
+                  "1": 19,
+                  "2": 31,
+                  "3": 0
+                }
+              }
+            }
+          },
+          "doc": {
+            "guitarra": {
+              "seletor": "Posição 2 (bridge+middle)",
+              "seletorCurto": "bridge+middle",
+              "volume": "10",
+              "tone": "10",
+              "receita": "SELETOR 3 · Volume 10 · Tone 10",
+              "tecnicas": [
+                "Drop D: afine a 6ª em D e riff cromático na corda grave",
+                "Palm mute no verso, aberto no refrão"
+              ]
+            },
+            "comoTocar": [],
+            "teste": {
+              "riff": "riff principal",
+              "drum": "grunge 110 bpm",
+              "escutar": [
+                "riff cromático pesado com drop D",
+                "sujeira controlada nos graves"
+              ]
+            },
+            "ajustes": [
+              "lama total → Tone +4",
+              "sem peso → Gain +3"
+            ],
+            "evite": [
+              "Precisa da 6ª em D: sem drop D, o riff não existe"
+            ],
+            "irNota": "Recomendada: American Twin 2x12 — Medium Mix do banco local (User IR 1) — captura do Twin Reverb, o amp do álbum (Low Cut 4 · High Cut 6500 · Level 0).",
+            "momentos": [
+              {
+                "nome": "Solo com feedback",
+                "mods": [
+                  [
+                    "EQ",
+                    "ON"
+                  ]
+                ],
+                "quando": "Sobressalente: realce para o grito de guitarra.",
+                "dica": ""
+              }
+            ],
+            "slotSugestao": null
+          }
+        },
+        {
+          "camada": "Feedback Solo",
+          "sufixo": "SO",
+          "nome": "NEG01SO",
+          "emoji": "🎸",
+          "timbre": "Solo: grito de guitarra — bent notes, feedback e caos controlado",
+          "spec": {
+            "name": "NEG01SO",
+            "type": "Rock",
+            "bpm": 120,
+            "volume": 60,
+            "ir_slot": null,
+            "modules": {
+              "PRE": {
+                "name": "Boost",
+                "on": false,
+                "params": {}
+              },
+              "DST": {
+                "name": "La Charger",
+                "on": true,
+                "params": {
+                  "0": 72,
+                  "1": 45,
+                  "2": 64
+                }
+              },
+              "AMP": {
+                "name": "Dark Twin",
+                "on": true,
+                "params": {
+                  "0": 55,
+                  "1": 62,
+                  "2": 52,
+                  "3": 48,
+                  "4": 55,
+                  "5": 0
+                }
+              },
+              "NR": {
+                "name": "Gate 1",
+                "on": true,
+                "params": {
+                  "0": 26
+                }
+              },
+              "CAB": {
+                "name": "DarkTW 2x12",
+                "on": true,
+                "params": {
+                  "0": 75,
+                  "1": 50
+                }
+              },
+              "EQ": {
+                "name": "EQ 1",
+                "on": false,
+                "params": {}
+              },
+              "MOD": {
+                "name": "A-Chorus",
+                "on": false,
+                "params": {}
+              },
+              "DLY": {
+                "name": "Slapbk",
+                "on": false,
+                "params": {}
+              },
+              "RVB": {
+                "name": "Room",
+                "on": true,
+                "params": {
+                  "0": 24,
+                  "1": 22,
+                  "2": 35,
+                  "3": 0
+                }
+              }
+            }
+          },
+          "doc": {
+            "guitarra": {
+              "seletor": "Posição 1 (bridge)",
+              "seletorCurto": "bridge",
+              "volume": "10",
+              "tone": "10",
+              "receita": "SELETOR 2 · Volume 10 · Tone 10",
+              "tecnicas": [
+                "Bend com o vibrato do braço e sustente",
+                "Encoste o corpo da guitarra na caixa para FEEDBACK (em casa: ganho alto + Room)"
+              ]
+            },
+            "comoTocar": [],
+            "teste": {
+              "riff": "solo central",
+              "drum": "grunge 110 bpm",
+              "escutar": [
+                "lead caótico e gritado",
+                "feedback respondendo ao bend"
+              ]
+            },
+            "ajustes": [
+              "caos demais → Gain -4",
+              "sem sustain → Vol 10 · Room Mix +5"
+            ],
+            "evite": [
+              "É o solo mais \"errado\" do álbum — e é assim que ele é bom"
+            ],
+            "irNota": "Recomendada: American Twin 2x12 — Medium Mix do banco local (User IR 1) — captura do Twin Reverb, o amp do álbum (Low Cut 4 · High Cut 6500 · Level 0).",
+            "momentos": [
+              {
+                "nome": "Feedback livre",
+                "mods": [
+                  [
+                    "NR",
+                    "OFF"
+                  ]
+                ],
+                "quando": "O grito de guitarra precisa de feedback: solte o gate.",
+                "dica": "Religue o gate para controlar."
+              }
+            ],
+            "slotSugestao": null
+          }
+        }
+      ]
+    },
+    {
+      "id": "POL01",
+      "song": "Polly",
+      "idAlbum": "WM",
+      "bpm": 80,
+      "resumo": "A elétrica rara de 1989: palm mute seco no verso, explosão no refrão — antônimo da Unplugged.",
+      "referencias": [
+        {
+          "role": "Show caseiro/prática: rig ao vivo do álbum (1989–1994)",
+          "conf": "alta",
+          "src": "From the Muddy Banks of the Wishkah (DGC, 1996) · Wikipedia · livenirvana.com"
+        },
+        {
+          "role": "Rig: Jaguar/Jag-Stang/Mustang · Boss DS-1 (DST-2 de 92) → Twin Reverb/Mesa",
+          "conf": "alta",
+          "src": "groundguitar.com/kurt-cobain-gear · equipboard.com/pros/kurt-cobain"
+        }
+      ],
+      "patches": [
+        {
+          "camada": "Clean Espanhol",
+          "sufixo": "CL",
+          "nome": "POL01CL",
+          "emoji": "🧺",
+          "timbre": "A elétrica RARA (1989): verso em palm mute limpo e refrão que explode — _o antônimo da Unplugged_",
+          "spec": {
+            "name": "POL01CL",
+            "type": "Rock",
+            "bpm": 120,
+            "volume": 60,
+            "ir_slot": null,
+            "modules": {
+              "PRE": {
+                "name": "Boost",
+                "on": false,
+                "params": {}
+              },
+              "DST": {
+                "name": "La Charger",
+                "on": false,
+                "params": {
+                  "0": 66,
+                  "1": 48,
+                  "2": 62
+                }
+              },
+              "AMP": {
+                "name": "Dark Twin",
+                "on": true,
+                "params": {
+                  "0": 55,
+                  "1": 62,
+                  "2": 52,
+                  "3": 48,
+                  "4": 55,
+                  "5": 0
+                }
+              },
+              "NR": {
+                "name": "Gate 1",
+                "on": false,
+                "params": {}
+              },
+              "CAB": {
+                "name": "DarkTW 2x12",
+                "on": true,
+                "params": {
+                  "0": 75,
+                  "1": 50
+                }
+              },
+              "EQ": {
+                "name": "EQ 1",
+                "on": false,
+                "params": {
+                  "1": 3,
+                  "5": 56
+                }
+              },
+              "MOD": {
+                "name": "A-Chorus",
+                "on": false,
+                "params": {}
+              },
+              "DLY": {
+                "name": "Slapbk",
+                "on": false,
+                "params": {}
+              },
+              "RVB": {
+                "name": "Room",
+                "on": true,
+                "params": {
+                  "0": 20,
+                  "1": 19,
+                  "2": 31,
+                  "3": 0
+                }
+              }
+            }
+          },
+          "doc": {
+            "guitarra": {
+              "seletor": "Posição 4 (middle+neck)",
+              "seletorCurto": "middle+neck",
+              "volume": "8",
+              "tone": "6",
+              "receita": "SELETOR 4 · Volume 8 · Tone 6 (escuro, quase jazz)",
+              "tecnicas": [
+                "Verso: acordes em palm mute, seco",
+                "Refrão: palhetada total e para baixo — aqui o Tone da guitarra sobe para 9"
+              ]
+            },
+            "comoTocar": [],
+            "teste": {
+              "riff": "verso + refrão (elétrica 1989)",
+              "drum": "80 bpm",
+              "escutar": [
+                "palm mute seco no verso",
+                "explosão de refrão (stomp DST)"
+              ]
+            },
+            "ajustes": [
+              "refrão fraco → Vol 10 + Tone 9",
+              "verso brilhante demais → Tone 5"
+            ],
+            "evite": [
+              "Este patch é o contraste da Unplugged: mesmo acorde, corpo elétrico"
+            ],
+            "irNota": "Recomendada: American Twin 2x12 — Medium Mix do banco local (User IR 1) — captura do Twin Reverb, o amp do álbum (Low Cut 4 · High Cut 6500 · Level 0).",
+            "momentos": [
+              {
+                "nome": "Refrão elétrico",
+                "mods": [
+                  [
+                    "DST",
+                    "ON"
+                  ]
+                ],
+                "quando": "Refrão: a elétrica de 1989 explode — DST ON.",
+                "dica": "Verso volta em palm mute seco."
+              },
+              {
+                "nome": "Verso com mordida",
+                "mods": [
+                  [
+                    "EQ",
+                    "ON"
+                  ]
+                ],
+                "quando": "Sobressalente: leve realce se o verso estiver tímido.",
+                "dica": ""
+              }
+            ],
+            "slotSugestao": null
+          }
+        }
+      ]
+    },
+    {
+      "id": "BRE01",
+      "song": "Breed",
+      "idAlbum": "WM",
+      "bpm": 140,
+      "resumo": "A \"Imodium\" de 1989: mais lenta que o disco, riff com raiz grave.",
+      "referencias": [
+        {
+          "role": "Show caseiro/prática: rig ao vivo do álbum (1989–1994)",
+          "conf": "alta",
+          "src": "From the Muddy Banks of the Wishkah (DGC, 1996) · Wikipedia · livenirvana.com"
+        },
+        {
+          "role": "Rig: Jaguar/Jag-Stang/Mustang · Boss DS-1 (DST-2 de 92) → Twin Reverb/Mesa",
+          "conf": "alta",
+          "src": "groundguitar.com/kurt-cobain-gear · equipboard.com/pros/kurt-cobain"
+        }
+      ],
+      "patches": [
+        {
+          "camada": "Riff Lo-Fi",
+          "sufixo": "RI",
+          "nome": "BRE01RI",
+          "emoji": "⚡",
+          "timbre": "Riff com raiz grave: a versão aqui é mais lenta que o disco (era \"Imodium\")",
+          "spec": {
+            "name": "BRE01RI",
+            "type": "Rock",
+            "bpm": 120,
+            "volume": 60,
+            "ir_slot": null,
+            "modules": {
+              "PRE": {
+                "name": "Boost",
+                "on": false,
+                "params": {}
+              },
+              "DST": {
+                "name": "La Charger",
+                "on": true,
+                "params": {
+                  "0": 68,
+                  "1": 40,
+                  "2": 62
+                }
+              },
+              "AMP": {
+                "name": "Dark Twin",
+                "on": true,
+                "params": {
+                  "0": 55,
+                  "1": 62,
+                  "2": 52,
+                  "3": 48,
+                  "4": 55,
+                  "5": 0
+                }
+              },
+              "NR": {
+                "name": "Gate 1",
+                "on": true,
+                "params": {
+                  "0": 26
+                }
+              },
+              "CAB": {
+                "name": "DarkTW 2x12",
+                "on": true,
+                "params": {
+                  "0": 75,
+                  "1": 50
+                }
+              },
+              "EQ": {
+                "name": "EQ 1",
+                "on": false,
+                "params": {
+                  "1": 3,
+                  "5": 56
+                }
+              },
+              "MOD": {
+                "name": "A-Chorus",
+                "on": false,
+                "params": {}
+              },
+              "DLY": {
+                "name": "Slapbk",
+                "on": false,
+                "params": {}
+              },
+              "RVB": {
+                "name": "Room",
+                "on": true,
+                "params": {
+                  "0": 20,
+                  "1": 19,
+                  "2": 31,
+                  "3": 0
+                }
+              }
+            }
+          },
+          "doc": {
+            "guitarra": {
+              "seletor": "Posição 2 (bridge+middle)",
+              "seletorCurto": "bridge+middle",
+              "volume": "10",
+              "tone": "10",
+              "receita": "SELETOR 3 · Volume 10 · Tone 10",
+              "tecnicas": [
+                "Riff com pestana na 6ª corda, dinâmica no braço",
+                "Deixe a distorção lo-fi embolar as notas graves"
+              ]
+            },
+            "comoTocar": [],
+            "teste": {
+              "riff": "riff principal",
+              "drum": "grunge 140 bpm",
+              "escutar": [
+                "riff grave e embolado",
+                "energia bruta sem definição cirúrgica"
+              ]
+            },
+            "ajustes": [
+              "graves virando lama → CAB High Cut +2",
+              "falta mordida → Tone +4"
+            ],
+            "evite": [
+              "A versão de 1989 é mais lenta: não acelere para o Nevermind"
+            ],
+            "irNota": "Recomendada: American Twin 2x12 — Medium Mix do banco local (User IR 1) — captura do Twin Reverb, o amp do álbum (Low Cut 4 · High Cut 6500 · Level 0).",
+            "momentos": [
+              {
+                "nome": "Solo gritado",
+                "mods": [
+                  [
+                    "EQ",
+                    "ON"
+                  ]
+                ],
+                "quando": "Sobressalente: realce para as frases do meio.",
+                "dica": ""
+              }
+            ],
+            "slotSugestao": null
+          }
+        }
+      ]
+    },
+    {
+      "id": "TOU01",
+      "song": "Tourette's",
+      "idAlbum": "WM",
+      "bpm": 170,
+      "resumo": "90 segundos de caos punk do Reading '92 — gritado na voz e na guitarra.",
+      "referencias": [
+        {
+          "role": "Show caseiro/prática: rig ao vivo do álbum (1989–1994)",
+          "conf": "alta",
+          "src": "From the Muddy Banks of the Wishkah (DGC, 1996) · Wikipedia · livenirvana.com"
+        },
+        {
+          "role": "Rig: Jaguar/Jag-Stang/Mustang · Boss DS-1 (DST-2 de 92) → Twin Reverb/Mesa",
+          "conf": "alta",
+          "src": "groundguitar.com/kurt-cobain-gear · equipboard.com/pros/kurt-cobain"
+        }
+      ],
+      "patches": [
+        {
+          "camada": "Riff Caótico",
+          "sufixo": "RI",
+          "nome": "TOU01RI",
+          "emoji": "⚡",
+          "timbre": "O caos de 1:30 do Reading '92: screamo punk, sem respiro",
+          "spec": {
+            "name": "TOU01RI",
+            "type": "Rock",
+            "bpm": 120,
+            "volume": 60,
+            "ir_slot": null,
+            "modules": {
+              "PRE": {
+                "name": "Boost",
+                "on": false,
+                "params": {}
+              },
+              "DST": {
+                "name": "La Charger",
+                "on": true,
+                "params": {
+                  "0": 70,
+                  "1": 48,
+                  "2": 62
+                }
+              },
+              "AMP": {
+                "name": "Dark Twin",
+                "on": true,
+                "params": {
+                  "0": 55,
+                  "1": 62,
+                  "2": 52,
+                  "3": 48,
+                  "4": 55,
+                  "5": 0
+                }
+              },
+              "NR": {
+                "name": "Gate 1",
+                "on": true,
+                "params": {
+                  "0": 26
+                }
+              },
+              "CAB": {
+                "name": "DarkTW 2x12",
+                "on": true,
+                "params": {
+                  "0": 75,
+                  "1": 50
+                }
+              },
+              "EQ": {
+                "name": "EQ 1",
+                "on": false,
+                "params": {}
+              },
+              "MOD": {
+                "name": "A-Chorus",
+                "on": false,
+                "params": {}
+              },
+              "DLY": {
+                "name": "Slapbk",
+                "on": false,
+                "params": {}
+              },
+              "RVB": {
+                "name": "Room",
+                "on": true,
+                "params": {
+                  "0": 20,
+                  "1": 19,
+                  "2": 31,
+                  "3": 0
+                }
+              }
+            }
+          },
+          "doc": {
+            "guitarra": {
+              "seletor": "Posição 2 (bridge+middle)",
+              "seletorCurto": "bridge+middle",
+              "volume": "10",
+              "tone": "10",
+              "receita": "SELETOR 3 · Volume 10 · Tone 10",
+              "tecnicas": [
+                "Palhetada total, sem pausa para respirar",
+                "É gritado na voz E na guitarra: tudo no máximo"
+              ]
+            },
+            "comoTocar": [],
+            "teste": {
+              "riff": "música inteira",
+              "drum": "screamo 170 bpm",
+              "escutar": [
+                "caos alegre e controlado",
+                "energia sem pausa por 90 segundos"
+              ]
+            },
+            "ajustes": [
+              "cansaço no braço → Gain +2",
+              "embolando → Tone 8"
+            ],
+            "evite": [
+              "Não tente \"arrumar\": o caos É a música"
+            ],
+            "irNota": "Recomendada: American Twin 2x12 — Medium Mix do banco local (User IR 1) — captura do Twin Reverb, o amp do álbum (Low Cut 4 · High Cut 6500 · Level 0).",
+            "momentos": [
+              {
+                "nome": "Meio-tempo",
+                "mods": [
+                  [
+                    "DST",
+                    "OFF"
+                  ]
+                ],
+                "quando": "Se ensaiar mais devagar, DST OFF = crunch limpo.",
+                "dica": "Caos volta com DST ON."
+              }
+            ],
+            "slotSugestao": null
+          }
+        }
+      ]
+    },
+    {
+      "id": "BLE01",
+      "song": "Blew",
+      "idAlbum": "WM",
+      "bpm": 98,
+      "resumo": "O fecho: riff com fuzz (Red Haze) e solo psicodélico — o momento stoner da banda (Paradiso 1991).",
+      "referencias": [
+        {
+          "role": "Show caseiro/prática: rig ao vivo do álbum (1989–1994)",
+          "conf": "alta",
+          "src": "From the Muddy Banks of the Wishkah (DGC, 1996) · Wikipedia · livenirvana.com"
+        },
+        {
+          "role": "Rig: Jaguar/Jag-Stang/Mustang · Boss DS-1 (DST-2 de 92) → Twin Reverb/Mesa",
+          "conf": "alta",
+          "src": "groundguitar.com/kurt-cobain-gear · equipboard.com/pros/kurt-cobain"
+        }
+      ],
+      "patches": [
+        {
+          "camada": "Riff Fuzz",
+          "sufixo": "RI",
+          "nome": "BLE01RI",
+          "emoji": "🌊",
+          "timbre": "O riff em Em com FUZZ: o som do desespero — _Red Haze no lugar do DS-1_",
+          "spec": {
+            "name": "BLE01RI",
+            "type": "Rock",
+            "bpm": 120,
+            "volume": 60,
+            "ir_slot": null,
+            "modules": {
+              "PRE": {
+                "name": "Boost",
+                "on": false,
+                "params": {}
+              },
+              "DST": {
+                "name": "Red Haze",
+                "on": true,
+                "params": {
+                  "0": 62,
+                  "1": 45
+                }
+              },
+              "AMP": {
+                "name": "Dark Twin",
+                "on": true,
+                "params": {
+                  "0": 55,
+                  "1": 62,
+                  "2": 52,
+                  "3": 48,
+                  "4": 55,
+                  "5": 0
+                }
+              },
+              "NR": {
+                "name": "Gate 1",
+                "on": true,
+                "params": {
+                  "0": 26
+                }
+              },
+              "CAB": {
+                "name": "DarkTW 2x12",
+                "on": true,
+                "params": {
+                  "0": 75,
+                  "1": 50
+                }
+              },
+              "EQ": {
+                "name": "EQ 1",
+                "on": false,
+                "params": {
+                  "1": 3,
+                  "5": 56
+                }
+              },
+              "MOD": {
+                "name": "A-Chorus",
+                "on": false,
+                "params": {}
+              },
+              "DLY": {
+                "name": "Slapbk",
+                "on": false,
+                "params": {}
+              },
+              "RVB": {
+                "name": "Room",
+                "on": true,
+                "params": {
+                  "0": 20,
+                  "1": 19,
+                  "2": 31,
+                  "3": 0
+                }
+              }
+            }
+          },
+          "doc": {
+            "guitarra": {
+              "seletor": "Posição 2 (bridge+middle)",
+              "seletorCurto": "bridge+middle",
+              "volume": "10",
+              "tone": "7",
+              "receita": "SELETOR 3 · Volume 10 · Tone 7 (o fuzz escurece o grave da Strat)",
+              "tecnicas": [
+                "Riff lento e hipnótico, com muito sustain",
+                "O fuzz sustenta: deixe as notas morrerem sozinhas"
+              ]
+            },
+            "comoTocar": [],
+            "teste": {
+              "riff": "riff principal",
+              "drum": "grunge 98 bpm",
+              "escutar": [
+                "fuzz denso e encorpado",
+                "sustain longo nas notas terminais"
+              ]
+            },
+            "ajustes": [
+              "fuzz embolando → Red Haze VOL -3",
+              "sem grão → VOL +3"
+            ],
+            "evite": [
+              "Fuzz é diferente de DS-1: ele SUSTENTA, não corta"
+            ],
+            "irNota": "Recomendada: American Twin 2x12 — Medium Mix do banco local (User IR 1) — captura do Twin Reverb, o amp do álbum (Low Cut 4 · High Cut 6500 · Level 0).",
+            "momentos": [
+              {
+                "nome": "Solo psicodélico",
+                "mods": [
+                  [
+                    "EQ",
+                    "ON"
+                  ]
+                ],
+                "quando": "Solo final: realce de presença para os harmônicos sobre o fuzz.",
+                "dica": ""
+              }
+            ],
+            "slotSugestao": null
+          }
+        },
+        {
+          "camada": "Solo Psicodélico",
+          "sufixo": "SO",
+          "nome": "BLE01SO",
+          "emoji": "🎸",
+          "timbre": "Solo final: harmônicos e bends sobre o fuzz — o momento mais \"stoner\" da banda",
+          "spec": {
+            "name": "BLE01SO",
+            "type": "Rock",
+            "bpm": 120,
+            "volume": 60,
+            "ir_slot": null,
+            "modules": {
+              "PRE": {
+                "name": "Boost",
+                "on": false,
+                "params": {}
+              },
+              "DST": {
+                "name": "Red Haze",
+                "on": true,
+                "params": {
+                  "0": 66,
+                  "1": 48
+                }
+              },
+              "AMP": {
+                "name": "Dark Twin",
+                "on": true,
+                "params": {
+                  "0": 55,
+                  "1": 62,
+                  "2": 52,
+                  "3": 48,
+                  "4": 55,
+                  "5": 0
+                }
+              },
+              "NR": {
+                "name": "Gate 1",
+                "on": true,
+                "params": {
+                  "0": 26
+                }
+              },
+              "CAB": {
+                "name": "DarkTW 2x12",
+                "on": true,
+                "params": {
+                  "0": 75,
+                  "1": 50
+                }
+              },
+              "EQ": {
+                "name": "EQ 1",
+                "on": false,
+                "params": {}
+              },
+              "MOD": {
+                "name": "A-Chorus",
+                "on": false,
+                "params": {}
+              },
+              "DLY": {
+                "name": "Slapbk",
+                "on": false,
+                "params": {}
+              },
+              "RVB": {
+                "name": "Room",
+                "on": true,
+                "params": {
+                  "0": 24,
+                  "1": 22,
+                  "2": 35,
+                  "3": 0
+                }
+              }
+            }
+          },
+          "doc": {
+            "guitarra": {
+              "seletor": "Posição 1 (bridge)",
+              "seletorCurto": "bridge",
+              "volume": "10",
+              "tone": "7",
+              "receita": "SELETOR 2 · Volume 10 · Tone 7",
+              "tecnicas": [
+                "Bends longos com harmônicos naturais",
+                "Deixe o fuzz trabalhar os harmônicos"
+              ]
+            },
+            "comoTocar": [],
+            "teste": {
+              "riff": "solo final",
+              "drum": "grunge 98 bpm",
+              "escutar": [
+                "harmônicos gritando no fuzz",
+                "vibrato largo fechando a música"
+              ]
+            },
+            "ajustes": [
+              "muito seco → Room Mix +5",
+              "fuzz estrangulando → VOL -2"
+            ],
+            "evite": [
+              "É o único patch do álbum sem DS-1: o fuzz é a identidade"
+            ],
+            "irNota": "Recomendada: American Twin 2x12 — Medium Mix do banco local (User IR 1) — captura do Twin Reverb, o amp do álbum (Low Cut 4 · High Cut 6500 · Level 0).",
+            "momentos": [
+              {
+                "nome": "Solo estourando",
+                "mods": [
+                  [
+                    "EQ",
+                    "ON"
+                  ]
+                ],
+                "quando": "Harmônicos e bends: realce sobre o fuzz.",
+                "dica": ""
+              }
+            ],
+            "slotSugestao": null
+          }
+        }
+      ]
     },
     {
       "id": "SMOO1",

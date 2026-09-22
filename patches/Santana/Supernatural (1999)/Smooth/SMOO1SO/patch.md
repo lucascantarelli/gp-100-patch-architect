@@ -25,7 +25,7 @@
 
 > 🚀 **Comece por aqui (3 passos)**:
 > 1. Ajuste a guitarra conforme a tabela acima.
-> 2. Carregue o patch no slot **U65** (seção 8).
+> 2. Carregue o patch no slot **U96** (seção 8).
 > 3. Toque *solo de Am pentatônica menor com frases longas* e confira o checklist da seção 5.
 
 ---
@@ -275,9 +275,9 @@ _Legenda: **🔴** ligado · ⚪ desligado — a ordem é o caminho do sinal._
 
 ## 💾 8. Carregar na pedaleira
 
-**Nome no painel**: `SMOO1SO` · **Slot sugerido**: **U65**
+**Nome no painel**: `SMOO1SO` · **Slot sugerido**: **U96**
 
-1. **GP-100 Edits (recomendado)**: conecte a GP-100 por USB → importe `<NOME>.prst` desta pasta → salve no slot **U65**.
+1. **GP-100 Edits (recomendado)**: conecte a GP-100 por USB → importe `<NOME>.prst` desta pasta → salve no slot **U96**.
 2. **Digitar no painel** (receita na ordem dos menus):
 
 ```

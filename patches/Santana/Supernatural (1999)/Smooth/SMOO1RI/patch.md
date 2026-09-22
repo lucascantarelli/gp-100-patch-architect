@@ -25,7 +25,7 @@
 
 > 🚀 **Comece por aqui (3 passos)**:
 > 1. Ajuste a guitarra conforme a tabela acima.
-> 2. Carregue o patch no slot **U63** (seção 8).
+> 2. Carregue o patch no slot **U94** (seção 8).
 > 3. Toque *riff festonado de Am–D* e confira o checklist da seção 5.
 
 ---
@@ -265,9 +265,9 @@ _Legenda: **🔴** ligado · ⚪ desligado — a ordem é o caminho do sinal._
 
 ## 💾 8. Carregar na pedaleira
 
-**Nome no painel**: `SMOO1RI` · **Slot sugerido**: **U63**
+**Nome no painel**: `SMOO1RI` · **Slot sugerido**: **U94**
 
-1. **GP-100 Edits (recomendado)**: conecte a GP-100 por USB → importe `<NOME>.prst` desta pasta → salve no slot **U63**.
+1. **GP-100 Edits (recomendado)**: conecte a GP-100 por USB → importe `<NOME>.prst` desta pasta → salve no slot **U94**.
 2. **Digitar no painel** (receita na ordem dos menus):
 
 ```

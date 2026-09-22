@@ -180,7 +180,7 @@ _Legenda: **🔴** ligado · ⚪ desligado — a ordem é o caminho do sinal._
 - Fender® '65 Twin Reverb → `Dark Twin`
 - Falante JBL D120F do Twin → `DarkTW 2x12`
 - Leslie/rotary lento da gravação → `A-Chorus` (velocidade baixa)
-- Sala curta da Abbey Road → `Room`
+- Sala curta e seca — corpo curto que sustenta sem lambear → `Room`
 
 ### Parâmetros módulo a módulo
 

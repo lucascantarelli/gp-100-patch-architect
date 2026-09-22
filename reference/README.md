@@ -28,8 +28,10 @@ Tudo que os agentes consultam antes de propor um patch. **Fontes na ordem de pre
 | 15 | `15-firmware2-effects.md` | ⭐ **Catálogo real fw 2.0/2.1** — nomes, effectCodes e contagem de params |
 | 16 | `16-ir-library.md` | Catálogo do banco local de IRs (gerado — rode `tools/ir_library.py` após baixar packs) |
 | 17 | `17-free-ir-packs.md` | Packs de IR gratuitos na internet, por lacuna da biblioteca |
+| 18 | `18-project-management.md` | 🗂 Gestão de projetos: Project v2, milestones, taxonomia de labels e fluxo PR-driven (issue → PR → release) |
+| 19 | `19-roadmap-v2.md` | 🗺 Roadmap da v2.0: schema v2 do defs, CLI unificada, site estático e meta de 100+ patches |
 
-> `16` e `17` foram criados depois do manual; `15` é a ponte entre os nomes do manual V1.8 e os nomes reais do firmware.
+> `16` e `17` foram criados depois do manual; `15` é a ponte entre os nomes do manual V1.8 e os nomes reais do firmware. `18` não é sobre som — é sobre como o repositório se gerencia; `19` é o plano do próximo major.
 
 ---
 

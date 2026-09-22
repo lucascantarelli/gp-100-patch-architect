@@ -40,7 +40,7 @@ Cada faixa foi analisada isoladamente: o que a guitarra faz em cada seção e se
 1. **GP-100 Edits** (≥ 1.2.0) conectado à pedaleira (firmware 2.1).
 2. Importe cada `patches/Janis Joplin/Piece of My Heart (1968)/<Música>/<NOME>/<NOME>.prst` no slot da tabela acima.
 3. Sem PC: receita de digitação na seção 8 de cada `patch.md` (sobressalentes incluídos).
-4. **Opcional (som de referência)**: carregue os WAVs 📁 da tabela nos slots **User IR 1–4** (GP-100 Edits → IR Manager) e troque o CAB do patch para o User IR correspondente — passo a passo na seção **📡 3** de cada `patch.md`.
+4. **Opcional (som de referência)**: carregue nos slots de User IR (GP-100 Edits → IR Manager) os WAVs 📁 marcados na tabela — **o slot é sua escolha** (User IR 1–20): anote em qual slot subiu cada arquivo e carregue no patch correspondente. Passo a passo na seção **📡 3** de cada `patch.md`.
 
 ---
 

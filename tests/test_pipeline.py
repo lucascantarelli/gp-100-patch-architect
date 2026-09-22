@@ -23,7 +23,8 @@ máquina. Cobre as invariantes que **já quebraram uma vez** neste projeto:
                  temporária do repositório, tem de reproduzir EXATAMENTE o que
                  está commitado — pega "editei o defs e esqueci de regenerar" e
                  "editei à mão arquivo gerado". A normalização ignora
-                 `preset_info/@time` (o único byte que muda de propósito),
+                 `preset_info/@time` (hoje determinístico; a normalização segue
+                 como rede de segurança e para compatibility com commits antigos),
                  equipara CRLF/LF e NÃO mascara mudança de parâmetro
   I. ordem    — os artefatos saem SEMPRE na mesma ordem, em qualquer sistema
                  operacional: `sorted()` sobre `Path` usa `normcase` (minúsculas
@@ -335,11 +336,12 @@ class TestG_Indices(unittest.TestCase):
 # Pipeline na ordem real; rodado numa CÓPIA temporária do repositório pelo teste
 # de integração abaixo. Os scripts derivam todos os caminhos de
 # `Path(__file__).parent.parent`, então a cópia é autocontida (sem .git, sem
-# tocar no working tree — o `preset_info/@time` muda a cada build de propósito).
+# tocar no working tree — o `preset_info/@time` é determinístico (GP100_BUILD_TIME)).
 PIPELINE = (
     'tools/ir_library.py',             # indexa impulse_responses/ (se baixou pack)
     'tools/add_pulse_defs.py',         # seeders de álbum (re-appendam o álbum no fim do defs)
     'tools/add_wishkah_defs.py',       # Nirvana — Wishkah (já encadeia add_momentos)
+    'tools/add_santana_defs.py',       # Santana — Smooth (momentos embutidos no seeder)
     'tools/add_momentos.py',           # momentos de toggle por patch
     'tools/build_song_patches.py',     # patch.md + .prst (+ spec.json local)
     'tools/gen_indexes.py',            # MAPA-DO-ALBUM.md + patches/README.md

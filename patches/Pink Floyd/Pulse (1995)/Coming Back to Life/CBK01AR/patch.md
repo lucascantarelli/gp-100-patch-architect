@@ -175,7 +175,7 @@ _Legenda: **🔴** ligado · ⚪ desligado — a ordem é o caminho do sinal._
 
 - Hiwatt® DR103 + Alembic F-2B (limpo, aberto, dinâmico) → `Knights CL`
 - Pilha 4x12 Marshall da turnê (Greenbacks; papel do WEM/Fane) → `UK-LD 4x12`
-- Delay com 1 repetição na duração da nota (assinatura do solo de Gilmour) → `Sweet`
+- Delay com 1 repetição na duração da nota (eco do solo) → `Sweet`
 - Hall etéreo das seções lentas → `Hall`
 
 ### Parâmetros módulo a módulo

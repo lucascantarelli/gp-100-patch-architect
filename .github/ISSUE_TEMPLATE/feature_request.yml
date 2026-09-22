@@ -1,7 +1,7 @@
 name: 💡 Sugerir conteúdo ou melhoria
 description: Peça um patch novo, uma música, um álbum, uma capability do pipeline ou uma doc.
 title: "[Feat]: "
-labels: ["enhancement", "needs triage"]
+labels: ["type: feature", "status: needs-triage"]
 body:
   - type: markdown
     attributes:

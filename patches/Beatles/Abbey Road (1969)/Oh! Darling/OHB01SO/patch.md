@@ -181,7 +181,7 @@ _Legenda: **🔴** ligado · ⚪ desligado — a ordem é o caminho do sinal._
 - Gabinete do AC30 → `Foxy 1x12`
 - Esculpir o som para fone/PC → `EQ 1`
 - Slapback curto de estúdio → `Slapbk`
-- Sala curta da Abbey Road → `Room`
+- Sala curta e seca — corpo curto que sustenta sem lambear → `Room`
 
 ### Parâmetros módulo a módulo
 

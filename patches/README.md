@@ -1,6 +1,6 @@
 # 🎸 Biblioteca de patches — GP-100
 
-![Organização](https://img.shields.io/badge/organização-banda%2Fálbum%2Fmúsica%2Fpatch-2ea44f?style=flat-square) ![Formato](https://img.shields.io/badge/.prst-single%20fw%202.1-2ea44f?style=flat-square) ![Patches](https://img.shields.io/badge/patches-62-e02d2d?style=flat-square)
+![Organização](https://img.shields.io/badge/organização-banda%2Fálbum%2Fmúsica%2Fpatch-2ea44f?style=flat-square) ![Formato](https://img.shields.io/badge/.prst-single%20fw%202.1-2ea44f?style=flat-square) ![Patches](https://img.shields.io/badge/patches-66-e02d2d?style=flat-square)
 
 ## 🗂️ Estrutura
 
@@ -40,6 +40,7 @@ Exemplos: `STH01BA` = Something 01 · Base · `CT01RIF` = Come Together 01 · Ri
 | 🎸 **Frank Zappa** | **Apostrophe (’) (1974)** | 1 | 2 | [`MAPA-DO-ALBUM.md`](Frank%20Zappa/Apostrophe%20(1974)/MAPA-DO-ALBUM.md) |
 | 🎸 **Janis Joplin (Big Brother & The Holding Company)** | **Cheap Thrills — Piece of My Heart (1968)** | 1 | 2 | [`MAPA-DO-ALBUM.md`](Janis%20Joplin/Piece%20of%20My%20Heart%20(1968)/MAPA-DO-ALBUM.md) |
 | 🎸 **Pink Floyd** | **Pulse (1995)** | 24 | 38 | [`MAPA-DO-ALBUM.md`](Pink%20Floyd/Pulse%20(1995)/MAPA-DO-ALBUM.md) |
+| 🎸 **Santana** | **Supernatural (1999)** | 1 | 4 | [`MAPA-DO-ALBUM.md`](Santana/Supernatural%20(1999)/MAPA-DO-ALBUM.md) |
 
 ## 📄 Cada patch contém
 

@@ -339,6 +339,7 @@ class TestG_Indices(unittest.TestCase):
 PIPELINE = (
     'tools/ir_library.py',             # indexa impulse_responses/ (se baixou pack)
     'tools/add_pulse_defs.py',         # seeders de álbum (já encadeia add_momentos)
+    'tools/add_santana_defs.py',       # Santana — Smooth (momentos embutidos no seeder)
     'tools/add_momentos.py',           # momentos de toggle por patch
     'tools/build_song_patches.py',     # patch.md + .prst (+ spec.json local)
     'tools/gen_indexes.py',            # MAPA-DO-ALBUM.md + patches/README.md

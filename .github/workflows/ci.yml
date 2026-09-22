@@ -1,22 +1,28 @@
-# CI do GP-100 Patch Architect.
+# CI do GP-100 Patch Architect — três jobs em paralelo + um portão de veredito.
 #
-# dados   — roda TODOS os scripts que escrevem dados (IR → seeders → momentos →
-#           construtor → índices). Em **push no main** (e execução manual), se o
-#           pipeline mexeu em algo, commita e envia sozinho — o repositório nunca
-#           fica vermelho por esquecimento de regenerar. Em PR o passo de commit
-#           não roda (fork não tem permissão de escrita): o guarda reprova e o
-#           autor regenera. O veredito é sempre do check_data_freshness.py, que
-#           compara disco × HEAD e imprime o comando exato de conserto.
-# python  — compila os scripts e roda a suíte que valida os .prst, as docs e os
-#           índices (inclui a coerência mapa × patch.md sobre IR e o drift dos índices).
-# agentes — typecheck dos .agents/*.ts com o tsconfig.json do projeto.
+#   Fase 1 (paralela):
+#     data-pipeline — roda TODOS os scripts que escrevem dados (IR → seeders →
+#                     momentos → construtor → índices). Em push no `main` (ou
+#                     execução manual), se o pipeline mexeu em algo, commita e
+#                     envia sozinho — o repositório nunca fica vermelho por
+#                     esquecimento de regenerar. Em PR o commit não roda (fork
+#                     não tem escrita) e o guarda reprova dizendo o que rodar.
+#                     O veredito é sempre do `check_data_freshness.py` (disco × HEAD).
+#     test-suite    — compila os scripts e roda a suíte unittest (28 testes, sem
+#                     dependências): formato dos `.prst`, docs, momentos, índices
+#                     e ordem estável entre sistemas operacionais.
+#     typecheck     — `tsc --noEmit` nos 17 agentes (`.agents/*.ts`), com cache do
+#                     TypeScript baixado via npx.
+#   Fase 2 (portão):
+#     ci-gate       — veredito único do CI: reprova se qualquer job da fase 1
+#                     falhou. É o check para "exigir" nas regras do GitHub.
 #
 # Rode a mesma sequência localmente:
 #   python tools/ir_library.py && python tools/add_pulse_defs.py \
 #     && python tools/add_momentos.py && python tools/build_song_patches.py \
 #     && python tools/gen_indexes.py && python tools/check_data_freshness.py
 
-name: pipeline
+name: CI
 
 on:
   push:
@@ -24,24 +30,32 @@ on:
   pull_request:
   workflow_dispatch:
 
-# Uma execução por branch: evita dois auto-commits disputando o mesmo push.
+# Piso de permissões do workflow; só o job de dados pede escrita (auto-commit).
+permissions:
+  contents: read
+
+# Uma execução por ref. Em PR cancela a anterior (feedback rápido); em `main`
+# nunca cancela — dois auto-commits não podem disputar o mesmo push.
 concurrency:
-  group: pipeline-${{ github.ref }}
-  cancel-in-progress: false
+  group: ci-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
-  dados:
-    name: pipeline de dados regenerado
+  # ── Fase 1 · dados ─────────────────────────────────────────────────────────
+  data-pipeline:
+    name: 📊 Dados — pipeline completo e sincronização
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     permissions:
-      contents: write        # necessário para o auto-commit no main
+      contents: write          # necessário para o auto-commit no main
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-python@v5
         with:
           python-version: '3.14'
 
-      - name: Rodar os scripts que atualizam dados
+      - name: 1/3 · Regenerar todos os dados (IR → defs → momentos → patches → índices)
         run: |
           python tools/ir_library.py
           python tools/add_pulse_defs.py
@@ -49,47 +63,101 @@ jobs:
           python tools/build_song_patches.py
           python tools/gen_indexes.py
 
-      - name: Commitar os dados regenerados (só em push no main)
+      - name: 2/3 · Auto-commit dos dados regenerados (apenas push no main)
         if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
         run: |
-          if [ -z "$(git status --porcelain)" ]; then
-            echo "✅ o pipeline não mudou nada — os dados já estavam em sincronia."
+          changed="$(git status --porcelain | wc -l)"
+          if [ "$changed" -eq 0 ]; then
+            echo "✅ **Dados já em sincronia** — o pipeline não mudou nada." >> "$GITHUB_STEP_SUMMARY"
+            echo "Nada a commitar."
             exit 0
           fi
-          echo "🔧 o pipeline regenerou arquivos — commitando de volta:"
-          git status --short
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A
           git commit -m "chore: regenera os dados do pipeline [skip ci]"
-          git push
+          # o checkout vem em detached HEAD: envia pelo refspec, não pela branch
+          git push origin "HEAD:${GITHUB_REF_NAME}"
+          {
+            echo "### 🔄 Auto-commit do pipeline"
+            echo ""
+            echo "- **${changed} arquivo(s)** regenerado(s) e commitado(s) como \`github-actions[bot]\`."
+            echo "- Este push não dispara novo CI (\`[skip ci]\` + \`GITHUB_TOKEN\`)."
+          } >> "$GITHUB_STEP_SUMMARY"
 
-      - name: Reprovar se algum artefato gerado ficou fora do commit
-        run: python tools/check_data_freshness.py
+      - name: 3/3 · Guarda — disco × HEAD (check_data_freshness)
+        run: |
+          set -o pipefail
+          python tools/check_data_freshness.py 2>&1 | tee frescor.log
+          {
+            echo "### 🛡️ Sincronia dos dados (disco × HEAD)"
+            echo ""
+            echo '```text'
+            cat frescor.log
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
 
-  python:
-    name: patches, docs e indices
+  # ── Fase 1 · testes ────────────────────────────────────────────────────────
+  test-suite:
+    name: 🧪 Testes — suíte do pipeline
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version: ['3.14']
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-python@v5
         with:
-          python-version: ${{ matrix.python-version }}
-      - name: Compilar os scripts
+          python-version: '3.14'
+
+      - name: 1/2 · Compilar todos os scripts (tools/ + tests/)
         run: python -m py_compile tools/*.py tests/*.py
-      - name: Validar a biblioteca (unittest, sem dependencias)
+
+      - name: 2/2 · Suíte unittest — defs, .prst, docs, momentos, índices e ordem entre OS
         run: python -m unittest discover -s tests -v
 
-  agentes:
-    name: typecheck dos agentes
+  # ── Fase 1 · agentes ───────────────────────────────────────────────────────
+  typecheck:
+    name: 🔍 Agentes — tsc --noEmit
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-node@v4
         with:
-          node-version: '20'
-      - name: tsc --noEmit (.agents)
+          node-version: '26'
+
+      - name: Cache do TypeScript baixado via npx
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: npm-typescript-5.9.2-${{ runner.os }}
+
+      - name: tsc --noEmit (tsconfig.json — 17 agentes)
         run: npx -y -p typescript@5.9.2 tsc --noEmit -p tsconfig.json
+
+  # ── Fase 2 · portão ────────────────────────────────────────────────────────
+  ci-gate:
+    name: 🚦 Veredito do CI
+    needs: [data-pipeline, test-suite, typecheck]
+    if: always()               # roda mesmo com job falho — para dar o veredito
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Reprovar se qualquer job da fase 1 não passou
+        run: |
+          {
+            echo "### 🚦 Veredito do CI"
+            echo ""
+            echo "| Job | Resultado |"
+            echo "|---|---|"
+            echo "| data-pipeline | ${{ needs.data-pipeline.result }} |"
+            echo "| test-suite | ${{ needs.test-suite.result }} |"
+            echo "| typecheck | ${{ needs.typecheck.result }} |"
+          } >> "$GITHUB_STEP_SUMMARY"
+          falhas="${{ contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled') }}"
+          if [ "$falhas" = "true" ]; then
+            echo "❌ Um ou mais jobs falharam — veja os detalhes no resumo." >> "$GITHUB_STEP_SUMMARY"
+            exit 1
+          fi
+          echo "✅ Todos os jobs passaram." >> "$GITHUB_STEP_SUMMARY"

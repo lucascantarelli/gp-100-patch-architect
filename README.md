@@ -121,7 +121,7 @@ Cada patch entrega:
 
 **Cadeia típica ao acrescentar um álbum:** edite `tools/patches-defs.json` → `build_song_patches.py` → `gen_indexes.py` → **rode a suíte de testes** e o `check_data_freshness.py`. **Baixou packs de IR?** Extraia em `impulse_responses/<Pack>/` → rode `ir_library.py`. Downloads recomendados: [`reference/17-free-ir-packs.md`](reference/17-free-ir-packs.md).
 
-> **Acrescentou elemento novo?** (música, camada, patch, efeito, momento de toggle, pack de IR) O pipeline inteiro é obrigatório, e o job `dados` do CI reprova o PR que esquecer:
+> **Acrescentou elemento novo?** (música, camada, patch, efeito, momento de toggle, pack de IR) O pipeline inteiro é obrigatório, e o job `data-pipeline` do CI reprova o PR que esquecer:
 >
 > ```bash
 > python tools/ir_library.py && python tools/add_pulse_defs.py \
@@ -135,13 +135,16 @@ Tudo que descreve uma música, um álbum ou uma IR vive **só** em `tools/patche
 
 ## ✅ Qualidade — o que o CI garante
 
-Cada push e cada PR rodam o workflow [`pipeline`](.github/workflows/ci.yml), em três jobs:
+Cada push e cada PR rodam o workflow [`CI`](.github/workflows/ci.yml): **três jobs em paralelo** (fase 1) e um **portão de veredito único** (fase 2) — é o check que vale "exigir" nas regras do repositório:
 
 | Job | O que faz |
 |---|---|
-| **`dados`** | roda o **pipeline de dados inteiro** (IR → seeders → momentos → construtor → índices). **Em push no `main` (ou execução manual), se o pipeline mexeu em algo, o próprio job commita e envia** (`chore: regenera os dados do pipeline`) — o repositório não fica vermelho por esquecimento de regenerar. Depois `check_data_freshness.py` dá o veredito; **em PR o commit não roda** (fork não tem escrita) e o guarda reprova com o comando exato de conserto |
-| **`python`** | compila os scripts e executa a suíte (**28 testes, sem dependências** — `unittest` da stdlib) |
-| **`agentes`** | `tsc --noEmit` nos 17 agentes |
+| **🚦 `ci-gate`** | **Portão do CI** — reprova se qualquer job da fase 1 falhou e publica o resumo dos resultados |
+| **📊 `data-pipeline`** | roda o **pipeline de dados inteiro** (IR → seeders → momentos → construtor → índices). **Em push no `main` (ou execução manual), se o pipeline mexeu em algo, o próprio job commita e envia** (`chore: regenera os dados do pipeline`) — o repositório não fica vermelho por esquecimento de regenerar. Depois `check_data_freshness.py` dá o veredito; **em PR o commit não roda** (fork não tem escrita) e o guarda reprova com o comando exato de conserto |
+| **🧪 `test-suite`** | compila os scripts e executa a suíte (**28 testes, sem dependências** — `unittest` da stdlib) |
+| **🔍 `typecheck`** | `tsc --noEmit` nos 17 agentes, com cache do TypeScript |
+
+Todos os jobs têm `timeout` e o resultado da sincronia dos dados é publicado no **resumo da execução** (Step Summary) do GitHub.
 
 Para rodar igual na sua máquina:
 
@@ -177,7 +180,7 @@ A suíte cobre as invariantes que **já quebraram uma vez** neste projeto:
 - ✅ Seções obrigatórias presentes nos 62 docs (guitarra → ajustes finos → IR → modos de atuação → objetivo → dossiê → parâmetros → carga → evite) e 32 momentos de toggle validados contra o spec.
 - ✅ **Zero rótulo `pN` nos 62 docs**: os 40 `patch.md` do Pulse e as 28 menções em textos de ajustes/evite passaram a usar os nomes do manual V2.0 (rótulos acima); os slots **internos** do firmware (que o editor não expõe) não são setados nem rotulados — ficam no default de fábrica.
 - ✅ **Dossiê de rig de Cheap Thrills** (Big Brother & The Holding Company): duas guitarras em **Gibson SG** (Gurley e Andrew), **Fender Twin Reverb**, Maestro FZ-1 no Gurley — e o achado que fecha o timbre da faixa: **Piece of My Heart sem fuzz** (Gurley limpo, Sam sujo no Twin estourado); o mapa da Janis voltou a ter seção de rig, com fontes.
-- ✅ **CI + suíte de testes** ([`.github/workflows/ci.yml`](.github/workflows/ci.yml)): 28 testes em `tests/` validam defs, formato dos 62 `.prst`, docs, momentos, nomes de parâmetro, drift dos índices e a ordem estável entre OS — stdlib pura (nenhuma dependência para instalar). O job **`dados`** roda o pipeline completo a cada push/PR e, **em push no `main`, commita os dados regenerados sozinho** antes do veredito do `check_data_freshness.py` (só o timestamp `preset_info/@time` é ignorado — o pipeline é reprodutível em 194 artefatos).
+- ✅ **CI + suíte de testes** ([`.github/workflows/ci.yml`](.github/workflows/ci.yml)): 28 testes em `tests/` validam defs, formato dos 62 `.prst`, docs, momentos, nomes de parâmetro, drift dos índices e a ordem estável entre OS — stdlib pura (nenhuma dependência para instalar). O job **`data-pipeline`** roda o pipeline completo a cada push/PR e, **em push no `main`, commita os dados regenerados sozinho** antes do veredito do `check_data_freshness.py` (só o timestamp `preset_info/@time` é ignorado — o pipeline é reprodutível em 194 artefatos); o portão **`ci-gate`** concentra o veredito final.
 - ✅ **Pipeline reprodutível entre sistemas**: a ordem dos artefatos derivados não depende do SO — a comparação de `Path` usa `normcase` (minúsculas no Windows, identidade no Linux) e fazia o manifesto de IRs divergir entre a máquina e o CI; a ordenação agora é por string (ordem de code point), com teste travando a regressão (`TestI_OrdemEstavel`).
 - ✅ Typecheck `tsc --noEmit` limpo nos 17 agentes.
 - ✅ Manual V1.8 transcrito página a página para `reference/` + catálogo empírico extraído do export de fábrica (`tools/factory-catalog.json`, 99 presets · 117 modelos).

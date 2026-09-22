@@ -43,7 +43,7 @@ patches/<ID>/
 - [ ] Instruções de digitação na ordem real dos menus da pedaleira (incluindo os SOBRESSALENTES citados nos momentos).
 - [ ] Sugestão de captador (posição na Strat) para o timbre.
 - [ ] Teste sugerido (riff + o que escutar).
-- [ ] **Pipeline rodado e commitado**: `python tools/build_song_patches.py` → `python tools/gen_indexes.py` → `python tools/check_data_freshness.py` (e `python tools/ir_library.py` se baixou pack) — o job `dados` do CI reprova artefato gerado fora do commit.
+- [ ] **Pipeline rodado e commitado**: `python tools/build_song_patches.py` → `python tools/gen_indexes.py` → `python tools/check_data_freshness.py` (e `python tools/ir_library.py` se baixou pack) — o job `data-pipeline` do CI reprova artefato gerado fora do commit.
 - [ ] **Suíte verde**: `python -m unittest discover -s tests -v` — `TestB_FonteUnica_IR` reprova mapa e `patch.md` divergindo sobre IR; `TestG_Indices` reprova índice defasado; `TestH_DadosEmSincronia` cobre o check de frescor.
 
 ## Fluxo de ajuste (iteração com o músico)
@@ -65,7 +65,7 @@ patches/<ID>/
 | "Volume salta ao ligar efeito" | Level do efeito ≈ bypass (igualar) |
 | "Solo não corta" | EQ Mid +3 / Level +15, patch de solo separado |
 
-## Pipeline de dados (é o que o CI roda — job `dados`)
+## Pipeline de dados (é o que o CI roda — job `data-pipeline`)
 Qualquer elemento novo (música, camada, patch, modelo de efeito, momento de toggle, pack de IR) exige o pipeline inteiro, na ordem, e o commit dos derivados:
 
 ```bash
@@ -77,7 +77,7 @@ python tools/gen_indexes.py         # 5. MAPA-DO-ALBUM.md + patches/README.md
 python tools/check_data_freshness.py  # 6. disco × HEAD (só preset_info/@time é ignorado)
 ```
 
-**Isso é literalmente o job `dados` do CI**, que roda a sequência a cada push/PR. Em **push no `main`**, se o pipeline mexeu em algo, o próprio job commita e envia (`chore: regenera os dados do pipeline [skip ci]`) — o repositório nunca fica vermelho por esquecimento. Em **PR** o passo de commit é pulado (fork não tem escrita) e o guarda reprova, pedindo que o autor rode o pipeline.
+**Isso é literalmente o job `data-pipeline` do CI**, que roda a sequência a cada push/PR. Em **push no `main`**, se o pipeline mexeu em algo, o próprio job commita e envia (`chore: regenera os dados do pipeline [skip ci]`) — o repositório nunca fica vermelho por esquecimento. Em **PR** o passo de commit é pulado (fork não tem escrita) e o guarda reprova, pedindo que o autor rode o pipeline.
 
 O passo 6 é o que separa "rodei o pipeline" de "commitei o resultado": sem ele, um PR pode mergear com artefato defasado. A fonte única continua sendo `tools/patches-defs.json` — nenhum script mantém tabela própria de músicas, álbuns ou cabs.
 

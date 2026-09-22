@@ -38,7 +38,7 @@ permissions:
 env:
   GH_TOKEN: ${{ github.token }}
   PROJECT_OWNER: lucascantarelli # owner do Project (usuário, não o repo)
-  PROJECT_NUMBER: "1" # número do Project v2 — confirme com: gh project list
+  PROJECT_NUMBER: "7" # número do Project v2 "GP-100 Pipeline" (gh project list)
   REPO: ${{ github.repository }} # "dono/repo" para gh --repo
 
 jobs:

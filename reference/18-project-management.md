@@ -98,7 +98,9 @@ ONLY=labels|.  ONLY=milestones|.  ONLY=project .          # fatias isoladas
 DRY_RUN=1 .            # ensaio
 ```
 
-Depois de instalado, confira `PROJECT_NUMBER` no topo de
+Instalado e operando: o Project "GP-100 Pipeline" é o **#7** do owner
+(`PROJECT_NUMBER: "7"` no `project-automation.yml`). Depois de uma reinstalação,
+confira o `PROJECT_NUMBER` no topo de
 `.github/workflows/project-automation.yml` (default `1`) e crie as 3 visões
 conforme o guia impresso no fim da execução do bootstrap.
 

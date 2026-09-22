@@ -35,6 +35,17 @@ KNOWN_PACKS = {
 }
 
 
+def wav_order(path: Path) -> str:
+    """Chave de ordenação estável entre sistemas operacionais.
+
+    `Path` compara com `normcase`, que **minúsculas no Windows** e é identidade no
+    Linux — usar Path como chave faz o manifesto sair em ordem diferente no CI
+    (ex.: `4x12 MFB` × `4x12 Metal American`). Comparar o caminho POSIX como
+    `str` (ordem de code point) dá exatamente o mesmo resultado em qualquer OS.
+    """
+    return path.relative_to(IR_DIR).as_posix()
+
+
 def wav_info(path: Path):
     """Inspeciona um WAV e devolve taxa/canais/bits/duração + flags de compatibilidade.
 
@@ -74,7 +85,7 @@ def main():
     if not IR_DIR.exists():
         raise SystemExit(f'Pasta {IR_DIR} não existe.')
     packs = {}
-    for wav in sorted(IR_DIR.rglob('*.wav')):
+    for wav in sorted(IR_DIR.rglob('*.wav'), key=wav_order):
         rel = wav.relative_to(IR_DIR)
         pack = rel.parts[0] if len(rel.parts) > 1 else '(raiz)'
         info = wav_info(wav)

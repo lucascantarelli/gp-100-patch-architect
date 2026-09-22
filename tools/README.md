@@ -1,6 +1,6 @@
 # 🔧 Tools — scripts de geração e análise
 
-Utilitários Python (sem dependências além da biblioteca padrão; Windows OK) que sustentam o [GP-100 Patch Architect](../README.md).
+Utilitários Python (**Python 3.14 apenas** — política do projeto, guardada por `defs_schema.exigir`/CI; sem dependências além da biblioteca padrão; Windows OK) que sustentam o [GP-100 Patch Architect](../README.md).
 
 ## 🎼 Ciclo de vida de um patch
 
@@ -34,8 +34,10 @@ python -m unittest discover -s tests -v
 
 | Script | Comando | O que faz |
 |---|---|---|
+| `defs_schema.py` | `python defs_schema.py` | **Validador acionável do defs** — campos obrigatórios, tipos, nome ≤ 12, ids únicos, gênero, params (Time em ms), momentos (nunca AMP/CAB), `ir_local` ↔ CAB usado. Cada erro aponta o caminho JSON e como corrigir. O `build_song_patches.py` chama `carregar_e_validar()` ao carregar o defs — fim do `KeyError` no meio do build. |
+| `param_names.py` | — | **Fonte única dos nomes oficiais de parâmetro** por (módulo, modelo) — manual do firmware V2.0. Consumido pelo gerador, pelo validador e pela CLI (módulo próprio para evitar ciclo de import). |
 | `gp100.py` | `python gp100.py find <termo>` · `show <NOME>` · `diff A B` · `export [--album ID] [--destino D]` · `build` · `verify` | **CLI unificada** — busca por música/artista/captador, resumo do patch (cadeia, params com nomes oficiais, momentos, IR), diff legível entre dois patches, cópia dos `.prst` para pasta de importação USB (prefixo = slot), pipeline completo e suíte. Leitura pura não escreve nada no repositório; `build`/`verify` só executam os scripts existentes. |
-| `build_song_patches.py` | `python build_song_patches.py` | **Construtor principal.** Lê `patches-defs.json`, escreve `patch.md` + `<NOME>.prst` (e o `spec.json` intermediário, não versionado) de cada patch em `patches/<Banda>/<Álbum>/<Música>/<NOME>/` e valida o resultado (XML conforme, nome ≤ 12 caracteres). Slots U01…Uxx calculados pela ordem global dos defs. |
+| `build_song_patches.py` | `python build_song_patches.py` | **Construtor principal.** Lê `patches-defs.json` **validando-o primeiro** (`defs_schema.carregar_e_validar()`), escreve `patch.md` + `<NOME>.prst` (e o `spec.json` intermediário, não versionado) de cada patch em `patches/<Banda>/<Álbum>/<Música>/<NOME>/` e valida o resultado (XML conforme, nome ≤ 12 caracteres). Slots U01…Uxx calculados pela ordem global dos defs. |
 | `add_pulse_defs.py` | `python add_pulse_defs.py` | (Re)insere as 24 músicas / 38 patches do Pulse em `patches-defs.json`, na ordem do álbum — idempotente; já encadeia `add_momentos.py` no final. |
 | `add_momentos.py` | `python add_momentos.py` | Injeta os momentos de toggle por patch (seção "Modos de atuação"): valida contra o spec (só estado inverso), herda o delay do patch-irmão de solo para as bases e registra os SOBRESSALENTES. |
 | `generate_prst.py` | `python generate_prst.py <spec.json> <saída.prst>` | Gera **um** `.prst` no formato **single-patch, firmware 2.1** — réplica exata do export single que importou com sucesso no aparelho (sem `<ppIRInfo>`, com `<ppCtrl>`/`<ppEXP1>`, atributos na ordem exata, cadeia x=0–8). Valida nomes contra o catálogo fw 2.0. |
@@ -56,7 +58,7 @@ python -m unittest discover -s tests -v
 ## 🧪 Testes
 
 ```bash
-python -m unittest discover -s tests -v      # 43 testes, stdlib pura (nada a instalar)
+python -m unittest discover -s tests -v      # 56 testes, stdlib pura (nada a instalar)
 ```
 
 `tests/test_pipeline.py` valida as invariantes que já quebraram uma vez: defs (ids/nomes únicos, nome ≤ 12 chars), **coerência mapa × `patch.md` sobre IR** (a divergência dos 38 patches do Pulse), formato `.prst` single fw 2.1, as 9 seções obrigatórias + zero HTML cru + **zero rótulo placeholder** (`(pN)` e `pN` solto — todo slot setado tem nome oficial, ver `reference/15`), momentos de toggle válidos (nunca AMP/CAB), cobertura de `PARAM_NAMES` (allowlist hoje **vazia** — modelo novo sem nome de parâmetro reprova), **drift dos índices** e o **guarda de sincronia** (`TestH_DadosEmSincronia`: o pipeline roda numa cópia temporária do repositório e tem de reproduzir o commitado; ignora o `time`, equipara CRLF/LF e não mascara mudança de parâmetro).

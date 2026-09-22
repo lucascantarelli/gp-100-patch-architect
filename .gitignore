@@ -24,3 +24,19 @@ desktop.ini
 .freebuff/
 .idea/
 .vscode/
+
+# ── Conteúdo de terceiros: NÃO versionado ──────────────────────────────────────
+# Banco local de IRs: as licenças dos packs são de terceiros (a IR-Cab Library
+# V3 é gratuita com cadastro no site da Origin Effects, mas a redistribuição não
+# é concedida). Mantenha só o README que explica o fluxo de instalação.
+impulse_responses/*
+!impulse_responses/README.md
+
+# Manual oficial da Valeton (obra de terceiro) — obtenha no site do fabricante.
+# `tools/render_manual_page.py` lê este arquivo localmente.
+manual.pdf
+
+# ── Saída de empacotamento de release ─────────────────────────────────────────
+# `tools/build_release.py` escreve os ZIPs aqui; eles vão anexados à Release,
+# nunca para o histórico do git.
+dist/

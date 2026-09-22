@@ -18,7 +18,7 @@
 
 ## 📦 Origin Effects - IR-Cab Library V3 ⚠️ (parte precisa conversão)
 - Fonte: https://origineffects.com/product/ir-cab-library/
-- Licença: Gratuita (cadastro manual no site da Origin Effects)
+- Licença: Gratuita (cadastro manual no site da Origin Effects) — redistribuição não concedida
 - Notas: Capturas profissionais dos cabines reais; mixes Bright/Medium/Dark + mics individuais (87=U87 FET, 160=RCA 160 ribbon, 421=SM421, 57=SM57).
 - WAVs: 291 · Gabinetes: American Twin 2x12, British Alnico 2x12, British Checkerboard 4x12, British Straight 4x12, Brown Deluxe 1x12, Lux-O-Vibe 2x10, Magma Vintage 1x12, Modern Boutique 4x12, Tweed Combo 1x12
 

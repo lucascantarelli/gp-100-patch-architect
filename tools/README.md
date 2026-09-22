@@ -25,6 +25,8 @@ python -m unittest discover -s tests -v
 ```
 
 > **Essa é exatamente a sequência do guarda de sincronia da suíte** (`TestH_DadosEmSincronia`): o teste roda o pipeline inteiro numa cópia temporária do repositório e, se o resultado não for o que está commitado, reprova dizendo o que rodar. Quem acrescenta música, camada, patch, efeito, momento de toggle ou pack de IR precisa rodar isto e commitar os derivados. A suíte roda em push e em PR, e nos dois casos a correção é do autor: **nenhum job escreve no repositório**.
+>
+> **Atalho:** `python gp100.py build` encadeia exatamente essa sequência, e `python gp100.py verify` roda a suíte.
 
 **Criar um patch isolado:** escreva um `spec.json` (o formato completo está documentado no docstring de `generate_prst.py`) e chame `python generate_prst.py spec.json saida.prst`.
 
@@ -32,6 +34,7 @@ python -m unittest discover -s tests -v
 
 | Script | Comando | O que faz |
 |---|---|---|
+| `gp100.py` | `python gp100.py find <termo>` · `show <NOME>` · `diff A B` · `export [--album ID] [--destino D]` · `build` · `verify` | **CLI unificada** — busca por música/artista/captador, resumo do patch (cadeia, params com nomes oficiais, momentos, IR), diff legível entre dois patches, cópia dos `.prst` para pasta de importação USB (prefixo = slot), pipeline completo e suíte. Leitura pura não escreve nada no repositório; `build`/`verify` só executam os scripts existentes. |
 | `build_song_patches.py` | `python build_song_patches.py` | **Construtor principal.** Lê `patches-defs.json`, escreve `patch.md` + `<NOME>.prst` (e o `spec.json` intermediário, não versionado) de cada patch em `patches/<Banda>/<Álbum>/<Música>/<NOME>/` e valida o resultado (XML conforme, nome ≤ 12 caracteres). Slots U01…Uxx calculados pela ordem global dos defs. |
 | `add_pulse_defs.py` | `python add_pulse_defs.py` | (Re)insere as 24 músicas / 38 patches do Pulse em `patches-defs.json`, na ordem do álbum — idempotente; já encadeia `add_momentos.py` no final. |
 | `add_momentos.py` | `python add_momentos.py` | Injeta os momentos de toggle por patch (seção "Modos de atuação"): valida contra o spec (só estado inverso), herda o delay do patch-irmão de solo para as bases e registra os SOBRESSALENTES. |
@@ -53,7 +56,7 @@ python -m unittest discover -s tests -v
 ## 🧪 Testes
 
 ```bash
-python -m unittest discover -s tests -v      # 31 testes, stdlib pura (nada a instalar)
+python -m unittest discover -s tests -v      # 43 testes, stdlib pura (nada a instalar)
 ```
 
 `tests/test_pipeline.py` valida as invariantes que já quebraram uma vez: defs (ids/nomes únicos, nome ≤ 12 chars), **coerência mapa × `patch.md` sobre IR** (a divergência dos 38 patches do Pulse), formato `.prst` single fw 2.1, as 9 seções obrigatórias + zero HTML cru + **zero rótulo placeholder** (`(pN)` e `pN` solto — todo slot setado tem nome oficial, ver `reference/15`), momentos de toggle válidos (nunca AMP/CAB), cobertura de `PARAM_NAMES` (allowlist hoje **vazia** — modelo novo sem nome de parâmetro reprova), **drift dos índices** e o **guarda de sincronia** (`TestH_DadosEmSincronia`: o pipeline roda numa cópia temporária do repositório e tem de reproduzir o commitado; ignora o `time`, equipara CRLF/LF e não mascara mudança de parâmetro).

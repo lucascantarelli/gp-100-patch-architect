@@ -46,7 +46,7 @@ python tools/render_manual_page.py 21        # página impressa NN = arquivo NN+
 ## ✅ Antes de commitar na `develop`: rode exatamente o que o CI roda
 
 ```bash
-# 1. Suíte de testes (31 testes, stdlib pura)
+# 1. Suíte de testes (43 testes, stdlib pura)
 python -m unittest discover -s tests -v
 
 # 2. Typecheck dos 17 agentes

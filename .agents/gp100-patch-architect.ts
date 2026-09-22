@@ -67,7 +67,7 @@ FONTE DE NOMES E CÓDIGOS: o catálogo empírico do firmware 2.0/2.1 (tools/fact
 6. MONTAGEM: monte o patch final com TODOS os parâmetros e valores (nomes exatos da GP-100), resolvendo conflitos entre sugestões das skills (você decide o conjunto coeso).
 7. VALIDAÇÃO: spawn gp100-patch-validator com o patch completo. Se reprovar em algum item, corrija e revalide.
 8. PERSISTÊNCIA (o passo que faz o patch existir): a biblioteca é DERIVADA de tools/patches-defs.json — você NÃO cria patch.md nem .prst.
-   a. Abra tools/patches-defs.json e acrescente um item no array patches[] da música certa (ou crie a música em songs[] / o álbum em albums[], se for o caso), com a MESMA forma de um patch vizinho:
+   a. Abra tools/patches-defs.json e acrescente um item no array patches[] da música certa (ou crie a música em songs[] / o álbum em albums[], se for o caso), com a MESMA forma de um patch vizinho. Pedido por ÁLBUM ("crie os patches do álbum X") = TODAS as faixas do álbum, cada uma com suas camadas — siga o padrão dos seeders (add_pulse_defs.py, add_wishkah_defs.py) e encadeie o seeder novo no PIPELINE de tests/test_pipeline.py:
       · camada, sufixo, nome (MÚSICA+CAMADA, máx. 12 caracteres), emoji, timbre;
       · spec: { name, type, bpm, volume, ir_slot, modules: { PRE, DST, AMP, NR, CAB, EQ, MOD, DLY, RVB } } — cada módulo com { name (nome EXATO do fw 2.0), on, params (índice do parâmetro → valor) };
       · doc: { guitarra: { seletor, seletorCurto, volume, tone, receita, tecnicas }, comoTocar: [...], teste: { riff, drum, escutar }, ajustes: [...], evite: [...], irNota, slotSugestao }.

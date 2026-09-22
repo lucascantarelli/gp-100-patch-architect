@@ -9,6 +9,16 @@
 # Documentação gerada pelo pipeline (o gerador escreve CRLF de propósito).
 patches/**/*.md text eol=crlf
 
+# Scripts de shell: SEMPRE LF. Com `core.autocrlf=true` (default do Git for
+# Windows) o checkout põe CRLF e o shebang vira "#!/usr/bin/env bash\r": rodar
+# `./setup_repo.sh` no Git Bash falha com erro de interpretador. O blob já era
+# LF — aqui a regra garante que o arquivo em disco também seja.
+*.sh text eol=lf
+
+# VERSION é lido por `cat` (release.yml) e por read_version(): um CR sobrando
+# faria "1.0.0\r" não casar com a tag v1.0.0.
+VERSION text eol=lf
+
 # Binários: nunca normalizar, nunca tentar diff de texto.
 *.wav binary
 *.mp3 binary

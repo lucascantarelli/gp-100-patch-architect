@@ -20,12 +20,11 @@ python build_song_patches.py
 # 5. Regenere mapas dos álbuns e o README da biblioteca
 python gen_indexes.py
 
-# 6. Valide tudo (mesma suíte que o CI roda) e confira que nada gerado ficou fora
+# 6. Valide tudo (mesma suíte que o CI roda) — ela inclui o guarda de sincronia
 python -m unittest discover -s tests -v
-python check_data_freshness.py              # falha se um artefato estiver defasado vs HEAD
 ```
 
-> **Essa é exatamente a sequência do job `data-pipeline` do CI** (`.github/workflows/ci.yml`): o pipeline roda inteiro e, se o resultado não for o que está commitado, o build reprova dizendo o que rodar. Quem acrescenta música, camada, patch, efeito, momento de toggle ou pack de IR precisa rodar isto e commitar os derivados. Num push direto no `main` o CI conserta sozinho: o job `data-pipeline` roda o pipeline e commita o resultado; em PR o mesmo job reprova e a correção fica com o autor.
+> **Essa é exatamente a sequência do guarda de sincronia da suíte** (`TestH_DadosEmSincronia`): o teste roda o pipeline inteiro numa cópia temporária do repositório e, se o resultado não for o que está commitado, reprova dizendo o que rodar. Quem acrescenta música, camada, patch, efeito, momento de toggle ou pack de IR precisa rodar isto e commitar os derivados. A suíte roda em push e em PR, e nos dois casos a correção é do autor: **nenhum job escreve no repositório**.
 
 **Criar um patch isolado:** escreva um `spec.json` (o formato completo está documentado no docstring de `generate_prst.py`) e chame `python generate_prst.py spec.json saida.prst`.
 
@@ -33,13 +32,12 @@ python check_data_freshness.py              # falha se um artefato estiver defas
 
 | Script | Comando | O que faz |
 |---|---|---|
-| `build_song_patches.py` | `python build_song_patches.py` | **Construtor principal.** Lê `patches-defs.json`, escreve `spec.json` + `patch.md` + `<NOME>.prst` de cada patch em `patches/<Banda>/<Álbum>/<Música>/<NOME>/` e valida o resultado (XML conforme, nome ≤ 12 caracteres). Slots U01…Uxx calculados pela ordem global dos defs. |
+| `build_song_patches.py` | `python build_song_patches.py` | **Construtor principal.** Lê `patches-defs.json`, escreve `patch.md` + `<NOME>.prst` (e o `spec.json` intermediário, não versionado) de cada patch em `patches/<Banda>/<Álbum>/<Música>/<NOME>/` e valida o resultado (XML conforme, nome ≤ 12 caracteres). Slots U01…Uxx calculados pela ordem global dos defs. |
 | `add_pulse_defs.py` | `python add_pulse_defs.py` | (Re)insere as 24 músicas / 38 patches do Pulse em `patches-defs.json`, na ordem do álbum — idempotente; já encadeia `add_momentos.py` no final. |
 | `add_momentos.py` | `python add_momentos.py` | Injeta os momentos de toggle por patch (seção "Modos de atuação"): valida contra o spec (só estado inverso), herda o delay do patch-irmão de solo para as bases e registra os SOBRESSALENTES. |
 | `generate_prst.py` | `python generate_prst.py <spec.json> <saída.prst>` | Gera **um** `.prst` no formato **single-patch, firmware 2.1** — réplica exata do export single que importou com sucesso no aparelho (sem `<ppIRInfo>`, com `<ppCtrl>`/`<ppEXP1>`, atributos na ordem exata, cadeia x=0–8). Valida nomes contra o catálogo fw 2.0. |
 | `gen_indexes.py` | `python gen_indexes.py` | Regenera os `MAPA-DO-ALBUM.md` de cada álbum e o `patches/README.md` **a partir do defs** (`albums`, `ir_local`, `pasta`/`display`) — tabelas música→patches, captador, IR recomendada e sequência de slots. `build_all()` é pura (monta o texto sem escrever) e `main()` só grava: é isso que a suíte usa para detectar índice defasado. |
 | `ir_library.py` | `python ir_library.py` | Indexa `impulse_responses/`: valida cada WAV (mono/24 bits/44.1 kHz) e gera `ir-library.json` (manifesto para os agentes) + `reference/16-ir-library.md`. **Rode sempre que baixar packs novos.** |
-| `check_data_freshness.py` | `python check_data_freshness.py` | **Guarda do CI.** Compara os artefatos GERADOS no disco (`patches/**` `.prst`/`.md`/`.json`, `patches-defs.json`, `ir-library.json`, `reference/16`) com o HEAD, ignorando `preset_info/@time` (o único byte que muda a cada build). Reprova com o comando exato de conserto quando alguém acrescentou elemento sem rodar o pipeline. Rode antes de commitar. Em push no `main` o job `data-pipeline` regenera e commita antes deste veredito. |
 | `analyze_prst.py` | `python analyze_prst.py <arquivo.prst> [--json out.json]` | Disseca qualquer export da pedaleira: modelos por módulo com effectCode, estatísticas empíricas de `params_0..14` (min/max/distintos), catálogo completo com cadeias. **É dele que nasceu o catálogo fw 2.0** (`factory-catalog.json`). |
 | `render_manual_page.py` | `python render_manual_page.py <impressa> [mais…] · --all` | Renderiza páginas do `manual.pdf` **sob demanda** (requer pymupdf): PNG alta + JPG leve em `manual_pages/` (efêmero). Página impressa NN = arquivo NN+2. |
 
@@ -50,17 +48,16 @@ python check_data_freshness.py              # falha se um artefato estiver defas
 | `patches-defs.json` | **Fonte única**: `meta`, `albums` (banda/ano/pasta/título/dossiê do rig), `ir_local` (captura recomendada por CAB) e `songs` (música, `pasta`/`display`, camadas, params, doc de guitarra, ajustes finos, momentos de toggle, notas de IR). Nenhum script guarda tabela própria de músicas/álbuns/cabs. |
 | `factory-catalog.json` | Catálogo empírico do firmware 2.0/2.1 (extraído do export de fábrica via `analyze_prst.py`) — base dos templates de params |
 | `ir-library.json` | Manifesto do banco local de IRs (gerado — não editar à mão) |
-| `check_data_freshness.py` | Não gera nada: só compara disco × HEAD (o dado em si vive nos arquivos acima) |
 
 ## 🧪 Testes
 
 ```bash
-python -m unittest discover -s tests -v      # 19 testes, stdlib pura (nada a instalar)
+python -m unittest discover -s tests -v      # 31 testes, stdlib pura (nada a instalar)
 ```
 
-`tests/test_pipeline.py` valida as invariantes que já quebraram uma vez: defs (ids/nomes únicos, nome ≤ 12 chars), **coerência mapa × `patch.md` sobre IR** (a divergência dos 38 patches do Pulse), formato `.prst` single fw 2.1, as 9 seções obrigatórias + zero HTML cru + **zero rótulo placeholder** (`(pN)` e `pN` solto — todo slot setado tem nome oficial, ver `reference/15`), momentos de toggle válidos (nunca AMP/CAB), cobertura de `PARAM_NAMES` (allowlist hoje **vazia** — modelo novo sem nome de parâmetro reprova), **drift dos índices** e a normalização do check de frescor (`TestH_DadosEmSincronia`: ignora o `time`, equipara CRLF/LF e não mascara mudança de parâmetro).
+`tests/test_pipeline.py` valida as invariantes que já quebraram uma vez: defs (ids/nomes únicos, nome ≤ 12 chars), **coerência mapa × `patch.md` sobre IR** (a divergência dos 38 patches do Pulse), formato `.prst` single fw 2.1, as 9 seções obrigatórias + zero HTML cru + **zero rótulo placeholder** (`(pN)` e `pN` solto — todo slot setado tem nome oficial, ver `reference/15`), momentos de toggle válidos (nunca AMP/CAB), cobertura de `PARAM_NAMES` (allowlist hoje **vazia** — modelo novo sem nome de parâmetro reprova), **drift dos índices** e o **guarda de sincronia** (`TestH_DadosEmSincronia`: o pipeline roda numa cópia temporária do repositório e tem de reproduzir o commitado; ignora o `time`, equipara CRLF/LF e não mascara mudança de parâmetro).
 
-Rodam no CI a cada push (`.github/workflows/ci.yml` — três jobs em paralelo + portão `ci-gate`), que também roda o **pipeline de dados inteiro** e o `check_data_freshness.py` (job `data-pipeline`) e faz `tsc --noEmit` nos agentes (job `typecheck`). **Em push no `main`, o próprio job `data-pipeline` commita e envia os dados regenerados** (`chore: regenera os dados do pipeline [skip ci]`) — só em PR o passo de commit é pulado e o guarda reprova, pedindo que o autor rode o pipeline.
+Rodam no CI a cada push (`.github/workflows/ci.yml` — dois jobs em paralelo + portão `ci-gate`): a suíte (que inclui o **guarda de sincronia**) e o `tsc --noEmit` nos agentes (job `typecheck`). **Nenhum job escreve no repositório** — quando o guarda reprova por dado defasado, ele pede que o autor rode o pipeline e commite os derivados.
 
 ## ⚠️ Armadilhas conhecidas (já resolvidas nos scripts)
 

@@ -11,9 +11,10 @@
 #                        vulnerabilidade alta/crítica. Hoje passa trivialmente
 #                        (não há manifesto); existe para o dia em que houver.
 #   workflow-hardening — audita os próprios workflows (permissões, timeout,
-#                        injeção, pinagem). É o guarda da superfície que pode
-#                        ESCREVER no repositório — o job de dados tem
-#                        `contents: write` e commita no main.
+#                        injeção, pinagem, runner e runtime). É o guarda do
+#                        PODER que um workflow concede ao CI: hoje nenhum job
+#                        escreve no repositório, e a regra existe para isso não
+#                        regredir em silêncio.
 #
 # Runner e runtime: `ubuntu-24.04` (não o label mutável `-latest`) e actions de
 # primeira parte no major que já declara `using: node24`. As duas regras vivem no
@@ -27,8 +28,10 @@
 name: Security
 
 on:
+  # `develop` também: é a branch de integração, e é lá que uma dependência ou um
+  # workflow alterado aparece primeiro.
   push:
-    branches: [main]
+    branches: [main, develop]
   pull_request:
   schedule:
     # Varredura semanal: a base de consultas do CodeQL e as advisories do
@@ -67,9 +70,9 @@ jobs:
         # no ci.yml.
         #
         # `actions` entrou no lugar e cobre o que de fato interessa aqui: os
-        # próprios workflows — a superfície que tem `contents: write`, commita no
-        # main e interpola contexto de PR. É a versão automática do que o
-        # `audit_workflows.py` checa por regra.
+        # próprios workflows — a superfície que define o que o token do CI pode
+        # fazer (permissões, push, interpolação de contexto de PR). É a versão
+        # automática do que o `audit_workflows.py` checa por regra.
         #
         # Reative `javascript-typescript` se um dia houver JS/TS fora de
         # diretório oculto (ou se `.agents/` virar caminho visível).

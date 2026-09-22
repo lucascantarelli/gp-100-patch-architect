@@ -38,10 +38,13 @@ Receita de encaixe:
 4. **Volume** → Level ±3 (evitar +12; reequilibrar no EQ do patch).
 5. **Duas rodadas no máximo**: 1ª ajusta cortes; 2ª ajusta Level/brilho fino. Se após 2 rodadas não casa, troque a IR.
 
-## Biblioteca local (IRs baixadas pelo projeto)
-- Salvar IRs testadas em `patches/<patch>/ir/` com o patch que as usa.
-- Nome sugerido: `<cab>_<mic>_<fonte>.wav` (ex.: `v30_sm57_ownhammer_free.wav`).
-- Anotar em `patch.md`: slot U usado (U40–U59 no painel), cortes e Level aplicados.
+## Onde as IRs moram
+- Packs baixados ficam em `impulse_responses/<Pack>/` — **fora do git** (licença de terceiro) e
+  **nunca** dentro de `patches/`, que é saída de script. Depois de baixar: `python tools/ir_library.py`.
+- Não renomeie os arquivos do pack: o índice é gerado a partir do que existe na pasta e o
+  `patch.md` recomenda o arquivo pelo caminho real.
+- O que se anota é na seção 📡 da doc (campo `doc` do defs): o **slot de User IR (1–20)**, os cortes
+  de Low/High Cut e o Level aplicados. O `.prst` sai sempre com CAB de fábrica.
 
 ## O que evitar (Evite)
 - **IR de sala/reverb (longa)**: a GP-100 só comporta 1024 samples; salas não carregam direito (truncada = som de "clic").

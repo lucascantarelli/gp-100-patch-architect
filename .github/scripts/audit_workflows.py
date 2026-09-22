@@ -1,11 +1,13 @@
 #!/usr/bin/env python3
 """.github/scripts/audit_workflows.py — linter de endurecimento dos próprios workflows.
 
-Por que este script existe: o projeto já tem um guarda para os DADOS
-(`tools/check_data_freshness.py`), mas nada vigiava a superfície que pode
-**escrever** no repositório — e ela é justamente a mais sensível aqui, porque o
-job `data-pipeline` tem `contents: write` e commita no `main` em push. Um PR que
-consiga alterar um workflow sem revisão alterou o poder de escrita do CI.
+Por que este script existe: o projeto já tem um guarda para os DADOS (a suíte
+`tests/` roda o pipeline numa cópia temporária e compara com o commitado), mas
+nada vigiava quem define o PODER do CI —
+um PR que altere um workflow sem revisão muda o que o token pode fazer. Hoje
+nenhum job escreve no repositório (`ci.yml` roda com `contents: read` e o
+`release.yml` só cria tag), e é exatamente essa propriedade que o auditor impede
+de regredir em silêncio.
 
 Mesma filosofia do resto do repo: stdlib pura, veredito binário e mensagem que
 diz o que corrigir.

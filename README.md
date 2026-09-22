@@ -53,7 +53,7 @@ O comportamento do agente é 100% definido por arquivos versionados nesta pasta 
 | **Skills de apoio** | `.agents/gp100-{tone-research,tone-mapper,ir-research,ir-fit,manual-reader,patch-validator}.ts` | Pesquisa de referência, mapeamento rig→GP-100, política de IRs, validação |
 | **Regras de ouro** | `knowledge.md` | Convenções do projeto (patches por música, nomenclatura, política de IR) |
 | **Base técnica** | `reference/00…17` | Manual V1.8 transcrito + catálogo empírico do firmware 2.0/2.1 |
-| **Template de doc** | `templates/patch-template.md` | Estrutura fixa de cada `patch.md` |
+| **Persistência** | `tools/patches-defs.json` | Fonte única do patch: o pipeline (`build_song_patches.py`) gera `patch.md` e `.prst` a partir dele |
 | **Prompts prontos** | `prompts/*.md` | Fluxos de criação, ajuste, sugestão e pesquisa |
 
 ## 🚀 Como usar
@@ -82,7 +82,6 @@ Cada patch entrega:
 |---|---|
 | `<NOME>.prst` | **Importável no GP-100 Edits ou direto na pedaleira** (formato single-patch, firmware 2.1) |
 | `patch.md` | Doc **prática-primeiro**: 🎸 guitarra (seletor/volume/tone/técnica) → 🔧 ajustes finos → 📡 seção exclusiva de IR → 🔊 objetivo do som → 📚 dossiê do rig real com fontes → 🎛️ parâmetros e receita de digitação |
-| `spec.json` | Definição estruturada (fonte do `.prst`) |
 
 > **📡 Política de IR** — a seção exclusiva de cada `patch.md` segue sempre: **1.** o que o `.prst` usa agora (CAB de fábrica, funciona imediatamente) → **2.** captura melhor no banco local `impulse_responses/` (arquivo exato + slot User IR + passo a passo) → **3.** download gratuito na internet quando nem banco nem fábrica cobrem → **4.** fallback garantido no CAB de fábrica.
 
@@ -94,15 +93,14 @@ Cada patch entrega:
 ├── .agents/            # 17 agentes (orquestrador + 16 skills) — configuração do Freebuff
 ├── reference/          # base de conhecimento: manual V1.8 + catálogo fw 2.0/2.1 + catálogos de IR
 ├── prompts/            # fluxos prontos (criar, ajustar, sugerir, pesquisar referência)
-├── templates/          # template de documentação de patch
 ├── tools/              # scripts Python (ver 🔧 Ferramentas abaixo)
-├── patches/            # biblioteca: Banda/Álbum/Música/PATCH (.prst + patch.md + spec.json)
+├── patches/            # biblioteca (saída de script): Banda/Álbum/Música/PATCH (.prst + patch.md)
 ├── impulse_responses/  # banco local de IRs (WAV 44.1 kHz) — indexado por ir_library.py
 │                       # ⚠️ os WAV NÃO são versionados (licença de terceiro)
 ├── tests/              # suíte do pipeline (unittest, sem dependências)
 ├── .github/            # CI · segurança (CodeQL) · release · templates de issue/PR · CODEOWNERS
 ├── knowledge.md        # regras de ouro do projeto
-├── CONTRIBUTING.md     # ambiente, pipeline obrigatório, Conventional Commits, fluxo de PR
+├── CONTRIBUTING.md     # ambiente, pipeline obrigatório, Conventional Commits, fluxo feature → develop → main
 ├── SECURITY.md         # escopo de segurança, prazos e canal de divulgação privada
 ├── CODE_OF_CONDUCT.md  # Contributor Covenant 2.1
 ├── CHANGELOG.md        # gerado por tools/gen_changelog.py a partir dos commits
@@ -123,26 +121,25 @@ Cada patch entrega:
 
 | Script | Uso | O que faz |
 |---|---|---|
-| `tools/build_song_patches.py` | `python tools/build_song_patches.py` | **Construtor principal** — a partir de `patches-defs.json`, gera `spec.json` + `patch.md` + `.prst` de todos os patches e valida (nome ≤ 12 chars, XML conforme) |
+| `tools/build_song_patches.py` | `python tools/build_song_patches.py` | **Construtor principal** — a partir de `patches-defs.json`, gera `patch.md` + `.prst` (e o `spec.json` intermediário, não versionado) de todos os patches e valida (nome ≤ 12 chars, XML conforme) |
 | `tools/generate_prst.py` | `python tools/generate_prst.py spec.json saida.prst` | Gera **um** `.prst` single-patch fw 2.1 — réplica exata do formato single validado no aparelho (sem `<ppIRInfo>`, com `<ppCtrl>`/`<ppEXP1>`, cadeia x=0–8) |
 | `tools/render_manual_page.py` | `python tools/render_manual_page.py 21 [22 …] · --all` | Renderiza páginas do `manual.pdf` **sob demanda** (PNG alta + JPG leve em `manual_pages/`, efêmero) — página impressa NN = arquivo NN+2 |
 | `tools/gen_indexes.py` | `python tools/gen_indexes.py` | Regenera os `MAPA-DO-ALBUM.md` e o `patches/README.md` — slots U01…Uxx calculados pela ordem dos defs |
 | `tools/ir_library.py` | `python tools/ir_library.py` | Indexa `impulse_responses/` (valida mono/24-bit/44.1 kHz) → `tools/ir-library.json` + `reference/16-ir-library.md` |
-| `tools/check_data_freshness.py` | `python tools/check_data_freshness.py` | **Guarda do CI** — compara os artefatos gerados no disco com o HEAD (só o `preset_info/@time` é ignorado) e reprova citando o comando de conserto quando algo gerado ficou fora do commit |
 | `tools/analyze_prst.py` | `python tools/analyze_prst.py <arquivo>.prst [--json out.json]` | Disseca qualquer export `.prst` (modelos, ranges empíricos de params, catálogo) — é dele que nasceu o catálogo fw 2.0 |
 | `tests/test_pipeline.py` | `python -m unittest discover -s tests -v` | **Suíte de validação** do pipeline: defs, formato `.prst`, docs, momentos, nomes de parâmetro, drift dos índices e a ordem estável entre sistemas operacionais (é o que o CI roda) |
 | `tools/build_release.py` | `python tools/build_release.py [versão]` | **Empacota a Release** — ZIP da biblioteca completa + um por álbum, validando cada `.prst`, e escreve as notas em `dist/`. A versão vem de `VERSION` se você não passar nenhuma |
 | `tools/gen_changelog.py` | `python tools/gen_changelog.py [--version X.Y.Z] [--write]` | **Changelog derivado dos commits** (Conventional Commits): agrupa por tipo, isola breaking changes e sugere o bump SemVer |
 | `.github/scripts/audit_workflows.py` | `python .github/scripts/audit_workflows.py` | **Guarda dos workflows** — reprova permissões ausentes, job sem `timeout`, injeção em `run:` e `pull_request_target`; avisa sobre Action não fixada por SHA |
 
-**Cadeia típica ao acrescentar um álbum:** edite `tools/patches-defs.json` → `build_song_patches.py` → `gen_indexes.py` → **rode a suíte de testes** e o `check_data_freshness.py`. **Baixou packs de IR?** Extraia em `impulse_responses/<Pack>/` → rode `ir_library.py`. Downloads recomendados: [`reference/17-free-ir-packs.md`](reference/17-free-ir-packs.md).
+**Cadeia típica ao acrescentar um álbum:** edite `tools/patches-defs.json` → `build_song_patches.py` → `gen_indexes.py` → **rode a suíte de testes** (ela inclui o guarda de sincronia). **Baixou packs de IR?** Extraia em `impulse_responses/<Pack>/` → rode `ir_library.py`. Downloads recomendados: [`reference/17-free-ir-packs.md`](reference/17-free-ir-packs.md).
 
-> **Acrescentou elemento novo?** (música, camada, patch, efeito, momento de toggle, pack de IR) O pipeline inteiro é obrigatório, e o job `data-pipeline` do CI reprova o PR que esquecer:
+> **Acrescentou elemento novo?** (música, camada, patch, efeito, momento de toggle, pack de IR) O pipeline inteiro é obrigatório, e o guarda de sincronia da suíte reprova o PR que esquecer:
 >
 > ```bash
 > python tools/ir_library.py && python tools/add_pulse_defs.py \
->   && python tools/build_song_patches.py && python tools/gen_indexes.py \
->   && python tools/check_data_freshness.py
+>   && python tools/add_momentos.py && python tools/build_song_patches.py \
+>   && python tools/gen_indexes.py
 > ```
 
 ### 📍 Fonte única de dados
@@ -151,13 +148,12 @@ Tudo que descreve uma música, um álbum ou uma IR vive **só** em `tools/patche
 
 ## ✅ Qualidade — o que o CI garante
 
-Cada push e cada PR rodam o workflow [`CI`](.github/workflows/ci.yml): **três jobs em paralelo** (fase 1) e um **portão de veredito único** (fase 2) — é o check que vale "exigir" nas regras do repositório:
+Cada PR (e cada push em `main` e `develop`) roda o workflow [`CI`](.github/workflows/ci.yml): **dois jobs em paralelo** (fase 1) e um **portão de veredito único** (fase 2) — é o check exigido pelas regras de proteção das duas branches:
 
 | Job | O que faz |
 |---|---|
 | **🚦 `ci-gate`** | **Portão do CI** — reprova se qualquer job da fase 1 falhou e publica o resumo dos resultados |
-| **📊 `data-pipeline`** | roda o **pipeline de dados inteiro** (IR → seeders → momentos → construtor → índices). **Em push no `main` (ou execução manual), se o pipeline mexeu em algo, o próprio job commita e envia** (`chore: regenera os dados do pipeline`) — o repositório não fica vermelho por esquecimento de regenerar. Depois `check_data_freshness.py` dá o veredito; **em PR o commit não roda** (fork não tem escrita) e o guarda reprova com o comando exato de conserto |
-| **🧪 `test-suite`** | compila os scripts e executa a suíte (**28 testes, sem dependências** — `unittest` da stdlib) |
+| **🧪 `test-suite`** | compila os scripts e executa a suíte (**31 testes, sem dependências** — `unittest` da stdlib), incluindo o **guarda de sincronia**: o pipeline roda numa cópia temporária e é comparado com o commitado. **Nada é escrito no repositório:** o workflow roda com `contents: read`, então nenhum ator automatizado pode empurrar no `main` e a branch protection não precisa de exceção para o bot |
 | **🔍 `typecheck`** | `tsc --noEmit` nos 17 agentes, com cache do TypeScript |
 
 Todos os jobs têm `timeout` e o resultado da sincronia dos dados é publicado no **resumo da execução** (Step Summary) do GitHub.
@@ -178,7 +174,7 @@ A suíte cobre as invariantes que **já quebraram uma vez** neste projeto:
 | `TestE_Momentos` | momento de toggle inválido (módulo inexistente, estado já ativo, ou tentativa de desligar AMP/CAB) |
 | `TestF_ParamNames` | modelo ligado em patch **sem tabela de nomes** fora da allowlist (hoje vazia: o manual oficial do fw V2.0 deu nome a `Saturate`, `Red Haze` e `T-Echo`) ou tabela com placeholder |
 | `TestG_Indices` | índice defasado (esqueceu de rodar `gen_indexes.py`) ou numeração de slots divergente entre os dois scripts |
-| `TestH_DadosEmSincronia` | normalização do check de frescor: `time` do `.prst` ignorado, CRLF≡LF e mudança de parâmetro **não** mascarada; e toda saída do pipeline coberta pelo check |
+| `TestH_DadosEmSincronia` | **guarda de sincronia**: o pipeline rodado numa cópia limpa do repo tem de reproduzir o commitado — pega "esqueci de rodar o pipeline" e hand-edit em arquivo gerado; `time` do `.prst` ignorado, CRLF≡LF e mudança de parâmetro **não** mascarada |
 
 ## 🎯 Regras de ouro
 
@@ -196,7 +192,7 @@ A suíte cobre as invariantes que **já quebraram uma vez** neste projeto:
 - ✅ Seções obrigatórias presentes nos 62 docs (guitarra → ajustes finos → IR → modos de atuação → objetivo → dossiê → parâmetros → carga → evite) e 32 momentos de toggle validados contra o spec.
 - ✅ **Zero rótulo `pN` nos 62 docs**: os 40 `patch.md` do Pulse e as 28 menções em textos de ajustes/evite passaram a usar os nomes do manual V2.0 (rótulos acima); os slots **internos** do firmware (que o editor não expõe) não são setados nem rotulados — ficam no default de fábrica.
 - ✅ **Dossiê de rig de Cheap Thrills** (Big Brother & The Holding Company): duas guitarras em **Gibson SG** (Gurley e Andrew), **Fender Twin Reverb**, Maestro FZ-1 no Gurley — e o achado que fecha o timbre da faixa: **Piece of My Heart sem fuzz** (Gurley limpo, Sam sujo no Twin estourado); o mapa da Janis voltou a ter seção de rig, com fontes.
-- ✅ **CI + suíte de testes** ([`.github/workflows/ci.yml`](.github/workflows/ci.yml)): 28 testes em `tests/` validam defs, formato dos 62 `.prst`, docs, momentos, nomes de parâmetro, drift dos índices e a ordem estável entre OS — stdlib pura (nenhuma dependência para instalar). O job **`data-pipeline`** roda o pipeline completo a cada push/PR e, **em push no `main`, commita os dados regenerados sozinho** antes do veredito do `check_data_freshness.py` (só o timestamp `preset_info/@time` é ignorado — o pipeline é reprodutível em 194 artefatos); o portão **`ci-gate`** concentra o veredito final.
+- ✅ **CI + suíte de testes** ([`.github/workflows/ci.yml`](.github/workflows/ci.yml)): 31 testes em `tests/` validam defs, formato dos 62 `.prst`, docs, momentos, nomes de parâmetro, drift dos índices, a ordem estável entre OS e a **sincronia dos derivados** — o `TestH` roda o pipeline completo numa cópia temporária e compara com o commitado (só o timestamp `preset_info/@time` é ignorado — o pipeline é reprodutível em 194 artefatos); **nenhum job escreve no repositório**, e o portão **`ci-gate`** concentra o veredito final.
 - ✅ **Pipeline reprodutível entre sistemas**: a ordem dos artefatos derivados não depende do SO — a comparação de `Path` usa `normcase` (minúsculas no Windows, identidade no Linux) e fazia o manifesto de IRs divergir entre a máquina e o CI; a ordenação agora é por string (ordem de code point), com teste travando a regressão (`TestI_OrdemEstavel`).
 - ✅ Typecheck `tsc --noEmit` limpo nos 17 agentes.
 - ✅ Manual V1.8 transcrito página a página para `reference/` + catálogo empírico extraído do export de fábrica (`tools/factory-catalog.json`, 99 presets · 117 modelos).
@@ -247,8 +243,8 @@ Um patch "genérico de Pink Floyd" não tem a informação que faz a diferença.
 **O que é "momento de toggle"?**
 É a instrução de ligar/desligar um módulo **em tempo real** (painel ou modo STOMP)
 durante a música — por exemplo, um patch de base com DLY sobressalente vira solo ao
-ligar o eco, sem trocar de patch. Os momentos estão no `spec.json` e validados pelos
-testes `TestE_Momentos`.
+ligar o eco, sem trocar de patch. Os momentos vivem em `doc.momentos` no
+`tools/patches-defs.json` e são validados pelos testes `TestE_Momentos`.
 
 **O projeto tem dependências?**
 Não. Os scripts usam só a biblioteca padrão do Python; o TypeScript dos agentes é baixado
@@ -266,7 +262,7 @@ deles é que manda.
 | Documento | Conteúdo |
 |---|---|
 | [`knowledge.md`](knowledge.md) | Regras de ouro e convenções que os agentes seguem |
-| [`CONTRIBUTING.md`](CONTRIBUTING.md) | Ambiente, pipeline obrigatório, Conventional Commits e fluxo de PR |
+| [`CONTRIBUTING.md`](CONTRIBUTING.md) | Ambiente, pipeline obrigatório, Conventional Commits e o fluxo feature → develop → main |
 | [`SECURITY.md`](SECURITY.md) | Escopo de segurança, prazos de resposta e canal privado |
 | [`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md) | Contributor Covenant 2.1 |
 | [`CHANGELOG.md`](CHANGELOG.md) | Histórico de versões (gerado dos commits) |
@@ -298,13 +294,13 @@ e ele tem uma regra que muda tudo: **`patches/**` é saída de script**.
 # Antes de abrir um PR, rode o que o CI roda:
 python -m unittest discover -s tests -v
 
-# Se você mexeu em dados, o pipeline inteiro + o guarda de sincronia:
+# Se você mexeu em dados, o pipeline inteiro (a suíte cuida do guarda de sincronia):
 python tools/ir_library.py && python tools/add_pulse_defs.py \
   && python tools/add_momentos.py && python tools/build_song_patches.py \
-  && python tools/gen_indexes.py && python tools/check_data_freshness.py
+  && python tools/gen_indexes.py
 ```
 
-Fluxo: **GitHub Flow**, `main` protegido, PR com título em Conventional Commit
+Fluxo: **`feature/**` → `develop` → `main`** — push direto só em `feature/**`, PR com título em Conventional Commit
 (que alimenta o [`CHANGELOG.md`](CHANGELOG.md)), merge por **squash** e o portão
 `🚦 Veredito do CI` verde. Nada de editar à mão arquivo gerado — a
 [`.github/PULL_REQUEST_TEMPLATE.md`](.github/PULL_REQUEST_TEMPLATE.md) traz o
@@ -324,10 +320,10 @@ O que o repositório roda sozinho, a cada push, PR e semanalmente:
 |---|---|
 | [`ci.yml`](.github/workflows/ci.yml) | Dados em sincronia + 28 testes + typecheck dos agentes |
 | [`security.yml`](.github/workflows/security.yml) | CodeQL (Python e TypeScript), revisão de dependências em PR e auditoria de permissões dos próprios workflows |
-| [`release.yml`](.github/workflows/release.yml) | SemVer a partir de `VERSION`, changelog gerado, ZIPs publicados na Release |
+| [`release.yml`](.github/workflows/release.yml) | Release **automática no merge para a `main`**: tag SemVer a partir do `VERSION` e ZIPs publicados |
 
 Além disso: secret scanning com **push protection**, alertas e correções
-automáticas do Dependabot, e branch protection em `main` (aplicável com
+automáticas do Dependabot, e branch protection em `main` e `develop` (aplicável com
 [`setup_repo.sh`](setup_repo.sh)).
 
 ## 📄 Licença

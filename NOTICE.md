@@ -2,7 +2,7 @@
 
 O [`LICENSE`](LICENSE) deste repositório é **MIT**, e vale para **o código e a
 documentação originais do projeto**: os scripts em `tools/`, os testes em
-`tests/`, os agentes em `.agents/`, os templates, e os textos em `reference/`,
+`tests/`, os agentes em `.agents/`, e os textos em `reference/`,
 `prompts/` e `knowledge.md`.
 
 Este arquivo existe separado de propósito: o `LICENSE` precisa conter apenas o

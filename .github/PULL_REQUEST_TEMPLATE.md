@@ -4,6 +4,7 @@ Título do PR: use Conventional Commit — ele vira a linha do CHANGELOG.md.
   fix(ir): corrige cab recomendado no mapa do Abbey Road
   docs(contributing): detalha o fluxo de commit
 Detalhes em CONTRIBUTING.md. Abra em draft enquanto o pipeline estiver instável.
+Base: `develop` — só o PR de release (develop -> main) vai contra a `main`.
 -->
 
 ## O que muda
@@ -30,14 +31,14 @@ Closes #
 
 - [ ] Rodei o pipeline completo e commitei a saída:
       `ir_library.py` → `add_pulse_defs.py` → `add_momentos.py` → `build_song_patches.py` → `gen_indexes.py`
-- [ ] `python tools/check_data_freshness.py` passa (disco × HEAD em sincronia)
-- [ ] `python -m unittest discover -s tests -v` passa — **sem pular nem comentar teste**
+- [ ] `python -m unittest discover -s tests -v` passa — a suíte inclui o guarda de
+      sincronia (pipeline numa cópia temporária × commitado)
 - [ ] `npx -y -p typescript@5.9.2 tsc --noEmit -p tsconfig.json` passa (se toquei em `.agents/`)
-- [ ] **Não editei à mão** arquivo gerado: `patches/**/*.prst`, `patch.md`, `spec.json`,
+- [ ] **Não editei à mão** arquivo gerado: `patches/**/*.prst`, `patch.md`,
       `MAPA-DO-ALBUM.md`, `patches/README.md`, `tools/patches-defs.json`,
       `tools/ir-library.json`, `reference/16-ir-library.md`
-- [ ] Se acrescentei um seeder, encadeei em `PIPELINE` (`check_data_freshness.py`) e no
-      passo de dados de `ci.yml` — seeder fora da lista não roda no CI
+- [ ] Se acrescentei um seeder, encadeei em `PIPELINE` (`tests/test_pipeline.py`) —
+      seeder fora da lista não roda no guarda de sincronia
 
 ### Invariantes do projeto
 
@@ -63,8 +64,8 @@ Closes #
 ### Revisão
 
 - [ ] Descrevi como **verifiquei** que funciona (o que você ouviu/rodou, não só "deve funcionar")
-- [ ] Sei que o job `data-pipeline` tem escrita e pode **commitar no `main`** em push —
-      os dados regenerados que eu vi no diff são os que quero publicados
+- [ ] Sei que o CI **não escreve no repositório**: se o teste de sincronia reprovar
+      por dado defasado, sou eu que rodo o pipeline e commito os derivados
 
 ---
 

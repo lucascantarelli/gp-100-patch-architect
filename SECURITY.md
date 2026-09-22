@@ -51,7 +51,7 @@ como questão de segurança:
 | Execução de código arbitrário nos scripts de `tools/` | Entrada hostil em `patches-defs.json`, caminhos de arquivo ou WAVs malformados |
 | Traversal de caminho / escrita fora do repositório | Nomes de pasta/patch vindos dos defs são usados para montar caminhos |
 | XML/`Entity Expansion` nos `.prst` | Os geradores leem e escrevem XML; XXE ou billion-laughs em entrada de terceiros |
-| Abuso do auto-commit do CI | O job de dados tem `contents: write`; um PR que consiga escrever no `main` fora do pipeline é um achado válido |
+| Escrita automatizada no branch principal | Nenhum workflow declara `contents: write` para empurrar em branch; um PR que introduza um job capaz de commitar no `main` é um achado válido |
 | Segredos expostos no histórico ou nos logs | Tokens, credenciais ou chaves em qualquer arquivo versionado |
 | Cadeia de suprimentos das GitHub Actions | Actions não fixadas por SHA ou workflow com permissões largas demais |
 | Runner ou runtime de Action obsoleto | Runner em label mutável (`-latest`) troca de imagem sem commit aqui, e Action que ainda declara Node 20 recebe aviso de depreciação a cada job |
@@ -83,7 +83,7 @@ Não são tratados como vulnerabilidades de segurança deste projeto:
 | Aferição de permissões dos workflows | ✅ via [`security.yml`](.github/workflows/security.yml) |
 | Runner fixo (`ubuntu-24.04`) e Actions em runtime suportado | ✅ via [`audit_workflows.py`](.github/scripts/audit_workflows.py), que **reprova** label de runner mutável e Action de primeira parte abaixo do `node24` |
 | Verificação de integridade dos dados em cada push/PR | ✅ via [`ci.yml`](.github/workflows/ci.yml) |
-| Branch protection em `main` | ✅ aplicar com [`setup_repo.sh`](setup_repo.sh) |
+| Branch protection em `main` e `develop` (PR + check obrigatórios, sem exceção de bypass) | ✅ aplicar com [`setup_repo.sh`](setup_repo.sh) |
 
 ## Boas práticas para quem contribui
 
@@ -92,5 +92,6 @@ Não são tratados como vulnerabilidades de segurança deste projeto:
 - Não embuta binários de terceiros (WAVs de packs pagos, PDFs de fabricante)
   no repositório: eles são obtidos localmente e ficam no `.gitignore`.
 - Rode a suíte antes de abrir PR: `python -m unittest discover -s tests -v`.
-- Ao usar o agente para editar arquivos, revise o diff — o auto-commit do CI
-  escreve no `main`, e um pipeline mal rodado pode publicar dados defasados.
+- Ao usar o agente para editar arquivos, revise o diff — o pipeline é
+  reprodutível (só `preset_info/@time` varia) e o guarda de frescor reprova
+  artefato gerado fora do commit, mas quem decide o que entra é a sua revisão.

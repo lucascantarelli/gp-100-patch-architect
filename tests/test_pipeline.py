@@ -19,20 +19,28 @@ máquina. Cobre as invariantes que **já quebraram uma vez** neste projeto:
                  (hoje vazia) existe para um modelo novo sem nome falhar alto
   G. índices   — os arquivos em disco são exatamente o que o gerador produz hoje
                  (pega "esqueci de rodar gen_indexes.py")
-  H. frescor  — a normalização do `tools/check_data_freshness.py` (o check que o
-                 CI roda DEPOIS do pipeline): ignora `preset_info/@time`, equipara
-                 CRLF/LF e NÃO mascara mudança de parâmetro; e a lista de
-                 artefatos cobertos é só a saída de script
+  H. frescor  — GUARDA DE SINCRONIA: o pipeline, rodado inteiro numa cópia
+                 temporária do repositório, tem de reproduzir EXATAMENTE o que
+                 está commitado — pega "editei o defs e esqueci de regenerar" e
+                 "editei à mão arquivo gerado". A normalização ignora
+                 `preset_info/@time` (o único byte que muda de propósito),
+                 equipara CRLF/LF e NÃO mascara mudança de parâmetro
   I. ordem    — os artefatos saem SEMPRE na mesma ordem, em qualquer sistema
                  operacional: `sorted()` sobre `Path` usa `normcase` (minúsculas
                  no Windows, identidade no Linux) e o manifesto de IRs divergia
                  entre a máquina e o CI
+  J. conexão  — o agente e a biblioteca estão ligados: todo patch em `patches/**`
+                 está declarado no defs (senão é órfão invisível) e todo agente que
+                 o orquestrador pode invocar existe em `.agents/`
 
 Rodar:  python -m unittest discover -s tests -v
 """
 import json
 import re
+import shutil
+import subprocess
 import sys
+import tempfile
 import unittest
 import xml.etree.ElementTree as ET
 from pathlib import Path
@@ -43,7 +51,6 @@ sys.path.insert(0, str(ROOT / 'tools'))
 import build_song_patches as BSP          # noqa: E402  (precisa do sys.path acima)
 import generate_prst as GEN                # noqa: E402
 import gen_indexes as GI                   # noqa: E402
-import check_data_freshness as CDF         # noqa: E402
 import ir_library as IRL                   # noqa: E402
 
 DEFS = BSP.DEFS
@@ -200,7 +207,9 @@ class TestC_Prst(unittest.TestCase):
     def test_readme_da_pasta_do_patch(self):
         for song, patch in todas_as_musicas():
             pasta = pasta_do_patch(song, patch)
-            for arquivo in ('patch.md', 'spec.json', f"{patch['nome']}.prst"):
+            # `spec.json` não entra: é intermediário, gerado pelo pipeline e não
+            # versionado — num clone limpo (o job test-suite) ele não existe.
+            for arquivo in ('patch.md', f"{patch['nome']}.prst"):
                 self.assertTrue((pasta / arquivo).is_file(),
                                 f'{patch["nome"]}: falta {arquivo} em {pasta}')
 
@@ -322,50 +331,139 @@ class TestG_Indices(unittest.TestCase):
         self.assertEqual(slots, esperado, 'gen_indexes e build_song_patches numeram diferente')
 
 
+# ---- guarda de sincronia (o que era o job `data-pipeline` do CI) ---------------
+# Pipeline na ordem real; rodado numa CÓPIA temporária do repositório pelo teste
+# de integração abaixo. Os scripts derivam todos os caminhos de
+# `Path(__file__).parent.parent`, então a cópia é autocontida (sem .git, sem
+# tocar no working tree — o `preset_info/@time` muda a cada build de propósito).
+PIPELINE = (
+    'tools/ir_library.py',             # indexa impulse_responses/ (se baixou pack)
+    'tools/add_pulse_defs.py',         # seeders de álbum (já encadeia add_momentos)
+    'tools/add_momentos.py',           # momentos de toggle por patch
+    'tools/build_song_patches.py',     # patch.md + .prst (+ spec.json local)
+    'tools/gen_indexes.py',            # MAPA-DO-ALBUM.md + patches/README.md
+)
+# O que o pipeline escreve: patches/** (essas extensões) + os 3 arquivos fixos.
+SUFIXOS_DE_ARTEFATO = {'.prst', '.md', '.json'}
+ARTEFATO_IGNORADO = {'spec.json'}      # intermediário, fora do git
+ARTEFATOS_FIXOS = (
+    'tools/patches-defs.json',         # reescrito pelos seeders
+    'tools/ir-library.json',           # ir_library.py
+    'reference/16-ir-library.md',      # ir_library.py
+)
+_PASTAS_DO_SANDBOX = ('tools', 'patches', 'reference', 'impulse_responses')
+
+_TIME_RE = re.compile(r'time="\d+"')
+
+
+def normaliza(texto):
+    """Texto comparável: ignora `preset_info/@time` e equipara fim de linha."""
+    return _TIME_RE.sub('time="T"', texto.replace('\r\n', '\n'))
+
+
+def primeira_diferenca(velho, novo):
+    """Descrição curta da primeira linha divergente (para o relatório do teste)."""
+    va, nb = normaliza(velho).splitlines(), normaliza(novo).splitlines()
+    for i, (a, b) in enumerate(zip(va, nb), start=1):
+        if a != b:
+            return f'linha {i}: -{a.strip()[:70]} · +{b.strip()[:70]}'
+    return f'{abs(len(va) - len(nb))} linha(s) a mais/menos'
+
+
+def artefatos(raiz: Path):
+    """{caminho posix relativo: texto} de toda a saída do pipeline sob `raiz`."""
+    textos = {}
+    for p in (raiz / 'patches').rglob('*'):
+        if p.is_file() and p.suffix in SUFIXOS_DE_ARTEFATO and p.name not in ARTEFATO_IGNORADO:
+            textos[p.relative_to(raiz).as_posix()] = p.read_text(encoding='utf-8', errors='replace')
+    for rel in ARTEFATOS_FIXOS:
+        f = raiz / rel
+        if f.is_file():
+            textos[rel] = f.read_text(encoding='utf-8', errors='replace')
+    return textos
+
+
 class TestH_DadosEmSincronia(unittest.TestCase):
-    """O verificador que o CI roda depois do pipeline (tools/check_data_freshness.py)."""
+    """O pipeline reproduz o commitado? (era o job `data-pipeline` do CI.)"""
 
     def test_time_do_prst_nao_conta_como_mudanca(self):
         a = '<preset_info time="1789773232829" firmware="2.1" product="GP-100"/>'
         b = '<preset_info time="1" firmware="2.1" product="GP-100"/>'
-        self.assertEqual(CDF.normalize(a), CDF.normalize(b))
+        self.assertEqual(normaliza(a), normaliza(b))
 
     def test_crlf_e_lf_sao_equivalentes(self):
-        self.assertEqual(CDF.normalize('a\r\nb'), CDF.normalize('a\nb'))
+        self.assertEqual(normaliza('a\r\nb'), normaliza('a\nb'))
 
     def test_parametro_diferente_nao_e_mascarado(self):
         a = '<Effect effectName="Sweet" params_0="25" params_1="400"/>'
         b = '<Effect effectName="Sweet" params_0="31" params_1="400"/>'
-        self.assertNotEqual(CDF.normalize(a), CDF.normalize(b))
-        self.assertIn('linha 1', CDF.first_diff(a, b))
+        self.assertNotEqual(normaliza(a), normaliza(b))
+        self.assertIn('linha 1', primeira_diferenca(a, b))
 
     def test_artefatos_cobertos_sao_so_saida_de_script(self):
         gerados = ('patches/README.md',
-                   "patches/Beatles/Abbey Road (1969)/Something/STH01SO/STH01SO.prst",
-                   'patches/Beatles/Abbey Road (1969)/MAPA-DO-ALBUM.md',
                    'tools/patches-defs.json', 'tools/ir-library.json',
                    'reference/16-ir-library.md')
+        monitorados = set(artefatos(ROOT))
         for rel in gerados:
-            self.assertTrue(CDF.is_artifact(rel), f'{rel} deveria ser monitorado')
+            self.assertIn(rel, monitorados, f'{rel} deveria ser monitorado')
         for rel in ('README.md', 'knowledge.md', 'reference/03-amp.md',
-                    'reference/16-ir-library.md.bak', 'templates/patch-template.md',
-                    'tools/build_song_patches.py', 'impulse_responses/Pack/x.wav'):
-            self.assertFalse(CDF.is_artifact(rel), f'{rel} não deveria ser monitorado')
+                    'reference/16-ir-library.md.bak', 'CONTRIBUTING.md',
+                    'tools/build_song_patches.py', 'impulse_responses/README.md'):
+            self.assertNotIn(rel, monitorados, f'{rel} não deveria ser monitorado')
 
     def test_pipeline_declarado_existe_no_disco(self):
-        for cmd in CDF.PIPELINE:
-            script = ROOT / cmd.split()[1]
-            self.assertTrue(script.is_file(), f'pipeline cita script ausente: {cmd}')
+        for rel in PIPELINE:
+            self.assertTrue((ROOT / rel).is_file(), f'pipeline cita script ausente: {rel}')
 
     def test_toda_saida_do_pipeline_esta_coberta(self):
-        """Se o gerador escreve um arquivo, ele tem que entrar no check de frescor."""
-        self.assertTrue(CDF.is_artifact('tools/patches-defs.json'))
+        """Se o gerador escreve um arquivo, ele tem que entrar no guarda de sincronia."""
+        monitorados = set(artefatos(ROOT))
         for song in DEFS['songs']:
             for patch in song['patches']:
                 pasta = pasta_do_patch(song, patch)
-                for nome in (f"{patch['nome']}.prst", 'patch.md', 'spec.json'):
+                for nome in (f"{patch['nome']}.prst", 'patch.md'):
                     rel = (pasta / nome).relative_to(ROOT).as_posix()
-                    self.assertTrue(CDF.is_artifact(rel), f'{rel} fora do check de frescor')
+                    self.assertIn(rel, monitorados, f'{rel} fora do guarda de sincronia')
+
+    def test_pipeline_reproduz_todos_os_artefatos_commitados(self):
+        """O teste que era o job `data-pipeline`: roda o pipeline inteiro numa
+        cópia temporária do repositório e compara o resultado com o commitado.
+
+        Pega as duas formas de drift: "editei o defs e esqueci de regenerar" e
+        "editei à mão um arquivo gerado". Em um clone limpo (o CI), o commitado é
+        o HEAD; na sua máquina, é o working tree — ou seja, o teste reprova
+        antes do commit, sem sujar nada (o @time muda só no sandbox).
+        """
+        with tempfile.TemporaryDirectory() as tmp:
+            sandbox = Path(tmp) / 'repo'
+            sandbox.mkdir()
+            for nome in _PASTAS_DO_SANDBOX:
+                origem = ROOT / nome
+                if origem.is_dir():
+                    shutil.copytree(origem, sandbox / nome,
+                                    ignore=shutil.ignore_patterns('__pycache__', '*.pyc'))
+            for script in PIPELINE:
+                r = subprocess.run([sys.executable, str(sandbox / script)], cwd=sandbox,
+                                   capture_output=True, encoding='utf-8', errors='replace')
+                self.assertEqual(
+                    r.returncode, 0,
+                    f'{script} falhou no sandbox:\n{r.stdout[-1500:]}\n{r.stderr[-1500:]}')
+            commitado, produzido = artefatos(ROOT), artefatos(sandbox)
+
+        problemas = []
+        for rel in sorted(set(commitado) | set(produzido)):
+            if rel not in produzido:
+                problemas.append(f'[removido ] {rel}: o pipeline não reproduz este arquivo')
+            elif rel not in commitado:
+                problemas.append(f'[novo     ] {rel}: gerado no sandbox, mas não está commitado')
+            elif normaliza(commitado[rel]) != normaliza(produzido[rel]):
+                problemas.append(f'[diferente] {rel}: {primeira_diferenca(commitado[rel], produzido[rel])}')
+        self.assertEqual(
+            problemas, [],
+            'artefato(s) gerado(s) fora de sincronia com o commit — rode o pipeline '
+            'inteiro e commite os derivados:\n  ' + '\n  '.join(problemas[:20])
+            + ('\n  … e mais' if len(problemas) > 20 else ''))
 
 
 class TestI_OrdemEstavel(unittest.TestCase):
@@ -395,6 +493,35 @@ class TestI_OrdemEstavel(unittest.TestCase):
         for pack, mp in manifesto['packs'].items():
             arquivos = [f['file'] for f in mp['files']]
             self.assertEqual(arquivos, sorted(arquivos), f'ordem instável no pack {pack}')
+
+
+class TestJ_ConexaoAgenteBiblioteca(unittest.TestCase):
+    """O agente projeta o patch; o pipeline publica a biblioteca a partir do defs.
+
+    Quando os dois se separam, sobra um patch que existe em `patches/**` mas não
+    no defs — e ele é **invisível**: os índices e todos os outros testes iteram o
+    defs, e só o guarda de sincronia (TestH, pipeline × commitado) o vê. Estes
+    dois testes fecham essa porta.
+    """
+
+    def test_todo_patch_no_disco_esta_no_defs(self):
+        """Patch em `patches/**` fora do defs é órfão: nem índice, nem teste o vê."""
+        definidos = {patch['nome'] for _, patch in todas_as_musicas()}
+        no_disco = {d.name for d in (ROOT / 'patches').glob('*/*/*/*') if d.is_dir()}
+        self.assertEqual(sorted(no_disco - definidos), [],
+                         'patch(s) em patches/ que não existem em tools/patches-defs.json')
+
+    def test_spawnable_agents_e_reachavel(self):
+        """`spawnableAgents` só cita agente que existe, e todo agente é alcançável."""
+        agents_dir = ROOT / '.agents'
+        arquivos = {p.stem for p in agents_dir.glob('gp100-*.ts')}
+        fonte = (agents_dir / 'gp100-patch-architect.ts').read_text(encoding='utf-8')
+        bloco = fonte.split('spawnableAgents: [', 1)[1].split(']', 1)[0]
+        spawnaveis = set(re.findall(r"'([^']+)'", bloco))
+        self.assertEqual(sorted(spawnaveis - arquivos), [],
+                         'o orquestrador pode invocar agente que não existe em .agents/')
+        self.assertEqual(sorted(arquivos - spawnaveis - {'gp100-patch-architect'}), [],
+                         'agente em .agents/ que o orquestrador não consegue invocar')
 
 
 if __name__ == '__main__':

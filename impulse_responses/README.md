@@ -47,7 +47,7 @@ Os agentes consultam `tools/ir-library.json` e `reference/16-ir-library.md` — 
 - **Origin Effects — IR-Cab Library V3** (gratuita; cadastro no site) — 291 WAVs em 9 gabinetes, incluindo os alvos dos patches: `American Twin 2x12` (Twin/JBL), `British Straight 4x12` (Marshall), `Brown Deluxe 1x12` (AC30), `Tweed Combo 1x12` (Bassman).
 - **25 Analog Cab IRs** — 25 WAVs.
 
-> 🛡️ **Guarda contra encolhimento do catálogo.** Se você rodar o pipeline com o banco incompleto, o catálogo perderia packs que a documentação dos patches cita — e nem a suíte nem o `check_data_freshness.py` reclamariam, porque o `patch.md` e o mapa do álbum cairiam para "fábrica" **juntos**. Por isso `ir_library.py` reprova a rodada nesse caso:
+> 🛡️ **Guarda contra encolhimento do catálogo.** Se você rodar o pipeline com o banco incompleto, o catálogo perderia packs que a documentação dos patches cita — e nem a suíte reclamaria, porque o `patch.md` e o mapa do álbum cairiam para "fábrica" **juntos**. Por isso `ir_library.py` reprova a rodada nesse caso:
 >
 > ```text
 > ❌ Esta rodada ENCOLHERIA o catálogo commitado de IRs:

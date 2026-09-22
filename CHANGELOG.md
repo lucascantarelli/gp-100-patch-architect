@@ -3,14 +3,15 @@
 Todas as mudanças relevantes deste projeto, por versão.
 Formato: [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/) · versionamento: [SemVer](https://semver.org/lang/pt-BR/).
 
-> A partir da v1.0.1, este arquivo é **gerado** por `tools/gen_changelog.py` a
-> partir dos commits, e as entradas são prependidas pelo workflow
-> [`Release`](.github/workflows/release.yml). Não edite à mão.
+> Gerado por `tools/gen_changelog.py` a partir dos commits (Conventional
+> Commits) — **não edite à mão**. Quem publica roda
+> `python tools/gen_changelog.py --version X.Y.Z --write` antes de subir o
+> `VERSION`; o workflow `Release` só valida e publica.
 >
-> A v1.0.0 abaixo é a **baseline escrita à mão**: a história anterior a esta
-> automação não seguia Conventional Commits, então ela não é derivável. Daqui
-> para frente, o título do PR (que vira o commit do squash) é o que alimenta o
-> changelog — ver [CONTRIBUTING.md](CONTRIBUTING.md).
+> A v1.0.0 é a **baseline escrita à mão**: a história anterior a esta
+> automação não seguia Conventional Commits, então ela não é derivável.
+> Daqui para frente, o título do PR (que vira o commit do squash) é o que
+> alimenta o changelog — ver CONTRIBUTING.md.
 
 ## [1.0.0] — 2026-09-21
 

@@ -201,8 +201,7 @@ patches/
 │       └── <Música>/
 │           └── <MUSICA-CAMADA>/        # 1 pasta por patch
 │               ├── <MUSICA-CAMADA>.prst  # ✅ importável (single, fw 2.1)
-│               ├── patch.md              # documentação prática-primeiro
-│               └── spec.json             # fonte do .prst
+│               └── patch.md              # documentação prática-primeiro
 └── README.md
 ```
 
@@ -234,12 +233,11 @@ Exemplos: `STH01BA` = Something 01 · Base · `CT01RIF` = Come Together 01 · Ri
 |---|---|
 | `<NOME>.prst` | Arquivo **importável** no GP-100 Edits ou direto na pedaleira (single-patch, fw 2.1) |
 | `patch.md` | Doc prática-primeiro: guitarra já na seção 1, ajustes finos, objetivo do som, dossiê, técnica |
-| `spec.json` | Definição estruturada — regenerável via `tools/build_song_patches.py` |
 
 ## 🔧 Regenerar tudo
 
 ```bash
-python tools/build_song_patches.py   # specs + patch.md + .prst a partir de tools/patches-defs.json
+python tools/build_song_patches.py   # patch.md + .prst a partir de tools/patches-defs.json
 python tools/gen_indexes.py          # mapas dos álbuns + este README
 ```
 

@@ -1,21 +1,37 @@
-# CI do GP-100 Patch Architect — três jobs em paralelo + um portão de veredito.
+# CI do GP-100 Patch Architect — dois jobs em paralelo + um portão de veredito.
 #
 #   Fase 1 (paralela):
-#     data-pipeline — roda TODOS os scripts que escrevem dados (IR → seeders →
-#                     momentos → construtor → índices). Em push no `main` (ou
-#                     execução manual), se o pipeline mexeu em algo, commita e
-#                     envia sozinho — o repositório nunca fica vermelho por
-#                     esquecimento de regenerar. Em PR o commit não roda (fork
-#                     não tem escrita) e o guarda reprova dizendo o que rodar.
-#                     O veredito é sempre do `check_data_freshness.py` (disco × HEAD).
-#     test-suite    — compila os scripts e roda a suíte unittest (28 testes, sem
-#                     dependências): formato dos `.prst`, docs, momentos, índices
-#                     e ordem estável entre sistemas operacionais.
-#     typecheck     — `tsc --noEmit` nos 17 agentes (`.agents/*.ts`), com cache do
-#                     TypeScript baixado via npx.
+#     test-suite    — compila os scripts e roda a suíte unittest (stdlib pura,
+#                     sem dependências): formato dos `.prst`, docs, momentos,
+#                     índices, ordem estável entre sistemas operacionais e o
+#                     GUARDA DE SINCRONIA (TestH): o pipeline roda inteiro numa
+#                     cópia temporária do repositório e o teste compara o
+#                     resultado com o commitado (só o `preset_info/@time` é
+#                     ignorado). Se um derivado estiver defasado, o PR reprova e
+#                     o teste imprime o comando exato de conserto. Nada é
+#                     escrito no repositório.
+#     typecheck     — `tsc --noEmit` nos 17 agentes (`.agents/*.ts`), com cache
+#                     do TypeScript baixado via npx.
 #   Fase 2 (portão):
 #     ci-gate       — veredito único do CI: reprova se qualquer job da fase 1
 #                     falhou. É o check para "exigir" nas regras do GitHub.
+#
+# Nenhum job escreve no repositório — o workflow inteiro roda com
+# `permissions: contents: read`. É uma decisão, não um acidente: um ator
+# automatizado capaz de empurrar no `main` obrigaria a branch protection a
+# abrir exceção para o app `github-actions`, e essa exceção vale para TODO
+# workflow do repositório (não só para este job). Sem escrita, a proteção do
+# `main` não precisa de exceção nenhuma — ver `setup_repo.sh`.
+#
+# Fluxo de branches (detalhado em CONTRIBUTING.md): `feature/**` é onde se
+# trabalha (única que aceita push direto), `develop` é a integração e `main` é o
+# que foi publicado. Push em `feature/**` NÃO dispara CI de propósito: o PR para
+# a `develop` já é o gatilho, e manter os dois causaria duas execuções para o
+# mesmo commit.
+#
+# O que substituiu o antigo auto-commit: nada. Ele duplicava um mecanismo que já
+# existia (o guarda de frescor reprova e diz o comando) e era a única coisa do
+# repositório que entrava no `main` sem passar por CI.
 #
 # Runner e runtime: `ubuntu-24.04` (não o label mutável `-latest`) e actions de
 # primeira parte no major que já declara `using: node24`. As duas regras vivem no
@@ -23,88 +39,32 @@
 # agora reprova: imagem de runner que troca sem commit e o aviso "Node.js 20 is
 # deprecated", que aparecia em todo job e ninguém lia.
 #
-# Rode a mesma sequência localmente:
-#   python tools/ir_library.py && python tools/add_pulse_defs.py \
-#     && python tools/add_momentos.py && python tools/build_song_patches.py \
-#     && python tools/gen_indexes.py && python tools/check_data_freshness.py
+# Rode a mesma verificação localmente:
+#   python -m unittest discover -s tests -v
 
 name: CI
 
 on:
+  # `main` e `develop` são as branches de integração: o push nelas é o merge de
+  # um PR, e é onde o veredito precisa aparecer. Todo PR roda, sem filtro de base
+  # (feature → develop e develop → main).
   push:
-    branches: [main]
+    branches: [main, develop]
   pull_request:
   workflow_dispatch:
 
-# Piso de permissões do workflow; só o job de dados pede escrita (auto-commit).
+# Piso de permissões do workflow — e o teto: nenhum job eleva daqui.
 permissions:
   contents: read
 
-# Uma execução por ref. Em PR cancela a anterior (feedback rápido); em `main`
-# nunca cancela — dois auto-commits não podem disputar o mesmo push.
+# Uma execução por ref. Sem nenhum job escrevendo no repositório, não existe mais
+# a corrida de dois auto-commits disputando o mesmo push: uma execução
+# superseded sempre pode ser cancelada, inclusive no `main`.
 concurrency:
   group: ci-${{ github.ref }}
-  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+  cancel-in-progress: true
 
 jobs:
-  # ── Fase 1 · dados ─────────────────────────────────────────────────────────
-  data-pipeline:
-    name: 📊 Dados — pipeline completo e sincronização
-    runs-on: ubuntu-24.04
-    timeout-minutes: 10
-    permissions:
-      contents: write          # necessário para o auto-commit no main
-    steps:
-      - uses: actions/checkout@v7
-
-      - uses: actions/setup-python@v7
-        with:
-          python-version: '3.14'
-
-      - name: 1/3 · Regenerar todos os dados (IR → defs → momentos → patches → índices)
-        run: |
-          python tools/ir_library.py
-          python tools/add_pulse_defs.py
-          python tools/add_momentos.py
-          python tools/build_song_patches.py
-          python tools/gen_indexes.py
-
-      - name: 2/3 · Auto-commit dos dados regenerados (apenas push no main)
-        if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
-        run: |
-          # stagea SÓ o que o guarda reprova (normalizado: ignora preset_info/@time).
-          # Um `git add -A` commitaria todos os .prst que só mudaram o timestamp —
-          # ruído a cada push. (O auto-commit não sobrescreve o veredito: o passo 3 roda depois.)
-          stale="$(python tools/check_data_freshness.py --list-stale 2>/dev/null || true)"
-          if [ -z "$stale" ]; then
-            echo "✅ **Dados já em sincronia** — nada real a commitar." >> "$GITHUB_STEP_SUMMARY"
-            echo "Nada a commitar."
-            exit 0
-          fi
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          while IFS= read -r f; do git add -- "$f"; done <<< "$stale"
-          git commit -m "chore: regenera os dados do pipeline [skip ci]"
-          git push origin "HEAD:${GITHUB_REF_NAME}"
-          {
-            echo "### 🔄 Auto-commit do pipeline"
-            echo ""
-            echo "- **$(wc -l <<< "$stale") arquivo(s)** defasado(s) de verdade, regenerado(s) e commitado(s) como \`github-actions[bot]\`."
-            echo "- Este push não dispara novo CI (\`[skip ci]\` + \`GITHUB_TOKEN\`)."
-          } >> "$GITHUB_STEP_SUMMARY"
-
-      - name: 3/3 · Guarda — disco × HEAD (check_data_freshness)
-        run: |
-          set -o pipefail
-          python tools/check_data_freshness.py 2>&1 | tee frescor.log
-          {
-            echo "### 🛡️ Sincronia dos dados (disco × HEAD)"
-            echo ""
-            echo '```text'
-            cat frescor.log
-            echo '```'
-          } >> "$GITHUB_STEP_SUMMARY"
-
   # ── Fase 1 · testes ────────────────────────────────────────────────────────
   test-suite:
     name: 🧪 Testes — suíte do pipeline
@@ -120,7 +80,7 @@ jobs:
       - name: 1/2 · Compilar todos os scripts (tools/ + tests/)
         run: python -m py_compile tools/*.py tests/*.py
 
-      - name: 2/2 · Suíte unittest — defs, .prst, docs, momentos, índices e ordem entre OS
+      - name: 2/2 · Suíte unittest — defs, .prst, docs, momentos, índices, sincronia e ordem entre OS
         run: python -m unittest discover -s tests -v
 
   # ── Fase 1 · agentes ───────────────────────────────────────────────────────
@@ -147,7 +107,7 @@ jobs:
   # ── Fase 2 · portão ────────────────────────────────────────────────────────
   ci-gate:
     name: 🚦 Veredito do CI
-    needs: [data-pipeline, test-suite, typecheck]
+    needs: [test-suite, typecheck]
     if: always()               # roda mesmo com job falho — para dar o veredito
     runs-on: ubuntu-24.04
     timeout-minutes: 5
@@ -159,7 +119,6 @@ jobs:
             echo ""
             echo "| Job | Resultado |"
             echo "|---|---|"
-            echo "| data-pipeline | ${{ needs.data-pipeline.result }} |"
             echo "| test-suite | ${{ needs.test-suite.result }} |"
             echo "| typecheck | ${{ needs.typecheck.result }} |"
           } >> "$GITHUB_STEP_SUMMARY"

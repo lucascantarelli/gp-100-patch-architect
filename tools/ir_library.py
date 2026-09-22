@@ -97,7 +97,8 @@ def encolhimento_do_catalogo(manifest):
     patches. Se um pack conhecido desaparece da rodada, `build_song_patches.py`
     para de emitir a seção "📁 Melhor opção no nosso banco" e `gen_indexes.py`
     passa a marcar ⚙️ (fábrica) no mapa do álbum — **os dois juntos**, então
-    `TestB_FonteUnica_IR` aprova e o `check_data_freshness.py` também. Ou seja:
+    `TestB_FonteUnica_IR` aprova e o guarda de sincronia (`TestH_DadosEmSincronia`)
+    também. Ou seja:
     quem roda o pipeline com o banco incompleto apagaria a recomendação de IR dos
     patches sem nenhum sinal. Como o banco não é versionado, isso passou a ser um
     acidente fácil — aqui ele vira erro explícito.

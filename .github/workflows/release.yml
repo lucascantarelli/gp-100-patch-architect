@@ -1,45 +1,50 @@
-# Release — empacota a biblioteca e publica a Release no GitHub (SemVer).
+# Release — publica a versão quando o merge da `develop` entra na `main`.
 #
-# `VERSION` é a fonte única da verdade. Os dois caminhos levam ao mesmo lugar:
+# O gatilho é o MERGE NA MAIN, não um botão: `VERSION` é a fonte única da verdade
+# e quem decide a versão é o PR que a subiu. Este workflow não escreve em branch
+# nenhuma — ele só cria a TAG `v<versão>` (proteção de branch não governa tag) e
+# publica a Release.
 #
-#   workflow_dispatch (recomendado) — você informa a versão; o job valida que ela
-#     é maior que a atual, roda a suíte, empacota, gera a seção do CHANGELOG,
-#     commita `VERSION` + `CHANGELOG.md`, cria a tag anotada `v<versão>` e publica.
+# Fluxo de quem publica (detalhado em CONTRIBUTING.md):
+#   1. no PR que prepara a release, para `develop`:
+#        python tools/gen_changelog.py --version X.Y.Z --write
+#        printf '%s\n' X.Y.Z > VERSION
+#   2. mergeie `develop` → `main` com MERGE COMMIT (não squash);
+#   3. este workflow roda sozinho — empacota, tagueia e publica.
 #
-#   push de tag `v<versão>` — para quando você já tagueou localmente. O job valida
-#     que a tag casa com o arquivo `VERSION` e publica a partir dali.
+# O merge commit no passo 2 é o que faz o changelog abaixo funcionar: num squash,
+# a `main` receberia a release inteira como um commit só e as features (que são o
+# que o gerador lê) teriam ficado na `develop`.
 #
-# ⚠️ O passo de commit empurra para o `main`. Se a branch protection exigir PR,
-# o push é rejeitado — a menos que o app `github-actions` esteja na lista de
-# bypass (`setup_repo.sh` configura isso). O mesmo vale para o auto-commit de
-# dados do `ci.yml`: os dois dependem dessa permissão.
+# Um merge na `main` que NÃO subiu o `VERSION` é um no-op verde: o job `decidir`
+# vê que aquela versão já está publicada e o job de publicação nem roda. Reexecutar
+# é seguro: os assets são reenviados com `--clobber` e as notas são atualizadas.
 #
-# Idempotência: reexecutar o job de uma tag já publicada não falha — os assets
-# são reenviados com `--clobber` e as notas são atualizadas.
+# ─────────────────────────────────────────────────────────────────────────────
+# POR QUE NÃO HÁ ESCRITA NO `main` AQUI
+#
+# Se este job commitasse (`VERSION` + `CHANGELOG`) e empurrasse, a branch
+# protection teria de abrir exceção para o app `github-actions` — e essa exceção
+# vale para TODO workflow do repositório, não só para este. Sem escrita, a
+# proteção da `main` e da `develop` não precisa de exceção nenhuma
+# (ver `setup_repo.sh`). Criar e enviar TAG continua funcionando: proteção de
+# branch não governa tag.
+# ─────────────────────────────────────────────────────────────────────────────
 #
 # Runner e runtime: `ubuntu-24.04` (não o label mutável `-latest`) e actions de
 # primeira parte no major que já declara `using: node24`. As duas regras vivem no
 # auditor `.github/scripts/audit_workflows.py` e existem por causa do que ele
 # agora reprova: imagem de runner que troca sem commit e o aviso "Node.js 20 is
 # deprecated", que aparecia em todo job e ninguém lia.
-#
-# `actions/checkout@v7` guarda as credenciais num arquivo em `$RUNNER_TEMP` em vez
-# de dentro do `.git/config` (postura melhor para o token), e o próprio README da
-# action confirma que `git push` continua funcionando sem mudar o workflow — que é
-# o que os passos 6/7 abaixo fazem.
 
 name: Release
 
 on:
   push:
-    tags: ['v[0-9]+.[0-9]+.[0-9]+']
-  workflow_dispatch:
-    inputs:
-      version:
-        description: 'Versão SemVer a publicar (ex.: 1.1.0) — cria a tag v<versão>'
-        required: true
-        type: string
+    branches: [main]
+  workflow_dispatch:            # republicar/reparar a versão que está no VERSION
 
+# Piso de permissões: só o job de publicação eleva (tag + Release).
 permissions:
   contents: read
 
@@ -50,12 +55,63 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  # ── 0 · Há algo a publicar? ────────────────────────────────────────────────
+  decidir:
+    name: 🔎 Decidir — a versão do VERSION já saiu?
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    outputs:
+      publicar: ${{ steps.ver.outputs.publicar }}
+      versao: ${{ steps.ver.outputs.versao }}
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0           # precisa das tags para comparar versões
+
+      - name: Comparar o VERSION com as releases publicadas
+        id: ver
+        run: |
+          set -euo pipefail
+          versao="$(cat VERSION)"
+          echo "versao=$versao" >> "$GITHUB_OUTPUT"
+
+          # Regressão de versão: `sort -V` devolve o maior SemVer entre a última
+          # tag publicada e a do arquivo. Se a do arquivo não for a maior, é engano
+          # — e tag publicada é ruim de desfazer.
+          anterior="$(git tag -l 'v[0-9]*.[0-9]*.[0-9]*' | sed 's/^v//' | sort -V | tail -1)"
+          if [ -n "$anterior" ] \
+              && [ "$(printf '%s\n%s\n' "$anterior" "$versao" | sort -V | tail -1)" != "$versao" ]; then
+            echo "::error::O VERSION ($versao) é menor que a última release publicada (v$anterior)."
+            exit 1
+          fi
+
+          if gh release view "v$versao" >/dev/null 2>&1; then
+            echo "publicar=false" >> "$GITHUB_OUTPUT"
+            {
+              echo "### ⏭️ v$versao já está publicada — nada a fazer"
+              echo ""
+              echo "O \`VERSION\` não mudou desde a última release. Para publicar a"
+              echo "próxima versão, suba o \`VERSION\` (e o \`CHANGELOG.md\` gerado) num"
+              echo "PR para a \`develop\` e depois mergeie a \`develop\` na \`main\`."
+            } >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "publicar=true" >> "$GITHUB_OUTPUT"
+            echo "### 🚀 v$versao será publicada" >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+  # ── 1 · Empacotar e publicar ───────────────────────────────────────────────
   release:
     name: 🚀 Publicar release
+    needs: decidir
+    if: needs.decidir.outputs.publicar == 'true'
     runs-on: ubuntu-24.04
     timeout-minutes: 20
     permissions:
-      contents: write              # commit da versão, criação da tag e da Release
+      contents: write              # criar/enviar a tag e publicar a Release
+    env:
+      VERSAO: ${{ needs.decidir.outputs.versao }}
     steps:
       - uses: actions/checkout@v7
         with:
@@ -65,115 +121,51 @@ jobs:
         with:
           python-version: '3.14'
 
-      # ── 1 · Versão: de onde vem e se é legítima ─────────────────────────────
-      - name: 1/7 · Definir e validar a versão
-        id: versao
-        run: |
-          set -euo pipefail
-          if [ "${{ github.event_name }}" = "push" ]; then
-            versao="${GITHUB_REF_NAME#v}"
-            origem="tag"
-          else
-            versao="${{ inputs.version }}"
-            origem="dispatch"
-          fi
-
-          if ! printf '%s' "$versao" | grep -Eq '^[0-9]+\.[0-9]+\.[0-9]+$'; then
-            echo "::error::Versão inválida: '$versao' — use SemVer (ex.: 1.2.0)."
-            exit 1
-          fi
-          atual="$(cat VERSION)"
-
-          if [ "$origem" = "tag" ]; then
-            # A tag e o arquivo não podem discordar: `VERSION` é o que o build lê.
-            if [ "$versao" != "$atual" ]; then
-              echo "::error::A tag é v$versao, mas VERSION diz $atual. Atualize VERSION num PR antes de taguear."
-              exit 1
-            fi
-          else
-            # Publicar exige avançar: `sort -V` pega o maior de dois SemVer.
-            maior="$(printf '%s\n%s\n' "$atual" "$versao" | sort -V | tail -1)"
-            if [ "$versao" = "$atual" ] || [ "$maior" != "$versao" ]; then
-              echo "::error::v$versao não é maior que a versão atual (v$atual)."
-              exit 1
-            fi
-            if git rev-parse -q --verify "refs/tags/v$versao" >/dev/null; then
-              echo "::error::A tag v$versao já existe."
-              exit 1
-            fi
-          fi
-
-          echo "versao=$versao" >> "$GITHUB_OUTPUT"
-          echo "origem=$origem" >> "$GITHUB_OUTPUT"
-          echo "### 🚀 Release v$versao (origem: $origem)" >> "$GITHUB_STEP_SUMMARY"
-          echo "Versão anterior no VERSION: $atual" >> "$GITHUB_STEP_SUMMARY"
-
-      # ── 2 · Nada sai daqui sem passar no que o CI exige ────────────────────
-      - name: 2/7 · Suíte de testes (a mesma do CI)
+      # Nada sai daqui sem passar no que o CI exige — e a suíte já inclui o
+      # guarda de sincronia (TestH: pipeline numa cópia temporária × commitado).
+      - name: 1/4 · Suíte de testes (a mesma do CI, com o guarda de sincronia)
         run: |
           python -m py_compile tools/*.py tests/*.py
           python -m unittest discover -s tests -v
 
-      - name: 3/7 · Dados em sincronia com o HEAD
-        run: python tools/check_data_freshness.py
+      - name: 2/4 · Empacotar ZIPs + notas (dist/)
+        run: python tools/build_release.py "$VERSAO"
 
-      # ── 3 · Empacotamento ──────────────────────────────────────────────────
-      - name: 4/7 · Empacotar ZIPs + notas (dist/)
-        run: python tools/build_release.py "${{ steps.versao.outputs.versao }}"
-
-      - name: 5/7 · Seção do CHANGELOG desta versão
+      - name: 3/4 · Seção do CHANGELOG desta versão
         run: |
-          python tools/gen_changelog.py \
-            --version "${{ steps.versao.outputs.versao }}" \
-            --out dist/changelog-section.md
+          python tools/gen_changelog.py --version "$VERSAO" --out dist/changelog-section.md
           cat dist/changelog-section.md
 
-      # ── 4 · Commit da versão + tag (só no dispatch) ────────────────────────
-      - name: 6/7 · Commitar VERSION + CHANGELOG e criar a tag
-        if: steps.versao.outputs.origem == 'dispatch'
-        run: |
-          set -euo pipefail
-          versao="${{ steps.versao.outputs.versao }}"
-
-          printf '%s\n' "$versao" > VERSION
-          python tools/gen_changelog.py --version "$versao" --write
-
-          git config user.name  "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-
-          # Só os dois arquivos de versão: os ZIPs são assets, não histórico.
-          git add VERSION CHANGELOG.md
-          git commit -m "chore(release): v$versao [skip ci]"
-
-          git tag -a "v$versao" -m "GP-100 Patch Architect v$versao"
-
-          # Push explícito do branch e da tag: `--follow-tags` não cobre o caso
-          # de o commit ser criado aqui (a tag não estava no push original).
-          git push origin "HEAD:${GITHUB_REF_NAME}"
-          git push origin "v$versao"
-          echo "Tag v$versao criada e enviada." >> "$GITHUB_STEP_SUMMARY"
-
-      # ── 5 · Publicação ─────────────────────────────────────────────────────
-      - name: 7/7 · Publicar a Release com os ZIPs
+      - name: 4/4 · Publicar (tagueia se preciso)
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set -euo pipefail
-          versao="${{ steps.versao.outputs.versao }}"
+
+          # A tag é o único ref que este job cria — e só se ainda não existir.
+          if git rev-parse -q --verify "refs/tags/v$VERSAO" >/dev/null; then
+            echo "Tag v$VERSAO já existe — não vou recriar."
+          else
+            git config user.name  "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git tag -a "v$VERSAO" -m "GP-100 Patch Architect v$VERSAO"
+            git push origin "v$VERSAO"
+            echo "Tag v$VERSAO criada e enviada." >> "$GITHUB_STEP_SUMMARY"
+          fi
 
           # Corpo = o que mudou (changelog) + o que baixar (notas do empacotador).
-          cat dist/changelog-section.md dist/RELEASE-NOTES-v$versao.md > dist/release-body.md
+          cat dist/changelog-section.md dist/RELEASE-NOTES-v$VERSAO.md > dist/release-body.md
 
           shopt -s nullglob
-          zips=(dist/gp100-patches-v$versao.zip dist/gp100-patches-v$versao-*.zip)
+          zips=(dist/gp100-patches-v$VERSAO.zip dist/gp100-patches-v$VERSAO-*.zip)
 
-          if gh release view "v$versao" >/dev/null 2>&1; then
-            echo "Release v$versao já existia — atualizando notas e assets."
-            gh release upload "v$versao" "${zips[@]}" --clobber
-            gh release edit "v$versao" --notes-file dist/release-body.md
+          if gh release view "v$VERSAO" >/dev/null 2>&1; then
+            echo "Release v$VERSAO já existia — atualizando notas e assets."
+            gh release upload "v$VERSAO" "${zips[@]}" --clobber
+            gh release edit "v$VERSAO" --notes-file dist/release-body.md
           else
-            gh release create "v$versao" \
-              --title "GP-100 Patch Architect v$versao" \
+            gh release create "v$VERSAO" \
+              --title "GP-100 Patch Architect v$VERSAO" \
               --notes-file dist/release-body.md \
               "${zips[@]}"
           fi
@@ -183,5 +175,5 @@ jobs:
             echo ""
             for z in "${zips[@]}"; do echo "- \`$(basename "$z")\` ($(du -h "$z" | cut -f1))"; done
             echo ""
-            echo "\`VERSION\` e \`CHANGELOG.md\` já refletem a v$versao."
+            echo "\`VERSION\` e \`CHANGELOG.md\` já refletem a v$VERSAO."
           } >> "$GITHUB_STEP_SUMMARY"

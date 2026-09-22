@@ -17,7 +17,7 @@ Regras:
     refactor, style, build (aparecem só com `--all`).
   - Rodapé `BREAKING CHANGE:` ou `!` antes dos dois-pontos abre a seção de
     mudanças incompatíveis e força bump MAJOR.
-  - Merge commits e os auto-commits do pipeline (`[skip ci]`) são ignorados.
+  - Merge commits e commits marcados com `[skip ci]` são ignorados.
 
 Bump sugerido: breaking → MAJOR · qualquer `feat` → MINOR · senão → PATCH.
 """
@@ -143,15 +143,27 @@ def secao(version: str, itens, incluir_ocultos: bool) -> str:
     return '\n'.join(linhas)
 
 
-def escrever_no_changelog(bloco: str):
-    """Prepende a seção no CHANGELOG.md, criando o arquivo com cabeçalho se preciso."""
+def escrever_no_changelog(bloco: str, version: str):
+    """Escreve a seção no CHANGELOG.md, criando o arquivo com cabeçalho se preciso.
+
+    Idempotente: se a seção da MESMA versão já está no topo, ela é SUBSTITUÍDA em
+    vez de duplicada — rodar `--write` duas vezes (ou corrigir um commit e rodar
+    de novo) não deixa dois blocos `## [x.y.z]` no arquivo.
+    """
     cabecalho = (
         '# Changelog\n\n'
         'Todas as mudanças relevantes deste projeto, por versão.\n'
         'Formato: [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/) · '
         'versionamento: [SemVer](https://semver.org/lang/pt-BR/).\n\n'
-        '> Gerado por `tools/gen_changelog.py` a partir dos commits '
-        '(Conventional Commits). Não edite à mão.\n\n')
+        '> Gerado por `tools/gen_changelog.py` a partir dos commits (Conventional\n'
+        '> Commits) — **não edite à mão**. Quem publica roda\n'
+        '> `python tools/gen_changelog.py --version X.Y.Z --write` antes de subir o\n'
+        '> `VERSION`; o workflow `Release` só valida e publica.\n'
+        '>\n'
+        '> A v1.0.0 é a **baseline escrita à mão**: a história anterior a esta\n'
+        '> automação não seguia Conventional Commits, então ela não é derivável.\n'
+        '> Daqui para frente, o título do PR (que vira o commit do squash) é o que\n'
+        '> alimenta o changelog — ver CONTRIBUTING.md.\n\n')
     if CHANGELOG.exists():
         atual = CHANGELOG.read_text(encoding='utf-8')
         if atual.startswith('# Changelog'):
@@ -161,6 +173,12 @@ def escrever_no_changelog(bloco: str):
             corpo = atual
     else:
         corpo = ''
+
+    marca = f'## [{version}]'
+    if corpo.startswith(marca):
+        proxima = corpo.find('\n## ', len(marca))
+        corpo = corpo[proxima + 1:] if proxima != -1 else ''
+
     CHANGELOG.write_text(f'{cabecalho}{bloco}\n{corpo}', encoding='utf-8')
 
 
@@ -180,7 +198,7 @@ def main():
     bloco = secao(version, itens, incluir_ocultos)
 
     if '--write' in sys.argv:
-        escrever_no_changelog(bloco)
+        escrever_no_changelog(bloco, version)
         print(f'✅ CHANGELOG.md: seção [{version}] prependida '
               f'({len(itens)} commit(s) desde {ultima_tag() or "o início"}).')
     elif '--out' in sys.argv:

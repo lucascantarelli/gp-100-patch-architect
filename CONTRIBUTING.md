@@ -57,17 +57,17 @@ E, **se você mexeu em dados** (música, camada, patch, momento, pack de IR ou
 cab):
 
 ```bash
-# 3. Pipeline completo, na ordem do CI, + veredito de sincronia
+# 3. Pipeline completo, na ordem do CI
 python tools/ir_library.py \
   && python tools/add_pulse_defs.py \
   && python tools/add_momentos.py \
   && python tools/build_song_patches.py \
-  && python tools/gen_indexes.py \
-  && python tools/check_data_freshness.py
+  && python tools/gen_indexes.py
 ```
 
-O último comando é o guarda: ele compara **disco × HEAD** e, se reprovar, imprime
-o comando exato de conserto. Se ele passar, seu PR está coerente.
+O guarda de sincronia vive na suíte (`TestH_DadosEmSincronia`): ela roda o
+pipeline numa cópia temporária do repositório e compara com o commitado — se
+reprovar, o teste lista os arquivos divergentes. Suíte verde = PR coerente.
 
 ## 🔁 O pipeline é obrigatório
 
@@ -81,9 +81,18 @@ no [`README.md`](README.md)), então o CI trata esquecimento como falha de build
 | Scripts em `tools/` | a suíte + o pipeline inteiro (a saída tem de continuar idêntica) |
 
 **Nunca edite à mão** um arquivo gerado: `patches/**/*.prst`, `patches/**/patch.md`,
-`patches/**/spec.json`, `patches/**/MAPA-DO-ALBUM.md`, `patches/README.md`,
+`patches/**/MAPA-DO-ALBUM.md`, `patches/README.md`,
 `tools/patches-defs.json`, `tools/ir-library.json`, `reference/16-ir-library.md`.
 Sua edição será apagada na próxima execução do pipeline e reprovada pelo guarda.
+
+### ⚠️ `spec.json` existe no disco, mas não no git
+
+O pipeline escreve `patches/**/spec.json` a cada rodada: é o que o
+`generate_prst.py` consome para gerar o `.prst`, e é a forma estável de comparar
+parâmetros entre duas versões (o `.prst` muda o `preset_info/@time` a cada build;
+o `spec.json` não). Fora isso **ninguém o consome** — não vai ao pacote de release
+e é 100% regenerável a partir do `patches-defs.json`. Por isso ele está no
+`.gitignore` e o guarda de sincronia o ignora: **não o commite**.
 
 ### ⚠️ O catálogo de IRs não é regenerável sem o pack
 
@@ -114,15 +123,19 @@ no PR** a menos que esteja reindexando o banco de propósito, e diga isso na des
 5. Confira a seção 📡 do `patch.md` gerado: ela precisa obedecer à [política de
    IR](#-política-de-ir) — fábrica → banco local → internet → fábrica.
 
+> **Pelo agente**, este caminho é o mesmo: `@gp100-patch-architect` entrevista,
+> consulta as skills, valida com o `gp100-patch-validator` e **acrescenta o item no
+> `patches-defs.json`** — ele não escreve em `patches/**` (ver `knowledge.md`,
+> regra 8). O que você revisa no PR é o **defs** e os derivados que o pipeline gerou.
+
 ### Um álbum inteiro novo
 
 1. Crie o seeder `tools/add_<album>_defs.py` seguindo `add_pulse_defs.py`
    (o padrão é o seeder encadear `add_momentos`).
 2. Adicione o álbum em `tools/patches-defs.json` com `banda`, `ano`, `pasta`,
    `titulo`, o dossiê de rig e o `ir_local` de cada cab usado.
-3. Encadeie o novo seeder no `PIPELINE` de `tools/check_data_freshness.py` e no
-   passo de dados de [`.github/workflows/ci.yml`](.github/workflows/ci.yml) —
-   um seeder fora da lista simplesmente não roda no CI.
+3. Encadeie o novo seeder no `PIPELINE` de `tests/test_pipeline.py` —
+   um seeder fora da lista simplesmente não roda no guarda de sincronia.
 4. Rode o pipeline, revise os `MAPA-DO-ALBUM.md` gerados e a numeração de slots.
 
 ## 🚦 Regras de ouro (revisão bloqueia o que violar)
@@ -141,8 +154,8 @@ Estas são as invariantes que a suíte testa. Um PR que as quebre não passa:
 - **NR obrigatório com ganho ≥ 55**; **um** efeito espacial dominante por patch.
 - **`.prst` sempre no formato single fw 2.1** com CAB de fábrica. IR de terceiro
   é **documentada**, nunca embutida (ver política abaixo).
-- **`spec.json` não vai ao pacote de release** — é insumo do gerador, não do
-  músico.
+- **`spec.json` não é versionado** — insumo do gerador: não vai ao pacote de
+  release nem ao git (gerado a cada rodada do pipeline).
 
 ## 📡 Política de IR
 
@@ -187,29 +200,69 @@ migração. O `tools/gen_changelog.py` lê este padrão para montar o `CHANGELOG
 e sugerir o próximo bump de versão — commit fora do padrão **não aparece** no
 changelog.
 
-## 🌊 Fluxo de trabalho — GitHub Flow
+## 🌊 Fluxo de trabalho — feature → develop → main
 
-O `main` é protegido: **nada de push direto**. Todo trabalho entra por PR.
+Três papéis, e só um deles aceita push direto:
+
+| Branch | Papel | Push direto | Protegida |
+|---|---|---|---|
+| `feature/**` | onde o trabalho acontece | ✅ sim | não |
+| `develop` | integração: junta o que já passou por PR | ❌ não | ✅ sim |
+| `main` | o que foi publicado — o merge aqui dispara a Release | ❌ não | ✅ sim |
 
 ```bash
-git switch main && git pull
-git switch -c feat/solo-time-pulse
+git switch develop && git pull
+git switch -c feature/solo-time-pulse
 
 # ... edite os defs, rode o pipeline e a suíte ...
 
 git add tools/patches-defs.json patches/ reference/
 git commit -m "feat(pulse): adiciona camada de solo em Time"
-git push -u origin feat/solo-time-pulse
-gh pr create --fill
+git push -u origin feature/solo-time-pulse
+gh pr create --base develop --fill
 ```
 
 | Passo | Exigência |
 |---|---|
+| Base do PR | `develop` — só o PR de release vai contra a `main` |
 | Título do PR | Conventional Commit (vira a linha do `CHANGELOG.md`) |
-| Base | `main` |
 | Merge | **squash** — um PR, um commit limpo na história |
 | Branch | apagada automaticamente após o merge |
 | Checks | `🚦 Veredito do CI` verde é obrigatório — não há merge com CI vermelho |
+
+O CI roda em **todo PR** e no **push para `develop` e `main`** — não em
+`feature/**`, porque o PR já é o gatilho e disparar nos dois daria duas execuções
+para o mesmo commit. O push na `develop` é a segunda checagem, a que pega a
+integração das features entre si.
+
+### Publicando uma versão
+
+A `develop` só vai para a `main` quando houver versão a lançar:
+
+```bash
+git switch -c chore/release-1.1.0
+python tools/gen_changelog.py --version 1.1.0 --write   # prepende a seção no CHANGELOG.md
+printf '%s\n' 1.1.0 > VERSION
+git commit -am "chore(release): v1.1.0"
+git push -u origin chore/release-1.1.0
+gh pr create --base develop --fill && gh pr merge --squash --delete-branch
+
+# quando estiver pronto para lançar:
+gh pr create --base main --head develop --title "chore(release): v1.1.0"
+gh pr merge --merge
+```
+
+Repare na diferença: **`feature/**` → `develop` é squash; `develop` → `main` é merge
+commit** (e sem `--delete-branch`, que apagaria a `develop`). Não é capricho — um
+squash na entrada da `main` juntaria a release inteira num commit e as features
+que alimentam o changelog ficariam só na `develop`. Com merge commit a `main`
+contém a história da `develop`, e a `develop` continua sendo ancestral dela: não
+há nada para sincronizar de volta a cada release.
+
+No merge para a `main`, o [`release.yml`](.github/workflows/release.yml) roda
+sozinho: empacota os ZIPs, cria a tag `v1.1.0` e publica a Release. **A versão é
+decidida por quem escreveu o PR, não por tempo decorrido** — e um merge que não
+subiu o `VERSION` não publica nada (é um no-op verde).
 
 Deixe o PR em **draft** enquanto o pipeline estiver instável. Ao abrir, ele já
 vem com o [`PULL_REQUEST_TEMPLATE`](.github/PULL_REQUEST_TEMPLATE.md): marque as
@@ -219,7 +272,7 @@ caixas de verdade, são elas que o revisor vai conferir.
 
 Um PR é aprovado quando:
 
-1. O `ci-gate` está verde (`data-pipeline`, `test-suite`, `typecheck`).
+1. O `ci-gate` está verde (`test-suite`, `typecheck`).
 2. O diff **não** contém arquivo gerado editado à mão nem lixo de regeneração.
 3. Documentação e `reference/` acompanham a mudança — dado novo sem doc é
    revisão incompleta.
@@ -229,15 +282,18 @@ Um PR é aprovado quando:
 Se você não tiver certeza sobre um ponto, **abra a PR em draft e pergunte** — é
 mais barato que discutir depois do merge.
 
-## 🔒 Segurança e o auto-commit do CI
+## 🔒 Segurança e o escopo de escrita do CI
 
-O job `data-pipeline` tem permissão de **escrita** e, em push no `main`, commita
-os dados regenerados sozinho. Consequências práticas para quem contribui:
+**Nenhum workflow escreve no repositório.** O `ci.yml` roda inteiro com
+`permissions: contents: read` e o `release.yml` só cria tag (proteção de branch
+não governa tag). Consequências práticas para quem contribui:
 
-- Usar IA para editar arquivos é permitido e comum aqui — mas **revise o diff**:
-  o bot publica o que o pipeline produziu.
-- PR vindo de fork **não** dispara o auto-commit (fork não tem escrita); nesse
-  caso o guarda reprova e mostra o comando de conserto, para você rodar local.
+- Quem acrescenta música, camada, patch, efeito, momento de toggle ou pack de IR
+  **roda o pipeline localmente e commita os derivados** — o CI reprova com o
+  comando exato de conserto, e a correção é sempre do autor, nunca do bot.
+- Se algum job um dia voltar a commitar no `main`, o push será rejeitado pela
+  branch protection: o repositório não abre exceção de escrita para o CI.
+- Usar IA para editar arquivos é permitido e comum aqui — mas **revise o diff**.
 
 ## 📄 Licença
 

@@ -11,8 +11,8 @@ Saídas (dist/):
   RELEASE-NOTES-v<versão>.md           — notas prontas para `gh release create --notes-file`
 
 O que vai em cada ZIP: apenas os arquivos que o músico precisa — `<NOME>.prst` e
-`patch.md` de cada patch (spec.json é insumo do gerador, não do usuário), na
-estrutura `<Banda>/<Álbum>/<Música>/`. Os `.prst` são validados antes de entrar
+`patch.md` de cada patch, na estrutura `<Banda>/<Álbum>/<Música>/`. O `spec.json`
+intermediário nem é empacotado nem versionado. Os `.prst` são validados antes de entrar
 no pacote (formato single, firmware 2.1 — o mesmo check da suíte).
 
 A versão é sempre validada como SemVer (`MAIOR.MENOR.PATCH`); `VERSION` é a
@@ -29,6 +29,7 @@ if hasattr(sys.stdout, 'reconfigure'):  # console Windows cp1252 -> UTF-8
 
 ROOT = Path(__file__).parent.parent
 VERSION_FILE = ROOT / 'VERSION'          # única fonte da versão (ex.: 1.0.0)
+DEFS_FILE = ROOT / 'tools' / 'patches-defs.json'   # única fonte da BIBLIOTECA
 DIST_DIR = ROOT / 'dist'                 # saída do empacotamento (não vai pro git)
 PATCHES_DIR = ROOT / 'patches'
 
@@ -56,11 +57,22 @@ def bump(version: str, part: str) -> str:
 
 
 def collect_patches():
-    """Todos os patches da biblioteca: [(caminho_da_pasta, nome_do_patch)]."""
+    """Todos os patches da biblioteca: [(caminho_da_pasta, nome_do_patch)].
+
+    A lista vem do DEFS, não do disco: quem define a pasta de cada patch é ele
+    (`albums[].pasta` + `songs[].pasta|song` + `patch.nome`). A versão anterior
+    usava `rglob('spec.json')` — e como o `spec.json` é intermediário gerado pelo
+    pipeline, num clone limpo (é o que o job de release tem, já que ele não roda o
+    pipeline) a lista sairia VAZIA e a release não empacotaria nada.
+    """
+    defs = json.loads(DEFS_FILE.read_text(encoding='utf-8'))
     items = []
-    for spec in sorted(PATCHES_DIR.rglob('spec.json'), key=lambda p: p.as_posix()):
-        pasta = spec.parent
-        items.append((pasta, pasta.name))
+    for song in defs['songs']:
+        album = defs['albums'][song['idAlbum']]['pasta']
+        musica = song.get('pasta') or song['song']
+        for patch in song['patches']:
+            pasta = PATCHES_DIR / album / musica / patch['nome']
+            items.append((pasta, patch['nome']))
     return items
 
 

@@ -117,7 +117,7 @@ Cada patch entrega:
 | `tools/ir_library.py` | `python tools/ir_library.py` | Indexa `impulse_responses/` (valida mono/24-bit/44.1 kHz) → `tools/ir-library.json` + `reference/16-ir-library.md` |
 | `tools/check_data_freshness.py` | `python tools/check_data_freshness.py` | **Guarda do CI** — compara os artefatos gerados no disco com o HEAD (só o `preset_info/@time` é ignorado) e reprova citando o comando de conserto quando algo gerado ficou fora do commit |
 | `tools/analyze_prst.py` | `python tools/analyze_prst.py <arquivo>.prst [--json out.json]` | Disseca qualquer export `.prst` (modelos, ranges empíricos de params, catálogo) — é dele que nasceu o catálogo fw 2.0 |
-| `tests/test_pipeline.py` | `python -m unittest discover -s tests -v` | **Suíte de validação** do pipeline: defs, formato `.prst`, docs, momentos, nomes de parâmetro e drift dos índices (é o que o CI roda) |
+| `tests/test_pipeline.py` | `python -m unittest discover -s tests -v` | **Suíte de validação** do pipeline: defs, formato `.prst`, docs, momentos, nomes de parâmetro, drift dos índices e a ordem estável entre sistemas operacionais (é o que o CI roda) |
 
 **Cadeia típica ao acrescentar um álbum:** edite `tools/patches-defs.json` → `build_song_patches.py` → `gen_indexes.py` → **rode a suíte de testes** e o `check_data_freshness.py`. **Baixou packs de IR?** Extraia em `impulse_responses/<Pack>/` → rode `ir_library.py`. Downloads recomendados: [`reference/17-free-ir-packs.md`](reference/17-free-ir-packs.md).
 
@@ -139,8 +139,8 @@ Cada push e cada PR rodam o workflow [`pipeline`](.github/workflows/ci.yml), em 
 
 | Job | O que faz |
 |---|---|
-| **`dados`** | roda o **pipeline de dados inteiro** (IR → seeders → momentos → construtor → índices) e depois `check_data_freshness.py`: se o resultado não for o que está commitado, o build reprova com o comando exato de conserto. É o guarda de "elemento novo sem regenerar" |
-| **`python`** | compila os scripts e executa a suíte (**25 testes, sem dependências** — `unittest` da stdlib) |
+| **`dados`** | roda o **pipeline de dados inteiro** (IR → seeders → momentos → construtor → índices). **Em push no `main` (ou execução manual), se o pipeline mexeu em algo, o próprio job commita e envia** (`chore: regenera os dados do pipeline`) — o repositório não fica vermelho por esquecimento de regenerar. Depois `check_data_freshness.py` dá o veredito; **em PR o commit não roda** (fork não tem escrita) e o guarda reprova com o comando exato de conserto |
+| **`python`** | compila os scripts e executa a suíte (**28 testes, sem dependências** — `unittest` da stdlib) |
 | **`agentes`** | `tsc --noEmit` nos 17 agentes |
 
 Para rodar igual na sua máquina:
@@ -177,7 +177,8 @@ A suíte cobre as invariantes que **já quebraram uma vez** neste projeto:
 - ✅ Seções obrigatórias presentes nos 62 docs (guitarra → ajustes finos → IR → modos de atuação → objetivo → dossiê → parâmetros → carga → evite) e 32 momentos de toggle validados contra o spec.
 - ✅ **Zero rótulo `pN` nos 62 docs**: os 40 `patch.md` do Pulse e as 28 menções em textos de ajustes/evite passaram a usar os nomes do manual V2.0 (rótulos acima); os slots **internos** do firmware (que o editor não expõe) não são setados nem rotulados — ficam no default de fábrica.
 - ✅ **Dossiê de rig de Cheap Thrills** (Big Brother & The Holding Company): duas guitarras em **Gibson SG** (Gurley e Andrew), **Fender Twin Reverb**, Maestro FZ-1 no Gurley — e o achado que fecha o timbre da faixa: **Piece of My Heart sem fuzz** (Gurley limpo, Sam sujo no Twin estourado); o mapa da Janis voltou a ter seção de rig, com fontes.
-- ✅ **CI + suíte de testes** ([`.github/workflows/ci.yml`](.github/workflows/ci.yml)): 25 testes em `tests/` validam defs, formato dos 62 `.prst`, docs, momentos, cobertura de nomes de parâmetro e drift dos índices — stdlib pura (nenhuma dependência para instalar). O job **`dados`** roda o pipeline completo a cada push/PR e reprova se algum artefato gerado ficar fora do commit (só o timestamp `preset_info/@time` é ignorado — o pipeline é reprodutível em 194 artefatos).
+- ✅ **CI + suíte de testes** ([`.github/workflows/ci.yml`](.github/workflows/ci.yml)): 28 testes em `tests/` validam defs, formato dos 62 `.prst`, docs, momentos, nomes de parâmetro, drift dos índices e a ordem estável entre OS — stdlib pura (nenhuma dependência para instalar). O job **`dados`** roda o pipeline completo a cada push/PR e, **em push no `main`, commita os dados regenerados sozinho** antes do veredito do `check_data_freshness.py` (só o timestamp `preset_info/@time` é ignorado — o pipeline é reprodutível em 194 artefatos).
+- ✅ **Pipeline reprodutível entre sistemas**: a ordem dos artefatos derivados não depende do SO — a comparação de `Path` usa `normcase` (minúsculas no Windows, identidade no Linux) e fazia o manifesto de IRs divergir entre a máquina e o CI; a ordenação agora é por string (ordem de code point), com teste travando a regressão (`TestI_OrdemEstavel`).
 - ✅ Typecheck `tsc --noEmit` limpo nos 17 agentes.
 - ✅ Manual V1.8 transcrito página a página para `reference/` + catálogo empírico extraído do export de fábrica (`tools/factory-catalog.json`, 99 presets · 117 modelos).
 - ✅ Banco local de IRs indexado (291 WAVs — Origin Effects IR-Cab Library V3).

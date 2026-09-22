@@ -77,6 +77,8 @@ python tools/gen_indexes.py         # 5. MAPA-DO-ALBUM.md + patches/README.md
 python tools/check_data_freshness.py  # 6. disco × HEAD (só preset_info/@time é ignorado)
 ```
 
+**Isso é literalmente o job `dados` do CI**, que roda a sequência a cada push/PR. Em **push no `main`**, se o pipeline mexeu em algo, o próprio job commita e envia (`chore: regenera os dados do pipeline [skip ci]`) — o repositório nunca fica vermelho por esquecimento. Em **PR** o passo de commit é pulado (fork não tem escrita) e o guarda reprova, pedindo que o autor rode o pipeline.
+
 O passo 6 é o que separa "rodei o pipeline" de "commitei o resultado": sem ele, um PR pode mergear com artefato defasado. A fonte única continua sendo `tools/patches-defs.json` — nenhum script mantém tabela própria de músicas, álbuns ou cabs.
 
 ## Limites declarados do projeto

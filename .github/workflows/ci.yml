@@ -1,18 +1,20 @@
 # CI do GP-100 Patch Architect.
 #
 # dados   — roda TODOS os scripts que escrevem dados (IR → seeders → momentos →
-#           construtor → índices) e reprova se os artefatos commitados não forem
-#           exatamente o que o pipeline produz agora. É o guarda de "elemento
-#           novo sem regenerar": música, camada, patch, efeito, momento de
-#           toggle ou pack de IR que entrou no PR sem rodar o pipeline.
+#           construtor → índices). Em **push no main** (e execução manual), se o
+#           pipeline mexeu em algo, commita e envia sozinho — o repositório nunca
+#           fica vermelho por esquecimento de regenerar. Em PR o passo de commit
+#           não roda (fork não tem permissão de escrita): o guarda reprova e o
+#           autor regenera. O veredito é sempre do check_data_freshness.py, que
+#           compara disco × HEAD e imprime o comando exato de conserto.
 # python  — compila os scripts e roda a suíte que valida os .prst, as docs e os
 #           índices (inclui a coerência mapa × patch.md sobre IR e o drift dos índices).
 # agentes — typecheck dos .agents/*.ts com o tsconfig.json do projeto.
 #
 # Rode a mesma sequência localmente:
 #   python tools/ir_library.py && python tools/add_pulse_defs.py \
-#     && python tools/build_song_patches.py && python tools/gen_indexes.py \
-#     && python tools/check_data_freshness.py
+#     && python tools/add_momentos.py && python tools/build_song_patches.py \
+#     && python tools/gen_indexes.py && python tools/check_data_freshness.py
 
 name: pipeline
 
@@ -22,15 +24,23 @@ on:
   pull_request:
   workflow_dispatch:
 
+# Uma execução por branch: evita dois auto-commits disputando o mesmo push.
+concurrency:
+  group: pipeline-${{ github.ref }}
+  cancel-in-progress: false
+
 jobs:
   dados:
     name: pipeline de dados regenerado
     runs-on: ubuntu-latest
+    permissions:
+      contents: write        # necessário para o auto-commit no main
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: '3.14'
+
       - name: Rodar os scripts que atualizam dados
         run: |
           python tools/ir_library.py
@@ -38,6 +48,22 @@ jobs:
           python tools/add_momentos.py
           python tools/build_song_patches.py
           python tools/gen_indexes.py
+
+      - name: Commitar os dados regenerados (só em push no main)
+        if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+        run: |
+          if [ -z "$(git status --porcelain)" ]; then
+            echo "✅ o pipeline não mudou nada — os dados já estavam em sincronia."
+            exit 0
+          fi
+          echo "🔧 o pipeline regenerou arquivos — commitando de volta:"
+          git status --short
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "chore: regenera os dados do pipeline [skip ci]"
+          git push
+
       - name: Reprovar se algum artefato gerado ficou fora do commit
         run: python tools/check_data_freshness.py
 

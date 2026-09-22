@@ -23,6 +23,10 @@ máquina. Cobre as invariantes que **já quebraram uma vez** neste projeto:
                  CI roda DEPOIS do pipeline): ignora `preset_info/@time`, equipara
                  CRLF/LF e NÃO mascara mudança de parâmetro; e a lista de
                  artefatos cobertos é só a saída de script
+  I. ordem    — os artefatos saem SEMPRE na mesma ordem, em qualquer sistema
+                 operacional: `sorted()` sobre `Path` usa `normcase` (minúsculas
+                 no Windows, identidade no Linux) e o manifesto de IRs divergia
+                 entre a máquina e o CI
 
 Rodar:  python -m unittest discover -s tests -v
 """
@@ -40,6 +44,7 @@ import build_song_patches as BSP          # noqa: E402  (precisa do sys.path aci
 import generate_prst as GEN                # noqa: E402
 import gen_indexes as GI                   # noqa: E402
 import check_data_freshness as CDF         # noqa: E402
+import ir_library as IRL                   # noqa: E402
 
 DEFS = BSP.DEFS
 CHAIN = BSP.CHAIN
@@ -361,6 +366,35 @@ class TestH_DadosEmSincronia(unittest.TestCase):
                 for nome in (f"{patch['nome']}.prst", 'patch.md', 'spec.json'):
                     rel = (pasta / nome).relative_to(ROOT).as_posix()
                     self.assertTrue(CDF.is_artifact(rel), f'{rel} fora do check de frescor')
+
+
+class TestI_OrdemEstavel(unittest.TestCase):
+    """A ordem dos artefatos gerados não pode depender do sistema operacional.
+
+    `sorted()` sobre `Path` compara com `normcase`: **minúsculas no Windows** e
+    identidade no Linux. O manifesto de IRs saiu com `4x12 Metal American` antes
+    de `4x12 MFB` aqui e o inverso no CI — mesmo gerador, resultado diferente.
+    A ordenação passou a usar string (ordem de code point), igual em qualquer OS.
+    """
+
+    def test_chave_de_ordenacao_e_string(self):
+        """`wav_order` devolve str — não Path, que traz o normcase do sistema."""
+        amostra = IRL.IR_DIR / '25 Analog Cab IRs' / '4x12 MFB_EQ.wav'
+        chave = IRL.wav_order(amostra)
+        self.assertIsInstance(chave, str)
+        self.assertEqual(chave, '25 Analog Cab IRs/4x12 MFB_EQ.wav')
+
+    def test_mfb_vem_antes_de_metal_american(self):
+        """Ordem de code point (Linux): 'F' (70) < 'e' (101) — o caso que quebrou."""
+        nomes = ['4x12 Metal American_EQ.wav', '4x12 MFB_EQ.wav']
+        self.assertEqual(sorted(nomes), ['4x12 MFB_EQ.wav', '4x12 Metal American_EQ.wav'])
+
+    def test_manifesto_esta_em_ordem_de_code_point(self):
+        """O JSON commitado já sai ordenado por string em todo pack."""
+        manifesto = json.loads((ROOT / 'tools' / 'ir-library.json').read_text(encoding='utf-8'))
+        for pack, mp in manifesto['packs'].items():
+            arquivos = [f['file'] for f in mp['files']]
+            self.assertEqual(arquivos, sorted(arquivos), f'ordem instável no pack {pack}')
 
 
 if __name__ == '__main__':

@@ -58,7 +58,7 @@ python -m unittest discover -s tests -v
 ## 🧪 Testes
 
 ```bash
-python -m unittest discover -s tests -v      # 56 testes, stdlib pura (nada a instalar)
+python -m unittest discover -s tests -v      # 80 testes, stdlib pura (nada a instalar)
 ```
 
 `tests/test_pipeline.py` valida as invariantes que já quebraram uma vez: defs (ids/nomes únicos, nome ≤ 12 chars), **coerência mapa × `patch.md` sobre IR** (a divergência dos 38 patches do Pulse), formato `.prst` single fw 2.1, as 9 seções obrigatórias + zero HTML cru + **zero rótulo placeholder** (`(pN)` e `pN` solto — todo slot setado tem nome oficial, ver `reference/15`), momentos de toggle válidos (nunca AMP/CAB), cobertura de `PARAM_NAMES` (allowlist hoje **vazia** — modelo novo sem nome de parâmetro reprova), **drift dos índices** e o **guarda de sincronia** (`TestH_DadosEmSincronia`: o pipeline roda numa cópia temporária do repositório e tem de reproduzir o commitado; ignora o `time`, equipara CRLF/LF e não mascara mudança de parâmetro).

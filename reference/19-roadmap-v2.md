@@ -159,9 +159,9 @@ dossiê do rig real (o fluxo de hoje já cobra isso).
 
 ## 8 · Pilar F — Qualidade e CI (aditivo, entra em 1.x)
 
-- Matriz **Python 3.10–3.13** no CI (zero dependências = custo só de runner).
+- ~~Matriz Python 3.10–3.13 no CI~~ **Reorientado (decisão do mantenedor): Python 3.14 APENAS** — travado em código: guarda de runtime nos entry points (`tools/defs_schema.py`), suíte inteira recusa outro runtime e verificação `3.14.*` como primeiro passo do job `test-suite` no CI.
 - Testes para os scripts hoje fora da suíte: `analyze_prst`, `build_release`,
-  `gen_changelog`.
+  `gen_changelog` — **entregues** (24 testes em `tests/test_scripts.py`).
 - `dependabot` já vigia Actions; manter.
 
 ## 9 · Sequência de releases

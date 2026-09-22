@@ -75,6 +75,20 @@ jobs:
         with:
           python-version: '3.14'
 
+      # Política do projeto: Python 3.14 APENAS (doc 19 / issue #16). O pin do
+      # setup-python não fecha a porta sozinho — qualquer coisa que preceda o
+      # python do setup no PATH (ou um step futuro que troque o runtime) passa
+      # despercebida. O passo abaixo verifica o runtime que VAI executar a
+      # suíte, antes de qualquer uso real de Python (py_compile, testes, ...).
+      - name: 0/2 · Trava de runtime — Python 3.14.* apenas
+        run: |
+          v="$(python --version)"          # ex.: "Python 3.14.6"
+          echo "runtime detectado: $v"
+          echo "$v" | grep -Eq '^Python 3\.14\.' || {
+            echo "::error::Python 3.14.* obrigatório — detectado '$v'. O projeto roda APENAS em 3.14 (política: reference/19-roadmap-v2.md, Pilar F; guarda de runtime também em tools/defs_schema.py)."
+            exit 1
+          }
+
       - name: 1/2 · Compilar todos os scripts (tools/ + tests/)
         run: python -m py_compile tools/*.py tests/*.py
 

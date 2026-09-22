@@ -9,6 +9,11 @@
 #   DRY_RUN=1 ./setup_repo.sh          # só mostra o que faria (recomendado na 1ª vez)
 #   ./setup_repo.sh --check            # só lê o estado atual e imprime o diagnóstico
 #
+# Gestão de projetos (labels/milestones/Project v2) vive no
+#   .github/scripts/bootstrap_project_management.sh — invocado no passo 7;
+# automação de cards e guardian: .github/workflows/project-automation.yml
+# (guia completo: reference/18-project-management.md).
+#
 # Pré-requisitos: `gh` autenticado com escopo `repo` e permissão de admin no
 # repositório (branch protection e security features exigem admin).
 #
@@ -63,6 +68,9 @@ ENFORCE_ADMINS="${ENFORCE_ADMINS:-true}"
 # O check que vale como veredito. Precisa bater EXATAMENTE com o `name:` do job
 # no ci.yml — confira em Actions → CI → o nome do check na aba de checks.
 CI_CHECK="${CI_CHECK:-🚦 Veredito do CI}"
+# Segundo check exigido: o guardian da gestão (project-automation.yml) — PR sem
+# label ou sem issue vinculada reprova. Só vale para a main (protegida).
+GUARDIAN_CHECK="${GUARDIAN_CHECK:-🛡 Guardian — PR precisa de gestão}"
 
 # Exigir a branch atualizada antes do merge. Fica `false` de propósito: o check
 # do PR já roda sobre o merge ref (base + PR), então exigir rebase antes de
@@ -110,7 +118,7 @@ proteger() {
 {
   "required_status_checks": {
     "strict": $STRICT_CHECKS,
-    "contexts": ["$CI_CHECK"]
+    "contexts": ["$CI_CHECK", "$GUARDIAN_CHECK"]
   },
   "enforce_admins": $ENFORCE_ADMINS,
   "required_pull_request_reviews": {
@@ -289,32 +297,22 @@ for b in "${BRANCHES_PROTEGIDAS[@]}"; do
   proteger "$b" "$code_owners"
 done
 
-# ── 7 · Labels ───────────────────────────────────────────────────────────────
-passo "7 · Labels padronizadas"
-# `--force` atualiza descrição/cor de label existente (idempotente).
-while IFS='|' read -r nome cor desc; do
-  [ -z "$nome" ] && continue
-  if [ "$DRY_RUN" = "1" ]; then
-    printf '  %s[dry-run]%s label: %s\n' "$Y" "$Z" "$nome"
-  else
-    gh label create "$nome" --color "$cor" --description "$desc" --force >/dev/null 2>&1 \
-      && ok "$nome" || aviso "não criei $nome"
-  fi
-done <<'LABELS'
-bug|d73a4a|Algo não funciona como documentado
-data|0e8a16|Dados gerados pelo pipeline (patches, índices, catálogo de IRs)
-documentation|0075ca|Melhoria ou correção em documentação
-prst-import|1d76db|Falha ao importar .prst na pedaleira ou no GP-100 Edits
-tone-mismatch|fbca04|O patch importa, mas o som não bate com o patch.md
-pipeline|5319e7|Scripts de tools/, geração de dados e CI
-ir-library|c5def5|Packs de Impulse Response, slots de User IR e política de IR
-security|b60205|Superfície de segurança, dependências e workflows
-release|0e8a16|Preparação de versão (VERSION + CHANGELOG)
-good first issue|7057ff|Bom para quem está começando
-help wanted|008672|Atenção extra é bem-vinda
-needs triage|ededed|Aguardando triagem do mantenedor
-breaking change|d93f0b|Mudança incompatível (força bump MAJOR)
-LABELS
+# ── 7 · Labels (delegado — fonte única no bootstrap) ─────────────────────────
+passo "7 · Labels — delegado ao bootstrap_project_management.sh"
+#
+# A taxonomia de gestão (type:/priority:/status:/scope:/size: + domínio) mora
+# em .github/scripts/bootstrap_project_management.sh — FONTE ÚNICA, junto de
+# milestones e Project v2. Invocar aqui mantém um único comando aplicando tudo,
+# sem copiar tabela (tabela copiada é redundância — o que este projeto elimina).
+BOOTSTRAP="$(dirname "$0")/.github/scripts/bootstrap_project_management.sh"
+if [ "$DRY_RUN" = "1" ]; then
+  printf '  %s[dry-run]%s ONLY=labels %s\n' "$Y" "$Z" "$BOOTSTRAP"
+elif ONLY=labels bash "$BOOTSTRAP"; then
+  ok "taxonomia aplicada (28 labels — ver bootstrap_project_management.sh)"
+else
+  aviso "bootstrap não rodou — execute manualmente:"
+  aviso "  ONLY=labels .github/scripts/bootstrap_project_management.sh"
+fi
 
 # ── 8 · Verificação ──────────────────────────────────────────────────────────
 passo "8 · Verificação final"

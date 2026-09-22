@@ -40,6 +40,7 @@ python -m unittest discover -s tests -v
 | `ir_library.py` | `python ir_library.py` | Indexa `impulse_responses/`: valida cada WAV (mono/24 bits/44.1 kHz) e gera `ir-library.json` (manifesto para os agentes) + `reference/16-ir-library.md`. **Rode sempre que baixar packs novos.** |
 | `analyze_prst.py` | `python analyze_prst.py <arquivo.prst> [--json out.json]` | Disseca qualquer export da pedaleira: modelos por módulo com effectCode, estatísticas empíricas de `params_0..14` (min/max/distintos), catálogo completo com cadeias. **É dele que nasceu o catálogo fw 2.0** (`factory-catalog.json`). |
 | `render_manual_page.py` | `python render_manual_page.py <impressa> [mais…] · --all` | Renderiza páginas do `manual.pdf` **sob demanda** (requer pymupdf): PNG alta + JPG leve em `manual_pages/` (efêmero). Página impressa NN = arquivo NN+2. |
+| `bootstrap_project_management.sh` | `bash bootstrap_project_management.sh [--check]` | Instala a gestão de projetos no GitHub: taxonomia de labels (fonte única), milestones de release e Project v2 (campos + visões). Requer `gh auth refresh -s project`. Guia: `reference/18-project-management.md`. |
 
 ## 🗃️ Arquivos de dados
 
@@ -66,7 +67,7 @@ Rodam no CI a cada push (`.github/workflows/ci.yml` — dois jobs em paralelo + 
 - Ordem dos atributos do `<Effect>` importa (`params_0` antes de `x/y`) — mantida idêntica ao exemplo funcional.
 - Nomes no painel: **máx. 12 caracteres** (`ppName` truncado).
 - Console Windows em cp1252: os scripts reconfiguram o stdout para UTF-8.
-- **`preset_info/@time` muda a cada build** (epoch ms, imitando o export real do GP-100 Edits) — o `.prst` NÃO é byte-idêntico entre gerações; isso é intencional. Para diffar parâmetros, compare os `spec.json` (fonte determinística), não os `.prst`.
+- **`preset_info/@time` é determinístico** (epoch ms fixo via `GP100_BUILD_TIME`; default constante) — regenerar só muda o `.prst` se um parâmetro mudar de verdade. Antes era `time.time()` a cada build: todo pipeline reescrevia os ~97 `.prst` e gerava conflito de merge em linha que não é conteúdo (e o review do PR #3 apontou o churn). Para diffar parâmetros, compare os `.prst` direto ou os `spec.json` (fonte determinística).
 - Modelos reais do fw 2.0 ausentes no export de fábrica ficam em `EXTRA_TEMPLATES` no `generate_prst.py` (atualmente `PRE/Saturate` — o Tube Driver do Gilmour).
 - **`sorted()` sobre `Path` é dependente do SO** — `Path` compara com `normcase`, que **minúsculas no Windows** e é identidade no Linux. Foi assim que o `ir-library.json` saiu com `4x12 Metal American` antes de `4x12 MFB` aqui e o inverso no CI (mesmo gerador, resultado diferente). Ao ordenar caminhos, use chave de **string** (`p.relative_to(...).as_posix()`), nunca o `Path` direto — há teste travando isso (`TestI_OrdemEstavel`).
 

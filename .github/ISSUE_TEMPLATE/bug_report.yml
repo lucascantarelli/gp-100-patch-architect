@@ -1,7 +1,7 @@
 name: 🐛 Relatar um problema
 description: Um patch não importa, o timbre não bate, uma doc está errada ou o pipeline falhou.
 title: "[Bug]: "
-labels: ["bug", "needs triage"]
+labels: ["bug", "status: needs-triage"]
 body:
   - type: markdown
     attributes:

@@ -1,0 +1,204 @@
+name: 📋 Gestão de projetos
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Automação do Project v2 "GP-100 Pipeline" + guardian do fluxo PR-driven.
+#
+# O que faz (e o que NÃO faz — igual ao resto do CI, nada aqui escreve no git):
+#
+#   1. add-to-project — toda issue e todo PR entra no Project v2 no momento em
+#      que é aberto. Issue nova ganha `status: needs-triage` (o board recebe no
+#      Backlog via step `status`).
+#   2. status — move o card conforme o evento:
+#        PR aberto (draft)  → In Progress   · PR ready_for_review → In Review
+#        PR fechado/merged  → Done          · issue aberta/reaberta → Backlog
+#      Os estados intermediários (Ready → In Progress) são arraste manual:
+#      código não adivinha intenção humana.
+#   3. guardian — reprova o PR sem label, sem issue vinculada e sem milestone
+#      (o milestone em falta é aviso). Isenta o PR de release (develop → main).
+#      Roda em opened/synchronize/labeled/edited: revalida a cada push e a cada
+#      label aplicada — o erro diz qual regra falta, não só que falhou.
+#   4. milestone — relatório de fechamento: quantos itens ficaram abertos e o
+#      lembrete de migralos para o próximo marco.
+#
+# O Project precisa existir antes (número + campo "Kanban" com as opções):
+#   .github/scripts/bootstrap_project_management.sh ONLY=project
+# ─────────────────────────────────────────────────────────────────────────────
+
+on:
+  issues:
+    types: [opened, labeled, reopened]
+  pull_request:
+    types: [opened, reopened, ready_for_review, converted_to_draft, closed]
+  milestone:
+    types: [closed]
+
+permissions:
+  repository-project: write # add/move de item no Project v2 (gh project item-*)
+
+env:
+  GH_TOKEN: ${{ github.token }}
+  PROJECT_OWNER: lucascantarelli # owner do Project (usuário, não o repo)
+  PROJECT_NUMBER: "1" # número do Project v2 — confirme com: gh project list
+  REPO: ${{ github.repository }} # "dono/repo" para gh --repo
+
+jobs:
+  add-to-project:
+    name: 📥 Entra no Project
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    if: >-
+      github.event_name == 'issues' ||
+      (github.event_name == 'pull_request' &&
+        (github.event.action == 'opened' || github.event.action == 'reopened'))
+    steps:
+      - name: Adiciona issue/PR ao Project
+        env:
+          URL: ${{ github.event.issue.html_url || github.event.pull_request.html_url }}
+        run: |
+          gh project item-add "$PROJECT_NUMBER" --owner "$PROJECT_OWNER" --url "$URL" \
+            && echo "no Project #$PROJECT_NUMBER: $URL"
+
+      # Issue nova recebe needs-triage: ninguém deve pegar tarefa não triada.
+      - name: Marca issue nova como needs-triage
+        if: github.event_name == 'issues' && github.event.action == 'opened'
+        env:
+          ISSUE_URL: ${{ github.event.issue.html_url }}
+        run: |
+          gh issue edit "$ISSUE_URL" --repo "$REPO" \
+            --add-label "status: needs-triage" --ignore-if-missing \
+            && echo "needs-triage aplicada em $ISSUE_URL"
+
+  status:
+    name: 📊 Move o card no board
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    needs: add-to-project
+    # `!= 'failure'` e não `== 'success'`: no evento `closed` o add-to-project é
+    # pulado (o item já está no Project) — com `== 'success'` o Done nunca rodaria.
+    # Se o add falhar de verdade, o status fica preso (conservador: sem card
+    # garantido, melhor não mover).
+    if: >-
+      always() && needs.add-to-project.result != 'failure' &&
+      (github.event_name == 'issues' || github.event_name == 'pull_request')
+    steps:
+      - name: Define o estado pelo evento
+        env:
+          EVENT: ${{ github.event_name }}
+          ACTION: ${{ github.event.action }}
+          IS_DRAFT: ${{ github.event.pull_request.draft }}
+        run: |
+          set -euo pipefail
+          case "$EVENT/$ACTION" in
+            pull_request/opened|pull_request/reopened|pull_request/ready_for_review)
+              if [ "$IS_DRAFT" = "true" ]; then valor="In Progress"; else valor="In Review"; fi ;;
+            pull_request/converted_to_draft) valor="In Progress" ;;
+            pull_request/closed)             valor="Done" ;;
+            issues/opened|issues/reopened)   valor="Backlog" ;;
+            *) echo "evento sem transição de card: $EVENT/$ACTION — nada a fazer"; exit 0 ;;
+          esac
+          echo "valor=$valor" >> "$GITHUB_ENV"
+
+      - name: Aplica o estado no campo Kanban
+        env:
+          URL: ${{ github.event.issue.html_url || github.event.pull_request.html_url }}
+        run: |
+          set -euo pipefail
+          # Localiza o item (já entrou no job anterior) e o campo "Kanban".
+          item_id="$(gh project item-list "$PROJECT_NUMBER" --owner "$PROJECT_OWNER" --limit 300 --format json \
+            | jq -r --arg u "$URL" '.items[] | select(.content.url == $u) | .id' | head -n1)"
+          field_json="$(gh project field-list "$PROJECT_NUMBER" --owner "$PROJECT_OWNER" --format json)"
+          field_id="$(printf '%s' "$field_json" | jq -r '.fields[] | select(.name == "Kanban") | .id')"
+          option_id="$(printf '%s' "$field_json" \
+            | jq -r --arg v "$valor" '.fields[] | select(.name == "Kanban") | .options[] | select(.name == $v) | .id')"
+          if [ -z "$field_id" ] || [ -z "$option_id" ]; then
+            echo "::error::campo 'Kanban' (opção '$valor') não existe no Project #$PROJECT_NUMBER"
+            echo "        Rode: .github/scripts/bootstrap_project_management.sh ONLY=project"
+            exit 1
+          fi
+          if [ -z "$item_id" ]; then
+            item_id="$(gh project item-add "$PROJECT_NUMBER" --owner "$PROJECT_OWNER" --url "$URL" --format json | jq -r .id)"
+          fi
+          gh project item-edit "$PROJECT_NUMBER" --owner "$PROJECT_OWNER" \
+            --item-id "$item_id" --field-id "$field_id" --option-id "$option_id" >/dev/null
+          echo "$URL → $valor"
+
+  guardian:
+    name: 🛡 Guardian — PR precisa de gestão
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    permissions:
+      contents: read # lista os arquivos do PR via API — nada de checkout
+      pull-requests: read
+    if: >-
+      github.event_name == 'pull_request' &&
+      (github.event.action == 'opened' || github.event.action == 'synchronize' ||
+       github.event.action == 'reopened' || github.event.action == 'labeled' ||
+       github.event.action == 'edited')
+    steps:
+      - name: Valida label, issue vinculada e milestone
+        env:
+          PR: ${{ github.event.number }}
+          BASE: ${{ github.event.pull_request.base.ref }}
+        run: |
+          set -euo pipefail
+          falha=0
+
+          # 1 · Label — a taxonomia vive no bootstrap (fonte única), o CI só cobra.
+          n="$(gh pr view "$PR" --repo "$REPO" --json labels --jq '.labels | length')"
+          n="${n:-0}"
+          if [ "$n" -eq 0 ]; then
+            echo "::error::PR sem label — aplique type:, size: e scope: (taxonomia em .github/scripts/bootstrap_project_management.sh)"
+            falha=1
+          fi
+
+          if [ "$BASE" = "main" ]; then
+            # 2/3 · PR de release (develop → main): a gestão é o CHANGELOG + milestone.
+            echo "PR de release para a main — isento de issue vinculada."
+            ms="$(gh pr view "$PR" --repo "$REPO" --json milestone --jq '.milestone.title // ""')"
+            if [ -z "$ms" ]; then
+              echo "::warning::release sem milestone — associe a versão: gh pr edit $PR --milestone \"vX.Y.Z\""
+            fi
+          else
+            # 2 · Issue vinculada — a regra de ouro: nada entra sem issue; a issue
+            #     é fechada pelo PR (Closes #N), nunca à mão.
+            corpo="$(gh pr view "$PR" --repo "$REPO" --json body --jq '.body // ""')"
+            ms="$(gh pr view "$PR" --repo "$REPO" --json milestone --jq '.milestone.title // ""')"
+            if ! printf '%s' "$corpo" | grep -Eq '([Cc]loses|[Ff]ixes|[Rr]esolves|[Cc]loses:|[Ff]ixes:|[Rr]efs?) ?#[0-9]+'; then
+              if [ -n "$ms" ]; then
+                echo "::notice::sem 'Closes #N', mas o PR está no milestone '$ms' (aceito para trabalhos de épico)"
+              else
+                echo "::error::sem issue vinculada — abra a issue primeiro e referencie no corpo com 'Closes #N'"
+                falha=1
+              fi
+            fi
+
+            # 3 · Milestone — aviso, não reprova (decision: mantenedor único).
+            if [ -z "$ms" ]; then
+              echo "::warning::sem milestone — associe no review: gh pr edit $PR --milestone \"v1.1.0\""
+            fi
+          fi
+
+          exit "$falha"
+
+  milestone:
+    name: 🏁 Milestone fechado — relatório
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    permissions:
+      contents: read
+    if: github.event_name == 'milestone' && github.event.action == 'closed'
+    steps:
+      - name: Relatório de fechamento do milestone
+        env:
+          MS: ${{ github.event.milestone.number }}
+          TITULO: ${{ github.event.milestone.title }}
+        run: |
+          set -euo pipefail
+          echo "### 🏁 $TITULO — fechamento" >> "$GITHUB_STEP_SUMMARY"
+          gh api "repos/$REPO/issues?milestone=$MS&state=all&per_page=100" \
+            --jq 'group_by(.state) | map("\(length) \(.[0].state)") | join(" · ")' \
+            | tee -a "$GITHUB_STEP_SUMMARY"
+          abertos="$(gh api "repos/$REPO/issues?milestone=$MS&state=open&per_page=100" --jq 'length')"
+          if [ "$abertos" -gt 0 ]; then
+            echo "::warning::$abertos item(ns) ainda aberto(s) no milestone $TITULO — migre para o próximo marco"
+          fi

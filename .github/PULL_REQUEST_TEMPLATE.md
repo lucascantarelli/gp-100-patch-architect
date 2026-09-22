@@ -11,6 +11,16 @@ Base: `develop` — só o PR de release (develop -> main) vai contra a `main`.
 
 <!-- Duas ou três frases. O que o usuário final ganha com isso? -->
 
+## 🗂 Gestão (o guardian valida)
+
+- [ ] Issue vinculada abaixo com **`Closes #N`** — o fechamento é automático pelo
+      merge; nenhuma issue é fechada à mão
+- [ ] **Milestone** associado ao PR (`gh pr edit --milestone "vX.Y.Z"` ou na sidebar)
+- [ ] **Labels** aplicadas: `type: …` · `scope: …` · `size: XS–XL` (uma de cada;
+      prioridade e status ficam no board)
+- [ ] Card no **[Project v2](https://github.com/users/lucascantarelli/projects/1/views/1)**
+      — ao abrir, a automação move para `In Progress`/`In Review`; no merge, para `Done`
+
 Closes #
 
 ## Tipo de mudança

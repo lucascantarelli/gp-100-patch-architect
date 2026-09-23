@@ -402,4 +402,4 @@ jobs:
             echo "::error::o campo 'Kanban' não existe no Project #$PROJECT_NUMBER — rode: .github/scripts/bootstrap_project_management.sh ONLY=project"
             exit 1
           fi
-          echo "::notice::as 3 visões (Kanban/Sprint/Roadmap) são manuais: o gh não cria views — guia no fim do bootstrap."
+          echo "::notice::views Kanban/Sprint/Roadmap: o bootstrap cria (createProjectV2View) — só agrupamento/ordenação é manual (1 clique por view)."

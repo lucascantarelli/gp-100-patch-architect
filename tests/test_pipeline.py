@@ -354,7 +354,11 @@ ARTEFATOS_FIXOS = (
     'tools/ir-library.json',           # ir_library.py
     'reference/16-ir-library.md',      # ir_library.py
 )
-_PASTAS_DO_SANDBOX = ('tools', 'patches', 'reference', 'impulse_responses')
+# O sandbox precisa espelhar TUDO que o pipeline lê: desde PKG-001 os scripts de
+# tools/ reaproveitam o pacote em src/ (cadeia, catálogo de parâmetros, validação),
+# então a pasta entra na cópia — sem isso o guarda de sincronia reprovaria por
+# falta de arquivo, não por drift de dado.
+_PASTAS_DO_SANDBOX = ('tools', 'patches', 'reference', 'impulse_responses', 'src')
 
 _TIME_RE = re.compile(r'time="\d+"')
 

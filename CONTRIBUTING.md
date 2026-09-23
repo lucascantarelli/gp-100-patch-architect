@@ -274,6 +274,41 @@ Deixe o PR em **draft** enquanto o pipeline estiver instável. Ao abrir, ele já
 vem com o [`PULL_REQUEST_TEMPLATE`](.github/PULL_REQUEST_TEMPLATE.md): marque as
 caixas de verdade, são elas que o revisor vai conferir.
 
+### Abrindo o PR — a informação vem no comando
+
+Um PR aberto sem label, sem milestone e sem assignee não é um PR: é um diff à
+procura de dono. O card no Project, o corte por milestone e o "quem puxa" vivem
+desses três campos — então eles entram no **comando** que abre o PR, não na
+memória de quem abriu:
+
+```bash
+gh pr create --base develop --fill \
+  --title "feat(agents): gp100-setlist" \
+  --label "type: feature" --label "scope: agents" --label "size: M" --label "priority: p2-medium" \
+  --milestone "2.0 · F2 — Núcleo e CLI" \
+  --assignee @me \
+  --body "... Closes #31"
+```
+
+Regra prática dos rótulos: **um** `type:`, **um ou mais** `scope:`/`area:`, **um**
+`size:` (se `size: XL`, provavelmente são dois PRs) e **um** `priority:` quando a
+ordem importa. O guardian cobra em cada push: label ausente **reprova**; sem
+milestone e sem assignee ele **avisa** (o aviso aparece nos checks, não some).
+
+**A branch do PR morre no merge.** O repositório está com *Automatically delete
+head branches* ligado (`delete_branch_on_merge`), então o merge pela interface já
+limpa a branch. Pela CLI, diga isso explicitamente:
+
+```bash
+gh pr merge 38 --merge --delete-branch   # develop: a branch do trabalho morre aqui
+gh pr merge 39 --merge                   # develop → main: NUNCA com --delete-branch
+```
+
+A exceção é o PR de release (`develop` → `main`): ali a branch de origem **é** a
+`develop`, e apagá-la levaria a linha de trabalho inteira. Branch que ficou para
+trás não precisa de arqueologia: `git fetch --prune && git branch --merged
+origin/develop` mostra o que já entrou e pode sair.
+
 ## 👀 Revisão
 
 Um PR é aprovado quando:

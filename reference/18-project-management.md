@@ -12,9 +12,11 @@ nenhuma issue é fechada à mão.
 
 - A **issue** descreve o trabalho (o "porquê" e o "o quê") e vive no Project.
 - O **PR** descreve a mudança (o "como") e carrega a prova (pipeline, suíte,
-  typecheck). Fecha a issue automaticamente com `Closes #N`.
+  typecheck). **Referencia** a issue com `Closes #N`.
 - O **guardian** (`project-automation.yml`) reprova PR sem label e sem issue
   vinculada — as regras de gestão valem tanto quanto as regras de dados.
+- A **branch do PR morre no merge** (`delete_branch_on_merge` ligado no
+  repositório): fechado o PR de trabalho, o que resta é `main` e `develop`.
 - **Nenhum job escreve no git.** A automação movimenta Project, labels e
   relatórios — quem commita derivados é o autor (mesma filosofia do
   [`12-workflow`](12-workflow.md)).
@@ -27,7 +29,7 @@ Issue (task.yml)          PR                          Milestone
 aberta                    opened (draft)   → In Progress
 status: needs-triage      ready_for_review → In Review
 triagem: type/scope/size  approved → merge → Done      fecha; relatório;
-status: ready-for-pr      Closes #N fecha a issue      próximo marco
+status: ready-for-pr      Closes #N liga a issue       próximo marco
 ```
 
 | Etapa | Quem faz | Onde | O que acontece de automático |
@@ -37,7 +39,7 @@ status: ready-for-pr      Closes #N fecha a issue      próximo marco
 | 3. Branch | Autor | `git switch -c` | — (nome livre; padrão de facto: `feature/…`) |
 | 4. PR | Autor | `gh pr create --base develop` | Entra no Project; `In Progress` (draft) / `In Review` (ready); guardian valida |
 | 5. Review | Mantenedor | `gh pr review` | Discussões resolvidas; revalidação a cada push |
-| 6. Merge | Mantenedor | `gh pr merge` | Card → `Done`; issue fechada por `Closes #N` |
+| 6. Merge | Mantenedor | `gh pr merge --delete-branch` | Card → `Done`; branch do trabalho removida; issue fechada à mão no `develop` (ver nota) |
 | 7. Milestone | Mantenedor | `gh api -X PATCH` | Relatório de fechamento; itens pendentes migram |
 
 **Base de PR:** `develop` (trabalho) — só o PR de release (`develop` → `main`)
@@ -130,7 +132,7 @@ descartadas) está no [`ADR-0011`](../docs/decisions/0011-gestao-de-project-com-
 **O que a automação faz sozinha** (project-automation.yml): adiciona issue/PR ao
 Project; marca issue nova `needs-triage`; move card (`In Progress`/`In Review`/
 `Done`/`Backlog`); **guardian** reprova PR sem label ou sem `Closes #N`
-(aviso se faltar milestone); relatório de fechamento de milestone.
+(avisa quando falta milestone ou assignee); relatório de fechamento de milestone.
 **O que é humano:** triagem, arraste `Ready → In Progress`, datas de
 release, fechamento do milestone (`gh api -X PATCH …/milestones/N -F state=closed`).
 
@@ -164,8 +166,14 @@ gh pr checks                   # guardian + CI
 
 ```bash
 gh pr view 5 --web
-gh pr merge 5 --merge          # card → Done; issue fechada por Closes #N
+gh pr merge 5 --merge --delete-branch   # card → Done; branch do trabalho removida
 ```
+
+> **`Closes #N` fecha sozinho apenas no PR contra a `main`** (branch padrão).
+> Nos PRs do dia a dia, que entram na `develop`, o GitHub só **referencia** a
+> issue — o fechamento é do mantenedor no merge:
+> `gh issue close 5 --comment "Fechada pelo PR #12 (merge abc1234)."`
+> (o comentário guarda a prova do que fechou a issue).
 
 ### Status da sprint / do milestone
 
@@ -197,7 +205,8 @@ gh api -X PATCH repos/lucascantarelli/gp-100-patch-architect/milestones/1 -F sta
   idempotente, revisável em diff); criação em runtime duplica a fonte e foge do
   diff. O guardian só **cobra**; o bootstrap **define**.
 - **Por que `Closes #N` no corpo e não autodetecção**: a keyword é o contrato
-  visível no diff do PR; o guardian valida o corpo, e o GitHub fecha sozinho.
+  visível no diff do PR; o guardian valida o corpo. Quem fecha a issue no merge
+  para a `develop` é o mantenedor (a keyword só atua na branch padrão).
 - **Segurança do workflow**: `permissions` no piso por job (o `GITHUB_TOKEN`
   nunca passa de `contents: read`; a escrita no board é do PAT do secret
   `PROJECT_TOKEN`), runner fixado (`ubuntu-24.04`), zero interpolação de

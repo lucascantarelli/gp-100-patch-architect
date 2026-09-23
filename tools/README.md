@@ -6,7 +6,7 @@ Utilitários Python (**Python 3.14 apenas** — política do projeto, guardada p
 
 ```bash
 # 1. Edite a fonte única (músicas, camadas, params, doc de guitarra, ajustes finos)
-#    → patches-defs.json
+#    → defs/ (_albums.json + um JSON por álbum)
 
 # 2. (Se baixou pack novo de IR) indexe a biblioteca
 python ir_library.py                        # tools/ir-library.json + reference/16-ir-library.md
@@ -37,8 +37,8 @@ python -m unittest discover -s tests -v
 | `defs_schema.py` | `python defs_schema.py` | **Validador acionável do defs** — campos obrigatórios, tipos, nome ≤ 12, ids únicos, gênero, params (Time em ms), momentos (nunca AMP/CAB), `ir_local` ↔ CAB usado. Cada erro aponta o caminho JSON e como corrigir. O `build_song_patches.py` chama `carregar_e_validar()` ao carregar o defs — fim do `KeyError` no meio do build. |
 | `chain.py` | — | SHIM de transição (issue #28/#33): re-exporta `gp100_architect.domain.chain` para os consumidores legados até a remoção do `tools/`. |
 | `gp100.py` | `python gp100.py find <termo>` · `show <NOME>` · `diff A B` · `export [--album ID] [--destino D]` · `build` · `verify` | **CLI unificada** — busca por música/artista/captador, resumo do patch (cadeia, params com nomes oficiais, momentos, IR), diff legível entre dois patches, cópia dos `.prst` para pasta de importação USB (prefixo = slot), pipeline completo e suíte. Leitura pura não escreve nada no repositório; `build`/`verify` só executam os scripts existentes. |
-| `build_song_patches.py` | `python build_song_patches.py` | **Construtor principal.** Lê `patches-defs.json` **validando-o primeiro** (`defs_schema.carregar_e_validar()`), escreve `patch.md` + `<NOME>.prst` (e o `spec.json` intermediário, não versionado) de cada patch em `patches/<Banda>/<Álbum>/<Música>/<NOME>/` e valida o resultado (XML conforme, nome ≤ 12 caracteres). Slots U01…Uxx calculados pela ordem global dos defs. |
-| `add_pulse_defs.py` | `python add_pulse_defs.py` | (Re)insere as 24 músicas / 38 patches do Pulse em `patches-defs.json`, na ordem do álbum — idempotente; já encadeia `add_momentos.py` no final. |
+| `build_song_patches.py` | `python build_song_patches.py` | **Construtor principal.** Lê o defs (`tools/defs/`, schema v2) **validando-o primeiro** (loader + validador do domínio), escreve `patch.md` + `<NOME>.prst` (spec in-memory — ADR-0013) de cada patch em `patches/<Banda>/<Álbum>/<Música>/<NOME>/` e valida o resultado (XML conforme, nome ≤ 12 caracteres). Slots U01…Uxx calculados pela ordem global do defs. |
+_(aposentados no schema v2, issue #8: `add_pulse_defs.py`, `add_wishkah_defs.py`, `add_santana_defs.py`, `add_momentos.py` — um álbum novo entra como fragmento em `defs/`, sem seeder)_
 | `add_momentos.py` | `python add_momentos.py` | Injeta os momentos de toggle por patch (seção "Modos de atuação"): valida contra o spec (só estado inverso), herda o delay do patch-irmão de solo para as bases e registra os SOBRESSALENTES. |
 | `generate_prst.py` | `python generate_prst.py <spec.json> <saída.prst>` | Gera **um** `.prst` no formato **single-patch, firmware 2.1** — réplica exata do export single que importou com sucesso no aparelho (sem `<ppIRInfo>`, com `<ppCtrl>`/`<ppEXP1>`, atributos na ordem exata, cadeia x=0–8). Valida nomes contra o catálogo fw 2.0. |
 | `gen_indexes.py` | `python gen_indexes.py` | Regenera os `MAPA-DO-ALBUM.md` de cada álbum e o `patches/README.md` **a partir do defs** (`albums`, `ir_local`, `pasta`/`display`) — tabelas música→patches, captador, IR recomendada e sequência de slots. `build_all()` é pura (monta o texto sem escrever) e `main()` só grava: é isso que a suíte usa para detectar índice defasado. |
@@ -51,7 +51,7 @@ python -m unittest discover -s tests -v
 
 | Arquivo | Papel |
 |---|---|
-| `patches-defs.json` | **Fonte única**: `meta`, `albums` (banda/ano/pasta/título/dossiê do rig), `ir_local` (captura recomendada por CAB) e `songs` (música, `pasta`/`display`, camadas, params, doc de guitarra, ajustes finos, momentos de toggle, notas de IR). Nenhum script guarda tabela própria de músicas/álbuns/cabs. |
+| `defs/` | **Fonte única** (schema v2, issue #8): `_albums.json` (chaves EM ORDEM — é dela que sai U01…Uxx) + um `<CHAVE>.json` por álbum com `idAlbum`, `album` (banda/ano/pasta/título/dossiê do rig), `ir_local?` (captura recomendada por CAB), `meta?` (só no 1º) e `songs` (música, `pasta`/`display`, camadas, params, doc de guitarra, ajustes finos, momentos de toggle, notas de IR). O nome do fragmento é a própria chave. Nenhum script guarda tabela própria de músicas/álbuns/cabs. |
 | `factory-catalog.json` | Catálogo empírico do firmware 2.0/2.1 (extraído do export de fábrica via `analyze_prst.py`) — base dos templates de params |
 | `ir-library.json` | Manifesto do banco local de IRs (gerado — não editar à mão) |
 

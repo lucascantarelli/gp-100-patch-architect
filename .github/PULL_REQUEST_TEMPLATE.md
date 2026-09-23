@@ -45,7 +45,7 @@ Closes #
       sincronia (pipeline numa cópia temporária × commitado)
 - [ ] `npx -y -p typescript@5.9.2 tsc --noEmit -p tsconfig.json` passa (se toquei em `.agents/`)
 - [ ] **Não editei à mão** arquivo gerado: `patches/**/*.prst`, `patch.md`,
-      `MAPA-DO-ALBUM.md`, `patches/README.md`, `tools/patches-defs.json`,
+      `MAPA-DO-ALBUM.md`, `patches/README.md`, `tools/defs/`,
       `tools/ir-library.json`, `reference/16-ir-library.md`
 - [ ] Se acrescentei um seeder, encadeei em `PIPELINE` (`tests/test_pipeline.py`) —
       seeder fora da lista não roda no guarda de sincronia

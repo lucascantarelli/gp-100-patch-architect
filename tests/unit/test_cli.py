@@ -53,7 +53,7 @@ def test_validate_reprova_defs_quebrado_com_codigo_1(tmp_path: Path):
     quebrado.write_text(json.dumps({'albums': {}, 'songs': [], 'ir_local': {}}), encoding='utf-8')
     resultado = runner.invoke(app, ['validate', str(quebrado)])
     assert resultado.exit_code == 1
-    assert 'problema(s) no patches-defs.json' in resultado.output
+    assert 'problema(s) no defs' in resultado.output
 
 
 def test_validate_aponta_arquivo_inexistente_com_erro_claro(tmp_path: Path):
@@ -62,12 +62,15 @@ def test_validate_aponta_arquivo_inexistente_com_erro_claro(tmp_path: Path):
 
 
 def test_validate_respeita_a_variante_de_ambiente(tmp_path: Path, monkeypatch: pytest.MonkeyPatch):
-    copia = tmp_path / 'defs.json'
-    copia.write_text((carregador.DEFS_PADRAO).read_text(encoding='utf-8'), encoding='utf-8')
+    """GP100_DEFS aponta para um DIRETÓRIO de fragmentos (schema v2, issue #8)."""
+    import shutil
+
+    copia = tmp_path / 'defs'
+    shutil.copytree(carregador.DEFS_PADRAO, copia, ignore=shutil.ignore_patterns('__pycache__'))
     monkeypatch.setenv(carregador.VAR_DEFS, str(copia))
     resultado = runner.invoke(app, ['validate'])
     assert resultado.exit_code == 0
-    assert 'defs.json válido' in resultado.stdout
+    assert 'defs válido' in resultado.stdout
 
 
 def test_sem_argumento_mostra_a_ajuda():

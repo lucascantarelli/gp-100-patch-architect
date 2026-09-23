@@ -100,8 +100,9 @@ class TestBuildRelease(unittest.TestCase):
         self.assertEqual(build_release.bump('1.2.3', 'patch'), '1.2.4')
 
     def test_collect_patches_espelha_o_defs(self):
-        defs = json.loads(
-            (ROOT / 'tools' / 'patches-defs.json').read_text(encoding='utf-8'))
+        sys.path.insert(0, str(ROOT / 'src'))
+        from gp100_architect.infrastructure.defs import carregar
+        defs = carregar(ROOT / 'tools' / 'defs')   # schema v2 (issue #8)
         items = build_release.collect_patches()
         n_definidos = sum(len(s['patches']) for s in defs['songs'])
         self.assertEqual(len(items), n_definidos)

@@ -53,7 +53,7 @@ O comportamento do agente é 100% definido por arquivos versionados nesta pasta 
 | **Skills de apoio** | `.agents/gp100-{tone-research,tone-mapper,ir-research,ir-fit,manual-reader,patch-validator}.ts` | Pesquisa de referência, mapeamento rig→GP-100, política de IRs, validação |
 | **Regras de ouro** | `knowledge.md` | Convenções do projeto (patches por música, nomenclatura, política de IR) |
 | **Base técnica** | `reference/00…17` | Manual V1.8 transcrito + catálogo empírico do firmware 2.0/2.1 |
-| **Persistência** | `tools/patches-defs.json` | Fonte única do patch: o pipeline (`build_song_patches.py`) gera `patch.md` e `.prst` a partir dele |
+| **Persistência** | `tools/defs/` (fragmentos por álbum, schema v2) | Fonte única do patch: `_albums.json` + um JSON por álbum; o pipeline (`build_song_patches.py`) gera `patch.md` e `.prst` a partir deles |
 | **Prompts prontos** | `prompts/*.md` | Fluxos de criação, ajuste, sugestão e pesquisa |
 
 ## 🚀 Como usar
@@ -85,7 +85,7 @@ Cada patch entrega:
 
 > **📡 Política de IR** — a seção exclusiva de cada `patch.md` segue sempre: **1.** o que o `.prst` usa agora (CAB de fábrica, funciona imediatamente) → **2.** captura melhor no banco local `impulse_responses/` (arquivo exato + slot User IR + passo a passo) → **3.** download gratuito na internet quando nem banco nem fábrica cobrem → **4.** fallback garantido no CAB de fábrica.
 
-> Fonte única dos patches: `tools/patches-defs.json` · regenerar com `python tools/build_song_patches.py` + `python tools/gen_indexes.py`.
+> Fonte única dos patches: `tools/defs/` (schema v2) · regenerar com `python tools/build_song_patches.py` + `python tools/gen_indexes.py`.
 
 ## 🗂️ Estrutura do projeto
 
@@ -129,7 +129,7 @@ Cada patch entrega:
 |---|---|---|
 | `gp100` (instalado) | `uv run gp100 validate` | **CLI oficial** (Typer + Rich) — hoje `validate` (valida o defs com relatório acionável) e `--version`; as famílias `setlist`, `find/show/diff`, `build/verify` e `release` chegam na 2.0 (PKG-004…007) |
 | `tools/gp100.py` | `python tools/gp100.py find <termo>` | **CLI legada** — `find` (busca por música/artista/captador), `show` (resumo do patch com cadeia e params), `diff` (compara dois patches), `export` (pasta de importação USB em ordem de slot), `build` e `verify`. Migra para a CLI oficial em PKG-005 |
-| `tools/build_song_patches.py` | `python tools/build_song_patches.py` | **Construtor principal** — a partir de `patches-defs.json`, gera `patch.md` + `.prst` via codec in-memory (ADR-0013) de todos os patches e valida (nome ≤ 12 chars, XML conforme) |
+| `tools/build_song_patches.py` | `python tools/build_song_patches.py` | **Construtor principal** — a partir de `tools/defs/`, gera `patch.md` + `.prst` via codec in-memory (ADR-0013) de todos os patches e valida (nome ≤ 12 chars, XML conforme) |
 | `tools/generate_prst.py` | `python tools/generate_prst.py spec.json saida.prst` | Gera **um** `.prst` single-patch fw 2.1 — réplica exata do formato single validado no aparelho (sem `<ppIRInfo>`, com `<ppCtrl>`/`<ppEXP1>`, cadeia x=0–8) |
 | `tools/render_manual_page.py` | `python tools/render_manual_page.py 21 [22 …] · --all` | Renderiza páginas do `manual.pdf` **sob demanda** (PNG alta + JPG leve em `manual_pages/`, efêmero) — página impressa NN = arquivo NN+2 |
 | `tools/gen_indexes.py` | `python tools/gen_indexes.py` | Regenera os `MAPA-DO-ALBUM.md` e o `patches/README.md` — slots U01…Uxx calculados pela ordem dos defs |
@@ -140,7 +140,7 @@ Cada patch entrega:
 | `tools/gen_changelog.py` | `python tools/gen_changelog.py [--version X.Y.Z] [--write]` | **Changelog derivado dos commits** (Conventional Commits): agrupa por tipo, isola breaking changes e sugere o bump SemVer |
 | `.github/scripts/audit_workflows.py` | `python .github/scripts/audit_workflows.py` | **Guarda dos workflows** — reprova permissões ausentes ou ACIMA DO TETO declarado por arquivo, job sem `timeout`, injeção em `run:` e `pull_request_target`; avisa sobre Action não fixada por SHA |
 
-**Cadeia típica ao acrescentar um álbum:** edite `tools/patches-defs.json` → `build_song_patches.py` → `gen_indexes.py` → **rode a suíte de testes** (ela inclui o guarda de sincronia). **Baixou packs de IR?** Extraia em `impulse_responses/<Pack>/` → rode `ir_library.py`. Downloads recomendados: [`reference/17-free-ir-packs.md`](reference/17-free-ir-packs.md).
+**Cadeia típica ao acrescentar um álbum:** crie `tools/defs/<CHAVE>.json` (e declare a chave em `_albums.json`) → `build_song_patches.py` → `gen_indexes.py` → **rode a suíte de testes** (ela inclui o guarda de determinismo). **Baixou packs de IR?** Extraia em `impulse_responses/<Pack>/` → rode `ir_library.py`. Downloads recomendados: [`reference/17-free-ir-packs.md`](reference/17-free-ir-packs.md).
 
 > **Acrescentou elemento novo?** (música, camada, patch, efeito, momento de toggle, pack de IR) O pipeline inteiro é obrigatório, e o guarda de sincronia da suíte reprova o PR que esquecer:
 >
@@ -153,7 +153,7 @@ Cada patch entrega:
 
 ### 📍 Fonte única de dados
 
-Tudo que descreve uma música, um álbum ou uma IR vive **só** em `tools/patches-defs.json` (`albums` → banda/ano/pasta/título/dossiê do rig · `ir_local` → captura recomendada por CAB · cada música → `song`, `pasta`, `display`, patches). Os scripts são renderizadores: nenhum deles tem lista de músicas ou de cabs. Foi a duplicação dessas tabelas que fez o mapa do álbum recomendar "fábrica" enquanto o `patch.md` mandava carregar uma IR do banco nos 38 patches do Pulse — hoje o teste `TestB_FonteUnica_IR` reprova isso.
+Tudo que descreve uma música, um álbum ou uma IR vive **só** em `tools/defs/` (`albums` → banda/ano/pasta/título/dossiê do rig · `ir_local` → captura recomendada por CAB · cada música → `song`, `pasta`, `display`, patches). Os scripts são renderizadores: nenhum deles tem lista de músicas ou de cabs. Foi a duplicação dessas tabelas que fez o mapa do álbum recomendar "fábrica" enquanto o `patch.md` mandava carregar uma IR do banco nos 38 patches do Pulse — hoje o teste `TestB_FonteUnica_IR` reprova isso.
 
 ## ✅ Qualidade — o que o CI garante
 
@@ -254,7 +254,7 @@ Um patch "genérico de Pink Floyd" não tem a informação que faz a diferença.
 É a instrução de ligar/desligar um módulo **em tempo real** (painel ou modo STOMP)
 durante a música — por exemplo, um patch de base com DLY sobressalente vira solo ao
 ligar o eco, sem trocar de patch. Os momentos vivem em `doc.momentos` no
-`tools/patches-defs.json` e são validados pelos testes `TestE_Momentos`.
+`tools/defs/` e são validados pelos testes `TestE_Momentos`.
 
 **O projeto tem dependências?**
 Não. Os scripts usam só a biblioteca padrão do Python; o TypeScript dos agentes é baixado

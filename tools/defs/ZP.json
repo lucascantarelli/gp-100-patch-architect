@@ -1,0 +1,324 @@
+{
+  "idAlbum": "ZP",
+  "album": {
+    "banda": "Frank Zappa",
+    "album": "Apostrophe (')",
+    "ano": 1974,
+    "display": "Apostrophe (’) (1974)",
+    "pasta": "Frank Zappa/Apostrophe (1974)",
+    "rig": "## 📚 Rig real (fontes)\n\n- **Tony Duran**: slide/rhythm guitar (créditos de Apostrophe ('); MusicBrainz) — brilho agudo com ataque crocante.\n- **Frank Zappa**: solos cirúrgicos e secos (Rock & Roll Globe: \"scalpel-sharp guitar solos\") — sem reverb, médios à frente.\n- **George Duke**: piano elétrico e clavinet preenchendo o meio (co-autor da faixa).\n- Sessões: basic track 1972 (Paramount Studios, LA) + overdubs 1973–74.\n- 📖 Fontes: Rock & Roll Globe (\"How Frank Zappa Embraced the Mainstream with Apostrophe (')\", 2024) · MusicBrainz (créditos) · Wikipedia (Apostrophe ('))."
+  },
+  "songs": [
+    {
+      "id": "URM01",
+      "song": "Uncle Remus",
+      "idAlbum": "ZP",
+      "bpm": 96,
+      "resumo": "Sátira de Zappa/Duke sobre promessas vazias: base brilhante de slide de Tony Duran sobre piano de George Duke e os solos cirúrgicos e SECOS do próprio Zappa. Basic track nas sessões de 1972 (Paramount, LA), overdubs 73-74.",
+      "referencias": [
+        {
+          "role": "Tony Duran: slide/rhythm guitar (brilho agudo, ataque crocante)",
+          "conf": "alta",
+          "ev": "créditos oficiais do álbum (slide guitarist)",
+          "src": "MusicBrainz — Apostrophe (')"
+        },
+        {
+          "role": "Frank Zappa: solos cirúrgicos e secos, sem reverb",
+          "conf": "alta",
+          "ev": "'Zappa's scalpel-sharp guitar solos' — e a prática de produção dele de solo seco",
+          "src": "Rock & Roll Globe — Apostrophe (') 50 anos (2024)"
+        },
+        {
+          "role": "George Duke: piano/co-autoria preenchendo o meio",
+          "conf": "alta",
+          "ev": "co-writer e tecladista da sessão",
+          "src": "Rock & Roll Globe + Wikipedia"
+        },
+        {
+          "role": "Sessões: basic track 1972 (Paramount Studios, LA) + overdubs 73/74",
+          "conf": "média",
+          "ev": "cronologia das sessões do álbum",
+          "src": "Frank Zappa Lyrics Book / análises de sessão"
+        }
+      ],
+      "patches": [
+        {
+          "camada": "Slide (base)",
+          "sufixo": "SL",
+          "nome": "URM01SL",
+          "emoji": "🛞",
+          "timbre": "Slide de Duran: brilho agudo crocante com sustain de vidro — Twin estufado + comprimido",
+          "spec": {
+            "name": "URM01SL",
+            "type": "Blues",
+            "bpm": 96,
+            "volume": 60,
+            "ir_slot": null,
+            "modules": {
+              "PRE": {
+                "name": "COMP4",
+                "on": true,
+                "params": {
+                  "0": 40,
+                  "1": 55,
+                  "2": 60,
+                  "3": 62
+                }
+              },
+              "DST": {
+                "name": "Blues OD",
+                "on": true,
+                "params": {
+                  "0": 40,
+                  "1": 70,
+                  "2": 62
+                }
+              },
+              "AMP": {
+                "name": "Dark Twin",
+                "on": true,
+                "params": {
+                  "0": 64,
+                  "1": 60,
+                  "2": 48,
+                  "3": 55,
+                  "4": 62,
+                  "5": 0
+                }
+              },
+              "NR": {
+                "name": "Gate 1",
+                "on": true,
+                "params": {
+                  "0": 26
+                }
+              },
+              "CAB": {
+                "name": "DarkTW 2x12",
+                "on": true,
+                "params": {
+                  "0": 75,
+                  "1": 55
+                }
+              },
+              "EQ": {
+                "name": "EQ 1",
+                "on": true,
+                "params": {
+                  "0": 0,
+                  "1": 2,
+                  "2": 1,
+                  "5": 50
+                }
+              },
+              "MOD": {
+                "name": "A-Chorus",
+                "on": false
+              },
+              "DLY": {
+                "name": "Sweet",
+                "on": false
+              },
+              "RVB": {
+                "name": "Plate",
+                "on": true,
+                "params": {
+                  "0": 30,
+                  "1": 40,
+                  "2": 50,
+                  "3": 1
+                }
+              }
+            }
+          },
+          "doc": {
+            "guitarra": {
+              "seletor": "Posição 1 — bridge (brilho para o slide cortar)",
+              "seletorCurto": "bridge",
+              "volume": "9",
+              "tone": "8–9 (aberto)",
+              "receita": "SLIDE na 4ª/5ª corda · Seletor 1 (bridge) · Volume 9 · Tone 8–9",
+              "tecnicas": [
+                "Slide de tubo/porcelana na 4ª–5ª corda, paralelo ao traste, pressão leve",
+                "Vibrato de SLIDE (empurre o tubo atrás da nota, não com os dedos) — é o 'choro' da base",
+                "Sincronize com a mão direita: as notas de slide devem nascer LIMPAS, o crocante vem do amp"
+              ]
+            },
+            "comoTocar": [
+              "Frases de slide respondendo o vocal nas pausas do piano",
+              "Mantenha as notas longas e conectadas (legato de tubo)"
+            ],
+            "teste": {
+              "riff": "base + respostas de slide entre as frases do vocal",
+              "drum": "Soul/Funk 96 BPM",
+              "escutar": [
+                "brilho crocante sem estridência",
+                "sustain de vidro nas notas longas",
+                "nada de lama no conjunto"
+              ]
+            },
+            "ajustes": [
+              "estridente → CAB High Cut 60 ou Tone da guitarra -1",
+              "slide sem sustain → COMP4 Thresh +5",
+              "crocante demais → DST Gain -3"
+            ],
+            "evite": [
+              "Reverb longo — a produção de Zappa é seca até na base",
+              "Slide com Tone fechado — mata o efeito 'vidro'"
+            ],
+            "irNota": "Recomendada: American Twin 2x12 Medium Mix (User IR 1) — é o Twin real da sessão (Low Cut 5 · High Cut 9000 · Level 0).",
+            "slotSugestao": "U21",
+            "momentos": [
+              {
+                "nome": "Solo seco de Zappa",
+                "mods": [
+                  [
+                    "RVB",
+                    "OFF"
+                  ]
+                ],
+                "quando": "A produção de Zappa é seca até na base — para frases à frente do vocal, desligue o Plate.",
+                "dica": ""
+              }
+            ]
+          }
+        },
+        {
+          "camada": "Solo",
+          "sufixo": "SO",
+          "nome": "URM01SO",
+          "emoji": "🔪",
+          "timbre": "Solo do Zappa: cirúrgico, seco, médios à frente — Super OD + Marshall JTM45, zero reverb",
+          "spec": {
+            "name": "URM01SO",
+            "type": "Rock",
+            "bpm": 96,
+            "volume": 62,
+            "ir_slot": null,
+            "modules": {
+              "PRE": {
+                "name": "COMP",
+                "on": false
+              },
+              "DST": {
+                "name": "Super OD",
+                "on": true,
+                "params": {
+                  "0": 62,
+                  "1": 58,
+                  "2": 66
+                }
+              },
+              "AMP": {
+                "name": "UK 45",
+                "on": true,
+                "params": {
+                  "0": 66,
+                  "1": 60,
+                  "2": 60,
+                  "3": 50,
+                  "4": 62,
+                  "5": 58
+                }
+              },
+              "NR": {
+                "name": "Gate 1",
+                "on": true,
+                "params": {
+                  "0": 28
+                }
+              },
+              "CAB": {
+                "name": "UK-GN 2x12",
+                "on": true,
+                "params": {
+                  "0": 75,
+                  "1": 55
+                }
+              },
+              "EQ": {
+                "name": "EQ 1",
+                "on": true,
+                "params": {
+                  "0": -1,
+                  "1": 3,
+                  "2": 0,
+                  "5": 50
+                }
+              },
+              "MOD": {
+                "name": "A-Chorus",
+                "on": false
+              },
+              "DLY": {
+                "name": "Sweet",
+                "on": false
+              },
+              "RVB": {
+                "name": "Room",
+                "on": true,
+                "params": {
+                  "0": 20,
+                  "1": 19,
+                  "2": 31,
+                  "3": 0
+                }
+              }
+            }
+          },
+          "doc": {
+            "guitarra": {
+              "seletor": "Posição 1 — bridge (articulação para frases rápidas)",
+              "seletorCurto": "bridge",
+              "volume": "10",
+              "tone": "8",
+              "receita": "Seletor 1 (bridge) · Volume 10 · Tone 8",
+              "tecnicas": [
+                "Frases curtas e angulares com espaços — o solo do Zappa 'fala', não canta",
+                "Dobles de parada (staccato) com palheta firme; trémolo seco onde a frase exige",
+                "NADA de sustains longos: a assinatura é a precisão rítmica, deixe o silêncio trabalhar"
+              ]
+            },
+            "comoTocar": [
+              "Solo responde a harmonia soul/gospel da faixa com frases blues-rock afiadas",
+              "Comece frases no contratempo — é o jeito Zappa de surpreender"
+            ],
+            "teste": {
+              "riff": "solo central da faixa (após o 2º refrão)",
+              "drum": "Rock 96 BPM",
+              "escutar": [
+                "cada nota seca e definida",
+                "médios cortando a mix",
+                "reverb praticamente inexistente"
+              ]
+            },
+            "ajustes": [
+              "gordo demais → Super OD Drive -4",
+              "sem mordida → EQ Mid +4",
+              "com 'eco' → RVB OFF (a referência é seca)"
+            ],
+            "evite": [
+              "Reverb/delay audíveis — Zappa mixava o solo SECO",
+              "Vibrato largo — a expressão dele vem do ritmo, não do bend"
+            ],
+            "irNota": "Recomendada: British Straight 4x12 Medium Mix (User IR 2) — o Marshall da era (Low Cut 5 · High Cut 8000 · Level 0).",
+            "slotSugestao": "U22"
+          }
+        }
+      ],
+      "banda": "Frank Zappa",
+      "album": "Apostrophe (')",
+      "ano": 1974
+    }
+  ],
+  "ir_local": {
+    "DarkTW 2x12": {
+      "captura": "American Twin 2x12",
+      "slot": "User IR 1"
+    },
+    "UK-GN 2x12": {
+      "captura": "British Straight 4x12",
+      "slot": "User IR 4"
+    }
+  }
+}

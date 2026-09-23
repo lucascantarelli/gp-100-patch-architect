@@ -14,7 +14,7 @@ Uso:
   python tools/gp100_setlist.py ... --out cola.md               # grava arquivo
 
 Fontes (nenhuma duplicada aqui):
-  tools/patches-defs.json — músicas, patches, cadeias (spec.modules) e docs
+  tools/defs/             — fragmentos por álbum (schema v2, issue #8)
   tools/gen_indexes.py    — slot_map (numeração U01… contínua, a mesma do
                             MAPA-DO-ALBUM e dos índices; nunca recalcular)
   gp100_architect.domain.setlist — assinatura, distância, otimizador e dif
@@ -30,7 +30,7 @@ if hasattr(sys.stdout, 'reconfigure'):  # console Windows cp1252 -> UTF-8
     sys.stdout.reconfigure(encoding='utf-8', errors='replace')
 
 ROOT = Path(__file__).resolve().parent.parent
-DEFS_FILE = ROOT / 'tools' / 'patches-defs.json'
+DEFS_FILE = ROOT / 'tools' / 'defs'     # schema v2 (issue #8): diretório de fragmentos
 sys.path.insert(0, str(ROOT / 'tools'))
 sys.path.insert(0, str(ROOT / 'src'))
 

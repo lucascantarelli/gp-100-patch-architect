@@ -123,20 +123,28 @@ jobs:
 
       # Nada sai daqui sem passar no que o CI exige — e a suíte já inclui o
       # guarda de sincronia (TestH: pipeline numa cópia temporária × commitado).
-      - name: 1/4 · Suíte de testes (a mesma do CI, com o guarda de sincronia)
+      - name: 1/5 · Construir os derivados (patches/** não é mais commitado — #8)
+        env:
+          GP100_BUILD_TIME: '1700000000000'
+        run: |
+          python tools/ir_library.py
+          python tools/build_song_patches.py
+          python tools/gen_indexes.py
+
+      - name: 2/5 · Suíte de testes (a mesma do CI, com o guarda de determinismo)
         run: |
           python -m py_compile tools/*.py tests/*.py
           python -m unittest discover -s tests -v
 
-      - name: 2/4 · Empacotar ZIPs + notas (dist/)
+      - name: 3/5 · Empacotar ZIPs + notas (dist/)
         run: python tools/build_release.py "$VERSAO"
 
-      - name: 3/4 · Seção do CHANGELOG desta versão
+      - name: 4/5 · Seção do CHANGELOG desta versão
         run: |
           python tools/gen_changelog.py --version "$VERSAO" --out dist/changelog-section.md
           cat dist/changelog-section.md
 
-      - name: 4/4 · Publicar (tagueia se preciso)
+      - name: 5/5 · Publicar (tagueia se preciso)
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |

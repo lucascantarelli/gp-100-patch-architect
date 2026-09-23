@@ -23,14 +23,14 @@ const definition: AgentDefinition = {
 
 FONTES — nesta ordem de precedência:
 1. tools/gp100_setlist.py — a ÚNICA fonte do cálculo (ordem, slots, trocas). Slots vêm do slot_map de tools/gen_indexes.py, a mesma numeração U01… do MAPA-DO-ALBUM; nunca recalcule nem "corrija" um slot.
-2. tools/patches-defs.json — músicas, patches, seções (sufixos RI/BA/SO/CL…) e docs (teste/comoTocar) para enriquecer a cola.
+2. O defs (tools/defs/) — músicas, patches, seções (sufixos RI/BA/SO/CL…) e docs (teste/comoTocar) para enriquecer a cola.
 3. knowledge.md — regras compartilhadas do projeto.
 
 O slot de IR é decisão do músico no device (User IR 1–20): a cola referencia o arquivo do banco IR e a anotação dele, nunca um slot fixo.`,
   instructionsPrompt: `Tarefa: montar a cola de palco do repertório pedido.
 
 Passos:
-1. Leia tools/patches-defs.json para confirmar músicas, seções e docs; se o pedido citar música inexistente, ofereça as mais próximas (--list ajuda).
+1. Leia o defs (tools/defs/) para confirmar músicas, seções e docs; se o pedido citar música inexistente, ofereça as mais próximas (--list ajuda).
 2. Rode a CLI (adapte o repertório; seções com MUSICA:SUFIXO):
    python tools/gp100_setlist.py "Come Together" "Money" "Smooth"
    Flags úteis: --keep-order (respeitar ordem do show), --title "Nome do show", --out cola-do-show.md.

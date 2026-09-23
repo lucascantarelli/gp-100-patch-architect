@@ -1,0 +1,5297 @@
+{
+  "idAlbum": "PL",
+  "album": {
+    "banda": "Pink Floyd",
+    "album": "Pulse (live)",
+    "ano": 1995,
+    "display": "Pulse (1995)",
+    "pasta": "Pink Floyd/Pulse (1995)",
+    "rig": "## 📚 Rig real da turnê (fontes)\n\n- **David Gilmour 1994**: Hiwatt **DR103** + preamp Alembic F-2B → WEM Starfinder 4x12 (Fane) **+ Marshall 4x12**; Yamaha RA-200 (rotary) na base limpa.\n- **Pedalboard**: Boss CS-2/DynaComp (compressão) · BK Butler Tube Driver (overdrive) · Big Muff \"Civil War\" (fuzz) · Electric Mistress (flanger) · Uni-Vibe · Boss CE-2 (chorus) · Tremulator · GE-7 · delays TC 2290 + PCM-70 (efeito Binson Echorec).\n- **Tim Geaney / Chester Kamen**: guitarras base nos refrões e camadas rítmicas.\n- Assinaturas: solos com **delay duração da nota** (1 repetição), espaço entre as frases, **sem speed** — a mão fala.\n- 📖 Fontes: gilmourish.com (seção Division Bell Tour 1994 — equipamento confirmado faixa a faixa) · Wikipedia (Pulse, 1995) · Discogs (tracklist)."
+  },
+  "songs": [
+    {
+      "id": "SOF01",
+      "song": "Shine On You Crazy Diamond",
+      "idAlbum": "PL",
+      "bpm": 60,
+      "resumo": "A assinatura: intro com delay a cada nota (assinatura absoluta), base AOR e solo final.",
+      "referencias": [
+        {
+          "role": "Intro: delay a cada nota tocada (assinatura); solo final com TD",
+          "conf": "alta",
+          "src": "Pulse (1995) · gilmourish.com"
+        },
+        {
+          "role": "Rig 1994: Hiwatt DR103 + Alembic F-2B + WEM/Marshall 4x12 + pedalboard completo",
+          "conf": "alta",
+          "src": "gilmourish.com — Division Bell Tour"
+        }
+      ],
+      "patches": [
+        {
+          "camada": "Intro Eco",
+          "sufixo": "EC",
+          "nome": "SOF01EC",
+          "emoji": "💠",
+          "timbre": "A intro icônica: cada nota ecoa uma vez — o delay É o riff (toque a cada 2 tempos)",
+          "spec": {
+            "name": "SOF01EC",
+            "type": "Rock",
+            "bpm": 120,
+            "volume": 60,
+            "ir_slot": null,
+            "modules": {
+              "PRE": {
+                "name": "Boost",
+                "on": false,
+                "params": {}
+              },
+              "DST": {
+                "name": "Blues OD",
+                "on": false,
+                "params": {}
+              },
+              "AMP": {
+                "name": "Knights CL",
+                "on": true,
+                "params": {
+                  "0": 38,
+                  "1": 62,
+                  "2": 62,
+                  "3": 48,
+                  "4": 52
+                }
+              },
+              "NR": {
+                "name": "Gate 1",
+                "on": false,
+                "params": {}
+              },
+              "CAB": {
+                "name": "UK-LD 4x12",
+                "on": true,
+                "params": {
+                  "0": 78,
+                  "1": 62
+                }
+              },
+              "EQ": {
+                "name": "EQ 1",
+                "on": false,
+                "params": {}
+              },
+              "MOD": {
+                "name": "A-Chorus",
+                "on": false,
+                "params": {}
+              },
+              "DLY": {
+                "name": "Sweet",
+                "on": true,
+                "params": {
+                  "0": 25,
+                  "1": 530,
+                  "2": 26
+                }
+              },
+              "RVB": {
+                "name": "Hall",
+                "on": true,
+                "params": {
+                  "0": 35,
+                  "1": 45,
+                  "2": 50,
+                  "3": 1
+                }
+              }
+            }
+          },
+          "doc": {
+            "guitarra": {
+              "seletor": "Posição 2 (middle+bridge)",
+              "seletorCurto": "middle+bridge",
+              "volume": "9",
+              "tone": "8",
+              "receita": "SELETOR 2 · Volume 9 · Tone 8",
+              "tecnicas": [
+                "Toque a nota e CONTE 2 tempos antes da próxima",
+                "Bend na 4ª corda com vibrato lento",
+                "O volume da guitarra controla o brilho do eco"
+              ]
+            },
+            "comoTocar": [],
+            "teste": {
+              "riff": "intro inteira (parte I)",
+              "drum": "AOR lento",
+              "escutar": [
+                "cada nota ecoada uma vez",
+                "espaço entre as notas preenchido pelo eco"
+              ]
+            },
+            "ajustes": [
+              "eco embolando → toque mais devagar",
+              "eco baixo → DLY Mix +5"
+            ],
+            "evite": [
+              "Tocar a intro de forma corrida — o delay pede pausa entre as notas"
+            ],
+            "irNota": "Recomendada: British Straight 4x12 Medium Mix (User IR 4) — o 4x12 britânico da pilha de 1994 (Low Cut 4 · High Cut 8500 · Level 0).",
+            "momentos": [
+              {
+                "nome": "Base seca (partes cantadas)",
+                "mods": [
+                  [
+                    "DLY",
+                    "OFF"
+                  ]
+                ],
+                "quando": "Entre a intro e os solos, toque os acordes sem eco.",
+                "dica": "Religue o DLY para voltar ao som da intro."
+              }
+            ]
+          }
+        },
+        {
+          "camada": "Base",
+          "sufixo": "BA",
+          "nome": "SOF01BA",
+          "emoji": "🔷",
+          "timbre": "Base AOR: acordes abertos com brilho e espaço — o colchão das partes cantadas",
+          "spec": {
+            "name": "SOF01BA",
+            "type": "Rock",
+            "bpm": 120,
+            "volume": 60,
+            "ir_slot": null,
+            "modules": {
+              "PRE": {
+                "name": "Boost",
+                "on": false,
+                "params": {}
+              },
+              "DST": {
+                "name": "Blues OD",
+                "on": false,
+                "params": {}
+              },
+              "AMP": {
+                "name": "Knights CL",
+                "on": true,
+                "params": {
+                  "0": 38,
+                  "1": 62,
+                  "2": 62,
+                  "3": 48,
+                  "4": 52
+                }
+              },
+              "NR": {
+                "name": "Gate 1",
+                "on": false,
+                "params": {}
+              },
+              "CAB": {
+                "name": "UK-LD 4x12",
+                "on": true,
+                "params": {
+                  "0": 78,
+                  "1": 62
+                }
+              },
+              "EQ": {
+                "name": "EQ 1",
+                "on": false,
+                "params": {}
+              },
+              "MOD": {
+                "name": "A-Chorus",
+                "on": false,
+                "params": {}
+              },
+              "DLY": {
+                "name": "Sweet",
+                "on": false,
+                "params": {
+                  "0": 25,
+                  "1": 530,
+                  "2": 26
+                }
+              },
+              "RVB": {
+                "name": "Hall",
+                "on": true,
+                "params": {
+                  "0": 38,
+                  "1": 45,
+                  "2": 50,
+                  "3": 1
+                }
+              }
+            }
+          },
+          "doc": {
+            "guitarra": {
+              "seletor": "Posição 4 (middle+neck)",
+              "seletorCurto": "middle+neck",
+              "volume": "8",
+              "tone": "8",
+              "receita": "SELETOR 4 · Volume 8 · Tone 8",
+              "tecnicas": [
+                "Acordes abertos com palhetada suave",
+                "Deixe os acordes soar completos"
+              ]
+            },
+            "comoTocar": [],
+            "teste": {
+              "riff": "acordes das partes cantadas",
+              "drum": "AOR lento",
+              "escutar": [
+                "acordes abertos respirando",
+                "brilho sem dureza"
+              ]
+            },
+            "ajustes": [
+              "muito brilho → CAB High Cut -5",
+              "seco → RVB decay +5"
+            ],
+            "evite": [
+              "Crunch na base: as partes cantadas pedem limpo"
+            ],
+            "irNota": "Recomendada: British Straight 4x12 Medium Mix (User IR 4) — o 4x12 britânico da pilha de 1994 (Low Cut 4 · High Cut 8500 · Level 0).",
+            "momentos": [
+              {
+                "nome": "Solo (com eco)",
+                "mods": [
+                  [
+                    "DLY",
+                    "ON"
+                  ]
+                ],
+                "quando": "Frases entre os acordes: ligue e você tem o eco do solo sem trocar de patch.",
+                "dica": ""
+              }
+            ]
+          }
+        },
+        {
+          "camada": "Solo",
+          "sufixo": "SO",
+          "nome": "SOF01SO",
+          "emoji": "💎",
+          "timbre": "Solo final: Tube Driver quente com delay — a despedida de Syd em frases largas",
+          "spec": {
+            "name": "SOF01SO",
+            "type": "Rock",
+            "bpm": 120,
+            "volume": 60,
+            "ir_slot": null,
+            "modules": {
+              "PRE": {
+                "name": "Saturate",
+                "on": true,
+                "params": {
+                  "0": 50,
+                  "1": 60,
+                  "2": 62
+                }
+              },
+              "DST": {
+                "name": "Blues OD",
+                "on": false,
+                "params": {}
+              },
+              "AMP": {
+                "name": "Flagman",
+                "on": true,
+                "params": {
+                  "0": 50,
+                  "1": 58,
+                  "2": 64,
+                  "3": 50,
+                  "4": 55,
+                  "5": 58
+                }
+              },
+              "NR": {
+                "name": "Gate 1",
+                "on": true,
+                "params": {
+                  "0": 30
+                }
+              },
+              "CAB": {
+                "name": "UK-LD 4x12",
+                "on": true,
+                "params": {
+                  "0": 78,
+                  "1": 62
+                }
+              },
+              "EQ": {
+                "name": "EQ 1",
+                "on": false,
+                "params": {}
+              },
+              "MOD": {
+                "name": "A-Chorus",
+                "on": false,
+                "params": {}
+              },
+              "DLY": {
+                "name": "Sweet",
+                "on": true,
+                "params": {
+                  "0": 20,
+                  "1": 530,
+                  "2": 28
+                }
+              },
+              "RVB": {
+                "name": "Hall",
+                "on": true,
+                "params": {
+                  "0": 38,
+                  "1": 45,
+                  "2": 50,
+                  "3": 1
+                }
+              }
+            }
+          },
+          "doc": {
+            "guitarra": {
+              "seletor": "Posição 2 (middle+bridge)",
+              "seletorCurto": "middle+bridge",
+              "volume": "10",
+              "tone": "9",
+              "receita": "SELETOR 2 · Volume 10 · Tone 9",
+              "tecnicas": [
+                "Frases melódicas largas com bend longo",
+                "Espaço entre frases — o delay responde"
+              ]
+            },
+            "comoTocar": [],
+            "teste": {
+              "riff": "solo final (parte IX)",
+              "drum": "AOR lento",
+              "escutar": [
+                "frases largas com sustain",
+                "eco preenchendo os espaços"
+              ]
+            },
+            "ajustes": [
+              "falta sustain → PRE +5",
+              "afogado → RVB mix -5"
+            ],
+            "evite": [
+              "Corridas rápidas: o solo é melódico, com espaço"
+            ],
+            "irNota": "Recomendada: British Straight 4x12 Medium Mix (User IR 4) — o 4x12 britânico da pilha de 1994 (Low Cut 4 · High Cut 8500 · Level 0).",
+            "momentos": [
+              {
+                "nome": "Base seca",
+                "mods": [
+                  [
+                    "DLY",
+                    "OFF"
+                  ]
+                ],
+                "quando": "Refrões/acordes — eco some, sobra o sustain do amp.",
+                "dica": ""
+              }
+            ]
+          }
+        }
+      ],
+      "banda": "Pink Floyd",
+      "album": "Pulse (live)",
+      "ano": 1995
+    },
+    {
+      "id": "AD01",
+      "song": "Astronomy Domine",
+      "idAlbum": "PL",
+      "bpm": 100,
+      "resumo": "Syd Barrett (1967) revisitado ao vivo: guitarra de eco metálico — o delay é instrumento.",
+      "referencias": [
+        {
+          "role": "Versão Pulse: solo com eco curto repetido, estilo Space Echo",
+          "conf": "alta",
+          "src": "Pulse (1995) · gilmourish.com"
+        },
+        {
+          "role": "Rig 1994: Hiwatt DR103 + Alembic F-2B + WEM/Marshall 4x12 + pedalboard completo",
+          "conf": "alta",
+          "src": "gilmourish.com — Division Bell Tour"
+        }
+      ],
+      "patches": [
+        {
+          "camada": "Base/Eco",
+          "sufixo": "EC",
+          "nome": "AD01EC",
+          "emoji": "🛰️",
+          "timbre": "Base com eco curto: o repetidor faz o ritmo — limpo crocante estilo Syd",
+          "spec": {
+            "name": "AD01EC",
+            "type": "Rock",
+            "bpm": 120,
+            "volume": 60,
+            "ir_slot": null,
+            "modules": {
+              "PRE": {
+                "name": "Boost",
+                "on": false,
+                "params": {}
+              },
+              "DST": {
+                "name": "Blues OD",
+                "on": false,
+                "params": {}
+              },
+              "AMP": {
+                "name": "Knights CL",
+                "on": true,
+                "params": {
+                  "0": 42,
+                  "1": 62,
+                  "2": 62,
+                  "3": 48,
+                  "4": 52
+                }
+              },
+              "NR": {
+                "name": "Gate 1",
+                "on": true,
+                "params": {
+                  "0": 26
+                }
+              },
+              "CAB": {
+                "name": "UK-LD 4x12",
+                "on": true,
+                "params": {
+                  "0": 78,
+                  "1": 62
+                }
+              },
+              "EQ": {
+                "name": "EQ 1",
+                "on": false,
+                "params": {}
+              },
+              "MOD": {
+                "name": "A-Chorus",
+                "on": false,
+                "params": {}
+              },
+              "DLY": {
+                "name": "Sweet",
+                "on": true,
+                "params": {
+                  "0": 30,
+                  "1": 180,
+                  "2": 22
+                }
+              },
+              "RVB": {
+                "name": "Room",
+                "on": true,
+                "params": {
+                  "0": 22,
+                  "1": 20,
+                  "2": 31,
+                  "3": 0
+                }
+              }
+            }
+          },
+          "doc": {
+            "guitarra": {
+              "seletor": "Posição 2 (middle+bridge)",
+              "seletorCurto": "middle+bridge",
+              "volume": "9",
+              "tone": "8-9",
+              "receita": "SELETOR 2 · Volume 9 · Tone 8-9",
+              "tecnicas": [
+                "Ataques curtos e secos — o delay cria o padrão rítmico",
+                "Experimente tocar ENTRE as batidas do eco"
+              ]
+            },
+            "comoTocar": [],
+            "teste": {
+              "riff": "riffs de eco entre os acordes",
+              "drum": "Rock espacial",
+              "escutar": [
+                "eco curto repetindo o ataque",
+                "crocante sem sumir na lama"
+              ]
+            },
+            "ajustes": [
+              "eco embolando → DLY Fdbk -8",
+              "falta mordida → Knights CL Gain +5"
+            ],
+            "evite": [
+              "Reverb longo no riff — o espaço vem do delay curto"
+            ],
+            "irNota": "Recomendada: British Straight 4x12 Medium Mix (User IR 4) — o 4x12 britânico da pilha de 1994 (Low Cut 4 · High Cut 8500 · Level 0)."
+          }
+        }
+      ],
+      "banda": "Pink Floyd",
+      "album": "Pulse (live)",
+      "ano": 1995
+    },
+    {
+      "id": "WDF01",
+      "song": "What Do You Want From Me",
+      "idAlbum": "PL",
+      "bpm": 110,
+      "resumo": "Blues rock direto: base com crunch e um dos solos mais 'SRV' do Gilmour.",
+      "referencias": [
+        {
+          "role": "Base crunch + solo bluesy com bend largo e vibrato largo",
+          "conf": "alta",
+          "src": "Pulse (1995) · gilmourish.com"
+        },
+        {
+          "role": "Rig 1994: Hiwatt DR103 + Alembic F-2B + WEM/Marshall 4x12 + pedalboard completo",
+          "conf": "alta",
+          "src": "gilmourish.com — Division Bell Tour"
+        }
+      ],
+      "patches": [
+        {
+          "camada": "Base",
+          "sufixo": "BA",
+          "nome": "WDF01BA",
+          "emoji": "🎸",
+          "timbre": "Base de crunch: Tube Driver leve empurrando o Hiwatt — o som de acorde que anda",
+          "spec": {
+            "name": "WDF01BA",
+            "type": "Rock",
+            "bpm": 120,
+            "volume": 60,
+            "ir_slot": null,
+            "modules": {
+              "PRE": {
+                "name": "Saturate",
+                "on": true,
+                "params": {
+                  "0": 38,
+                  "1": 55,
+                  "2": 62
+                }
+              },
+              "DST": {
+                "name": "Blues OD",
+                "on": false,
+                "params": {}
+              },
+              "AMP": {
+                "name": "Flagman",
+                "on": true,
+                "params": {
+                  "0": 44,
+                  "1": 55,
+                  "2": 62,
+                  "3": 50,
+                  "4": 55,
+                  "5": 58
+                }
+              },
+              "NR": {
+                "name": "Gate 1",
+                "on": true,
+                "params": {
+                  "0": 26
+                }
+              },
+              "CAB": {
+                "name": "UK-LD 4x12",
+                "on": true,
+                "params": {
+                  "0": 78,
+                  "1": 62
+                }
+              },
+              "EQ": {
+                "name": "EQ 1",
+                "on": false,
+                "params": {}
+              },
+              "MOD": {
+                "name": "A-Chorus",
+                "on": false,
+                "params": {}
+              },
+              "DLY": {
+                "name": "Sweet",
+                "on": false,
+                "params": {
+                  "0": 15,
+                  "1": 430,
+                  "2": 25
+                }
+              },
+              "RVB": {
+                "name": "Plate",
+                "on": true,
+                "params": {
+                  "0": 30,
+                  "1": 40,
+                  "2": 50,
+                  "3": 1
+                }
+              }
+            }
+          },
+          "doc": {
+            "guitarra": {
+              "seletor": "Posição 2 (middle+bridge)",
+              "seletorCurto": "middle+bridge",
+              "volume": "10",
+              "tone": "9",
+              "receita": "SELETOR 2 · Volume 10 · Tone 9",
+              "tecnicas": [
+                "Palhetada alternada no riff — a base é percussiva",
+                "Dinâmica: mais forte = mais crunch (o Tube Driver responde)"
+              ]
+            },
+            "comoTocar": [],
+            "teste": {
+              "riff": "acordes do riff com palhetada alternada",
+              "drum": "Blues rock 110 BPM",
+              "escutar": [
+                "crunch que responde à palhetada",
+                "graves definidos"
+              ]
+            },
+            "ajustes": [
+              "lamacento → CAB High Cut -5",
+              "seco → RVB mix +5"
+            ],
+            "evite": [
+              "Distorção moderna: a música é valvulada e aberta"
+            ],
+            "irNota": "Recomendada: British Straight 4x12 Medium Mix (User IR 4) — o 4x12 britânico da pilha de 1994 (Low Cut 4 · High Cut 8500 · Level 0).",
+            "momentos": [
+              {
+                "nome": "Solo (com eco)",
+                "mods": [
+                  [
+                    "DLY",
+                    "ON"
+                  ]
+                ],
+                "quando": "Ao chegar no solo, ligue o DLY: o eco do solo já está projetado.",
+                "dica": ""
+              }
+            ]
+          }
+        },
+        {
+          "camada": "Solo",
+          "sufixo": "SO",
+          "nome": "WDF01SO",
+          "emoji": "🔥",
+          "timbre": "Solo bluesy: Tube Driver quente, bend largo de 1 tom, vibrato do pulso — Gilmour em modo SRV",
+          "spec": {
+            "name": "WDF01SO",
+            "type": "Rock",
+            "bpm": 120,
+            "volume": 60,
+            "ir_slot": null,
+            "modules": {
+              "PRE": {
+                "name": "Saturate",
+                "on": true,
+                "params": {
+                  "0": 50,
+                  "1": 60,
+                  "2": 62
+                }
+              },
+              "DST": {
+                "name": "Blues OD",
+                "on": false,
+                "params": {}
+              },
+              "AMP": {
+                "name": "Flagman",
+                "on": true,
+                "params": {
+                  "0": 50,
+                  "1": 58,
+                  "2": 64,
+                  "3": 50,
+                  "4": 55,
+                  "5": 58
+                }
+              },
+              "NR": {
+                "name": "Gate 1",
+                "on": true,
+                "params": {
+                  "0": 30
+                }
+              },
+              "CAB": {
+                "name": "UK-LD 4x12",
+                "on": true,
+                "params": {
+                  "0": 78,
+                  "1": 62
+                }
+              },
+              "EQ": {
+                "name": "EQ 1",
+                "on": false,
+                "params": {}
+              },
+              "MOD": {
+                "name": "A-Chorus",
+                "on": false,
+                "params": {}
+              },
+              "DLY": {
+                "name": "Sweet",
+                "on": true,
+                "params": {
+                  "0": 15,
+                  "1": 430,
+                  "2": 25
+                }
+              },
+              "RVB": {
+                "name": "Hall",
+                "on": true,
+                "params": {
+                  "0": 38,
+                  "1": 45,
+                  "2": 50,
+                  "3": 1
+                }
+              }
+            }
+          },
+          "doc": {
+            "guitarra": {
+              "seletor": "Posição 2 (middle+bridge)",
+              "seletorCurto": "middle+bridge",
+              "volume": "10",
+              "tone": "9",
+              "receita": "SELETOR 2 · Volume 10 · Tone 9",
+              "tecnicas": [
+                "Bends de 1 tom inteiro com sustain",
+                "Frases com espaço — o delay preenche o vazio"
+              ]
+            },
+            "comoTocar": [],
+            "teste": {
+              "riff": "solo do meio e final",
+              "drum": "Blues rock 110 BPM",
+              "escutar": [
+                "sustain longo nos bends",
+                "definição nas notas rápidas"
+              ]
+            },
+            "ajustes": [
+              "falta sustain → PRE +5",
+              "sibilando → NR Thr +2"
+            ],
+            "evite": [
+              "Vibrato de dedo rápido — o vibrato do Gilmour é do pulso, largo"
+            ],
+            "irNota": "Recomendada: British Straight 4x12 Medium Mix (User IR 4) — o 4x12 britânico da pilha de 1994 (Low Cut 4 · High Cut 8500 · Level 0).",
+            "momentos": [
+              {
+                "nome": "Ritmo seco",
+                "mods": [
+                  [
+                    "DLY",
+                    "OFF"
+                  ]
+                ],
+                "quando": "Base do riff — acordes secos para marcar o groove.",
+                "dica": ""
+              }
+            ]
+          }
+        }
+      ],
+      "banda": "Pink Floyd",
+      "album": "Pulse (live)",
+      "ano": 1995
+    },
+    {
+      "id": "LTF01",
+      "song": "Learning to Fly",
+      "idAlbum": "PL",
+      "bpm": 104,
+      "resumo": "Anos 80 etéreo: base limpa com chorus, arpejos de eco e solo aéreo.",
+      "referencias": [
+        {
+          "role": "Base limpa com chorus + delay; solo com o mesmo pad",
+          "conf": "alta",
+          "src": "Pulse (1995) · gilmourish.com"
+        },
+        {
+          "role": "Rig 1994: Hiwatt DR103 + Alembic F-2B + WEM/Marshall 4x12 + pedalboard completo",
+          "conf": "alta",
+          "src": "gilmourish.com — Division Bell Tour"
+        }
+      ],
+      "patches": [
+        {
+          "camada": "Base",
+          "sufixo": "BA",
+          "nome": "LTF01BA",
+          "emoji": "☁️",
+          "timbre": "Base aérea: limpo com chorus lento — o som de nuvem da intro",
+          "spec": {
+            "name": "LTF01BA",
+            "type": "Rock",
+            "bpm": 120,
+            "volume": 60,
+            "ir_slot": null,
+            "modules": {
+              "PRE": {
+                "name": "Boost",
+                "on": false,
+                "params": {}
+              },
+              "DST": {
+                "name": "Blues OD",
+                "on": false,
+                "params": {}
+              },
+              "AMP": {
+                "name": "Knights CL",
+                "on": true,
+                "params": {
+                  "0": 38,
+                  "1": 62,
+                  "2": 62,
+                  "3": 48,
+                  "4": 52
+                }
+              },
+              "NR": {
+                "name": "Gate 1",
+                "on": false,
+                "params": {}
+              },
+              "CAB": {
+                "name": "UK-LD 4x12",
+                "on": true,
+                "params": {
+                  "0": 78,
+                  "1": 62
+                }
+              },
+              "EQ": {
+                "name": "EQ 1",
+                "on": false,
+                "params": {}
+              },
+              "MOD": {
+                "name": "A-Chorus",
+                "on": true,
+                "params": {
+                  "0": 28,
+                  "1": 0.5,
+                  "2": 28
+                }
+              },
+              "DLY": {
+                "name": "Sweet",
+                "on": false,
+                "params": {
+                  "0": 20,
+                  "1": 570,
+                  "2": 30
+                }
+              },
+              "RVB": {
+                "name": "Hall",
+                "on": true,
+                "params": {
+                  "0": 38,
+                  "1": 45,
+                  "2": 50,
+                  "3": 1
+                }
+              }
+            }
+          },
+          "doc": {
+            "guitarra": {
+              "seletor": "Posição 4 (middle+neck)",
+              "seletorCurto": "middle+neck",
+              "volume": "8",
+              "tone": "8",
+              "receita": "SELETOR 4 · Volume 8 · Tone 8",
+              "tecnicas": [
+                "Acordes abertos (add9/sus2) com palhetada lenta",
+                "Deixe o chorus fazer o movimento"
+              ]
+            },
+            "comoTocar": [],
+            "teste": {
+              "riff": "acordes abertos da intro e refrão",
+              "drum": "Rock 104 BPM",
+              "escutar": [
+                "chorus amplo sem 'aquário'",
+                "clareza nos acordes abertos"
+              ]
+            },
+            "ajustes": [
+              "chorus forte demais → MOD Mix -10",
+              "seco → RVB decay +5"
+            ],
+            "evite": [
+              "Distorção: a música vive do clean modulado"
+            ],
+            "irNota": "Recomendada: British Straight 4x12 Medium Mix (User IR 4) — o 4x12 britânico da pilha de 1994 (Low Cut 4 · High Cut 8500 · Level 0).",
+            "momentos": [
+              {
+                "nome": "Solo espacial",
+                "mods": [
+                  [
+                    "DLY",
+                    "ON"
+                  ]
+                ],
+                "quando": "O solo da música vive do eco — ligue o sobressalente.",
+                "dica": ""
+              }
+            ]
+          }
+        },
+        {
+          "camada": "Solo/Eco",
+          "sufixo": "SO",
+          "nome": "LTF01SO",
+          "emoji": "🕊️",
+          "timbre": "Solo aéreo com delay: frases curtas que o eco responde — diálogo com o delay",
+          "spec": {
+            "name": "LTF01SO",
+            "type": "Rock",
+            "bpm": 120,
+            "volume": 60,
+            "ir_slot": null,
+            "modules": {
+              "PRE": {
+                "name": "Boost",
+                "on": false,
+                "params": {}
+              },
+              "DST": {
+                "name": "Blues OD",
+                "on": false,
+                "params": {}
+              },
+              "AMP": {
+                "name": "Knights CL",
+                "on": true,
+                "params": {
+                  "0": 42,
+                  "1": 62,
+                  "2": 62,
+                  "3": 48,
+                  "4": 52
+                }
+              },
+              "NR": {
+                "name": "Gate 1",
+                "on": false,
+                "params": {}
+              },
+              "CAB": {
+                "name": "UK-LD 4x12",
+                "on": true,
+                "params": {
+                  "0": 78,
+                  "1": 62
+                }
+              },
+              "EQ": {
+                "name": "EQ 1",
+                "on": false,
+                "params": {}
+              },
+              "MOD": {
+                "name": "A-Chorus",
+                "on": true,
+                "params": {
+                  "0": 28,
+                  "1": 0.5,
+                  "2": 28
+                }
+              },
+              "DLY": {
+                "name": "Sweet",
+                "on": true,
+                "params": {
+                  "0": 20,
+                  "1": 570,
+                  "2": 30
+                }
+              },
+              "RVB": {
+                "name": "Hall",
+                "on": true,
+                "params": {
+                  "0": 38,
+                  "1": 45,
+                  "2": 50,
+                  "3": 1
+                }
+              }
+            }
+          },
+          "doc": {
+            "guitarra": {
+              "seletor": "Posição 4 (middle+neck)",
+              "seletorCurto": "middle+neck",
+              "volume": "9",
+              "tone": "9",
+              "receita": "SELETOR 4 · Volume 9 · Tone 9",
+              "tecnicas": [
+                "Toque UMA frase e espere o eco responder",
+                "Bends lentos com vibrato largo"
+              ]
+            },
+            "comoTocar": [],
+            "teste": {
+              "riff": "solo central",
+              "drum": "Rock 104 BPM",
+              "escutar": [
+                "frases respondidas pelo eco",
+                "notas flutuando no reverb"
+              ]
+            },
+            "ajustes": [
+              "eco alto demais → DLY Mix -8",
+              "solo afogado → RVB mix -5"
+            ],
+            "evite": [
+              "Tocar corridas rápidas: o estilo é frases com espaço"
+            ],
+            "irNota": "Recomendada: British Straight 4x12 Medium Mix (User IR 4) — o 4x12 britânico da pilha de 1994 (Low Cut 4 · High Cut 8500 · Level 0).",
+            "momentos": [
+              {
+                "nome": "Base sem eco",
+                "mods": [
+                  [
+                    "DLY",
+                    "OFF"
+                  ]
+                ],
+                "quando": "Acompanhamento limpo — o chorus segue, o eco sai.",
+                "dica": ""
+              }
+            ]
+          }
+        }
+      ],
+      "banda": "Pink Floyd",
+      "album": "Pulse (live)",
+      "ano": 1995
+    },
+    {
+      "id": "KTB01",
+      "song": "Keep Talking",
+      "idAlbum": "PL",
+      "bpm": 122,
+      "resumo": "A épica de 1994: solo principal com Tube Driver + delay, e solo psicotélico com Big Muff.",
+      "referencias": [
+        {
+          "role": "Solo principal TD+delay; 2º solo Big Muff Civil War",
+          "conf": "alta",
+          "src": "Pulse (1995) · gilmourish.com"
+        },
+        {
+          "role": "Rig 1994: Hiwatt DR103 + Alembic F-2B + WEM/Marshall 4x12 + pedalboard completo",
+          "conf": "alta",
+          "src": "gilmourish.com — Division Bell Tour"
+        }
+      ],
+      "patches": [
+        {
+          "camada": "Base",
+          "sufixo": "BA",
+          "nome": "KTB01BA",
+          "emoji": "⚙️",
+          "timbre": "Base do épico: crunch firme para as seções de refrão",
+          "spec": {
+            "name": "KTB01BA",
+            "type": "Rock",
+            "bpm": 120,
+            "volume": 60,
+            "ir_slot": null,
+            "modules": {
+              "PRE": {
+                "name": "Saturate",
+                "on": true,
+                "params": {
+                  "0": 35,
+                  "1": 55,
+                  "2": 60
+                }
+              },
+              "DST": {
+                "name": "Blues OD",
+                "on": false,
+                "params": {}
+              },
+              "AMP": {
+                "name": "Flagman",
+                "on": true,
+                "params": {
+                  "0": 44,
+                  "1": 55,
+                  "2": 62,
+                  "3": 50,
+                  "4": 55,
+                  "5": 58
+                }
+              },
+              "NR": {
+                "name": "Gate 1",
+                "on": true,
+                "params": {
+                  "0": 26
+                }
+              },
+              "CAB": {
+                "name": "UK-LD 4x12",
+                "on": true,
+                "params": {
+                  "0": 78,
+                  "1": 62
+                }
+              },
+              "EQ": {
+                "name": "EQ 1",
+                "on": false,
+                "params": {}
+              },
+              "MOD": {
+                "name": "A-Chorus",
+                "on": false,
+                "params": {}
+              },
+              "DLY": {
+                "name": "Sweet",
+                "on": false,
+                "params": {
+                  "0": 20,
+                  "1": 570,
+                  "2": 30
+                }
+              },
+              "RVB": {
+                "name": "Plate",
+                "on": true,
+                "params": {
+                  "0": 30,
+                  "1": 40,
+                  "2": 50,
+                  "3": 1
+                }
+              }
+            }
+          },
+          "doc": {
+            "guitarra": {
+              "seletor": "Posição 2 (middle+bridge)",
+              "seletorCurto": "middle+bridge",
+              "volume": "10",
+              "tone": "9",
+              "receita": "SELETOR 2 · Volume 10 · Tone 9",
+              "tecnicas": [
+                "Acordes com palhetada marcada",
+                "Deixe o espaço do refrão respirar"
+              ]
+            },
+            "comoTocar": [],
+            "teste": {
+              "riff": "riff e refrões",
+              "drum": "Rock épico",
+              "escutar": [
+                "crunch firme e definido",
+                "boa separação de graves"
+              ]
+            },
+            "ajustes": [
+              "lamacento → CAB High Cut -5",
+              "falta corpo → EQ Mid +2"
+            ],
+            "evite": [
+              "Distorção total na base — o refrão pede crunch controlado"
+            ],
+            "irNota": "Recomendada: British Straight 4x12 Medium Mix (User IR 4) — o 4x12 britânico da pilha de 1994 (Low Cut 4 · High Cut 8500 · Level 0).",
+            "momentos": [
+              {
+                "nome": "Solo (eco)",
+                "mods": [
+                  [
+                    "DLY",
+                    "ON"
+                  ]
+                ],
+                "quando": "Solo principal com o eco na duração da nota.",
+                "dica": ""
+              }
+            ]
+          }
+        },
+        {
+          "camada": "Solo 1 (TD)",
+          "sufixo": "SO",
+          "nome": "KTB01SO",
+          "emoji": "🗣️",
+          "timbre": "Solo principal: Tube Driver quente + delay da nota — a voz que responde Stephen Hawking",
+          "spec": {
+            "name": "KTB01SO",
+            "type": "Rock",
+            "bpm": 120,
+            "volume": 60,
+            "ir_slot": null,
+            "modules": {
+              "PRE": {
+                "name": "Saturate",
+                "on": true,
+                "params": {
+                  "0": 50,
+                  "1": 60,
+                  "2": 62
+                }
+              },
+              "DST": {
+                "name": "Blues OD",
+                "on": false,
+                "params": {}
+              },
+              "AMP": {
+                "name": "Flagman",
+                "on": true,
+                "params": {
+                  "0": 50,
+                  "1": 58,
+                  "2": 64,
+                  "3": 50,
+                  "4": 55,
+                  "5": 58
+                }
+              },
+              "NR": {
+                "name": "Gate 1",
+                "on": true,
+                "params": {
+                  "0": 30
+                }
+              },
+              "CAB": {
+                "name": "UK-LD 4x12",
+                "on": true,
+                "params": {
+                  "0": 78,
+                  "1": 62
+                }
+              },
+              "EQ": {
+                "name": "EQ 1",
+                "on": false,
+                "params": {}
+              },
+              "MOD": {
+                "name": "A-Chorus",
+                "on": false,
+                "params": {}
+              },
+              "DLY": {
+                "name": "Sweet",
+                "on": true,
+                "params": {
+                  "0": 20,
+                  "1": 570,
+                  "2": 30
+                }
+              },
+              "RVB": {
+                "name": "Hall",
+                "on": true,
+                "params": {
+                  "0": 38,
+                  "1": 45,
+                  "2": 50,
+                  "3": 1
+                }
+              }
+            }
+          },
+          "doc": {
+            "guitarra": {
+              "seletor": "Posição 2 (middle+bridge)",
+              "seletorCurto": "middle+bridge",
+              "volume": "10",
+              "tone": "9",
+              "receita": "SELETOR 2 · Volume 10 · Tone 9",
+              "tecnicas": [
+                "Bends de 1 tom com sustain longo",
+                "Frase com espaço: o delay responde"
+              ]
+            },
+            "comoTocar": [],
+            "teste": {
+              "riff": "solo após o 2º refrão",
+              "drum": "Rock épico",
+              "escutar": [
+                "sustain longo nos bends",
+                "eco preenchendo os espaços"
+              ]
+            },
+            "ajustes": [
+              "falta sustain → PRE +5",
+              "eco alto → DLY Mix -8"
+            ],
+            "evite": [
+              "Vibrato estreito — o vibrato do Gilmour é largo"
+            ],
+            "irNota": "Recomendada: British Straight 4x12 Medium Mix (User IR 4) — o 4x12 britânico da pilha de 1994 (Low Cut 4 · High Cut 8500 · Level 0).",
+            "momentos": [
+              {
+                "nome": "Refrão seco",
+                "mods": [
+                  [
+                    "DLY",
+                    "OFF"
+                  ]
+                ],
+                "quando": "Acordes do refrão sem eco (o canto responde).",
+                "dica": ""
+              }
+            ]
+          }
+        },
+        {
+          "camada": "Solo 2 (Fuzz)",
+          "sufixo": "FZ",
+          "nome": "KTB01FZ",
+          "emoji": "🌪️",
+          "timbre": "Solo psicotélico: Big Muff saturado — o uivo de fuzz do clímax",
+          "spec": {
+            "name": "KTB01FZ",
+            "type": "Rock",
+            "bpm": 120,
+            "volume": 60,
+            "ir_slot": null,
+            "modules": {
+              "PRE": {
+                "name": "Boost",
+                "on": false,
+                "params": {}
+              },
+              "DST": {
+                "name": "Red Haze",
+                "on": true,
+                "params": {
+                  "0": 62,
+                  "1": 45
+                }
+              },
+              "AMP": {
+                "name": "Flagman",
+                "on": true,
+                "params": {
+                  "0": 40,
+                  "1": 50,
+                  "2": 58,
+                  "3": 50,
+                  "4": 52,
+                  "5": 56
+                }
+              },
+              "NR": {
+                "name": "Gate 1",
+                "on": true,
+                "params": {
+                  "0": 30
+                }
+              },
+              "CAB": {
+                "name": "UK-LD 4x12",
+                "on": true,
+                "params": {
+                  "0": 78,
+                  "1": 62
+                }
+              },
+              "EQ": {
+                "name": "EQ 1",
+                "on": false,
+                "params": {}
+              },
+              "MOD": {
+                "name": "A-Chorus",
+                "on": false,
+                "params": {}
+              },
+              "DLY": {
+                "name": "Sweet",
+                "on": true,
+                "params": {
+                  "0": 12,
+                  "1": 570,
+                  "2": 22
+                }
+              },
+              "RVB": {
+                "name": "Hall",
+                "on": true,
+                "params": {
+                  "0": 38,
+                  "1": 45,
+                  "2": 50,
+                  "3": 1
+                }
+              }
+            }
+          },
+          "doc": {
+            "guitarra": {
+              "seletor": "Posição 2 (middle+bridge)",
+              "seletorCurto": "middle+bridge",
+              "volume": "10",
+              "tone": "8",
+              "receita": "SELETOR 2 · Volume 10 · Tone 8",
+              "tecnicas": [
+                "Notas longas com vibrato largo",
+                "Frases esparsas: o fuzz sustenta tudo"
+              ]
+            },
+            "comoTocar": [],
+            "teste": {
+              "riff": "2º solo (clímax)",
+              "drum": "Rock épico",
+              "escutar": [
+                "fuzz sustentado sem virar ruído",
+                "notas definidas dentro do fuzz"
+              ]
+            },
+            "ajustes": [
+              "fuzz embolando → DST VOL -5",
+              "sibilo entre frases → NR Thr +2"
+            ],
+            "evite": [
+              "Reduzir o ganho do amp: o fuzz já satura"
+            ],
+            "irNota": "Recomendada: British Straight 4x12 Medium Mix (User IR 4) — o 4x12 britânico da pilha de 1994 (Low Cut 4 · High Cut 8500 · Level 0).",
+            "momentos": [
+              {
+                "nome": "Verso sem fuzz",
+                "mods": [
+                  [
+                    "DST",
+                    "OFF"
+                  ]
+                ],
+                "quando": "O Big Muff sai e sobra o crunch do Flagman — um patch para a música toda.",
+                "dica": "Religue o DST no solo."
+              }
+            ]
+          }
+        }
+      ],
+      "banda": "Pink Floyd",
+      "album": "Pulse (live)",
+      "ano": 1995
+    },
+    {
+      "id": "CBK01",
+      "song": "Coming Back to Life",
+      "idAlbum": "PL",
+      "bpm": 104,
+      "resumo": "Arpejos limpos com delay que crescem para o solo épico — a ressurreição do álbum.",
+      "referencias": [
+        {
+          "role": "Arpejos de abertura com delay; solo com Tube Driver",
+          "conf": "alta",
+          "src": "Pulse (1995) · gilmourish.com"
+        },
+        {
+          "role": "Rig 1994: Hiwatt DR103 + Alembic F-2B + WEM/Marshall 4x12 + pedalboard completo",
+          "conf": "alta",
+          "src": "gilmourish.com — Division Bell Tour"
+        }
+      ],
+      "patches": [
+        {
+          "camada": "Base/Arpejo",
+          "sufixo": "AR",
+          "nome": "CBK01AR",
+          "emoji": "🌅",
+          "timbre": "Arpejos de abertura: limpo com delay — o despertar em 6/8",
+          "spec": {
+            "name": "CBK01AR",
+            "type": "Rock",
+            "bpm": 120,
+            "volume": 60,
+            "ir_slot": null,
+            "modules": {
+              "PRE": {
+                "name": "Boost",
+                "on": false,
+                "params": {}
+              },
+              "DST": {
+                "name": "Blues OD",
+                "on": false,
+                "params": {}
+              },
+              "AMP": {
+                "name": "Knights CL",
+                "on": true,
+                "params": {
+                  "0": 38,
+                  "1": 62,
+                  "2": 62,
+                  "3": 48,
+                  "4": 52
+                }
+              },
+              "NR": {
+                "name": "Gate 1",
+                "on": false,
+                "params": {}
+              },
+              "CAB": {
+                "name": "UK-LD 4x12",
+                "on": true,
+                "params": {
+                  "0": 78,
+                  "1": 62
+                }
+              },
+              "EQ": {
+                "name": "EQ 1",
+                "on": false,
+                "params": {}
+              },
+              "MOD": {
+                "name": "A-Chorus",
+                "on": false,
+                "params": {}
+              },
+              "DLY": {
+                "name": "Sweet",
+                "on": true,
+                "params": {
+                  "0": 15,
+                  "1": 430,
+                  "2": 25
+                }
+              },
+              "RVB": {
+                "name": "Hall",
+                "on": true,
+                "params": {
+                  "0": 38,
+                  "1": 45,
+                  "2": 50,
+                  "3": 1
+                }
+              }
+            }
+          },
+          "doc": {
+            "guitarra": {
+              "seletor": "Posição 4 (middle+neck)",
+              "seletorCurto": "middle+neck",
+              "volume": "8",
+              "tone": "8",
+              "receita": "SELETOR 4 · Volume 8 · Tone 8",
+              "tecnicas": [
+                "Arpejos em 6/8 com palhetada híbrida",
+                "Cresça de volume a cada volta do ciclo"
+              ]
+            },
+            "comoTocar": [],
+            "teste": {
+              "riff": "arpejos da intro e versos",
+              "drum": "Rock 104 BPM",
+              "escutar": [
+                "arpejos com eco respondendo",
+                "dinâmica crescendo"
+              ]
+            },
+            "ajustes": [
+              "eco alto → DLY Mix -8",
+              "seco → RVB decay +5"
+            ],
+            "evite": [
+              "Crunch nos arpejos: a intro é limpa e espaçosa"
+            ],
+            "irNota": "Recomendada: British Straight 4x12 Medium Mix (User IR 4) — o 4x12 britânico da pilha de 1994 (Low Cut 4 · High Cut 8500 · Level 0).",
+            "momentos": [
+              {
+                "nome": "Ponte seca",
+                "mods": [
+                  [
+                    "DLY",
+                    "OFF"
+                  ]
+                ],
+                "quando": "Seção pontual sem eco (a base dos arpejos volta com DLY ON).",
+                "dica": ""
+              }
+            ]
+          }
+        },
+        {
+          "camada": "Solo",
+          "sufixo": "SO",
+          "nome": "CBK01SO",
+          "emoji": "🌄",
+          "timbre": "Solo principal: Tube Driver quente + delay — a frase longa que abre o céu",
+          "spec": {
+            "name": "CBK01SO",
+            "type": "Rock",
+            "bpm": 120,
+            "volume": 60,
+            "ir_slot": null,
+            "modules": {
+              "PRE": {
+                "name": "Saturate",
+                "on": true,
+                "params": {
+                  "0": 50,
+                  "1": 60,
+                  "2": 62
+                }
+              },
+              "DST": {
+                "name": "Blues OD",
+                "on": false,
+                "params": {}
+              },
+              "AMP": {
+                "name": "Flagman",
+                "on": true,
+                "params": {
+                  "0": 50,
+                  "1": 58,
+                  "2": 64,
+                  "3": 50,
+                  "4": 55,
+                  "5": 58
+                }
+              },
+              "NR": {
+                "name": "Gate 1",
+                "on": true,
+                "params": {
+                  "0": 30
+                }
+              },
+              "CAB": {
+                "name": "UK-LD 4x12",
+                "on": true,
+                "params": {
+                  "0": 78,
+                  "1": 62
+                }
+              },
+              "EQ": {
+                "name": "EQ 1",
+                "on": false,
+                "params": {}
+              },
+              "MOD": {
+                "name": "A-Chorus",
+                "on": false,
+                "params": {}
+              },
+              "DLY": {
+                "name": "Sweet",
+                "on": true,
+                "params": {
+                  "0": 20,
+                  "1": 570,
+                  "2": 30
+                }
+              },
+              "RVB": {
+                "name": "Hall",
+                "on": true,
+                "params": {
+                  "0": 38,
+                  "1": 45,
+                  "2": 50,
+                  "3": 1
+                }
+              }
+            }
+          },
+          "doc": {
+            "guitarra": {
+              "seletor": "Posição 2 (middle+bridge)",
+              "seletorCurto": "middle+bridge",
+              "volume": "10",
+              "tone": "9",
+              "receita": "SELETOR 2 · Volume 10 · Tone 9",
+              "tecnicas": [
+                "Frases longas com bend de 1 tom",
+                "Vibrato largo no final das frases"
+              ]
+            },
+            "comoTocar": [],
+            "teste": {
+              "riff": "solo central",
+              "drum": "Rock 104 BPM",
+              "escutar": [
+                "frase longa com sustain",
+                "eco preenchendo os espaços"
+              ]
+            },
+            "ajustes": [
+              "falta sustain → PRE +5",
+              "afogado → RVB mix -5"
+            ],
+            "evite": [
+              "Acelerar: as frases são longas e melódicas"
+            ],
+            "irNota": "Recomendada: British Straight 4x12 Medium Mix (User IR 4) — o 4x12 britânico da pilha de 1994 (Low Cut 4 · High Cut 8500 · Level 0)."
+          }
+        }
+      ],
+      "banda": "Pink Floyd",
+      "album": "Pulse (live)",
+      "ano": 1995
+    },
+    {
+      "id": "SIA01",
+      "song": "Sorrow",
+      "idAlbum": "PL",
+      "bpm": 116,
+      "resumo": "A abertura épica do Division Bell: Big Muff em acordes gigantes e solo final pesado.",
+      "referencias": [
+        {
+          "role": "Intro/feitiço: Big Muff + intervalos largos; solo final pesado",
+          "conf": "alta",
+          "src": "Pulse (1995) · gilmourish.com"
+        },
+        {
+          "role": "Rig 1994: Hiwatt DR103 + Alembic F-2B + WEM/Marshall 4x12 + pedalboard completo",
+          "conf": "alta",
+          "src": "gilmourish.com — Division Bell Tour"
+        }
+      ],
+      "patches": [
+        {
+          "camada": "Intro (Fuzz)",
+          "sufixo": "FZ",
+          "nome": "SIA01FZ",
+          "emoji": "⚡",
+          "timbre": "Intro gigante: Big Muff em acordes com intervalos largos — o feitiço que abre o show",
+          "spec": {
+            "name": "SIA01FZ",
+            "type": "Rock",
+            "bpm": 120,
+            "volume": 60,
+            "ir_slot": null,
+            "modules": {
+              "PRE": {
+                "name": "Boost",
+                "on": false,
+                "params": {}
+              },
+              "DST": {
+                "name": "Red Haze",
+                "on": true,
+                "params": {
+                  "0": 58,
+                  "1": 48
+                }
+              },
+              "AMP": {
+                "name": "Flagman",
+                "on": true,
+                "params": {
+                  "0": 40,
+                  "1": 50,
+                  "2": 58,
+                  "3": 50,
+                  "4": 52,
+                  "5": 56
+                }
+              },
+              "NR": {
+                "name": "Gate 1",
+                "on": true,
+                "params": {
+                  "0": 30
+                }
+              },
+              "CAB": {
+                "name": "UK-LD 4x12",
+                "on": true,
+                "params": {
+                  "0": 78,
+                  "1": 62
+                }
+              },
+              "EQ": {
+                "name": "EQ 1",
+                "on": false,
+                "params": {}
+              },
+              "MOD": {
+                "name": "A-Chorus",
+                "on": false,
+                "params": {}
+              },
+              "DLY": {
+                "name": "Sweet",
+                "on": false,
+                "params": {}
+              },
+              "RVB": {
+                "name": "Hall",
+                "on": true,
+                "params": {
+                  "0": 38,
+                  "1": 45,
+                  "2": 50,
+                  "3": 1
+                }
+              }
+            }
+          },
+          "doc": {
+            "guitarra": {
+              "seletor": "Posição 2 (middle+bridge)",
+              "seletorCurto": "middle+bridge",
+              "volume": "10",
+              "tone": "8",
+              "receita": "SELETOR 2 · Volume 10 · Tone 8",
+              "tecnicas": [
+                "Acordes com intervalos largos (D5+10ª)",
+                "Sustain longo com vibrato do braço"
+              ]
+            },
+            "comoTocar": [],
+            "teste": {
+              "riff": "intro e feitiço",
+              "drum": "Épico 116 BPM",
+              "escutar": [
+                "acordes de fuzz gigantes",
+                "sustain sem fim"
+              ]
+            },
+            "ajustes": [
+              "fuzz embolando → DST VOL -5",
+              "sibilo → NR Thr +2"
+            ],
+            "evite": [
+              "Reduzir o ganho do amp: o fuzz já satura"
+            ],
+            "irNota": "Recomendada: British Straight 4x12 Medium Mix (User IR 4) — o 4x12 britânico da pilha de 1994 (Low Cut 4 · High Cut 8500 · Level 0).",
+            "momentos": [
+              {
+                "nome": "Verso (crunch)",
+                "mods": [
+                  [
+                    "DST",
+                    "OFF"
+                  ]
+                ],
+                "quando": "Versos de crunch do Flagman; DST ON = intro/solo de fuzz.",
+                "dica": "Este é o patch \"música inteira\" de Sorrow."
+              }
+            ]
+          }
+        },
+        {
+          "camada": "Solo",
+          "sufixo": "SO",
+          "nome": "SIA01SO",
+          "emoji": "⛈️",
+          "timbre": "Solo final: Tube Driver + fuzz no mesmo patch — a tempestade do fechamento",
+          "spec": {
+            "name": "SIA01SO",
+            "type": "Rock",
+            "bpm": 120,
+            "volume": 60,
+            "ir_slot": null,
+            "modules": {
+              "PRE": {
+                "name": "Boost",
+                "on": false,
+                "params": {}
+              },
+              "DST": {
+                "name": "Red Haze",
+                "on": true,
+                "params": {
+                  "0": 45,
+                  "1": 52
+                }
+              },
+              "AMP": {
+                "name": "Flagman",
+                "on": true,
+                "params": {
+                  "0": 50,
+                  "1": 58,
+                  "2": 64,
+                  "3": 50,
+                  "4": 55,
+                  "5": 58
+                }
+              },
+              "NR": {
+                "name": "Gate 1",
+                "on": true,
+                "params": {
+                  "0": 30
+                }
+              },
+              "CAB": {
+                "name": "UK-LD 4x12",
+                "on": true,
+                "params": {
+                  "0": 78,
+                  "1": 62
+                }
+              },
+              "EQ": {
+                "name": "EQ 1",
+                "on": false,
+                "params": {}
+              },
+              "MOD": {
+                "name": "A-Chorus",
+                "on": false,
+                "params": {}
+              },
+              "DLY": {
+                "name": "Sweet",
+                "on": true,
+                "params": {
+                  "0": 20,
+                  "1": 570,
+                  "2": 30
+                }
+              },
+              "RVB": {
+                "name": "Hall",
+                "on": true,
+                "params": {
+                  "0": 38,
+                  "1": 45,
+                  "2": 50,
+                  "3": 1
+                }
+              }
+            }
+          },
+          "doc": {
+            "guitarra": {
+              "seletor": "Posição 2 (middle+bridge)",
+              "seletorCurto": "middle+bridge",
+              "volume": "10",
+              "tone": "9",
+              "receita": "SELETOR 2 · Volume 10 · Tone 9",
+              "tecnicas": [
+                "Frases largas com sustain",
+                "Vibrato largo no final das frases"
+              ]
+            },
+            "comoTocar": [],
+            "teste": {
+              "riff": "solo final",
+              "drum": "Épico 116 BPM",
+              "escutar": [
+                "peso e sustain",
+                "frases largas com vibrato"
+              ]
+            },
+            "ajustes": [
+              "pesado demais → DST Fuzz -5",
+              "afogado → RVB Mix -5"
+            ],
+            "evite": [
+              "Tocar de forma corrida: o solo é épico e pesado"
+            ],
+            "irNota": "Recomendada: British Straight 4x12 Medium Mix (User IR 4) — o 4x12 britânico da pilha de 1994 (Low Cut 4 · High Cut 8500 · Level 0).",
+            "momentos": [
+              {
+                "nome": "Acordes (sem lead)",
+                "mods": [
+                  [
+                    "DLY",
+                    "OFF"
+                  ]
+                ],
+                "quando": "Colchão do verso com o eco desligado.",
+                "dica": ""
+              }
+            ]
+          }
+        }
+      ],
+      "banda": "Pink Floyd",
+      "album": "Pulse (live)",
+      "ano": 1995
+    },
+    {
+      "id": "ABIETW01",
+      "song": "Another Brick in the Wall, Part 2",
+      "idAlbum": "PL",
+      "bpm": 123,
+      "resumo": "O solo do 'Muro': um dos mais icônicos — TD + delay, frases esparsas com propósito.",
+      "referencias": [
+        {
+          "role": "Solo icônico: TD + delay, frases esparsas com propósito",
+          "conf": "alta",
+          "src": "Pulse (1995) · gilmourish.com"
+        },
+        {
+          "role": "Rig 1994: Hiwatt DR103 + Alembic F-2B + WEM/Marshall 4x12 + pedalboard completo",
+          "conf": "alta",
+          "src": "gilmourish.com — Division Bell Tour"
+        }
+      ],
+      "patches": [
+        {
+          "camada": "Base",
+          "sufixo": "BA",
+          "nome": "ABIETWBA",
+          "emoji": "🧱",
+          "timbre": "Base do muro: crunch seco e groove disco — o refrão coral pede firmeza",
+          "spec": {
+            "name": "ABIETWBA",
+            "type": "Rock",
+            "bpm": 120,
+            "volume": 60,
+            "ir_slot": null,
+            "modules": {
+              "PRE": {
+                "name": "Saturate",
+                "on": true,
+                "params": {
+                  "0": 35,
+                  "1": 55,
+                  "2": 60
+                }
+              },
+              "DST": {
+                "name": "Blues OD",
+                "on": false,
+                "params": {}
+              },
+              "AMP": {
+                "name": "Flagman",
+                "on": true,
+                "params": {
+                  "0": 44,
+                  "1": 55,
+                  "2": 62,
+                  "3": 50,
+                  "4": 55,
+                  "5": 58
+                }
+              },
+              "NR": {
+                "name": "Gate 1",
+                "on": true,
+                "params": {
+                  "0": 26
+                }
+              },
+              "CAB": {
+                "name": "UK-LD 4x12",
+                "on": true,
+                "params": {
+                  "0": 78,
+                  "1": 62
+                }
+              },
+              "EQ": {
+                "name": "EQ 1",
+                "on": false,
+                "params": {}
+              },
+              "MOD": {
+                "name": "A-Chorus",
+                "on": false,
+                "params": {}
+              },
+              "DLY": {
+                "name": "Sweet",
+                "on": false,
+                "params": {
+                  "0": 15,
+                  "1": 430,
+                  "2": 25
+                }
+              },
+              "RVB": {
+                "name": "Plate",
+                "on": true,
+                "params": {
+                  "0": 30,
+                  "1": 40,
+                  "2": 50,
+                  "3": 1
+                }
+              }
+            }
+          },
+          "doc": {
+            "guitarra": {
+              "seletor": "Posição 2 (middle+bridge)",
+              "seletorCurto": "middle+bridge",
+              "volume": "10",
+              "tone": "9",
+              "receita": "SELETOR 2 · Volume 10 · Tone 9",
+              "tecnicas": [
+                "Riff com palhetada firme",
+                "Mute com a mão direita no groove"
+              ]
+            },
+            "comoTocar": [],
+            "teste": {
+              "riff": "riff e refrões",
+              "drum": "Rock/groove 123 BPM",
+              "escutar": [
+                "crunch seco no groove",
+                "boa definição nos graves"
+              ]
+            },
+            "ajustes": [
+              "lamacento → CAB High Cut -5",
+              "seco → RVB mix +5"
+            ],
+            "evite": [
+              "Crunch pesado no riff — leve e seco"
+            ],
+            "irNota": "Recomendada: British Straight 4x12 Medium Mix (User IR 4) — o 4x12 britânico da pilha de 1994 (Low Cut 4 · High Cut 8500 · Level 0).",
+            "momentos": [
+              {
+                "nome": "Solo (eco)",
+                "mods": [
+                  [
+                    "DLY",
+                    "ON"
+                  ]
+                ],
+                "quando": "Chegou o solo: ligue o DLY e o patch vira o solo do Muro.",
+                "dica": ""
+              }
+            ]
+          }
+        },
+        {
+          "camada": "Solo",
+          "sufixo": "SO",
+          "nome": "ABIETWSO",
+          "emoji": "🎓",
+          "timbre": "O solo do muro: TD quente + delay — frases esparsas, cada nota com propósito",
+          "spec": {
+            "name": "ABIETWSO",
+            "type": "Rock",
+            "bpm": 120,
+            "volume": 60,
+            "ir_slot": null,
+            "modules": {
+              "PRE": {
+                "name": "Saturate",
+                "on": true,
+                "params": {
+                  "0": 50,
+                  "1": 60,
+                  "2": 62
+                }
+              },
+              "DST": {
+                "name": "Blues OD",
+                "on": false,
+                "params": {}
+              },
+              "AMP": {
+                "name": "Flagman",
+                "on": true,
+                "params": {
+                  "0": 50,
+                  "1": 58,
+                  "2": 64,
+                  "3": 50,
+                  "4": 55,
+                  "5": 58
+                }
+              },
+              "NR": {
+                "name": "Gate 1",
+                "on": true,
+                "params": {
+                  "0": 30
+                }
+              },
+              "CAB": {
+                "name": "UK-LD 4x12",
+                "on": true,
+                "params": {
+                  "0": 78,
+                  "1": 62
+                }
+              },
+              "EQ": {
+                "name": "EQ 1",
+                "on": false,
+                "params": {}
+              },
+              "MOD": {
+                "name": "A-Chorus",
+                "on": false,
+                "params": {}
+              },
+              "DLY": {
+                "name": "Sweet",
+                "on": true,
+                "params": {
+                  "0": 15,
+                  "1": 430,
+                  "2": 25
+                }
+              },
+              "RVB": {
+                "name": "Hall",
+                "on": true,
+                "params": {
+                  "0": 38,
+                  "1": 45,
+                  "2": 50,
+                  "3": 1
+                }
+              }
+            }
+          },
+          "doc": {
+            "guitarra": {
+              "seletor": "Posição 2 (middle+bridge)",
+              "seletorCurto": "middle+bridge",
+              "volume": "10",
+              "tone": "9",
+              "receita": "SELETOR 2 · Volume 10 · Tone 9",
+              "tecnicas": [
+                "Toque as frases icônicas com o ritmo original",
+                "Deixe o delay responder entre as frases"
+              ]
+            },
+            "comoTocar": [],
+            "teste": {
+              "riff": "solo central",
+              "drum": "Rock/groove 123 BPM",
+              "escutar": [
+                "frases esparsas e melódicas",
+                "eco preenchendo os espaços"
+              ]
+            },
+            "ajustes": [
+              "falta sustain → PRE +5",
+              "eco alto → DLY Mix -8"
+            ],
+            "evite": [
+              "Tocar de forma corrida: o solo é esparso e melódico"
+            ],
+            "irNota": "Recomendada: British Straight 4x12 Medium Mix (User IR 4) — o 4x12 britânico da pilha de 1994 (Low Cut 4 · High Cut 8500 · Level 0).",
+            "momentos": [
+              {
+                "nome": "Base seca",
+                "mods": [
+                  [
+                    "DLY",
+                    "OFF"
+                  ]
+                ],
+                "quando": "Groove do riff sem eco (só o solo usa).",
+                "dica": ""
+              }
+            ]
+          }
+        }
+      ],
+      "banda": "Pink Floyd",
+      "album": "Pulse (live)",
+      "ano": 1995,
+      "pasta": "Another Brick in the Wall",
+      "display": "Another Brick in the Wall"
+    },
+    {
+      "id": "OEOD01",
+      "song": "One of These Days",
+      "idAlbum": "PL",
+      "bpm": 110,
+      "resumo": "Abertura instrumental: slide com delay longo e a tempestade de ruído.",
+      "referencias": [
+        {
+          "role": "Slide com delay + tempestade de ruído (não há base de acordes)",
+          "conf": "alta",
+          "src": "Pulse (1995) · gilmourish.com"
+        },
+        {
+          "role": "Rig 1994: Hiwatt DR103 + Alembic F-2B + WEM/Marshall 4x12 + pedalboard completo",
+          "conf": "alta",
+          "src": "gilmourish.com — Division Bell Tour"
+        }
+      ],
+      "patches": [
+        {
+          "camada": "Slide/Ruído",
+          "sufixo": "SL",
+          "nome": "OEOD01SL",
+          "emoji": "🌪️",
+          "timbre": "Abertura instrumental: slide com delay longo + tempestade de ruído",
+          "spec": {
+            "name": "OEOD01SL",
+            "type": "Rock",
+            "bpm": 120,
+            "volume": 60,
+            "ir_slot": null,
+            "modules": {
+              "PRE": {
+                "name": "Boost",
+                "on": false,
+                "params": {}
+              },
+              "DST": {
+                "name": "Blues OD",
+                "on": false,
+                "params": {}
+              },
+              "AMP": {
+                "name": "Knights CL",
+                "on": true,
+                "params": {
+                  "0": 42,
+                  "1": 62,
+                  "2": 62,
+                  "3": 48,
+                  "4": 52
+                }
+              },
+              "NR": {
+                "name": "Gate 1",
+                "on": false,
+                "params": {}
+              },
+              "CAB": {
+                "name": "UK-LD 4x12",
+                "on": true,
+                "params": {
+                  "0": 78,
+                  "1": 62
+                }
+              },
+              "EQ": {
+                "name": "EQ 1",
+                "on": false,
+                "params": {}
+              },
+              "MOD": {
+                "name": "A-Chorus",
+                "on": false,
+                "params": {}
+              },
+              "DLY": {
+                "name": "T-Echo",
+                "on": true,
+                "params": {
+                  "0": 30,
+                  "1": 480,
+                  "2": 20
+                }
+              },
+              "RVB": {
+                "name": "Hall",
+                "on": true,
+                "params": {
+                  "0": 55,
+                  "1": 50,
+                  "2": 50,
+                  "3": 1
+                }
+              }
+            }
+          },
+          "doc": {
+            "guitarra": {
+              "seletor": "Posição 1 (bridge)",
+              "seletorCurto": "bridge",
+              "volume": "9",
+              "tone": "8",
+              "receita": "SELETOR 1 · Volume 9 · Tone 8",
+              "tecnicas": [
+                "Slide na 4ª/5ª corda com o delay fazendo o padrão",
+                "Deixe o delay criar o ciclo"
+              ]
+            },
+            "comoTocar": [],
+            "teste": {
+              "riff": "slide e tempestade de ruído",
+              "drum": "Instrumental 110 BPM",
+              "escutar": [
+                "slide flutuando no delay",
+                "tempestade controlada"
+              ]
+            },
+            "ajustes": [
+              "delay embolando → Fdbk -8",
+              "tempestade forte → RVB mix -8"
+            ],
+            "evite": [
+              "Tocar riffs de acordes: a música é slide e ambiente"
+            ],
+            "irNota": "Recomendada: British Straight 4x12 Medium Mix (User IR 4) — o 4x12 britânico da pilha de 1994 (Low Cut 4 · High Cut 8500 · Level 0)."
+          }
+        }
+      ],
+      "banda": "Pink Floyd",
+      "album": "Pulse (live)",
+      "ano": 1995
+    },
+    {
+      "id": "SFTM01",
+      "song": "Speak to Me",
+      "idAlbum": "PL",
+      "bpm": 60,
+      "resumo": "Abertura com efeitos; sem guitarra — patch de ambiente para texturas e swells.",
+      "referencias": [
+        {
+          "role": "Sem guitarra na faixa: só efeitos/ambient",
+          "conf": "alta",
+          "src": "Wikipedia/Discogs (Pulse) · gilmourish.com"
+        },
+        {
+          "role": "Rig 1994: Hiwatt DR103 + Alembic F-2B + WEM/Marshall 4x12 + pedalboard completo",
+          "conf": "alta",
+          "src": "gilmourish.com — Division Bell Tour"
+        }
+      ],
+      "patches": [
+        {
+          "camada": "Texturas",
+          "sufixo": "AM",
+          "nome": "SFTM01AM",
+          "emoji": "🎛️",
+          "timbre": "Timbre ambiente: delay longo com feedback e reverb amplo — para texturas e swells da abertura",
+          "spec": {
+            "name": "SFTM01AM",
+            "type": "Rock",
+            "bpm": 120,
+            "volume": 60,
+            "ir_slot": null,
+            "modules": {
+              "PRE": {
+                "name": "Boost",
+                "on": false,
+                "params": {}
+              },
+              "DST": {
+                "name": "Blues OD",
+                "on": false,
+                "params": {}
+              },
+              "AMP": {
+                "name": "Flagman",
+                "on": true,
+                "params": {
+                  "0": 25,
+                  "1": 50,
+                  "2": 55,
+                  "3": 50,
+                  "4": 50,
+                  "5": 55
+                }
+              },
+              "NR": {
+                "name": "Gate 1",
+                "on": false,
+                "params": {}
+              },
+              "CAB": {
+                "name": "UK-LD 4x12",
+                "on": true,
+                "params": {
+                  "0": 78,
+                  "1": 62
+                }
+              },
+              "EQ": {
+                "name": "EQ 1",
+                "on": false,
+                "params": {}
+              },
+              "MOD": {
+                "name": "A-Chorus",
+                "on": false,
+                "params": {}
+              },
+              "DLY": {
+                "name": "Sweet",
+                "on": true,
+                "params": {
+                  "0": 45,
+                  "1": 620,
+                  "2": 35
+                }
+              },
+              "RVB": {
+                "name": "Hall",
+                "on": true,
+                "params": {
+                  "0": 55,
+                  "1": 50,
+                  "2": 50,
+                  "3": 1
+                }
+              }
+            }
+          },
+          "doc": {
+            "guitarra": {
+              "seletor": "Posição 2 (middle+bridge)",
+              "seletorCurto": "middle+bridge",
+              "volume": "5-8 (swells)",
+              "tone": "8",
+              "receita": "SWELLS com a chave de volume · Seletor 2 · Tone 8",
+              "tecnicas": [
+                "Swell lento com a chave de volume (sem palhetada visível)",
+                "Deixe o delay acumular entre os swells"
+              ]
+            },
+            "comoTocar": [],
+            "teste": {
+              "riff": "texturas e swells com a chave de volume",
+              "drum": "—",
+              "escutar": [
+                "eco longo e respirável",
+                "sem lama nos graves"
+              ]
+            },
+            "ajustes": [
+              "eco embolando → DLY Fdbk -10",
+              "muito seco → RVB decay +10"
+            ],
+            "evite": [
+              "Tocar riffs: a faixa não tem guitarra — é ambiente"
+            ],
+            "irNota": "Fábrica é o alvo: nenhum gabinete do banco casa melhor que o CAB já escolhido para este papel.",
+            "momentos": [
+              {
+                "nome": "Textura crua",
+                "mods": [
+                  [
+                    "DLY",
+                    "OFF"
+                  ],
+                  [
+                    "RVB",
+                    "OFF"
+                  ]
+                ],
+                "quando": "Swell puro, sem ambiência (para camadas na gravação).",
+                "dica": ""
+              }
+            ]
+          }
+        }
+      ],
+      "banda": "Pink Floyd",
+      "album": "Pulse (live)",
+      "ano": 1995
+    },
+    {
+      "id": "BRT01",
+      "song": "Breathe",
+      "idAlbum": "PL",
+      "bpm": 63,
+      "resumo": "DSOTM: acordes com chorus suave e reverb amplo — a base do respiro.",
+      "referencias": [
+        {
+          "role": "Base com chorus sutil + reverb; clima spacey",
+          "conf": "alta",
+          "src": "Pulse (1995) · gilmourish.com"
+        },
+        {
+          "role": "Rig 1994: Hiwatt DR103 + Alembic F-2B + WEM/Marshall 4x12 + pedalboard completo",
+          "conf": "alta",
+          "src": "gilmourish.com — Division Bell Tour"
+        }
+      ],
+      "patches": [
+        {
+          "camada": "Base",
+          "sufixo": "BA",
+          "nome": "BRT01BA",
+          "emoji": "🌫️",
+          "timbre": "Base spacey: chorus sutil e reverb amplo — o respiro do DSOTM",
+          "spec": {
+            "name": "BRT01BA",
+            "type": "Rock",
+            "bpm": 120,
+            "volume": 60,
+            "ir_slot": null,
+            "modules": {
+              "PRE": {
+                "name": "Boost",
+                "on": false,
+                "params": {}
+              },
+              "DST": {
+                "name": "Blues OD",
+                "on": false,
+                "params": {}
+              },
+              "AMP": {
+                "name": "Knights CL",
+                "on": true,
+                "params": {
+                  "0": 38,
+                  "1": 62,
+                  "2": 62,
+                  "3": 48,
+                  "4": 52
+                }
+              },
+              "NR": {
+                "name": "Gate 1",
+                "on": false,
+                "params": {}
+              },
+              "CAB": {
+                "name": "UK-LD 4x12",
+                "on": true,
+                "params": {
+                  "0": 78,
+                  "1": 62
+                }
+              },
+              "EQ": {
+                "name": "EQ 1",
+                "on": false,
+                "params": {}
+              },
+              "MOD": {
+                "name": "A-Chorus",
+                "on": true,
+                "params": {
+                  "0": 25,
+                  "1": 0.5,
+                  "2": 25
+                }
+              },
+              "DLY": {
+                "name": "Sweet",
+                "on": false,
+                "params": {}
+              },
+              "RVB": {
+                "name": "Hall",
+                "on": true,
+                "params": {
+                  "0": 38,
+                  "1": 45,
+                  "2": 50,
+                  "3": 1
+                }
+              }
+            }
+          },
+          "doc": {
+            "guitarra": {
+              "seletor": "Posição 4 (middle+neck)",
+              "seletorCurto": "middle+neck",
+              "volume": "8",
+              "tone": "7",
+              "receita": "SELETOR 4 · Volume 8 · Tone 7",
+              "tecnicas": [
+                "Acordes Em7/A7 com palhetada lenta",
+                "Deixe as cordas soar — pouco mute"
+              ]
+            },
+            "comoTocar": [],
+            "teste": {
+              "riff": "acordes da intro e refrões",
+              "drum": "DSOTM 63 BPM",
+              "escutar": [
+                "chorus sutil",
+                "espaço amplo"
+              ]
+            },
+            "ajustes": [
+              "chorus forte → MOD Mix -8",
+              "seco → RVB decay +5"
+            ],
+            "evite": [
+              "Crunch: a base é limpa e modulada"
+            ],
+            "irNota": "Recomendada: British Straight 4x12 Medium Mix (User IR 4) — o 4x12 britânico da pilha de 1994 (Low Cut 4 · High Cut 8500 · Level 0).",
+            "momentos": [
+              {
+                "nome": "Solo espacial",
+                "mods": [
+                  [
+                    "DLY",
+                    "ON"
+                  ]
+                ],
+                "quando": "Sobressalente para frases entre os acordes.",
+                "dica": ""
+              }
+            ]
+          }
+        }
+      ],
+      "banda": "Pink Floyd",
+      "album": "Pulse (live)",
+      "ano": 1995
+    },
+    {
+      "id": "ONR01",
+      "song": "On the Run",
+      "idAlbum": "PL",
+      "bpm": 160,
+      "resumo": "Sem guitarra na faixa (sintetizadores/efeitos) — patch de ambiente para camadas caseiras.",
+      "referencias": [
+        {
+          "role": "Sem guitarra: VCS3, sequenciador e efeitos de aeroporto",
+          "conf": "alta",
+          "src": "Pulse (1995) · gilmourish.com"
+        },
+        {
+          "role": "Rig 1994: Hiwatt DR103 + Alembic F-2B + WEM/Marshall 4x12 + pedalboard completo",
+          "conf": "alta",
+          "src": "gilmourish.com — Division Bell Tour"
+        }
+      ],
+      "patches": [
+        {
+          "camada": "Texturas",
+          "sufixo": "AM",
+          "nome": "ONR01AM",
+          "emoji": "✈️",
+          "timbre": "Ambiente sintetizado: delay com feedback e reverb longo — camada de textura para a faixa",
+          "spec": {
+            "name": "ONR01AM",
+            "type": "Rock",
+            "bpm": 120,
+            "volume": 60,
+            "ir_slot": null,
+            "modules": {
+              "PRE": {
+                "name": "Boost",
+                "on": false,
+                "params": {}
+              },
+              "DST": {
+                "name": "Blues OD",
+                "on": false,
+                "params": {}
+              },
+              "AMP": {
+                "name": "Flagman",
+                "on": true,
+                "params": {
+                  "0": 25,
+                  "1": 50,
+                  "2": 55,
+                  "3": 50,
+                  "4": 50,
+                  "5": 55
+                }
+              },
+              "NR": {
+                "name": "Gate 1",
+                "on": false,
+                "params": {}
+              },
+              "CAB": {
+                "name": "UK-LD 4x12",
+                "on": true,
+                "params": {
+                  "0": 78,
+                  "1": 62
+                }
+              },
+              "EQ": {
+                "name": "EQ 1",
+                "on": false,
+                "params": {}
+              },
+              "MOD": {
+                "name": "A-Chorus",
+                "on": false,
+                "params": {}
+              },
+              "DLY": {
+                "name": "T-Echo",
+                "on": true,
+                "params": {
+                  "0": 40,
+                  "1": 590,
+                  "2": 30
+                }
+              },
+              "RVB": {
+                "name": "Hall",
+                "on": true,
+                "params": {
+                  "0": 55,
+                  "1": 50,
+                  "2": 50,
+                  "3": 1
+                }
+              }
+            }
+          },
+          "doc": {
+            "guitarra": {
+              "seletor": "Posição 2 (middle+bridge)",
+              "seletorCurto": "middle+bridge",
+              "volume": "5-8 (swells)",
+              "tone": "8",
+              "receita": "SWELLS com a chave de volume · Seletor 2 · Tone 8",
+              "tecnicas": [
+                "Swells com a chave de volume sobre o delay",
+                "Ruídos controlados com o braço na ponte"
+              ]
+            },
+            "comoTocar": [],
+            "teste": {
+              "riff": "texturas, ruídos e swells",
+              "drum": "—",
+              "escutar": [
+                "eco longo e industrial",
+                "sem lama nos graves"
+              ]
+            },
+            "ajustes": [
+              "eco embolando → DLY Fdbk -10",
+              "muito seco → RVB decay +10"
+            ],
+            "evite": [
+              "Tocar riffs: a faixa original não tem guitarra — use como camada"
+            ],
+            "irNota": "Fábrica é o alvo: nenhum gabinete do banco casa melhor que o CAB já escolhido para este papel.",
+            "momentos": [
+              {
+                "nome": "Textura crua",
+                "mods": [
+                  [
+                    "DLY",
+                    "OFF"
+                  ]
+                ],
+                "quando": "Só o reverb ambiente — o delay industrial sai.",
+                "dica": ""
+              }
+            ]
+          }
+        }
+      ],
+      "banda": "Pink Floyd",
+      "album": "Pulse (live)",
+      "ano": 1995
+    },
+    {
+      "id": "TM01",
+      "song": "Time",
+      "idAlbum": "PL",
+      "bpm": 121,
+      "resumo": "Solo de 'Time': TD + delay curto, bend de 1 tom e agressividade controlada — icônico.",
+      "referencias": [
+        {
+          "role": "Solo: Tube Driver + delay curto, bend 1 tom, vibrato largo",
+          "conf": "alta",
+          "src": "Pulse (1995) · gilmourish.com"
+        },
+        {
+          "role": "Rig 1994: Hiwatt DR103 + Alembic F-2B + WEM/Marshall 4x12 + pedalboard completo",
+          "conf": "alta",
+          "src": "gilmourish.com — Division Bell Tour"
+        }
+      ],
+      "patches": [
+        {
+          "camada": "Base",
+          "sufixo": "BA",
+          "nome": "TM01BA",
+          "emoji": "⏳",
+          "timbre": "Base do DSOTM: acordes com crunch suave — o relógio no fundo",
+          "spec": {
+            "name": "TM01BA",
+            "type": "Rock",
+            "bpm": 120,
+            "volume": 60,
+            "ir_slot": null,
+            "modules": {
+              "PRE": {
+                "name": "Saturate",
+                "on": true,
+                "params": {
+                  "0": 32,
+                  "1": 55,
+                  "2": 60
+                }
+              },
+              "DST": {
+                "name": "Blues OD",
+                "on": false,
+                "params": {}
+              },
+              "AMP": {
+                "name": "Flagman",
+                "on": true,
+                "params": {
+                  "0": 44,
+                  "1": 55,
+                  "2": 62,
+                  "3": 50,
+                  "4": 55,
+                  "5": 58
+                }
+              },
+              "NR": {
+                "name": "Gate 1",
+                "on": true,
+                "params": {
+                  "0": 26
+                }
+              },
+              "CAB": {
+                "name": "UK-LD 4x12",
+                "on": true,
+                "params": {
+                  "0": 78,
+                  "1": 62
+                }
+              },
+              "EQ": {
+                "name": "EQ 1",
+                "on": false,
+                "params": {}
+              },
+              "MOD": {
+                "name": "A-Chorus",
+                "on": false,
+                "params": {}
+              },
+              "DLY": {
+                "name": "Sweet",
+                "on": false,
+                "params": {
+                  "0": 18,
+                  "1": 380,
+                  "2": 24
+                }
+              },
+              "RVB": {
+                "name": "Plate",
+                "on": true,
+                "params": {
+                  "0": 30,
+                  "1": 40,
+                  "2": 50,
+                  "3": 1
+                }
+              }
+            }
+          },
+          "doc": {
+            "guitarra": {
+              "seletor": "Posição 2 (middle+bridge)",
+              "seletorCurto": "middle+bridge",
+              "volume": "10",
+              "tone": "9",
+              "receita": "SELETOR 2 · Volume 10 · Tone 9",
+              "tecnicas": [
+                "Acordes F#m7/A com palhetada marcada",
+                "Sincronize com os acordes do piano"
+              ]
+            },
+            "comoTocar": [],
+            "teste": {
+              "riff": "acordes dos versos e refrão",
+              "drum": "DSOTM 121 BPM",
+              "escutar": [
+                "crunch suave",
+                "boa definição nos graves"
+              ]
+            },
+            "ajustes": [
+              "lamacento → CAB High Cut -5",
+              "seco → RVB mix +5"
+            ],
+            "evite": [
+              "Crunch pesado no verso — leve e aberto"
+            ],
+            "irNota": "Recomendada: British Straight 4x12 Medium Mix (User IR 4) — o 4x12 britânico da pilha de 1994 (Low Cut 4 · High Cut 8500 · Level 0).",
+            "momentos": [
+              {
+                "nome": "Solo (eco curto)",
+                "mods": [
+                  [
+                    "DLY",
+                    "ON"
+                  ]
+                ],
+                "quando": "Para puxar frases do solo de Time na base, com o eco curto certo.",
+                "dica": ""
+              }
+            ]
+          }
+        },
+        {
+          "camada": "Solo",
+          "sufixo": "SO",
+          "nome": "TM01SO",
+          "emoji": "⏱️",
+          "timbre": "O solo de Time: Tube Driver quente, delay curto, bend de 1 tom e a agressividade do relógio",
+          "spec": {
+            "name": "TM01SO",
+            "type": "Rock",
+            "bpm": 120,
+            "volume": 60,
+            "ir_slot": null,
+            "modules": {
+              "PRE": {
+                "name": "Saturate",
+                "on": true,
+                "params": {
+                  "0": 50,
+                  "1": 60,
+                  "2": 62
+                }
+              },
+              "DST": {
+                "name": "Blues OD",
+                "on": false,
+                "params": {}
+              },
+              "AMP": {
+                "name": "Flagman",
+                "on": true,
+                "params": {
+                  "0": 52,
+                  "1": 58,
+                  "2": 64,
+                  "3": 50,
+                  "4": 55,
+                  "5": 58
+                }
+              },
+              "NR": {
+                "name": "Gate 1",
+                "on": true,
+                "params": {
+                  "0": 30
+                }
+              },
+              "CAB": {
+                "name": "UK-LD 4x12",
+                "on": true,
+                "params": {
+                  "0": 78,
+                  "1": 62
+                }
+              },
+              "EQ": {
+                "name": "EQ 1",
+                "on": false,
+                "params": {}
+              },
+              "MOD": {
+                "name": "A-Chorus",
+                "on": false,
+                "params": {}
+              },
+              "DLY": {
+                "name": "Sweet",
+                "on": true,
+                "params": {
+                  "0": 18,
+                  "1": 380,
+                  "2": 24
+                }
+              },
+              "RVB": {
+                "name": "Hall",
+                "on": true,
+                "params": {
+                  "0": 38,
+                  "1": 45,
+                  "2": 50,
+                  "3": 1
+                }
+              }
+            }
+          },
+          "doc": {
+            "guitarra": {
+              "seletor": "Posição 2 (middle+bridge)",
+              "seletorCurto": "middle+bridge",
+              "volume": "10",
+              "tone": "9",
+              "receita": "SELETOR 2 · Volume 10 · Tone 9",
+              "tecnicas": [
+                "Bend de 1 tom na 1ª e 2ª corda",
+                "Vibrato largo do pulso",
+                "Frases ascendentes com sustain"
+              ]
+            },
+            "comoTocar": [],
+            "teste": {
+              "riff": "solo central",
+              "drum": "DSOTM 121 BPM",
+              "escutar": [
+                "agressividade controlada",
+                "bend de 1 tom com sustain",
+                "delay curto preenchendo"
+              ]
+            },
+            "ajustes": [
+              "falta sustain → PRE +5",
+              "sibilo → NR Thr +2"
+            ],
+            "evite": [
+              "Delay longo: o solo pede eco curto e agressivo"
+            ],
+            "irNota": "Recomendada: British Straight 4x12 Medium Mix (User IR 4) — o 4x12 britânico da pilha de 1994 (Low Cut 4 · High Cut 8500 · Level 0).",
+            "momentos": [
+              {
+                "nome": "Verso seco",
+                "mods": [
+                  [
+                    "DLY",
+                    "OFF"
+                  ]
+                ],
+                "quando": "Acompanhamento do verso sem eco.",
+                "dica": ""
+              }
+            ]
+          }
+        }
+      ],
+      "banda": "Pink Floyd",
+      "album": "Pulse (live)",
+      "ano": 1995
+    },
+    {
+      "id": "BTK02",
+      "song": "Breathe (Reprise)",
+      "idAlbum": "PL",
+      "bpm": 63,
+      "resumo": "Reprise: base com crunch suave e clima mais escuro.",
+      "referencias": [
+        {
+          "role": "Base com crunch suave e clima escuro",
+          "conf": "alta",
+          "src": "Pulse (1995) · gilmourish.com"
+        },
+        {
+          "role": "Rig 1994: Hiwatt DR103 + Alembic F-2B + WEM/Marshall 4x12 + pedalboard completo",
+          "conf": "alta",
+          "src": "gilmourish.com — Division Bell Tour"
+        }
+      ],
+      "patches": [
+        {
+          "camada": "Base",
+          "sufixo": "BA",
+          "nome": "BTK02BA",
+          "emoji": "🌗",
+          "timbre": "Reprise: crunch suave e escuro — a ponte entre Time e Money",
+          "spec": {
+            "name": "BTK02BA",
+            "type": "Rock",
+            "bpm": 120,
+            "volume": 60,
+            "ir_slot": null,
+            "modules": {
+              "PRE": {
+                "name": "Saturate",
+                "on": true,
+                "params": {
+                  "0": 30,
+                  "1": 55,
+                  "2": 60
+                }
+              },
+              "DST": {
+                "name": "Blues OD",
+                "on": false,
+                "params": {}
+              },
+              "AMP": {
+                "name": "Flagman",
+                "on": true,
+                "params": {
+                  "0": 44,
+                  "1": 55,
+                  "2": 62,
+                  "3": 50,
+                  "4": 55,
+                  "5": 58
+                }
+              },
+              "NR": {
+                "name": "Gate 1",
+                "on": true,
+                "params": {
+                  "0": 26
+                }
+              },
+              "CAB": {
+                "name": "UK-LD 4x12",
+                "on": true,
+                "params": {
+                  "0": 78,
+                  "1": 62
+                }
+              },
+              "EQ": {
+                "name": "EQ 1",
+                "on": false,
+                "params": {}
+              },
+              "MOD": {
+                "name": "A-Chorus",
+                "on": false,
+                "params": {}
+              },
+              "DLY": {
+                "name": "Sweet",
+                "on": false,
+                "params": {}
+              },
+              "RVB": {
+                "name": "Plate",
+                "on": true,
+                "params": {
+                  "0": 30,
+                  "1": 40,
+                  "2": 50,
+                  "3": 1
+                }
+              }
+            }
+          },
+          "doc": {
+            "guitarra": {
+              "seletor": "Posição 2 (middle+bridge)",
+              "seletorCurto": "middle+bridge",
+              "volume": "9",
+              "tone": "8",
+              "receita": "SELETOR 2 · Volume 9 · Tone 8",
+              "tecnicas": [
+                "Acordes com palhetada lenta e pesada",
+                "Deixe o sustain completar os acordes"
+              ]
+            },
+            "comoTocar": [],
+            "teste": {
+              "riff": "acordes da reprise",
+              "drum": "DSOTM 63 BPM",
+              "escutar": [
+                "crunch escuro",
+                "clima sombrio"
+              ]
+            },
+            "ajustes": [
+              "muito brilho → CAB High Cut -5",
+              "muito escuro → EQ High +2"
+            ],
+            "evite": [
+              "Limpo: a reprise é mais escura e crunch"
+            ],
+            "irNota": "Recomendada: British Straight 4x12 Medium Mix (User IR 4) — o 4x12 britânico da pilha de 1994 (Low Cut 4 · High Cut 8500 · Level 0).",
+            "momentos": [
+              {
+                "nome": "Solo (eco)",
+                "mods": [
+                  [
+                    "DLY",
+                    "ON"
+                  ]
+                ],
+                "quando": "Frases sobre a reprise.",
+                "dica": ""
+              }
+            ]
+          }
+        }
+      ],
+      "banda": "Pink Floyd",
+      "album": "Pulse (live)",
+      "ano": 1995
+    },
+    {
+      "id": "GGS01",
+      "song": "The Great Gig in the Sky",
+      "idAlbum": "PL",
+      "bpm": 108,
+      "resumo": "Sem guitarra na faixa (piano + vocal improvisado) — patch de ambiente para camadas caseiras.",
+      "referencias": [
+        {
+          "role": "Sem guitarra: piano elétrico e vocal improvisado",
+          "conf": "alta",
+          "src": "Pulse (1995) · gilmourish.com"
+        },
+        {
+          "role": "Rig 1994: Hiwatt DR103 + Alembic F-2B + WEM/Marshall 4x12 + pedalboard completo",
+          "conf": "alta",
+          "src": "gilmourish.com — Division Bell Tour"
+        }
+      ],
+      "patches": [
+        {
+          "camada": "Texturas",
+          "sufixo": "AM",
+          "nome": "GGS01AM",
+          "emoji": "🎺",
+          "timbre": "Ambiente etéreo: chorus + reverb longo — camada sutil que respeita o vocal da faixa",
+          "spec": {
+            "name": "GGS01AM",
+            "type": "Rock",
+            "bpm": 120,
+            "volume": 60,
+            "ir_slot": null,
+            "modules": {
+              "PRE": {
+                "name": "Boost",
+                "on": false,
+                "params": {}
+              },
+              "DST": {
+                "name": "Blues OD",
+                "on": false,
+                "params": {}
+              },
+              "AMP": {
+                "name": "Knights CL",
+                "on": true,
+                "params": {
+                  "0": 38,
+                  "1": 62,
+                  "2": 62,
+                  "3": 48,
+                  "4": 52
+                }
+              },
+              "NR": {
+                "name": "Gate 1",
+                "on": false,
+                "params": {}
+              },
+              "CAB": {
+                "name": "UK-LD 4x12",
+                "on": true,
+                "params": {
+                  "0": 78,
+                  "1": 62
+                }
+              },
+              "EQ": {
+                "name": "EQ 1",
+                "on": false,
+                "params": {}
+              },
+              "MOD": {
+                "name": "A-Chorus",
+                "on": true,
+                "params": {
+                  "0": 28,
+                  "1": 0.5,
+                  "2": 28
+                }
+              },
+              "DLY": {
+                "name": "Sweet",
+                "on": false,
+                "params": {}
+              },
+              "RVB": {
+                "name": "Hall",
+                "on": true,
+                "params": {
+                  "0": 55,
+                  "1": 50,
+                  "2": 50,
+                  "3": 1
+                }
+              }
+            }
+          },
+          "doc": {
+            "guitarra": {
+              "seletor": "Posição 4 (middle+neck)",
+              "seletorCurto": "middle+neck",
+              "volume": "5-7 (suave)",
+              "tone": "7",
+              "receita": "VOLUME 5-7 · Seletor 4 · Tone 7 (suave, atrás do vocal)",
+              "tecnicas": [
+                "Swells discretos seguindo a dinâmica do vocal",
+                "Menos é mais — sombra, não protagonista"
+              ]
+            },
+            "comoTocar": [],
+            "teste": {
+              "riff": "texturas suaves e swells",
+              "drum": "Balada",
+              "escutar": [
+                "camada sutil sem brigar com o vocal",
+                "clima etéreo"
+              ]
+            },
+            "ajustes": [
+              "brigar com o vocal → toque quase nada",
+              "muito presente → VOL da guitarra -2"
+            ],
+            "evite": [
+              "Tocar melodia: a faixa pertence ao vocal — só camadas discretas"
+            ],
+            "irNota": "Recomendada: British Straight 4x12 Medium Mix (User IR 4) — o 4x12 britânico da pilha de 1994 (Low Cut 4 · High Cut 8500 · Level 0)."
+          }
+        }
+      ],
+      "banda": "Pink Floyd",
+      "album": "Pulse (live)",
+      "ano": 1995
+    },
+    {
+      "id": "MNY01",
+      "song": "Money",
+      "idAlbum": "PL",
+      "bpm": 128,
+      "resumo": "O blues de 7/4: solo com TD + delay, base com crunch e aquele groove irregular.",
+      "referencias": [
+        {
+          "role": "Solo TD+delay; base crunch no 7/4",
+          "conf": "alta",
+          "src": "Pulse (1995) · gilmourish.com"
+        },
+        {
+          "role": "Rig 1994: Hiwatt DR103 + Alembic F-2B + WEM/Marshall 4x12 + pedalboard completo",
+          "conf": "alta",
+          "src": "gilmourish.com — Division Bell Tour"
+        }
+      ],
+      "patches": [
+        {
+          "camada": "Base",
+          "sufixo": "BA",
+          "nome": "MNY01BA",
+          "emoji": "💰",
+          "timbre": "Base do 7/4: crunch firme e groove — o blues do dinheiro",
+          "spec": {
+            "name": "MNY01BA",
+            "type": "Rock",
+            "bpm": 120,
+            "volume": 60,
+            "ir_slot": null,
+            "modules": {
+              "PRE": {
+                "name": "Saturate",
+                "on": true,
+                "params": {
+                  "0": 35,
+                  "1": 55,
+                  "2": 60
+                }
+              },
+              "DST": {
+                "name": "Blues OD",
+                "on": false,
+                "params": {}
+              },
+              "AMP": {
+                "name": "Flagman",
+                "on": true,
+                "params": {
+                  "0": 44,
+                  "1": 55,
+                  "2": 62,
+                  "3": 50,
+                  "4": 55,
+                  "5": 58
+                }
+              },
+              "NR": {
+                "name": "Gate 1",
+                "on": true,
+                "params": {
+                  "0": 26
+                }
+              },
+              "CAB": {
+                "name": "UK-LD 4x12",
+                "on": true,
+                "params": {
+                  "0": 78,
+                  "1": 62
+                }
+              },
+              "EQ": {
+                "name": "EQ 1",
+                "on": false,
+                "params": {}
+              },
+              "MOD": {
+                "name": "A-Chorus",
+                "on": false,
+                "params": {}
+              },
+              "DLY": {
+                "name": "Sweet",
+                "on": false,
+                "params": {
+                  "0": 15,
+                  "1": 430,
+                  "2": 25
+                }
+              },
+              "RVB": {
+                "name": "Plate",
+                "on": true,
+                "params": {
+                  "0": 30,
+                  "1": 40,
+                  "2": 50,
+                  "3": 1
+                }
+              }
+            }
+          },
+          "doc": {
+            "guitarra": {
+              "seletor": "Posição 2 (middle+bridge)",
+              "seletorCurto": "middle+bridge",
+              "volume": "10",
+              "tone": "9",
+              "receita": "SELETOR 2 · Volume 10 · Tone 9",
+              "tecnicas": [
+                "Conte o 7/4: 1-2-3-4-5-6-7 (não force o 4/4)",
+                "Riff com palhetada alternada"
+              ]
+            },
+            "comoTocar": [],
+            "teste": {
+              "riff": "riff e refrões no 7/4",
+              "drum": "Blues 7/4",
+              "escutar": [
+                "crunch firme no groove",
+                "graves definidos"
+              ]
+            },
+            "ajustes": [
+              "lamacento → CAB High Cut -5",
+              "seco → RVB mix +5"
+            ],
+            "evite": [
+              "Crunch pesado no riff — leve e aberto"
+            ],
+            "irNota": "Recomendada: British Straight 4x12 Medium Mix (User IR 4) — o 4x12 britânico da pilha de 1994 (Low Cut 4 · High Cut 8500 · Level 0).",
+            "momentos": [
+              {
+                "nome": "Solo (eco)",
+                "mods": [
+                  [
+                    "DLY",
+                    "ON"
+                  ]
+                ],
+                "quando": "Solo do 7/4 com o eco do projeto.",
+                "dica": ""
+              }
+            ]
+          }
+        },
+        {
+          "camada": "Solo",
+          "sufixo": "SO",
+          "nome": "MNY01SO",
+          "emoji": "💱",
+          "timbre": "Solo de Money: Tube Driver quente + delay — o blues de 7/4 com frases que caem no groove",
+          "spec": {
+            "name": "MNY01SO",
+            "type": "Rock",
+            "bpm": 120,
+            "volume": 60,
+            "ir_slot": null,
+            "modules": {
+              "PRE": {
+                "name": "Saturate",
+                "on": true,
+                "params": {
+                  "0": 50,
+                  "1": 60,
+                  "2": 62
+                }
+              },
+              "DST": {
+                "name": "Blues OD",
+                "on": false,
+                "params": {}
+              },
+              "AMP": {
+                "name": "Flagman",
+                "on": true,
+                "params": {
+                  "0": 50,
+                  "1": 58,
+                  "2": 64,
+                  "3": 50,
+                  "4": 55,
+                  "5": 58
+                }
+              },
+              "NR": {
+                "name": "Gate 1",
+                "on": true,
+                "params": {
+                  "0": 30
+                }
+              },
+              "CAB": {
+                "name": "UK-LD 4x12",
+                "on": true,
+                "params": {
+                  "0": 78,
+                  "1": 62
+                }
+              },
+              "EQ": {
+                "name": "EQ 1",
+                "on": false,
+                "params": {}
+              },
+              "MOD": {
+                "name": "A-Chorus",
+                "on": false,
+                "params": {}
+              },
+              "DLY": {
+                "name": "Sweet",
+                "on": true,
+                "params": {
+                  "0": 15,
+                  "1": 430,
+                  "2": 25
+                }
+              },
+              "RVB": {
+                "name": "Hall",
+                "on": true,
+                "params": {
+                  "0": 38,
+                  "1": 45,
+                  "2": 50,
+                  "3": 1
+                }
+              }
+            }
+          },
+          "doc": {
+            "guitarra": {
+              "seletor": "Posição 2 (middle+bridge)",
+              "seletorCurto": "middle+bridge",
+              "volume": "10",
+              "tone": "9",
+              "receita": "SELETOR 2 · Volume 10 · Tone 9",
+              "tecnicas": [
+                "Frases no 7/4 com pausas",
+                "Bend de meio tom no final das frases"
+              ]
+            },
+            "comoTocar": [],
+            "teste": {
+              "riff": "solo central",
+              "drum": "Blues 7/4",
+              "escutar": [
+                "frases que caem no groove 7/4",
+                "bend com sustain"
+              ]
+            },
+            "ajustes": [
+              "falta sustain → PRE +5",
+              "afogado → RVB mix -5"
+            ],
+            "evite": [
+              "Corridas rápidas: o solo é melódico e no groove"
+            ],
+            "irNota": "Recomendada: British Straight 4x12 Medium Mix (User IR 4) — o 4x12 britânico da pilha de 1994 (Low Cut 4 · High Cut 8500 · Level 0).",
+            "momentos": [
+              {
+                "nome": "Groove seco",
+                "mods": [
+                  [
+                    "DLY",
+                    "OFF"
+                  ]
+                ],
+                "quando": "Riff do 7/4 seco — definição total.",
+                "dica": ""
+              }
+            ]
+          }
+        }
+      ],
+      "banda": "Pink Floyd",
+      "album": "Pulse (live)",
+      "ano": 1995
+    },
+    {
+      "id": "USAT01",
+      "song": "Us and Them",
+      "idAlbum": "PL",
+      "bpm": 79,
+      "resumo": "A balada épica: base limpa com chorus e reverb, solos aéreos com delay.",
+      "referencias": [
+        {
+          "role": "Base limpa com chorus e reverb; solos aéreos",
+          "conf": "alta",
+          "src": "Pulse (1995) · gilmourish.com"
+        },
+        {
+          "role": "Rig 1994: Hiwatt DR103 + Alembic F-2B + WEM/Marshall 4x12 + pedalboard completo",
+          "conf": "alta",
+          "src": "gilmourish.com — Division Bell Tour"
+        }
+      ],
+      "patches": [
+        {
+          "camada": "Base",
+          "sufixo": "BA",
+          "nome": "USAT01BA",
+          "emoji": "🕊️",
+          "timbre": "Base da balada: limpo com chorus e reverb amplo — o colchão de piano e sax",
+          "spec": {
+            "name": "USAT01BA",
+            "type": "Rock",
+            "bpm": 120,
+            "volume": 60,
+            "ir_slot": null,
+            "modules": {
+              "PRE": {
+                "name": "Boost",
+                "on": false,
+                "params": {}
+              },
+              "DST": {
+                "name": "Blues OD",
+                "on": false,
+                "params": {}
+              },
+              "AMP": {
+                "name": "Knights CL",
+                "on": true,
+                "params": {
+                  "0": 38,
+                  "1": 62,
+                  "2": 62,
+                  "3": 48,
+                  "4": 52
+                }
+              },
+              "NR": {
+                "name": "Gate 1",
+                "on": false,
+                "params": {}
+              },
+              "CAB": {
+                "name": "UK-LD 4x12",
+                "on": true,
+                "params": {
+                  "0": 78,
+                  "1": 62
+                }
+              },
+              "EQ": {
+                "name": "EQ 1",
+                "on": false,
+                "params": {}
+              },
+              "MOD": {
+                "name": "A-Chorus",
+                "on": true,
+                "params": {
+                  "0": 28,
+                  "1": 0.5,
+                  "2": 28
+                }
+              },
+              "DLY": {
+                "name": "Sweet",
+                "on": false,
+                "params": {
+                  "0": 20,
+                  "1": 570,
+                  "2": 30
+                }
+              },
+              "RVB": {
+                "name": "Hall",
+                "on": true,
+                "params": {
+                  "0": 38,
+                  "1": 45,
+                  "2": 50,
+                  "3": 1
+                }
+              }
+            }
+          },
+          "doc": {
+            "guitarra": {
+              "seletor": "Posição 4 (middle+neck)",
+              "seletorCurto": "middle+neck",
+              "volume": "8",
+              "tone": "7",
+              "receita": "SELETOR 4 · Volume 8 · Tone 7",
+              "tecnicas": [
+                "Acordes com palhetada suave",
+                "Deixe os acordes soar completos"
+              ]
+            },
+            "comoTocar": [],
+            "teste": {
+              "riff": "acordes dos versos",
+              "drum": "Balada épica",
+              "escutar": [
+                "limpo respirando",
+                "chorus sutil"
+              ]
+            },
+            "ajustes": [
+              "chorus forte → MOD Mix -8",
+              "seco → RVB decay +5"
+            ],
+            "evite": [
+              "Crunch: a base é limpa e etérea"
+            ],
+            "irNota": "Recomendada: British Straight 4x12 Medium Mix (User IR 4) — o 4x12 britânico da pilha de 1994 (Low Cut 4 · High Cut 8500 · Level 0).",
+            "momentos": [
+              {
+                "nome": "Solo aéreo",
+                "mods": [
+                  [
+                    "DLY",
+                    "ON"
+                  ]
+                ],
+                "quando": "Frases sobre a balada — o eco completa o vazio.",
+                "dica": ""
+              }
+            ]
+          }
+        },
+        {
+          "camada": "Solo",
+          "sufixo": "SO",
+          "nome": "USAT01SO",
+          "emoji": "🌌",
+          "timbre": "Solo aéreo: delay longo + reverb — as frases flutuando sobre a balada",
+          "spec": {
+            "name": "USAT01SO",
+            "type": "Rock",
+            "bpm": 120,
+            "volume": 60,
+            "ir_slot": null,
+            "modules": {
+              "PRE": {
+                "name": "Boost",
+                "on": false,
+                "params": {}
+              },
+              "DST": {
+                "name": "Blues OD",
+                "on": false,
+                "params": {}
+              },
+              "AMP": {
+                "name": "Knights CL",
+                "on": true,
+                "params": {
+                  "0": 42,
+                  "1": 62,
+                  "2": 62,
+                  "3": 48,
+                  "4": 52
+                }
+              },
+              "NR": {
+                "name": "Gate 1",
+                "on": false,
+                "params": {}
+              },
+              "CAB": {
+                "name": "UK-LD 4x12",
+                "on": true,
+                "params": {
+                  "0": 78,
+                  "1": 62
+                }
+              },
+              "EQ": {
+                "name": "EQ 1",
+                "on": false,
+                "params": {}
+              },
+              "MOD": {
+                "name": "A-Chorus",
+                "on": false,
+                "params": {}
+              },
+              "DLY": {
+                "name": "Sweet",
+                "on": true,
+                "params": {
+                  "0": 20,
+                  "1": 570,
+                  "2": 30
+                }
+              },
+              "RVB": {
+                "name": "Hall",
+                "on": true,
+                "params": {
+                  "0": 55,
+                  "1": 50,
+                  "2": 50,
+                  "3": 1
+                }
+              }
+            }
+          },
+          "doc": {
+            "guitarra": {
+              "seletor": "Posição 4 (middle+neck)",
+              "seletorCurto": "middle+neck",
+              "volume": "9",
+              "tone": "9",
+              "receita": "SELETOR 4 · Volume 9 · Tone 9",
+              "tecnicas": [
+                "Frases longas com sustain",
+                "Deixe o reverb completar o final das frases"
+              ]
+            },
+            "comoTocar": [],
+            "teste": {
+              "riff": "solo central",
+              "drum": "Balada épica",
+              "escutar": [
+                "frases flutuando no reverb",
+                "eco preenchendo"
+              ]
+            },
+            "ajustes": [
+              "afogado → RVB mix -8",
+              "eco alto → DLY Mix -8"
+            ],
+            "evite": [
+              "Tocar corridas: as frases são longas e aéreas"
+            ],
+            "irNota": "Recomendada: British Straight 4x12 Medium Mix (User IR 4) — o 4x12 britânico da pilha de 1994 (Low Cut 4 · High Cut 8500 · Level 0).",
+            "momentos": [
+              {
+                "nome": "Base (sem eco)",
+                "mods": [
+                  [
+                    "DLY",
+                    "OFF"
+                  ]
+                ],
+                "quando": "Acompanhamento discretíssimo.",
+                "dica": ""
+              }
+            ]
+          }
+        }
+      ],
+      "banda": "Pink Floyd",
+      "album": "Pulse (live)",
+      "ano": 1995
+    },
+    {
+      "id": "CLR01",
+      "song": "Any Colour You Like",
+      "idAlbum": "PL",
+      "bpm": 120,
+      "resumo": "Jam do DSOTM: guitarra espacial com fuzz e delays, diálogo com os sintetizadores.",
+      "referencias": [
+        {
+          "role": "Fuzz + delays espaciais; jam improvisada",
+          "conf": "alta",
+          "src": "Pulse (1995) · gilmourish.com"
+        },
+        {
+          "role": "Rig 1994: Hiwatt DR103 + Alembic F-2B + WEM/Marshall 4x12 + pedalboard completo",
+          "conf": "alta",
+          "src": "gilmourish.com — Division Bell Tour"
+        }
+      ],
+      "patches": [
+        {
+          "camada": "Jam Espacial",
+          "sufixo": "JM",
+          "nome": "CLR01JM",
+          "emoji": "🎨",
+          "timbre": "Jam espacial: fuzz + delay longo — a guitarra conversa com os sintetizadores",
+          "spec": {
+            "name": "CLR01JM",
+            "type": "Rock",
+            "bpm": 120,
+            "volume": 60,
+            "ir_slot": null,
+            "modules": {
+              "PRE": {
+                "name": "Boost",
+                "on": false,
+                "params": {}
+              },
+              "DST": {
+                "name": "Red Haze",
+                "on": true,
+                "params": {
+                  "0": 55,
+                  "1": 50
+                }
+              },
+              "AMP": {
+                "name": "Flagman",
+                "on": true,
+                "params": {
+                  "0": 40,
+                  "1": 50,
+                  "2": 58,
+                  "3": 50,
+                  "4": 52,
+                  "5": 56
+                }
+              },
+              "NR": {
+                "name": "Gate 1",
+                "on": true,
+                "params": {
+                  "0": 30
+                }
+              },
+              "CAB": {
+                "name": "UK-LD 4x12",
+                "on": true,
+                "params": {
+                  "0": 78,
+                  "1": 62
+                }
+              },
+              "EQ": {
+                "name": "EQ 1",
+                "on": false,
+                "params": {}
+              },
+              "MOD": {
+                "name": "A-Chorus",
+                "on": false,
+                "params": {}
+              },
+              "DLY": {
+                "name": "Sweet",
+                "on": true,
+                "params": {
+                  "0": 35,
+                  "1": 570,
+                  "2": 28
+                }
+              },
+              "RVB": {
+                "name": "Hall",
+                "on": true,
+                "params": {
+                  "0": 55,
+                  "1": 50,
+                  "2": 50,
+                  "3": 1
+                }
+              }
+            }
+          },
+          "doc": {
+            "guitarra": {
+              "seletor": "Posição 2 (middle+bridge)",
+              "seletorCurto": "middle+bridge",
+              "volume": "10",
+              "tone": "8",
+              "receita": "SELETOR 2 · Volume 10 · Tone 8",
+              "tecnicas": [
+                "Frases longas com vibrato",
+                "Deixe o delay criar os padrões"
+              ]
+            },
+            "comoTocar": [],
+            "teste": {
+              "riff": "jam improvisada",
+              "drum": "Instrumental espacial",
+              "escutar": [
+                "fuzz sustentado",
+                "delay criando padrões"
+              ]
+            },
+            "ajustes": [
+              "fuzz embolando → DST VOL -5",
+              "delay embolando → Fdbk -8"
+            ],
+            "evite": [
+              "Tocar de forma corrida: a jam pede espaço e improviso"
+            ],
+            "irNota": "Recomendada: British Straight 4x12 Medium Mix (User IR 4) — o 4x12 britânico da pilha de 1994 (Low Cut 4 · High Cut 8500 · Level 0)."
+          }
+        }
+      ],
+      "banda": "Pink Floyd",
+      "album": "Pulse (live)",
+      "ano": 1995
+    },
+    {
+      "id": "BD01",
+      "song": "Brain Damage",
+      "idAlbum": "PL",
+      "bpm": 77,
+      "resumo": "Base folk do DSOTM: acordes abertos com brilho, clima leve e sombrio ao mesmo tempo.",
+      "referencias": [
+        {
+          "role": "Base folk com acordes abertos",
+          "conf": "alta",
+          "src": "Pulse (1995) · gilmourish.com"
+        },
+        {
+          "role": "Rig 1994: Hiwatt DR103 + Alembic F-2B + WEM/Marshall 4x12 + pedalboard completo",
+          "conf": "alta",
+          "src": "gilmourish.com — Division Bell Tour"
+        }
+      ],
+      "patches": [
+        {
+          "camada": "Base",
+          "sufixo": "BA",
+          "nome": "BD01BA",
+          "emoji": "🧠",
+          "timbre": "Base folk: acordes abertos com brilho — o lado leve e sombrio do DSOTM",
+          "spec": {
+            "name": "BD01BA",
+            "type": "Rock",
+            "bpm": 120,
+            "volume": 60,
+            "ir_slot": null,
+            "modules": {
+              "PRE": {
+                "name": "Boost",
+                "on": false,
+                "params": {}
+              },
+              "DST": {
+                "name": "Blues OD",
+                "on": false,
+                "params": {}
+              },
+              "AMP": {
+                "name": "Knights CL",
+                "on": true,
+                "params": {
+                  "0": 38,
+                  "1": 62,
+                  "2": 62,
+                  "3": 48,
+                  "4": 52
+                }
+              },
+              "NR": {
+                "name": "Gate 1",
+                "on": false,
+                "params": {}
+              },
+              "CAB": {
+                "name": "UK-LD 4x12",
+                "on": true,
+                "params": {
+                  "0": 78,
+                  "1": 62
+                }
+              },
+              "EQ": {
+                "name": "EQ 1",
+                "on": false,
+                "params": {}
+              },
+              "MOD": {
+                "name": "A-Chorus",
+                "on": false,
+                "params": {}
+              },
+              "DLY": {
+                "name": "Sweet",
+                "on": false,
+                "params": {}
+              },
+              "RVB": {
+                "name": "Hall",
+                "on": true,
+                "params": {
+                  "0": 38,
+                  "1": 45,
+                  "2": 50,
+                  "3": 1
+                }
+              }
+            }
+          },
+          "doc": {
+            "guitarra": {
+              "seletor": "Posição 4 (middle+neck)",
+              "seletorCurto": "middle+neck",
+              "volume": "8",
+              "tone": "8",
+              "receita": "SELETOR 4 · Volume 8 · Tone 8",
+              "tecnicas": [
+                "Acordes D/F# com palhetada folk",
+                "Deixe as cordas soar entre as trocas"
+              ]
+            },
+            "comoTocar": [],
+            "teste": {
+              "riff": "acordes dos versos e refrão",
+              "drum": "DSOTM 77 BPM",
+              "escutar": [
+                "brilho folk",
+                "boa definição nos acordes abertos"
+              ]
+            },
+            "ajustes": [
+              "muito brilho → CAB High Cut -5",
+              "seco → RVB decay +5"
+            ],
+            "evite": [
+              "Crunch: a base é limpa e folk"
+            ],
+            "irNota": "Recomendada: British Straight 4x12 Medium Mix (User IR 4) — o 4x12 britânico da pilha de 1994 (Low Cut 4 · High Cut 8500 · Level 0).",
+            "momentos": [
+              {
+                "nome": "Solo (eco)",
+                "mods": [
+                  [
+                    "DLY",
+                    "ON"
+                  ]
+                ],
+                "quando": "Frases entre os versos.",
+                "dica": ""
+              }
+            ]
+          }
+        }
+      ],
+      "banda": "Pink Floyd",
+      "album": "Pulse (live)",
+      "ano": 1995
+    },
+    {
+      "id": "ECL01",
+      "song": "Eclipse",
+      "idAlbum": "PL",
+      "bpm": 84,
+      "resumo": "Final do DSOTM: acordes maciços com crunch e reverb — o clímax do álbum.",
+      "referencias": [
+        {
+          "role": "Acordes maciços com crunch e reverb",
+          "conf": "alta",
+          "src": "Pulse (1995) · gilmourish.com"
+        },
+        {
+          "role": "Rig 1994: Hiwatt DR103 + Alembic F-2B + WEM/Marshall 4x12 + pedalboard completo",
+          "conf": "alta",
+          "src": "gilmourish.com — Division Bell Tour"
+        }
+      ],
+      "patches": [
+        {
+          "camada": "Base",
+          "sufixo": "BA",
+          "nome": "ECL01BA",
+          "emoji": "🌑",
+          "timbre": "Clímax: acordes maciços com crunch e reverb amplo — o fecho do DSOTM",
+          "spec": {
+            "name": "ECL01BA",
+            "type": "Rock",
+            "bpm": 120,
+            "volume": 60,
+            "ir_slot": null,
+            "modules": {
+              "PRE": {
+                "name": "Saturate",
+                "on": true,
+                "params": {
+                  "0": 36,
+                  "1": 55,
+                  "2": 62
+                }
+              },
+              "DST": {
+                "name": "Blues OD",
+                "on": false,
+                "params": {}
+              },
+              "AMP": {
+                "name": "Flagman",
+                "on": true,
+                "params": {
+                  "0": 44,
+                  "1": 55,
+                  "2": 62,
+                  "3": 50,
+                  "4": 55,
+                  "5": 58
+                }
+              },
+              "NR": {
+                "name": "Gate 1",
+                "on": true,
+                "params": {
+                  "0": 26
+                }
+              },
+              "CAB": {
+                "name": "UK-LD 4x12",
+                "on": true,
+                "params": {
+                  "0": 78,
+                  "1": 62
+                }
+              },
+              "EQ": {
+                "name": "EQ 1",
+                "on": false,
+                "params": {}
+              },
+              "MOD": {
+                "name": "A-Chorus",
+                "on": false,
+                "params": {}
+              },
+              "DLY": {
+                "name": "Sweet",
+                "on": false,
+                "params": {}
+              },
+              "RVB": {
+                "name": "Hall",
+                "on": true,
+                "params": {
+                  "0": 38,
+                  "1": 45,
+                  "2": 50,
+                  "3": 1
+                }
+              }
+            }
+          },
+          "doc": {
+            "guitarra": {
+              "seletor": "Posição 2 (middle+bridge)",
+              "seletorCurto": "middle+bridge",
+              "volume": "10",
+              "tone": "9",
+              "receita": "SELETOR 2 · Volume 10 · Tone 9",
+              "tecnicas": [
+                "Acordes longos e maciços",
+                "Sincronize com o coro final"
+              ]
+            },
+            "comoTocar": [],
+            "teste": {
+              "riff": "acordes finais",
+              "drum": "DSOTM 84 BPM",
+              "escutar": [
+                "acordes maciços",
+                "reverb amplo"
+              ]
+            },
+            "ajustes": [
+              "lamacento → CAB High Cut -5",
+              "seco → RVB decay +5"
+            ],
+            "evite": [
+              "Distorção total: o clímax pede crunch massivo"
+            ],
+            "irNota": "Recomendada: British Straight 4x12 Medium Mix (User IR 4) — o 4x12 britânico da pilha de 1994 (Low Cut 4 · High Cut 8500 · Level 0)."
+          }
+        }
+      ],
+      "banda": "Pink Floyd",
+      "album": "Pulse (live)",
+      "ano": 1995
+    },
+    {
+      "id": "WYWH01",
+      "song": "Wish You Were Here",
+      "idAlbum": "PL",
+      "bpm": 60,
+      "resumo": "A intro de 12 cordas (adaptada para a Strat) e o solo de abertura com delay curto.",
+      "referencias": [
+        {
+          "role": "Intro 12 cordas (adaptada) + solo com delay curto",
+          "conf": "alta",
+          "src": "Pulse (1995) · gilmourish.com"
+        },
+        {
+          "role": "Rig 1994: Hiwatt DR103 + Alembic F-2B + WEM/Marshall 4x12 + pedalboard completo",
+          "conf": "alta",
+          "src": "gilmourish.com — Division Bell Tour"
+        }
+      ],
+      "patches": [
+        {
+          "camada": "Intro/Solo",
+          "sufixo": "IN",
+          "nome": "WYWH01IN",
+          "emoji": "📻",
+          "timbre": "Intro icônica: '12 cordas' simulado na Strat (posição 4 + tone aberto) com o solo respondendo",
+          "spec": {
+            "name": "WYWH01IN",
+            "type": "Rock",
+            "bpm": 120,
+            "volume": 60,
+            "ir_slot": null,
+            "modules": {
+              "PRE": {
+                "name": "Boost",
+                "on": false,
+                "params": {}
+              },
+              "DST": {
+                "name": "Blues OD",
+                "on": false,
+                "params": {}
+              },
+              "AMP": {
+                "name": "Knights CL",
+                "on": true,
+                "params": {
+                  "0": 38,
+                  "1": 62,
+                  "2": 62,
+                  "3": 48,
+                  "4": 52
+                }
+              },
+              "NR": {
+                "name": "Gate 1",
+                "on": false,
+                "params": {}
+              },
+              "CAB": {
+                "name": "UK-LD 4x12",
+                "on": true,
+                "params": {
+                  "0": 78,
+                  "1": 62
+                }
+              },
+              "EQ": {
+                "name": "EQ 1",
+                "on": false,
+                "params": {}
+              },
+              "MOD": {
+                "name": "A-Chorus",
+                "on": false,
+                "params": {}
+              },
+              "DLY": {
+                "name": "Sweet",
+                "on": true,
+                "params": {
+                  "0": 18,
+                  "1": 380,
+                  "2": 20
+                }
+              },
+              "RVB": {
+                "name": "Room",
+                "on": true,
+                "params": {
+                  "0": 22,
+                  "1": 20,
+                  "2": 31,
+                  "3": 0
+                }
+              }
+            }
+          },
+          "doc": {
+            "guitarra": {
+              "seletor": "Posição 4 (middle+neck)",
+              "seletorCurto": "middle+neck",
+              "volume": "9",
+              "tone": "9",
+              "receita": "SELETOR 4 · Volume 9 · Tone 9",
+              "tecnicas": [
+                "Arpejos da intro com a mão relaxada",
+                "Solo no meio da intro (respondendo a base)"
+              ]
+            },
+            "comoTocar": [],
+            "teste": {
+              "riff": "intro de 12 cordas + solo de abertura",
+              "drum": "WYWH 60 BPM",
+              "escutar": [
+                "som de '12 cordas' simulado",
+                "solo respondendo a base"
+              ]
+            },
+            "ajustes": [
+              "eco alto → DLY Mix -8",
+              "falta corpo → EQ Mid +2"
+            ],
+            "evite": [
+              "Distorção: a música é toda limpa e acústica"
+            ],
+            "irNota": "Recomendada: British Straight 4x12 Medium Mix (User IR 4) — o 4x12 britânico da pilha de 1994 (Low Cut 4 · High Cut 8500 · Level 0).",
+            "momentos": [
+              {
+                "nome": "Arpejo seco",
+                "mods": [
+                  [
+                    "DLY",
+                    "OFF"
+                  ],
+                  [
+                    "RVB",
+                    "OFF"
+                  ]
+                ],
+                "quando": "Versão \"na sua cara\" do arpejo (gravação/técnica).",
+                "dica": ""
+              }
+            ]
+          }
+        }
+      ],
+      "banda": "Pink Floyd",
+      "album": "Pulse (live)",
+      "ano": 1995
+    },
+    {
+      "id": "CNW01",
+      "song": "Comfortably Numb",
+      "idAlbum": "PL",
+      "bpm": 134,
+      "resumo": "O solo dos solos: duas subidas épicas com TD + delay — o hino do rock.",
+      "referencias": [
+        {
+          "role": "2 solos épicos: Tube Driver + delay na duração da nota",
+          "conf": "alta",
+          "src": "Pulse (1995) · gilmourish.com"
+        },
+        {
+          "role": "Rig 1994: Hiwatt DR103 + Alembic F-2B + WEM/Marshall 4x12 + pedalboard completo",
+          "conf": "alta",
+          "src": "gilmourish.com — Division Bell Tour"
+        }
+      ],
+      "patches": [
+        {
+          "camada": "Solo 1",
+          "sufixo": "SO",
+          "nome": "CNW01SO",
+          "emoji": "🏥",
+          "timbre": "1º solo (após os versos): Tube Driver quente + delay — a subida que atravessa o muro",
+          "spec": {
+            "name": "CNW01SO",
+            "type": "Rock",
+            "bpm": 120,
+            "volume": 60,
+            "ir_slot": null,
+            "modules": {
+              "PRE": {
+                "name": "Saturate",
+                "on": true,
+                "params": {
+                  "0": 50,
+                  "1": 60,
+                  "2": 62
+                }
+              },
+              "DST": {
+                "name": "Blues OD",
+                "on": false,
+                "params": {}
+              },
+              "AMP": {
+                "name": "Flagman",
+                "on": true,
+                "params": {
+                  "0": 50,
+                  "1": 58,
+                  "2": 64,
+                  "3": 50,
+                  "4": 55,
+                  "5": 58
+                }
+              },
+              "NR": {
+                "name": "Gate 1",
+                "on": true,
+                "params": {
+                  "0": 30
+                }
+              },
+              "CAB": {
+                "name": "UK-LD 4x12",
+                "on": true,
+                "params": {
+                  "0": 78,
+                  "1": 62
+                }
+              },
+              "EQ": {
+                "name": "EQ 1",
+                "on": false,
+                "params": {}
+              },
+              "MOD": {
+                "name": "A-Chorus",
+                "on": false,
+                "params": {}
+              },
+              "DLY": {
+                "name": "Sweet",
+                "on": true,
+                "params": {
+                  "0": 20,
+                  "1": 570,
+                  "2": 30
+                }
+              },
+              "RVB": {
+                "name": "Hall",
+                "on": true,
+                "params": {
+                  "0": 38,
+                  "1": 45,
+                  "2": 50,
+                  "3": 1
+                }
+              }
+            }
+          },
+          "doc": {
+            "guitarra": {
+              "seletor": "Posição 2 (middle+bridge)",
+              "seletorCurto": "middle+bridge",
+              "volume": "10",
+              "tone": "9",
+              "receita": "SELETOR 2 · Volume 10 · Tone 9",
+              "tecnicas": [
+                "Bend de 1 tom na subida",
+                "Frases com espaço — o delay responde"
+              ]
+            },
+            "comoTocar": [],
+            "teste": {
+              "riff": "1º solo",
+              "drum": "Épico 134 BPM",
+              "escutar": [
+                "frases ascendentes com sustain",
+                "eco na duração da nota"
+              ]
+            },
+            "ajustes": [
+              "falta sustain → PRE +5",
+              "eco alto → DLY Mix -8"
+            ],
+            "evite": [
+              "Corridas rápidas: as frases são largas e melódicas"
+            ],
+            "irNota": "Recomendada: British Straight 4x12 Medium Mix (User IR 4) — o 4x12 britânico da pilha de 1994 (Low Cut 4 · High Cut 8500 · Level 0).",
+            "momentos": [
+              {
+                "nome": "Acordes do refrão",
+                "mods": [
+                  [
+                    "DLY",
+                    "OFF"
+                  ]
+                ],
+                "quando": "Os acordes da música pedem seco; o eco é do solo.",
+                "dica": ""
+              }
+            ]
+          }
+        },
+        {
+          "camada": "Solo 2",
+          "sufixo": "S2",
+          "nome": "CNW01S2",
+          "emoji": "👑",
+          "timbre": "2º solo (final): o hino — Tube Driver no talo + delay, vibrato largo e sustain infinito",
+          "spec": {
+            "name": "CNW01S2",
+            "type": "Rock",
+            "bpm": 120,
+            "volume": 60,
+            "ir_slot": null,
+            "modules": {
+              "PRE": {
+                "name": "Saturate",
+                "on": true,
+                "params": {
+                  "0": 58,
+                  "1": 65,
+                  "2": 64
+                }
+              },
+              "DST": {
+                "name": "Blues OD",
+                "on": false,
+                "params": {}
+              },
+              "AMP": {
+                "name": "Flagman",
+                "on": true,
+                "params": {
+                  "0": 54,
+                  "1": 60,
+                  "2": 66,
+                  "3": 50,
+                  "4": 55,
+                  "5": 58
+                }
+              },
+              "NR": {
+                "name": "Gate 1",
+                "on": true,
+                "params": {
+                  "0": 30
+                }
+              },
+              "CAB": {
+                "name": "UK-LD 4x12",
+                "on": true,
+                "params": {
+                  "0": 78,
+                  "1": 62
+                }
+              },
+              "EQ": {
+                "name": "EQ 1",
+                "on": false,
+                "params": {}
+              },
+              "MOD": {
+                "name": "A-Chorus",
+                "on": false,
+                "params": {}
+              },
+              "DLY": {
+                "name": "Sweet",
+                "on": true,
+                "params": {
+                  "0": 20,
+                  "1": 570,
+                  "2": 30
+                }
+              },
+              "RVB": {
+                "name": "Hall",
+                "on": true,
+                "params": {
+                  "0": 55,
+                  "1": 50,
+                  "2": 50,
+                  "3": 1
+                }
+              }
+            }
+          },
+          "doc": {
+            "guitarra": {
+              "seletor": "Posição 2 (middle+bridge)",
+              "seletorCurto": "middle+bridge",
+              "volume": "10",
+              "tone": "9",
+              "receita": "SELETOR 2 · Volume 10 · Tone 9",
+              "tecnicas": [
+                "Toque as frases icônicas com o ritmo original",
+                "Vibrato largo no final de cada frase"
+              ]
+            },
+            "comoTocar": [],
+            "teste": {
+              "riff": "2º solo (final)",
+              "drum": "Épico 134 BPM",
+              "escutar": [
+                "sustain infinito",
+                "vibrato largo",
+                "frases icônicas reconhecíveis"
+              ]
+            },
+            "ajustes": [
+              "falta sustain → PRE +5",
+              "afogado → RVB mix -5"
+            ],
+            "evite": [
+              "Acelerar: as frases são icônicas, respeite o ritmo"
+            ],
+            "irNota": "Recomendada: British Straight 4x12 Medium Mix (User IR 4) — o 4x12 britânico da pilha de 1994 (Low Cut 4 · High Cut 8500 · Level 0).",
+            "momentos": [
+              {
+                "nome": "Acordes do refrão",
+                "mods": [
+                  [
+                    "DLY",
+                    "OFF"
+                  ]
+                ],
+                "quando": "Mesma dica do 1º solo: refrão seco, solo com eco.",
+                "dica": ""
+              }
+            ]
+          }
+        }
+      ],
+      "banda": "Pink Floyd",
+      "album": "Pulse (live)",
+      "ano": 1995
+    },
+    {
+      "id": "MOTB01",
+      "song": "Mother",
+      "idAlbum": "PL",
+      "bpm": 81,
+      "resumo": "A balada do muro: acordes limpos com arpejos e clima de pergunta à mãe.",
+      "referencias": [
+        {
+          "role": "Base limpa com arpejos + clima de balada",
+          "conf": "alta",
+          "src": "Pulse (1995) · gilmourish.com"
+        },
+        {
+          "role": "Rig 1994: Hiwatt DR103 + Alembic F-2B + WEM/Marshall 4x12 + pedalboard completo",
+          "conf": "alta",
+          "src": "gilmourish.com — Division Bell Tour"
+        }
+      ],
+      "patches": [
+        {
+          "camada": "Base",
+          "sufixo": "BA",
+          "nome": "MOTB01BA",
+          "emoji": "👩",
+          "timbre": "Base da balada: arpejos limpos com reverb — o colchão da pergunta à mãe",
+          "spec": {
+            "name": "MOTB01BA",
+            "type": "Rock",
+            "bpm": 120,
+            "volume": 60,
+            "ir_slot": null,
+            "modules": {
+              "PRE": {
+                "name": "Boost",
+                "on": false,
+                "params": {}
+              },
+              "DST": {
+                "name": "Blues OD",
+                "on": false,
+                "params": {}
+              },
+              "AMP": {
+                "name": "Knights CL",
+                "on": true,
+                "params": {
+                  "0": 38,
+                  "1": 62,
+                  "2": 62,
+                  "3": 48,
+                  "4": 52
+                }
+              },
+              "NR": {
+                "name": "Gate 1",
+                "on": false,
+                "params": {}
+              },
+              "CAB": {
+                "name": "UK-LD 4x12",
+                "on": true,
+                "params": {
+                  "0": 78,
+                  "1": 62
+                }
+              },
+              "EQ": {
+                "name": "EQ 1",
+                "on": false,
+                "params": {}
+              },
+              "MOD": {
+                "name": "A-Chorus",
+                "on": false,
+                "params": {}
+              },
+              "DLY": {
+                "name": "Sweet",
+                "on": false,
+                "params": {}
+              },
+              "RVB": {
+                "name": "Hall",
+                "on": true,
+                "params": {
+                  "0": 38,
+                  "1": 45,
+                  "2": 50,
+                  "3": 1
+                }
+              }
+            }
+          },
+          "doc": {
+            "guitarra": {
+              "seletor": "Posição 4 (middle+neck)",
+              "seletorCurto": "middle+neck",
+              "volume": "8",
+              "tone": "8",
+              "receita": "SELETOR 4 · Volume 8 · Tone 8",
+              "tecnicas": [
+                "Arpejos com a mão relaxada",
+                "Deixe cada nota soar completa"
+              ]
+            },
+            "comoTocar": [],
+            "teste": {
+              "riff": "arpejos dos versos",
+              "drum": "Balada 81 BPM",
+              "escutar": [
+                "arpejos limpos e definidos",
+                "reverb respirando"
+              ]
+            },
+            "ajustes": [
+              "afogado → RVB mix -8",
+              "seco → RVB decay +5"
+            ],
+            "evite": [
+              "Crunch: a base é limpa e delicada"
+            ],
+            "irNota": "Recomendada: British Straight 4x12 Medium Mix (User IR 4) — o 4x12 britânico da pilha de 1994 (Low Cut 4 · High Cut 8500 · Level 0)."
+          }
+        }
+      ],
+      "banda": "Pink Floyd",
+      "album": "Pulse (live)",
+      "ano": 1995
+    },
+    {
+      "id": "RLH01",
+      "song": "Run Like Hell",
+      "idAlbum": "PL",
+      "bpm": 148,
+      "resumo": "O fechamento: riff em G com delay fazendo a parede de som — efeito e riff são a mesma coisa.",
+      "referencias": [
+        {
+          "role": "Riff com delay longo (parede de eco); solo curto",
+          "conf": "alta",
+          "src": "Pulse (1995) · gilmourish.com"
+        },
+        {
+          "role": "Rig 1994: Hiwatt DR103 + Alembic F-2B + WEM/Marshall 4x12 + pedalboard completo",
+          "conf": "alta",
+          "src": "gilmourish.com — Division Bell Tour"
+        }
+      ],
+      "patches": [
+        {
+          "camada": "Riff",
+          "sufixo": "RI",
+          "nome": "RLH01RI",
+          "emoji": "🏃",
+          "timbre": "O riff com parede de eco: Flagman crunch + delay com feedback — o delay É o arranjo",
+          "spec": {
+            "name": "RLH01RI",
+            "type": "Rock",
+            "bpm": 120,
+            "volume": 60,
+            "ir_slot": null,
+            "modules": {
+              "PRE": {
+                "name": "Boost",
+                "on": false,
+                "params": {}
+              },
+              "DST": {
+                "name": "Blues OD",
+                "on": false,
+                "params": {}
+              },
+              "AMP": {
+                "name": "Flagman",
+                "on": true,
+                "params": {
+                  "0": 44,
+                  "1": 55,
+                  "2": 62,
+                  "3": 50,
+                  "4": 55,
+                  "5": 58
+                }
+              },
+              "NR": {
+                "name": "Gate 1",
+                "on": true,
+                "params": {
+                  "0": 26
+                }
+              },
+              "CAB": {
+                "name": "UK-LD 4x12",
+                "on": true,
+                "params": {
+                  "0": 78,
+                  "1": 62
+                }
+              },
+              "EQ": {
+                "name": "EQ 1",
+                "on": false,
+                "params": {}
+              },
+              "MOD": {
+                "name": "A-Chorus",
+                "on": false,
+                "params": {}
+              },
+              "DLY": {
+                "name": "Sweet",
+                "on": true,
+                "params": {
+                  "0": 35,
+                  "1": 450,
+                  "2": 30
+                }
+              },
+              "RVB": {
+                "name": "Plate",
+                "on": true,
+                "params": {
+                  "0": 30,
+                  "1": 40,
+                  "2": 50,
+                  "3": 1
+                }
+              }
+            }
+          },
+          "doc": {
+            "guitarra": {
+              "seletor": "Posição 2 (middle+bridge)",
+              "seletorCurto": "middle+bridge",
+              "volume": "10",
+              "tone": "9",
+              "receita": "SELETOR 2 · Volume 10 · Tone 9",
+              "tecnicas": [
+                "Riff em G5-A5 com ataques sincopados",
+                "Toque e solte — o delay completa o padrão",
+                "Mute firme com a mão direita"
+              ]
+            },
+            "comoTocar": [],
+            "teste": {
+              "riff": "riff principal (G5-A5) com espaço entre os ataques",
+              "drum": "Rock 148 BPM",
+              "escutar": [
+                "eco preenchendo os espaços do riff",
+                "crunch firme e seco"
+              ]
+            },
+            "ajustes": [
+              "eco embolando → DLY Fdbk -8",
+              "lamacento → CAB High Cut -5"
+            ],
+            "evite": [
+              "Tocar o riff corrido: os ESPAÇOS entre os ataques são o que o eco preenche"
+            ],
+            "irNota": "Recomendada: British Straight 4x12 Medium Mix (User IR 4) — o 4x12 britânico da pilha de 1994 (Low Cut 4 · High Cut 8500 · Level 0).",
+            "momentos": [
+              {
+                "nome": "Ensaio no tempo",
+                "mods": [
+                  [
+                    "DLY",
+                    "OFF"
+                  ]
+                ],
+                "quando": "Ensaie o riff seco — o eco da parede esconde atrasos de timing. Ao vivo, religue.",
+                "dica": ""
+              }
+            ]
+          }
+        },
+        {
+          "camada": "Solo",
+          "sufixo": "SO",
+          "nome": "RLH01SO",
+          "emoji": "🚨",
+          "timbre": "Solo: Tube Driver + o mesmo delay — frases gritadas sobre a parede de eco",
+          "spec": {
+            "name": "RLH01SO",
+            "type": "Rock",
+            "bpm": 120,
+            "volume": 60,
+            "ir_slot": null,
+            "modules": {
+              "PRE": {
+                "name": "Saturate",
+                "on": true,
+                "params": {
+                  "0": 50,
+                  "1": 60,
+                  "2": 62
+                }
+              },
+              "DST": {
+                "name": "Blues OD",
+                "on": false,
+                "params": {}
+              },
+              "AMP": {
+                "name": "Flagman",
+                "on": true,
+                "params": {
+                  "0": 50,
+                  "1": 58,
+                  "2": 64,
+                  "3": 50,
+                  "4": 55,
+                  "5": 58
+                }
+              },
+              "NR": {
+                "name": "Gate 1",
+                "on": true,
+                "params": {
+                  "0": 30
+                }
+              },
+              "CAB": {
+                "name": "UK-LD 4x12",
+                "on": true,
+                "params": {
+                  "0": 78,
+                  "1": 62
+                }
+              },
+              "EQ": {
+                "name": "EQ 1",
+                "on": false,
+                "params": {}
+              },
+              "MOD": {
+                "name": "A-Chorus",
+                "on": false,
+                "params": {}
+              },
+              "DLY": {
+                "name": "Sweet",
+                "on": true,
+                "params": {
+                  "0": 30,
+                  "1": 450,
+                  "2": 28
+                }
+              },
+              "RVB": {
+                "name": "Hall",
+                "on": true,
+                "params": {
+                  "0": 38,
+                  "1": 45,
+                  "2": 50,
+                  "3": 1
+                }
+              }
+            }
+          },
+          "doc": {
+            "guitarra": {
+              "seletor": "Posição 2 (middle+bridge)",
+              "seletorCurto": "middle+bridge",
+              "volume": "10",
+              "tone": "9",
+              "receita": "SELETOR 2 · Volume 10 · Tone 9",
+              "tecnicas": [
+                "Frases curtas e angulares em Mi menor",
+                "Use o delay como terceiro braço"
+              ]
+            },
+            "comoTocar": [],
+            "teste": {
+              "riff": "solo central",
+              "drum": "Rock 148 BPM",
+              "escutar": [
+                "frases sobre a parede de eco",
+                "definição em andamento rápido"
+              ]
+            },
+            "ajustes": [
+              "eco alto → DLY Mix -8",
+              "falta sustain → PRE +5"
+            ],
+            "evite": [
+              "Corridas: as frases são curtas e angulares"
+            ],
+            "irNota": "Recomendada: British Straight 4x12 Medium Mix (User IR 4) — o 4x12 britânico da pilha de 1994 (Low Cut 4 · High Cut 8500 · Level 0).",
+            "momentos": [
+              {
+                "nome": "Ritmo (sem eco)",
+                "mods": [
+                  [
+                    "DLY",
+                    "OFF"
+                  ]
+                ],
+                "quando": "Acordes do verso sem a parede de eco.",
+                "dica": ""
+              }
+            ]
+          }
+        }
+      ],
+      "banda": "Pink Floyd",
+      "album": "Pulse (live)",
+      "ano": 1995
+    }
+  ],
+  "ir_local": {
+    "UK-LD 4x12": {
+      "captura": "British Straight 4x12",
+      "slot": "User IR 4"
+    }
+  }
+}

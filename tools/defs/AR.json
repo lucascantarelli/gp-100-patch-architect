@@ -1,0 +1,2700 @@
+{
+  "idAlbum": "AR",
+  "album": {
+    "banda": "The Beatles",
+    "album": "Abbey Road",
+    "ano": 1969,
+    "display": "Abbey Road (1969)",
+    "pasta": "Beatles/Abbey Road (1969)",
+    "rig": "## 📚 Rig real do álbum (fontes)\n\n- **John**: Casino (P90) — Come Together direto no canal da mesa; AC30 no crunch; Leslie nos lentos.\n- **George**: Les Paul **Lucy**, Strat e Tele — Twin/Bassman/AC30; **Leslie 147RV** nos solos de Something/Because/Sun King.\n- **Paul**: Casino no AC30 (Oh! Darling), baixo no resto; primeiro solo de The End.\n- **Zero pedais** — todo ganho vem de amp estufado ou do canal da mesa.\n- 📖 Fontes: Guitar World *\"Abbey Road guitar gear: the complete guide\"* (Geoff Emerick) · boostguitarpedals.co.uk."
+  },
+  "songs": [
+    {
+      "id": "CT01",
+      "song": "Come Together",
+      "idAlbum": "AR",
+      "bpm": 104,
+      "resumo": "Riff de abertura do álbum: baixo de Paul e guitarra ríspida de John (Casino) gravada direto no canal da mesa, sem amp — o 'clipping de mesa' é o timbre.",
+      "referencias": [
+        {
+          "role": "Guitarra: Epiphone Casino (P90) de John, direto na mesa",
+          "conf": "alta",
+          "ev": "Geoff Emerick relata gravação direto no console com clip",
+          "src": "Guitar World — Abbey Road gear guide (Emerick)"
+        },
+        {
+          "role": "Sem amplificador na guitarra do riff",
+          "conf": "alta",
+          "ev": "mesma fonte",
+          "src": "Guitar World / Emerick"
+        }
+      ],
+      "patches": [
+        {
+          "camada": "Riff",
+          "sufixo": "RI",
+          "nome": "CT01RIF",
+          "emoji": "🐊",
+          "timbre": "Casino de John direto no canal da mesa: distorção áspera de rádio, sem amp modelado, cabine JBL derrapando",
+          "spec": {
+            "name": "CT01RIF",
+            "type": "Rock",
+            "bpm": 104,
+            "volume": 60,
+            "ir_slot": null,
+            "modules": {
+              "PRE": {
+                "name": "COMP",
+                "on": false
+              },
+              "DST": {
+                "name": "La Charger",
+                "on": true,
+                "params": {
+                  "0": 28,
+                  "1": 45,
+                  "2": 62
+                }
+              },
+              "AMP": {
+                "name": "Dark Twin",
+                "on": false
+              },
+              "NR": {
+                "name": "Gate 1",
+                "on": true,
+                "params": {
+                  "0": 26
+                }
+              },
+              "CAB": {
+                "name": "J-120 2x12",
+                "on": true,
+                "params": {
+                  "0": 75,
+                  "1": 50
+                }
+              },
+              "EQ": {
+                "name": "EQ 1",
+                "on": true,
+                "params": {
+                  "0": -1,
+                  "1": 2,
+                  "2": -1,
+                  "5": 50
+                }
+              },
+              "MOD": {
+                "name": "A-Chorus",
+                "on": false
+              },
+              "DLY": {
+                "name": "Sweet",
+                "on": false
+              },
+              "RVB": {
+                "name": "Room",
+                "on": true,
+                "params": {
+                  "0": 20,
+                  "1": 19,
+                  "2": 31,
+                  "3": 0
+                }
+              }
+            }
+          },
+          "doc": {
+            "comoTocar": [
+              "Riff em Dm com palm-mute leve nos tempos 1-2 e abertura no 'come toge-ther'",
+              "Deixe a distorção 'cuspir' no ataque — é o som da mesa clipando"
+            ],
+            "teste": {
+              "riff": "riff principal + virada para D (última parte do verso)",
+              "drum": "Rock 104 BPM",
+              "escutar": [
+                "raspado agressivo sem embolar o grave",
+                "harmônicos do RAT presentes mas não gritando"
+              ]
+            },
+            "ajustes": [
+              "raspando demais → DST Tone +3",
+              "mole no ataque → DST Gain +3",
+              "harmônico agudo irritando → CAB High Cut 55"
+            ],
+            "evite": [
+              "Ligar o AMP para 'engordar' — na gravação não há amp",
+              "Tone do La Charger acima de 60 — vira fuzz ácido"
+            ],
+            "irNota": "Alvo = mesa derrapada da Abbey Road, não cabine real — nenhuma IR do banco casa; mantenha o CAB de fábrica.",
+            "slotSugestao": "U01+U02",
+            "guitarra": {
+              "seletor": "Posição 5 — neck (captador do braço)",
+              "seletorCurto": "neck",
+              "volume": "8",
+              "tone": "4–5 (fechado)",
+              "receita": "Seletor 5 (neck) · Volume 8 · Tone 4–5",
+              "tecnicas": [
+                "Palm-mute leve nos tempos fortes do riff; abra a palheta no 'come toge-ther'",
+                "Ataque determinado — a sujeira vem da 'mesa clipada', não de força extra"
+              ]
+            }
+          }
+        },
+        {
+          "camada": "Voz-líder (solo/final)",
+          "sufixo": "VO",
+          "nome": "CT01VOX",
+          "emoji": "🐊",
+          "timbre": "Fraseados da guitarra do John respondendo a cada verso: mesma mesa derrapada, brilho e sustain um pouco maiores",
+          "spec": {
+            "name": "CT01VOX",
+            "type": "Rock",
+            "bpm": 104,
+            "volume": 62,
+            "ir_slot": null,
+            "modules": {
+              "PRE": {
+                "name": "Boost",
+                "on": true,
+                "params": {
+                  "0": 22,
+                  "1": 1
+                }
+              },
+              "DST": {
+                "name": "La Charger",
+                "on": true,
+                "params": {
+                  "0": 32,
+                  "1": 52,
+                  "2": 62
+                }
+              },
+              "AMP": {
+                "name": "Dark Twin",
+                "on": false
+              },
+              "NR": {
+                "name": "Gate 1",
+                "on": true,
+                "params": {
+                  "0": 28
+                }
+              },
+              "CAB": {
+                "name": "J-120 2x12",
+                "on": true,
+                "params": {
+                  "0": 75,
+                  "1": 50
+                }
+              },
+              "EQ": {
+                "name": "EQ 1",
+                "on": true,
+                "params": {
+                  "0": -1,
+                  "1": 3,
+                  "2": -1,
+                  "5": 50
+                }
+              },
+              "MOD": {
+                "name": "A-Chorus",
+                "on": false
+              },
+              "DLY": {
+                "name": "Sweet",
+                "on": false
+              },
+              "RVB": {
+                "name": "Room",
+                "on": true,
+                "params": {
+                  "0": 20,
+                  "1": 19,
+                  "2": 31,
+                  "3": 0
+                }
+              }
+            }
+          },
+          "doc": {
+            "comoTocar": [
+              "Frases curtas em D pentatônica menor respondendo o vocal",
+              "Mantenha a mesma pegada suja do riff — é a mesma guitarra na gravação"
+            ],
+            "teste": {
+              "riff": "'Come toge-ther, right now' + licks finais",
+              "drum": "Rock 104 BPM",
+              "escutar": [
+                "frase corta na altura do vocal",
+                "sustain curto mas presente"
+              ]
+            },
+            "ajustes": [
+              "sustain fraco → Boost Ganho +5",
+              "muito agudo → CAB High Cut 55"
+            ],
+            "evite": [
+              "Delay/reverb longos — a mesa da Abbey Road era seca"
+            ],
+            "irNota": "Alvo = mesma mesa derrapada (sem cabine real) — mantenha o CAB de fábrica.",
+            "slotSugestao": "U02",
+            "guitarra": {
+              "seletor": "Posição 5 — neck (captador do braço)",
+              "seletorCurto": "neck",
+              "volume": "8",
+              "tone": "4–5",
+              "receita": "Seletor 5 (neck) · Volume 8 · Tone 4–5",
+              "tecnicas": [
+                "Frases curtas respondendo o vocal — deixe silêncio entre elas",
+                "Nas notas longas, alivie o ataque para o sustain morrer junto com a frase"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "STH01",
+      "song": "Something",
+      "idAlbum": "AR",
+      "bpm": 66,
+      "resumo": "George em Les Paul 'Lucy' com Twin/AC30, limpo com quase-breakup; solo passa pelo Leslie 147RV — daí o vibrato rotativo líquido.",
+      "referencias": [
+        {
+          "role": "George: Les Paul 'Lucy' (P90)",
+          "conf": "alta",
+          "ev": "fotos de sessão + biografias",
+          "src": "Guitar World — Abbey Road gear guide"
+        },
+        {
+          "role": "Solo com efeito Leslie (rotary)",
+          "conf": "alta",
+          "ev": "descrito por Emerick e em análises da faixa",
+          "src": "Guitar World"
+        },
+        {
+          "role": "Amp Fender Twin / AC30 na era Abbey Road",
+          "conf": "alta",
+          "ev": "backline do grupo em 1969",
+          "src": "boostguitarpedals — Lennon gear 1969"
+        }
+      ],
+      "patches": [
+        {
+          "camada": "Base",
+          "sufixo": "BA",
+          "nome": "STH01BA",
+          "emoji": "✨",
+          "timbre": "Twin quase limpo com a borda quebrando no ataque: o lugar exato entre limpo e crujido da gravação",
+          "spec": {
+            "name": "STH01BA",
+            "type": "Rock",
+            "bpm": 66,
+            "volume": 60,
+            "ir_slot": null,
+            "modules": {
+              "PRE": {
+                "name": "COMP",
+                "on": false
+              },
+              "DST": {
+                "name": "Blues OD",
+                "on": false
+              },
+              "AMP": {
+                "name": "Dark Twin",
+                "on": true,
+                "params": {
+                  "0": 55,
+                  "1": 62,
+                  "2": 52,
+                  "3": 48,
+                  "4": 55,
+                  "5": 0
+                }
+              },
+              "NR": {
+                "name": "Gate 1",
+                "on": true,
+                "params": {
+                  "0": 24
+                }
+              },
+              "CAB": {
+                "name": "DarkTW 2x12",
+                "on": true,
+                "params": {
+                  "0": 75,
+                  "1": 50
+                }
+              },
+              "EQ": {
+                "name": "EQ 1",
+                "on": true,
+                "params": {
+                  "0": 0,
+                  "1": 1,
+                  "2": 0,
+                  "5": 50
+                }
+              },
+              "MOD": {
+                "name": "A-Chorus",
+                "on": false
+              },
+              "DLY": {
+                "name": "Sweet",
+                "on": false
+              },
+              "RVB": {
+                "name": "Room",
+                "on": true,
+                "params": {
+                  "0": 20,
+                  "1": 19,
+                  "2": 31,
+                  "3": 0
+                }
+              }
+            }
+          },
+          "doc": {
+            "comoTocar": [
+              "Acordes em C e A com sustain natural — deixe o amp trabalhar no ataque",
+              "Melodia da introdução em posição 4"
+            ],
+            "teste": {
+              "riff": "intro C-D-E e primeira estrofe",
+              "drum": "Ballad 66 BPM",
+              "escutar": [
+                "ataque quebra sutilmente sem sujar",
+                "corpo dos acordes intacto"
+              ]
+            },
+            "ajustes": [
+              "limpo demais → AMP Vol +3",
+              "sujou → AMP Vol -3",
+              "agudo estridente → AMP Treble -2"
+            ],
+            "evite": [
+              "Bright ON",
+              "Reverb longo — a sala da Abbey Road é curta"
+            ],
+            "irNota": "Recomendada: American Twin 2x12 Medium Mix (User IR 1) — é o Twin real da sessão, com o JBL D120F.",
+            "slotSugestao": "U03+U04",
+            "guitarra": {
+              "seletor": "Posição 4 — middle+neck (quack suave)",
+              "seletorCurto": "posição 4",
+              "volume": "7–8",
+              "tone": "8",
+              "receita": "Seletor 4 (middle+neck) · Volume 7–8 · Tone 8",
+              "tecnicas": [
+                "Ataque de palheta suave nos acordes — o quase-breakup vem do amp, não da mão",
+                "Volume 7 na intro e abra a 8 no refrão para dar respiro dinâmico"
+              ]
+            }
+          }
+        },
+        {
+          "camada": "Solo",
+          "sufixo": "SO",
+          "nome": "STH01SO",
+          "emoji": "🌀",
+          "timbre": "Solo de Lucy no Leslie: Vibe lento sobre Twin empurrado — o 'girar líquido' do original",
+          "spec": {
+            "name": "STH01SO",
+            "type": "Rock",
+            "bpm": 66,
+            "volume": 62,
+            "ir_slot": null,
+            "modules": {
+              "PRE": {
+                "name": "COMP",
+                "on": false
+              },
+              "DST": {
+                "name": "Green OD",
+                "on": true,
+                "params": {
+                  "0": 32,
+                  "1": 52,
+                  "2": 60
+                }
+              },
+              "AMP": {
+                "name": "Dark Twin",
+                "on": true,
+                "params": {
+                  "0": 66,
+                  "1": 62,
+                  "2": 50,
+                  "3": 52,
+                  "4": 52,
+                  "5": 0
+                }
+              },
+              "NR": {
+                "name": "Gate 1",
+                "on": true,
+                "params": {
+                  "0": 26
+                }
+              },
+              "CAB": {
+                "name": "DarkTW 2x12",
+                "on": true,
+                "params": {
+                  "0": 75,
+                  "1": 50
+                }
+              },
+              "EQ": {
+                "name": "EQ 1",
+                "on": true,
+                "params": {
+                  "0": 0,
+                  "1": 2,
+                  "2": 0,
+                  "5": 50
+                }
+              },
+              "MOD": {
+                "name": "Vibe",
+                "on": true,
+                "params": {
+                  "0": 49,
+                  "1": 0.5,
+                  "2": 0
+                }
+              },
+              "DLY": {
+                "name": "Sweet",
+                "on": false
+              },
+              "RVB": {
+                "name": "Hall",
+                "on": true,
+                "params": {
+                  "0": 50,
+                  "1": 50,
+                  "2": 50,
+                  "3": 1
+                }
+              }
+            }
+          },
+          "doc": {
+            "comoTocar": [
+              "Solo na 5ª/7ª posição com bends de tom inteiro e vibrato largo",
+              "Deixe o Vibe 'girar' nas notas longas"
+            ],
+            "teste": {
+              "riff": "solo completo (1:38-2:12)",
+              "drum": "Ballad 66 BPM",
+              "escutar": [
+                "efeito rotativo claro nas notas sustentadas",
+                "frase cantando sem virar overdrive"
+              ]
+            },
+            "ajustes": [
+              "leslie rápido demais → MOD Velocidade menor",
+              "gordo demais → DST Gain -3"
+            ],
+            "evite": [
+              "Vibe em velocidade alta — o Leslie da gravação gira devagar"
+            ],
+            "irNota": "Recomendada: American Twin 2x12 Medium Mix (User IR 1) — se quiser mais ar no solo, teste o Bright Mix.",
+            "slotSugestao": "U04",
+            "guitarra": {
+              "seletor": "Posição 5 — neck (captador do braço)",
+              "seletorCurto": "neck",
+              "volume": "8",
+              "tone": "7",
+              "receita": "Seletor 5 (neck) · Volume 8 · Tone 7",
+              "tecnicas": [
+                "Bends de 1 tom com vibrato largo — é o canto do solo",
+                "Nas notas sustentadas, deixe o Vibe 'girar' antes de continuar a frase"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "MAX01",
+      "song": "Maxwell's Silver Hammer",
+      "idAlbum": "AR",
+      "bpm": 88,
+      "resumo": "Vaqueirinha de vaudeville: George em Strat/Tele limpa com Twin, fills alegres e debochados. Sem drive nenhum.",
+      "referencias": [
+        {
+          "role": "George: Stratocaster (a mesma dos ensaios em Twickenham)",
+          "conf": "média",
+          "ev": "filmagens de Get Back + sessões",
+          "src": "Guitar World — Abbey Road gear guide"
+        },
+        {
+          "role": "Twin limpo, sem pedais",
+          "conf": "alta",
+          "ev": "backline 1969",
+          "src": "boostguitarpedals"
+        }
+      ],
+      "patches": [
+        {
+          "camada": "Base + fills",
+          "sufixo": "FL",
+          "nome": "MAX01FL",
+          "emoji": "🔨",
+          "timbre": "Strat limpa e saltitante em Twin, reverb curto de sala: luz e estilo vaudeville",
+          "spec": {
+            "name": "MAX01FL",
+            "type": "Pop",
+            "bpm": 88,
+            "volume": 60,
+            "ir_slot": null,
+            "modules": {
+              "PRE": {
+                "name": "COMP",
+                "on": false
+              },
+              "DST": {
+                "name": "Blues OD",
+                "on": false
+              },
+              "AMP": {
+                "name": "Dark Twin",
+                "on": true,
+                "params": {
+                  "0": 48,
+                  "1": 62,
+                  "2": 50,
+                  "3": 50,
+                  "4": 58,
+                  "5": 0
+                }
+              },
+              "NR": {
+                "name": "Gate 1",
+                "on": true,
+                "params": {
+                  "0": 22
+                }
+              },
+              "CAB": {
+                "name": "DarkTW 2x12",
+                "on": true,
+                "params": {
+                  "0": 75,
+                  "1": 50
+                }
+              },
+              "EQ": {
+                "name": "EQ 1",
+                "on": true,
+                "params": {
+                  "0": 0,
+                  "1": 0,
+                  "2": 0,
+                  "5": 50
+                }
+              },
+              "MOD": {
+                "name": "A-Chorus",
+                "on": false
+              },
+              "DLY": {
+                "name": "Sweet",
+                "on": false
+              },
+              "RVB": {
+                "name": "Room",
+                "on": true,
+                "params": {
+                  "0": 20,
+                  "1": 19,
+                  "2": 31,
+                  "3": 0
+                }
+              }
+            }
+          },
+          "doc": {
+            "comoTocar": [
+              "Acordes saltados com staccato; fills cromáticos entre as frases",
+              "Mantenha leve — nada de palhetada pesada"
+            ],
+            "teste": {
+              "riff": "estrofe + resposta 'Maxwell's silver hammer'",
+              "drum": "Pop 88 BPM",
+              "escutar": [
+                "nota separada da nota, estilo percussivo",
+                "fills respondendo o vocal"
+              ]
+            },
+            "ajustes": [
+              "mais jump → COMP ON (Sens 40)",
+              "mais ar → RVB Pre Delay +5"
+            ],
+            "evite": [
+              "Drive: a faixa é 100% limpa"
+            ],
+            "irNota": "Twin padrão — a captura local (User IR 1) é opcional; a fábrica já entrega o alvo.",
+            "slotSugestao": "U05",
+            "guitarra": {
+              "seletor": "Posição 2 — bridge+middle (brilho com corpo)",
+              "seletorCurto": "posição 2",
+              "volume": "7–8",
+              "tone": "9",
+              "receita": "Seletor 2 (bridge+middle) · Volume 7–8 · Tone 9",
+              "tecnicas": [
+                "Acordes curtos e saltitantes (staccato) — solte a corda entre as batidas",
+                "Fills cromáticos respondem o vocal: toque baixo e deixe a 'resposta' no mesmo volume"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "OHB01",
+      "song": "Oh! Darling",
+      "idAlbum": "AR",
+      "bpm": 66,
+      "resumo": "Paul no Casino em AC30 Top Boost, quase estufado, com microfonia controlada — o gritado de 12 horas de takes. Slapback curto dá o ar de greve de fome.",
+      "referencias": [
+        {
+          "role": "Paul: Epiphone Casino no AC30, sem pedais",
+          "conf": "alta",
+          "ev": "Emerick conta as 12 sessões matinais",
+          "src": "Guitar World — Abbey Road gear guide"
+        },
+        {
+          "role": "AC30 estufado com breakup",
+          "conf": "alta",
+          "ev": "mesma fonte",
+          "src": "Guitar World"
+        }
+      ],
+      "patches": [
+        {
+          "camada": "Base",
+          "sufixo": "BA",
+          "nome": "OHB01BA",
+          "emoji": "🔥",
+          "timbre": "AC30 no talo com ataque cavernoso: crunch grosso de Casino quebrando + slapback curtíssimo",
+          "spec": {
+            "name": "OHB01BA",
+            "type": "Rock",
+            "bpm": 66,
+            "volume": 62,
+            "ir_slot": null,
+            "modules": {
+              "PRE": {
+                "name": "COMP",
+                "on": false
+              },
+              "DST": {
+                "name": "Green OD",
+                "on": true,
+                "params": {
+                  "0": 45,
+                  "1": 55,
+                  "2": 62
+                }
+              },
+              "AMP": {
+                "name": "Foxy 30TB",
+                "on": true,
+                "params": {
+                  "0": 68,
+                  "1": 35,
+                  "2": 65,
+                  "3": 50,
+                  "4": 55
+                }
+              },
+              "NR": {
+                "name": "Gate 1",
+                "on": true,
+                "params": {
+                  "0": 28
+                }
+              },
+              "CAB": {
+                "name": "Foxy 1x12",
+                "on": true,
+                "params": {
+                  "0": 75,
+                  "1": 50
+                }
+              },
+              "EQ": {
+                "name": "EQ 1",
+                "on": true,
+                "params": {
+                  "0": 0,
+                  "1": 1,
+                  "2": 0,
+                  "5": 50
+                }
+              },
+              "MOD": {
+                "name": "A-Chorus",
+                "on": false
+              },
+              "DLY": {
+                "name": "Slapbk",
+                "on": true,
+                "params": {
+                  "0": 11,
+                  "1": 160,
+                  "2": 20
+                }
+              },
+              "RVB": {
+                "name": "Room",
+                "on": true,
+                "params": {
+                  "0": 20,
+                  "1": 19,
+                  "2": 31,
+                  "3": 0
+                }
+              }
+            }
+          },
+          "doc": {
+            "comoTocar": [
+              "Acordes de 12-bar em A com ataque Forte e staccato",
+              "Deixe as notas 'estourarem' no ataque (é a microfonia controlada de Paul)"
+            ],
+            "teste": {
+              "riff": "intro e estrofe (batida pesada em A7)",
+              "drum": "Rock 66 BPM",
+              "escutar": [
+                "ataque estalando sem virar fuzz",
+                "eco-slap atrás do acorde"
+              ]
+            },
+            "ajustes": [
+              "quer mais gritado → AMP Vol +3 e DST Gain +2",
+              "embolou → AMP Cut +5 (escurece menos) "
+            ],
+            "evite": [
+              "Blues OD no lugar do Green OD — o crunch do Paul é mais grosso",
+              "Slapbk acima de 200 ms — vira eco e perde o punch"
+            ],
+            "irNota": "Opção: Brown Deluxe 1x12 Medium Mix (User IR 2) para o alnico do AC30; a fábrica já é o alvo.",
+            "slotSugestao": "U06+U07",
+            "guitarra": {
+              "seletor": "Posição 5 — neck com Tone 5 (meio fechado)",
+              "seletorCurto": "neck",
+              "volume": "8–9",
+              "tone": "5",
+              "receita": "Seletor 5 (neck) · Volume 8–9 · Tone 5",
+              "tecnicas": [
+                "Ataque forte e curto — deixe o AC30 'estalar' no início de cada acorde",
+                "No 'Oh! Darling, believe me', abra o Volume a 9 para engordar"
+              ]
+            }
+          }
+        },
+        {
+          "camada": "Solo",
+          "sufixo": "SO",
+          "nome": "OHB01SO",
+          "emoji": "🔥",
+          "timbre": "Solo de gitarrinha resposta: mesmo AC30 estufado, mais presença e mordida no bridge",
+          "spec": {
+            "name": "OHB01SO",
+            "type": "Rock",
+            "bpm": 66,
+            "volume": 63,
+            "ir_slot": null,
+            "modules": {
+              "PRE": {
+                "name": "Boost",
+                "on": true,
+                "params": {
+                  "0": 25,
+                  "1": 1
+                }
+              },
+              "DST": {
+                "name": "Green OD",
+                "on": true,
+                "params": {
+                  "0": 52,
+                  "1": 58,
+                  "2": 65
+                }
+              },
+              "AMP": {
+                "name": "Foxy 30TB",
+                "on": true,
+                "params": {
+                  "0": 72,
+                  "1": 35,
+                  "2": 65,
+                  "3": 50,
+                  "4": 55
+                }
+              },
+              "NR": {
+                "name": "Gate 1",
+                "on": true,
+                "params": {
+                  "0": 30
+                }
+              },
+              "CAB": {
+                "name": "Foxy 1x12",
+                "on": true,
+                "params": {
+                  "0": 75,
+                  "1": 50
+                }
+              },
+              "EQ": {
+                "name": "EQ 1",
+                "on": true,
+                "params": {
+                  "0": 0,
+                  "1": 3,
+                  "2": 0,
+                  "5": 50
+                }
+              },
+              "MOD": {
+                "name": "A-Chorus",
+                "on": false
+              },
+              "DLY": {
+                "name": "Slapbk",
+                "on": true,
+                "params": {
+                  "0": 11,
+                  "1": 160,
+                  "2": 20
+                }
+              },
+              "RVB": {
+                "name": "Room",
+                "on": true,
+                "params": {
+                  "0": 20,
+                  "1": 19,
+                  "2": 31,
+                  "3": 0
+                }
+              }
+            }
+          },
+          "doc": {
+            "comoTocar": [
+              "Solo em A pentatônica com frases cantáveis e bends cheios",
+              "Termine frases com vibrato largo (Paul style)"
+            ],
+            "teste": {
+              "riff": "solo (1:42-2:05)",
+              "drum": "Rock 66 BPM",
+              "escutar": [
+                "corta a mix sem virar fuzz",
+                "bends cantando"
+              ]
+            },
+            "ajustes": [
+              "mais sustain → Boost Ganho +5",
+              "fizz → CAB High Cut 55"
+            ],
+            "evite": [
+              "High Cut abaixo de 40 — mata a mordida do solo"
+            ],
+            "irNota": "Opção: Brown Deluxe 1x12 (User IR 2) — no solo, teste o Bright Mix para a mordida do alnico.",
+            "slotSugestao": "U07",
+            "guitarra": {
+              "seletor": "Posição 1 — bridge (mordida)",
+              "seletorCurto": "bridge",
+              "volume": "9",
+              "tone": "6",
+              "receita": "Seletor 1 (bridge) · Volume 9 · Tone 6",
+              "tecnicas": [
+                "Frases cantáveis em A pentatônica com bends cheios",
+                "Termine frases com vibrato largo de dedo (Paul style)"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "OTG01",
+      "song": "Octopus's Garden",
+      "idAlbum": "AR",
+      "bpm": 100,
+      "resumo": "George limpo em Twin/Strat; solo tem leve vibrato rotativo e um 'splash' característico. Base needs to be clean and shiny.",
+      "referencias": [
+        {
+          "role": "George: Strat em Twin, limpo",
+          "conf": "média",
+          "ev": "análises de faixa + sessões",
+          "src": "Guitar World — Abbey Road gear guide"
+        },
+        {
+          "role": "Solo com leve Leslie/ADT",
+          "conf": "média",
+          "ev": "análises auditivas",
+          "src": "TGP e análises de faixa"
+        }
+      ],
+      "patches": [
+        {
+          "camada": "Base",
+          "sufixo": "BA",
+          "nome": "OTG01BA",
+          "emoji": "🐙",
+          "timbre": "Limpo brilhante com aquele 'splash' marinho: Twin + Plate de fábrica, meio escuro",
+          "spec": {
+            "name": "OTG01BA",
+            "type": "Pop",
+            "bpm": 100,
+            "volume": 60,
+            "ir_slot": null,
+            "modules": {
+              "PRE": {
+                "name": "COMP",
+                "on": false
+              },
+              "DST": {
+                "name": "Blues OD",
+                "on": false
+              },
+              "AMP": {
+                "name": "Dark Twin",
+                "on": true,
+                "params": {
+                  "0": 52,
+                  "1": 62,
+                  "2": 50,
+                  "3": 50,
+                  "4": 55,
+                  "5": 0
+                }
+              },
+              "NR": {
+                "name": "Gate 1",
+                "on": true,
+                "params": {
+                  "0": 22
+                }
+              },
+              "CAB": {
+                "name": "DarkTW 2x12",
+                "on": true,
+                "params": {
+                  "0": 75,
+                  "1": 50
+                }
+              },
+              "EQ": {
+                "name": "EQ 1",
+                "on": true,
+                "params": {
+                  "0": 0,
+                  "1": 0,
+                  "2": 0,
+                  "5": 50
+                }
+              },
+              "MOD": {
+                "name": "A-Chorus",
+                "on": false
+              },
+              "DLY": {
+                "name": "Sweet",
+                "on": false
+              },
+              "RVB": {
+                "name": "Plate",
+                "on": true,
+                "params": {
+                  "0": 30,
+                  "1": 40,
+                  "2": 45,
+                  "3": 1
+                }
+              }
+            }
+          },
+          "doc": {
+            "comoTocar": [
+              "Groove em E com arpejos parciais; deixe os acordes respirarem",
+              "Refrão: acordes em A-D-E com palhetada viva"
+            ],
+            "teste": {
+              "riff": "verso + refrão",
+              "drum": "Pop 100 BPM",
+              "escutar": [
+                "plate curto atrás, sem wash",
+                "brilho sem agulha"
+              ]
+            },
+            "ajustes": [
+              "quer mais 'água' → RVB Mix 50",
+              "seco demais → RVB Decay sobe 1 ponto"
+            ],
+            "evite": [
+              "Chorus na base — na gravação o chorus é só no solo"
+            ],
+            "irNota": "Twin padrão — captura local opcional (User IR 1); a fábrica já entrega o alvo.",
+            "slotSugestao": "U08+U09",
+            "guitarra": {
+              "seletor": "Posição 4 — middle+neck",
+              "seletorCurto": "posição 4",
+              "volume": "7–8",
+              "tone": "8",
+              "receita": "Seletor 4 (middle+neck) · Volume 7–8 · Tone 8",
+              "tecnicas": [
+                "Groove com palheta alternada; arpejos parciais entre acordes",
+                "Deixe os acordes soarem — a faixa é leve e 'nada'"
+              ]
+            }
+          }
+        },
+        {
+          "camada": "Solo",
+          "sufixo": "SO",
+          "nome": "OTG01SO",
+          "emoji": "🐙",
+          "timbre": "Solo de George: mesmo limpo com leve rotativo (Vibe discreto) e Plate mais presente",
+          "spec": {
+            "name": "OTG01SO",
+            "type": "Pop",
+            "bpm": 100,
+            "volume": 62,
+            "ir_slot": null,
+            "modules": {
+              "PRE": {
+                "name": "COMP",
+                "on": false
+              },
+              "DST": {
+                "name": "Blues OD",
+                "on": false
+              },
+              "AMP": {
+                "name": "Dark Twin",
+                "on": true,
+                "params": {
+                  "0": 58,
+                  "1": 62,
+                  "2": 52,
+                  "3": 50,
+                  "4": 55,
+                  "5": 0
+                }
+              },
+              "NR": {
+                "name": "Gate 1",
+                "on": true,
+                "params": {
+                  "0": 24
+                }
+              },
+              "CAB": {
+                "name": "DarkTW 2x12",
+                "on": true,
+                "params": {
+                  "0": 75,
+                  "1": 50
+                }
+              },
+              "EQ": {
+                "name": "EQ 1",
+                "on": true,
+                "params": {
+                  "0": 0,
+                  "1": 2,
+                  "2": 0,
+                  "5": 50
+                }
+              },
+              "MOD": {
+                "name": "Vibe",
+                "on": true,
+                "params": {
+                  "0": 30,
+                  "1": 0.4,
+                  "2": 0
+                }
+              },
+              "DLY": {
+                "name": "Sweet",
+                "on": false
+              },
+              "RVB": {
+                "name": "Plate",
+                "on": true,
+                "params": {
+                  "0": 30,
+                  "1": 40,
+                  "2": 50,
+                  "3": 1
+                }
+              }
+            }
+          },
+          "doc": {
+            "comoTocar": [
+              "Solo na posição 10-12 em E pentatônica maior",
+              "Deixe o Vibe trabalhar nas notas longas"
+            ],
+            "teste": {
+              "riff": "solo (1:47-2:10)",
+              "drum": "Pop 100 BPM",
+              "escutar": [
+                "girar sutil, não 'nave']",
+                "melodia clara"
+              ]
+            },
+            "ajustes": [
+              "vibe forte demais → MOD Intensidade -5",
+              "mais vida → DST ON (Gain 25)"
+            ],
+            "evite": [
+              "Overdrive: o solo é quase limpo"
+            ],
+            "irNota": "Twin padrão — captura local opcional (User IR 1); no solo teste o Bright Mix.",
+            "slotSugestao": "U09",
+            "guitarra": {
+              "seletor": "Posição 5 — neck",
+              "seletorCurto": "neck",
+              "volume": "8",
+              "tone": "7",
+              "receita": "Seletor 5 (neck) · Volume 8 · Tone 7",
+              "tecnicas": [
+                "Solo melódico em E maior — cante antes de tocar cada frase",
+                "Vibe sutil: toque e deixe o efeito trabalhar nas notas longas"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "IWY01",
+      "song": "I Want You (She's So Heavy)",
+      "idAlbum": "AR",
+      "bpm": 80,
+      "resumo": "John e George em Les Paul + Jazzmaster em Bassman estufado, com o pedal de volume (crecendo) do final. O riff mais pesado do disco.",
+      "referencias": [
+        {
+          "role": "John: Les Paul 'Lucy' / George: Fender VI ou Jazzmaster",
+          "conf": "média",
+          "ev": "análises de faixa",
+          "src": "Guitar World — Abbey Road gear guide"
+        },
+        {
+          "role": "Bassman estufado (Bellman 59N)",
+          "conf": "alta",
+          "ev": "backline",
+          "src": "boostguitarpedals"
+        },
+        {
+          "role": "White noise final (tape varispeed)",
+          "conf": "alta",
+          "ev": "documentado",
+          "src": "Guitar World"
+        }
+      ],
+      "patches": [
+        {
+          "camada": "Riff (base pesada)",
+          "sufixo": "RI",
+          "nome": "IWY01RI",
+          "emoji": "⛰️",
+          "timbre": "Bassman estufado: Boost + Bellman 59N Vol 78, mordida de humbucker simulada com o bridge da Strat",
+          "spec": {
+            "name": "IWY01RI",
+            "type": "Rock",
+            "bpm": 80,
+            "volume": 62,
+            "ir_slot": null,
+            "modules": {
+              "PRE": {
+                "name": "Boost",
+                "on": true,
+                "params": {
+                  "0": 38,
+                  "1": 1
+                }
+              },
+              "DST": {
+                "name": "Blues OD",
+                "on": false
+              },
+              "AMP": {
+                "name": "Bellman 59N",
+                "on": true,
+                "params": {
+                  "0": 78,
+                  "1": 55,
+                  "2": 60,
+                  "3": 60,
+                  "4": 55,
+                  "5": 48
+                }
+              },
+              "NR": {
+                "name": "Gate 1",
+                "on": true,
+                "params": {
+                  "0": 32
+                }
+              },
+              "CAB": {
+                "name": "TWD 2x12",
+                "on": true,
+                "params": {
+                  "0": 75,
+                  "1": 50
+                }
+              },
+              "EQ": {
+                "name": "EQ 1",
+                "on": true,
+                "params": {
+                  "0": 1,
+                  "1": 1,
+                  "2": -1,
+                  "5": 50
+                }
+              },
+              "MOD": {
+                "name": "A-Chorus",
+                "on": false
+              },
+              "DLY": {
+                "name": "Sweet",
+                "on": false
+              },
+              "RVB": {
+                "name": "Room",
+                "on": true,
+                "params": {
+                  "0": 20,
+                  "1": 19,
+                  "2": 31,
+                  "3": 0
+                }
+              }
+            }
+          },
+          "doc": {
+            "comoTocar": [
+              "Riff em E com palm-mute total e arrastado",
+              "No crecendo final, use o knob de volume da guitarra subindo devagar (imita o varispeed)"
+            ],
+            "teste": {
+              "riff": "riff principal + crecendo final",
+              "drum": "Rock 80 BPM",
+              "escutar": [
+                "peso 'preto' sem fuzz",
+                "crecendo limpo até o feedback"
+              ]
+            },
+            "ajustes": [
+              "mais peso → EQ Low +2",
+              "menos piado → AMP Treble -2"
+            ],
+            "evite": [
+              "Tocar em posição 2-4 — o riff pede o bridge"
+            ],
+            "irNota": "Opção: Tweed Combo 1x12 Medium Mix (User IR 3) para o caráter do Bassman '59; a fábrica já é o alvo.",
+            "slotSugestao": "U10",
+            "guitarra": {
+              "seletor": "Posição 1 — bridge (o 'peso' do riff)",
+              "seletorCurto": "bridge",
+              "volume": "9",
+              "tone": "7",
+              "receita": "Seletor 1 (bridge) · Volume 9 · Tone 7",
+              "tecnicas": [
+                "Palm-mute TOTAL no riff (palma da mão sobre as cordas junto à ponte)",
+                "No crecendo final, suba o knob de Volume da guitarra devagar até o feedback"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "HCTS01",
+      "song": "Here Comes the Sun",
+      "idAlbum": "AR",
+      "bpm": 138,
+      "resumo": "George no Martin D-28 com capotraste na 7ª casa, gravado limpo. O AC Sim + cab Dreadnought reproduz exatamente essa cor.",
+      "referencias": [
+        {
+          "role": "George: Martin D-28, capotraste 7",
+          "conf": "alta",
+          "ev": "documentado por Emerick e no gear guide",
+          "src": "Guitar World — Abbey Road gear guide"
+        },
+        {
+          "role": "Sem amp — captação de violão",
+          "conf": "alta",
+          "ev": "mesma fonte",
+          "src": "Guitar World"
+        }
+      ],
+      "patches": [
+        {
+          "camada": "Acústico (dedilhado)",
+          "sufixo": "AC",
+          "nome": "HCTS01AC",
+          "emoji": "☀️",
+          "timbre": "Violão simulado: AC Sim (Body 45, Top 68) + cab Dreadnought + Hall suave",
+          "spec": {
+            "name": "HCTS01AC",
+            "type": "Acoustic",
+            "bpm": 138,
+            "volume": 58,
+            "ir_slot": null,
+            "modules": {
+              "PRE": {
+                "name": "AC Sim",
+                "on": true,
+                "params": {
+                  "0": 45,
+                  "1": 68,
+                  "2": 99,
+                  "3": 0
+                }
+              },
+              "DST": {
+                "name": "Blues OD",
+                "on": false
+              },
+              "AMP": {
+                "name": "Dark Twin",
+                "on": false
+              },
+              "NR": {
+                "name": "Gate 1",
+                "on": true,
+                "params": {
+                  "0": 20
+                }
+              },
+              "CAB": {
+                "name": "D",
+                "on": true,
+                "params": {
+                  "0": 75,
+                  "1": 50
+                }
+              },
+              "EQ": {
+                "name": "EQ 1",
+                "on": true,
+                "params": {
+                  "0": -1,
+                  "1": 0,
+                  "2": 1,
+                  "5": 50
+                }
+              },
+              "MOD": {
+                "name": "A-Chorus",
+                "on": false
+              },
+              "DLY": {
+                "name": "Sweet",
+                "on": false
+              },
+              "RVB": {
+                "name": "Hall",
+                "on": true,
+                "params": {
+                  "0": 50,
+                  "1": 50,
+                  "2": 50,
+                  "3": 1
+                }
+              }
+            }
+          },
+          "doc": {
+            "comoTocar": [
+              "Dedilhado da intro com capotraste na 7ª (A major shapes)",
+              "Se não usar capo, toque as formas em A sem capo — o AC Sim compensa o timbre"
+            ],
+            "teste": {
+              "riff": "intro completa + refrão",
+              "drum": "nenhum",
+              "escutar": [
+                "ataque de dedilhado claro",
+                "corpo de dreadnought no acorde"
+              ]
+            },
+            "ajustes": [
+              "mais nylon → AC Sim Mode 1 (Jumbo) ou 2",
+              "mais brilho → Top +3"
+            ],
+            "evite": [
+              "Drive/DST: mata o efeito violão",
+              "RVB com Decay alto — o violão real tem cauda curta"
+            ],
+            "irNota": "Alvo = corpo de violão dreadnought — nenhuma IR de gabinete do banco casa; mantenha o CAB de fábrica.",
+            "slotSugestao": "U11",
+            "guitarra": {
+              "seletor": "Posição 4 — middle+neck",
+              "seletorCurto": "posição 4",
+              "volume": "9",
+              "tone": "9 (aberto)",
+              "receita": "Capotraste 7ª casa · Seletor 4 · Volume 9 · Tone 9",
+              "tecnicas": [
+                "CAPOTRASTE na 7ª casa — toque as formas de A (é assim que a gravação funciona)",
+                "Dedilhado alternado com dinâmica uniforme; deixe as cordas rangendo levemente"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "BCS01",
+      "song": "Because",
+      "idAlbum": "AR",
+      "bpm": 90,
+      "resumo": "George no Les Paul 'Lucy' com Leslie: arpejos giratórios etéreos, coro de 3 vozes. O Chorus lento imita o rotary.",
+      "referencias": [
+        {
+          "role": "George: Les Paul Lucy + Leslie 147RV",
+          "conf": "alta",
+          "ev": "Emerick descreve o rotary nos arpejos",
+          "src": "Guitar World — Abbey Road gear guide"
+        },
+        {
+          "role": "Arpejos em C com Moog de fundo",
+          "conf": "alta",
+          "ev": "mesma fonte",
+          "src": "Guitar World"
+        }
+      ],
+      "patches": [
+        {
+          "camada": "Arpejos rotativos",
+          "sufixo": "AR",
+          "nome": "BCS01AR",
+          "emoji": "🌊",
+          "timbre": "Arpejo líquido: Chorus lento sobre Twin limpo + Hall — o Leslie da Abbey Road",
+          "spec": {
+            "name": "BCS01AR",
+            "type": "Pop",
+            "bpm": 90,
+            "volume": 60,
+            "ir_slot": null,
+            "modules": {
+              "PRE": {
+                "name": "COMP",
+                "on": false
+              },
+              "DST": {
+                "name": "Blues OD",
+                "on": false
+              },
+              "AMP": {
+                "name": "Dark Twin",
+                "on": true,
+                "params": {
+                  "0": 46,
+                  "1": 62,
+                  "2": 52,
+                  "3": 48,
+                  "4": 55,
+                  "5": 0
+                }
+              },
+              "NR": {
+                "name": "Gate 1",
+                "on": true,
+                "params": {
+                  "0": 20
+                }
+              },
+              "CAB": {
+                "name": "DarkTW 2x12",
+                "on": true,
+                "params": {
+                  "0": 75,
+                  "1": 50
+                }
+              },
+              "EQ": {
+                "name": "EQ 1",
+                "on": true,
+                "params": {
+                  "0": 0,
+                  "1": 0,
+                  "2": 0,
+                  "5": 50
+                }
+              },
+              "MOD": {
+                "name": "A-Chorus",
+                "on": true,
+                "params": {
+                  "0": 30,
+                  "1": 0.5,
+                  "2": 50,
+                  "3": 0
+                }
+              },
+              "DLY": {
+                "name": "Sweet",
+                "on": false
+              },
+              "RVB": {
+                "name": "Hall",
+                "on": true,
+                "params": {
+                  "0": 55,
+                  "1": 50,
+                  "2": 50,
+                  "3": 1
+                }
+              }
+            }
+          },
+          "doc": {
+            "comoTocar": [
+              "Arpejos em C (C-E-G-B) dedilhados lentos",
+              "Deixe o Chorus respirar — velocidade 0.5 é o segredo"
+            ],
+            "teste": {
+              "riff": "intro completa",
+              "drum": "nenhum",
+              "escutar": [
+                "girar etéreo",
+                "cada nota do arpejo separada"
+              ]
+            },
+            "ajustes": [
+              "chorus rápido demais → MOD Rate 0.3",
+              "mais girar → MOD Mix 60"
+            ],
+            "evite": [
+              "Drive: a faixa é etérea e limpa"
+            ],
+            "irNota": "Twin padrão — captura local opcional (User IR 1); a fábrica já entrega o alvo.",
+            "slotSugestao": "U12",
+            "guitarra": {
+              "seletor": "Posição 5 — neck",
+              "seletorCurto": "neck",
+              "volume": "8",
+              "tone": "6–7",
+              "receita": "Seletor 5 (neck) · Volume 8 · Tone 6–7",
+              "tecnicas": [
+                "Arpejos lentos e uniformes (C–E–G–B) — cada nota deve durar a mesma coisa",
+                "Não separe as notas: o Chorus + Hall criam o 'tecido' sozinhos"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "SKG01",
+      "song": "Sun King / Mean Mr. Mustard",
+      "idAlbum": "AR",
+      "bpm": 68,
+      "resumo": "Sun King: arpejos etéreos com Leslie no Lucy. Mean Mr. Mustard: rock gritado no Casino — duas metades, dois patches.",
+      "referencias": [
+        {
+          "role": "Sun King: Lucy + Leslie",
+          "conf": "alta",
+          "ev": "gear guide",
+          "src": "Guitar World"
+        },
+        {
+          "role": "Mean Mr. Mustard: Casino crujido",
+          "conf": "média",
+          "ev": "análise de faixa",
+          "src": "Guitar World"
+        }
+      ],
+      "patches": [
+        {
+          "camada": "Clean (Sun King)",
+          "sufixo": "CL",
+          "nome": "SKG01CL",
+          "emoji": "🌅",
+          "timbre": "Arpejos do Lucy girando: Chorus lento + Hall profundo, quase onírico",
+          "spec": {
+            "name": "SKG01CL",
+            "type": "Pop",
+            "bpm": 68,
+            "volume": 60,
+            "ir_slot": null,
+            "modules": {
+              "PRE": {
+                "name": "COMP",
+                "on": false
+              },
+              "DST": {
+                "name": "Blues OD",
+                "on": false
+              },
+              "AMP": {
+                "name": "Dark Twin",
+                "on": true,
+                "params": {
+                  "0": 46,
+                  "1": 62,
+                  "2": 52,
+                  "3": 48,
+                  "4": 55,
+                  "5": 0
+                }
+              },
+              "NR": {
+                "name": "Gate 1",
+                "on": true,
+                "params": {
+                  "0": 20
+                }
+              },
+              "CAB": {
+                "name": "DarkTW 2x12",
+                "on": true,
+                "params": {
+                  "0": 75,
+                  "1": 50
+                }
+              },
+              "EQ": {
+                "name": "EQ 1",
+                "on": true,
+                "params": {
+                  "0": 0,
+                  "1": 0,
+                  "2": 0,
+                  "5": 50
+                }
+              },
+              "MOD": {
+                "name": "A-Chorus",
+                "on": true,
+                "params": {
+                  "0": 30,
+                  "1": 0.5,
+                  "2": 50,
+                  "3": 0
+                }
+              },
+              "DLY": {
+                "name": "Sweet",
+                "on": false
+              },
+              "RVB": {
+                "name": "Hall",
+                "on": true,
+                "params": {
+                  "0": 55,
+                  "1": 50,
+                  "2": 50,
+                  "3": 1
+                }
+              }
+            }
+          },
+          "doc": {
+            "comoTocar": [
+              "Arpejos em A (A-C#-E) dedilhados; harmonia em 3ªs com o segundo violão (tocar sozinho: destaque a voz superior)"
+            ],
+            "teste": {
+              "riff": "intro de Sun King",
+              "drum": "nenhum",
+              "escutar": [
+                "flutuação rotativa",
+                "harmonia doce"
+              ]
+            },
+            "ajustes": [
+              "mais éter → RVB Mix 60",
+              "menos girar → Chorus OFF"
+            ],
+            "evite": [
+              "Velocidade do chorus acima de 0.5"
+            ],
+            "irNota": "Twin padrão — captura local opcional (User IR 1); a fábrica já entrega o alvo.",
+            "slotSugestao": "U13",
+            "guitarra": {
+              "seletor": "Posição 5 — neck",
+              "seletorCurto": "neck",
+              "volume": "8",
+              "tone": "7",
+              "receita": "Seletor 5 (neck) · Volume 8 · Tone 7",
+              "tecnicas": [
+                "Arpejos em 3ªs — destaque a voz superior (a melodia que 'canta')",
+                "Dinâmica constante e contemplativa, quase sem ataque"
+              ]
+            }
+          }
+        },
+        {
+          "camada": "Base (Mean Mr. Mustard)",
+          "sufixo": "BA",
+          "nome": "MM1001BA",
+          "emoji": "🔥",
+          "timbre": "Crunch gritado do Casino no AC30 (mesma alma do Oh! Darling, menos slapback)",
+          "spec": {
+            "name": "MM1001BA",
+            "type": "Rock",
+            "bpm": 100,
+            "volume": 61,
+            "ir_slot": null,
+            "modules": {
+              "PRE": {
+                "name": "COMP",
+                "on": false
+              },
+              "DST": {
+                "name": "Green OD",
+                "on": true,
+                "params": {
+                  "0": 45,
+                  "1": 55,
+                  "2": 62
+                }
+              },
+              "AMP": {
+                "name": "Foxy 30TB",
+                "on": true,
+                "params": {
+                  "0": 68,
+                  "1": 35,
+                  "2": 65,
+                  "3": 50,
+                  "4": 55
+                }
+              },
+              "NR": {
+                "name": "Gate 1",
+                "on": true,
+                "params": {
+                  "0": 28
+                }
+              },
+              "CAB": {
+                "name": "Foxy 1x12",
+                "on": true,
+                "params": {
+                  "0": 75,
+                  "1": 50
+                }
+              },
+              "EQ": {
+                "name": "EQ 1",
+                "on": true,
+                "params": {
+                  "0": 0,
+                  "1": 1,
+                  "2": 0,
+                  "5": 50
+                }
+              },
+              "MOD": {
+                "name": "A-Chorus",
+                "on": false
+              },
+              "DLY": {
+                "name": "Sweet",
+                "on": false
+              },
+              "RVB": {
+                "name": "Room",
+                "on": true,
+                "params": {
+                  "0": 20,
+                  "1": 19,
+                  "2": 31,
+                  "3": 0
+                }
+              }
+            }
+          },
+          "doc": {
+            "comoTocar": [
+              "Riff em E com palm-mute e acordes secos",
+              "Mudança para A no 'stand up'"
+            ],
+            "teste": {
+              "riff": "trecho 'Mean Mr. Mustard'",
+              "drum": "Rock 100 BPM",
+              "escutar": [
+                "crujido ríspido",
+                "riff definido"
+              ]
+            },
+            "ajustes": [
+              "mais rasgado → DST Gain +3"
+            ],
+            "evite": [
+              "Reverb longo — a faixa é seca"
+            ],
+            "irNota": "AC30 — captura local opcional (User IR 2); a fábrica já entrega o alvo.",
+            "slotSugestao": "U14",
+            "guitarra": {
+              "seletor": "Posição 5 — neck com Tone 5",
+              "seletorCurto": "neck",
+              "volume": "8",
+              "tone": "5",
+              "receita": "Seletor 5 (neck) · Volume 8 · Tone 5",
+              "tecnicas": [
+                "Riff em E com palm-mute e acordes secos — humor debochado, pegada firme",
+                "Mudança para A no 'stand up' com ataque total"
+              ]
+            }
+          }
+        }
+      ],
+      "pasta": "Sun King - Mean Mr. Mustard"
+    },
+    {
+      "id": "YNG01",
+      "song": "You Never Give Me Your Money",
+      "idAlbum": "AR",
+      "bpm": 64,
+      "resumo": "Três mundos: arpejos limpos do piano-into-guitarra (Strat/Twin), rock gritado no Casino e o 'one two three four five' com ADT. Dois patches.",
+      "referencias": [
+        {
+          "role": "Paul: Casino no AC30 (seção rock)",
+          "conf": "alta",
+          "ev": "gear guide",
+          "src": "Guitar World"
+        },
+        {
+          "role": "Arpejos limpos com Twin",
+          "conf": "média",
+          "ev": "análise de faixa",
+          "src": "Guitar World"
+        }
+      ],
+      "patches": [
+        {
+          "camada": "Arpejos limpos",
+          "sufixo": "AR",
+          "nome": "YNG01AR",
+          "emoji": "🎹",
+          "timbre": "Arpejos crescentes em Am: Twin limpo com Room curto e leve tremolo do atacado",
+          "spec": {
+            "name": "YNG01AR",
+            "type": "Pop",
+            "bpm": 64,
+            "volume": 60,
+            "ir_slot": null,
+            "modules": {
+              "PRE": {
+                "name": "COMP",
+                "on": false
+              },
+              "DST": {
+                "name": "Blues OD",
+                "on": false
+              },
+              "AMP": {
+                "name": "Dark Twin",
+                "on": true,
+                "params": {
+                  "0": 48,
+                  "1": 62,
+                  "2": 52,
+                  "3": 48,
+                  "4": 56,
+                  "5": 0
+                }
+              },
+              "NR": {
+                "name": "Gate 1",
+                "on": true,
+                "params": {
+                  "0": 20
+                }
+              },
+              "CAB": {
+                "name": "DarkTW 2x12",
+                "on": true,
+                "params": {
+                  "0": 75,
+                  "1": 50
+                }
+              },
+              "EQ": {
+                "name": "EQ 1",
+                "on": true,
+                "params": {
+                  "0": 0,
+                  "1": 0,
+                  "2": 0,
+                  "5": 50
+                }
+              },
+              "MOD": {
+                "name": "A-Chorus",
+                "on": false
+              },
+              "DLY": {
+                "name": "Sweet",
+                "on": false
+              },
+              "RVB": {
+                "name": "Room",
+                "on": true,
+                "params": {
+                  "0": 20,
+                  "1": 19,
+                  "2": 31,
+                  "3": 0
+                }
+              }
+            }
+          },
+          "doc": {
+            "comoTocar": [
+              "Arpejos em Am com dedilhado suave (as notas crescem na dinâmica)",
+              "Solo de 'one two three four five' com volume knob da guitarra"
+            ],
+            "teste": {
+              "riff": "intro completa",
+              "drum": "nenhum",
+              "escutar": [
+                "arpejo limpo crescendo",
+                "sem drive"
+              ]
+            },
+            "ajustes": [
+              "mais ar → RVB Pre Delay 25",
+              "mais corpo → EQ Low +1"
+            ],
+            "evite": [
+              "Chorus — o ADT da gravação está no vocal, não na guitarra"
+            ],
+            "irNota": "Twin padrão — captura local opcional (User IR 1); a fábrica já entrega o alvo.",
+            "slotSugestao": "U15+U16",
+            "guitarra": {
+              "seletor": "Posição 4 — middle+neck",
+              "seletorCurto": "posição 4",
+              "volume": "8",
+              "tone": "8",
+              "receita": "Seletor 4 (middle+neck) · Volume 8 · Tone 8",
+              "tecnicas": [
+                "Arpejos em Am com crescendo de dinâmica (as notas 'acordam' aos poucos)",
+                "No trecho 'one two three four five', brinque com o knob de Volume"
+              ]
+            }
+          }
+        },
+        {
+          "camada": "Solo/rock",
+          "sufixo": "SO",
+          "nome": "YNG01SO",
+          "emoji": "🔥",
+          "timbre": "Solo gritado do meio da faixa: Casino no AC30 (mesmo universo do Oh! Darling)",
+          "spec": {
+            "name": "YNG01SO",
+            "type": "Rock",
+            "bpm": 64,
+            "volume": 62,
+            "ir_slot": null,
+            "modules": {
+              "PRE": {
+                "name": "COMP",
+                "on": false
+              },
+              "DST": {
+                "name": "Green OD",
+                "on": true,
+                "params": {
+                  "0": 45,
+                  "1": 55,
+                  "2": 62
+                }
+              },
+              "AMP": {
+                "name": "Foxy 30TB",
+                "on": true,
+                "params": {
+                  "0": 68,
+                  "1": 35,
+                  "2": 65,
+                  "3": 50,
+                  "4": 55
+                }
+              },
+              "NR": {
+                "name": "Gate 1",
+                "on": true,
+                "params": {
+                  "0": 28
+                }
+              },
+              "CAB": {
+                "name": "Foxy 1x12",
+                "on": true,
+                "params": {
+                  "0": 75,
+                  "1": 50
+                }
+              },
+              "EQ": {
+                "name": "EQ 1",
+                "on": true,
+                "params": {
+                  "0": 0,
+                  "1": 2,
+                  "2": 0,
+                  "5": 50
+                }
+              },
+              "MOD": {
+                "name": "A-Chorus",
+                "on": false
+              },
+              "DLY": {
+                "name": "Sweet",
+                "on": false
+              },
+              "RVB": {
+                "name": "Room",
+                "on": true,
+                "params": {
+                  "0": 20,
+                  "1": 19,
+                  "2": 31,
+                  "3": 0
+                }
+              }
+            }
+          },
+          "doc": {
+            "comoTocar": [
+              "Solo em C pentatônica com bending vocal",
+              "Crescendo para o clímax"
+            ],
+            "teste": {
+              "riff": "solo (2:20-2:50)",
+              "drum": "Rock 64 BPM",
+              "escutar": [
+                "frase subindo em intensidade"
+              ]
+            },
+            "ajustes": [
+              "mais mordida → DST Gain +2"
+            ],
+            "evite": [
+              "Fuzz — é overdrive de amp"
+            ],
+            "irNota": "AC30 — captura local opcional (User IR 2); no solo teste o Bright Mix.",
+            "slotSugestao": "U16",
+            "guitarra": {
+              "seletor": "Posição 5 — neck com Tone 5",
+              "seletorCurto": "neck",
+              "volume": "8",
+              "tone": "5",
+              "receita": "Seletor 5 (neck) · Volume 8 · Tone 5",
+              "tecnicas": [
+                "Solo em C pentatônica com bends vocais",
+                "Cresça na dinâmica ao longo do solo até o clímax (é um solo de transição)"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "PTP01",
+      "song": "Polythene Pam / She Came In Through the Bathroom Window",
+      "idAlbum": "AR",
+      "bpm": 105,
+      "resumo": "Medley rock: Casino no AC30, riffs rápidos e secos. Bathroom Window tem acordes abertos vibrantes.",
+      "referencias": [
+        {
+          "role": "John/Paul: Casino no AC30",
+          "conf": "alta",
+          "ev": "gear guide",
+          "src": "Guitar World"
+        }
+      ],
+      "patches": [
+        {
+          "camada": "Base",
+          "sufixo": "BA",
+          "nome": "PTP01BA",
+          "emoji": "🔥",
+          "timbre": "Crunch ágil do medley: Green OD + AC30 estufado, ataque seco e pronto",
+          "spec": {
+            "name": "PTP01BA",
+            "type": "Rock",
+            "bpm": 105,
+            "volume": 62,
+            "ir_slot": null,
+            "modules": {
+              "PRE": {
+                "name": "COMP",
+                "on": false
+              },
+              "DST": {
+                "name": "Green OD",
+                "on": true,
+                "params": {
+                  "0": 45,
+                  "1": 55,
+                  "2": 62
+                }
+              },
+              "AMP": {
+                "name": "Foxy 30TB",
+                "on": true,
+                "params": {
+                  "0": 68,
+                  "1": 35,
+                  "2": 65,
+                  "3": 50,
+                  "4": 55
+                }
+              },
+              "NR": {
+                "name": "Gate 1",
+                "on": true,
+                "params": {
+                  "0": 28
+                }
+              },
+              "CAB": {
+                "name": "Foxy 1x12",
+                "on": true,
+                "params": {
+                  "0": 75,
+                  "1": 50
+                }
+              },
+              "EQ": {
+                "name": "EQ 1",
+                "on": true,
+                "params": {
+                  "0": 0,
+                  "1": 1,
+                  "2": 0,
+                  "5": 50
+                }
+              },
+              "MOD": {
+                "name": "A-Chorus",
+                "on": false
+              },
+              "DLY": {
+                "name": "Sweet",
+                "on": false
+              },
+              "RVB": {
+                "name": "Room",
+                "on": true,
+                "params": {
+                  "0": 20,
+                  "1": 19,
+                  "2": 31,
+                  "3": 0
+                }
+              }
+            }
+          },
+          "doc": {
+            "comoTocar": [
+              "Riffs rápidos em D e A com palhetada alterna",
+              "Bathroom Window: acordes abertos com vibrato de dedo"
+            ],
+            "teste": {
+              "riff": "'Polythene Pam' completo + entrada de 'Bathroom Window'",
+              "drum": "Rock 105 BPM",
+              "escutar": [
+                "ataque seco e rápido",
+                "acordes abertos no fim"
+              ]
+            },
+            "ajustes": [
+              "mais seco → RVB OFF"
+            ],
+            "evite": [
+              "Delay — o medley é corrido e seco"
+            ],
+            "irNota": "AC30 — captura local opcional (User IR 2); a fábrica já entrega o alvo.",
+            "slotSugestao": "U17",
+            "guitarra": {
+              "seletor": "Posição 5 — neck com Tone 5",
+              "seletorCurto": "neck",
+              "volume": "8",
+              "tone": "5",
+              "receita": "Seletor 5 (neck) · Volume 8 · Tone 5",
+              "tecnicas": [
+                "Riffs rápidos em D e A com palhetada alternada — secos, sem sustain",
+                "Bathroom Window: acordes abertos com vibrato de dedo nas notas finais"
+              ]
+            }
+          }
+        }
+      ],
+      "pasta": "Polythene Pam - Bathroom Window",
+      "display": "Polythene Pam / Bathroom Window"
+    },
+    {
+      "id": "GSC01",
+      "song": "Golden Slumbers / Carry That Weight",
+      "idAlbum": "AR",
+      "bpm": 96,
+      "resumo": "Golden Slumbers: Paul no Casino (limpo com leve crujido). Carry That Weight: guitarras em peso no medley. Dois momentos, um patch base.",
+      "referencias": [
+        {
+          "role": "Paul: Casino, dinâmico de limpo a crujido",
+          "conf": "média",
+          "ev": "análise de faixa",
+          "src": "Guitar World"
+        }
+      ],
+      "patches": [
+        {
+          "camada": "Base",
+          "sufixo": "BA",
+          "nome": "GS101BA",
+          "emoji": "👑",
+          "timbre": "Do violão simulado (Golden Slumbers intro) ao peso do medley: AC Sim + foxy crunch com controle de dinâmica",
+          "spec": {
+            "name": "GS101BA",
+            "type": "Pop",
+            "bpm": 96,
+            "volume": 60,
+            "ir_slot": null,
+            "modules": {
+              "PRE": {
+                "name": "AC Sim",
+                "on": false,
+                "params": {
+                  "0": 45,
+                  "1": 68,
+                  "2": 99,
+                  "3": 0
+                }
+              },
+              "DST": {
+                "name": "Green OD",
+                "on": true,
+                "params": {
+                  "0": 38,
+                  "1": 52,
+                  "2": 60
+                }
+              },
+              "AMP": {
+                "name": "Foxy 30TB",
+                "on": true,
+                "params": {
+                  "0": 60,
+                  "1": 35,
+                  "2": 68,
+                  "3": 52,
+                  "4": 55
+                }
+              },
+              "NR": {
+                "name": "Gate 1",
+                "on": true,
+                "params": {
+                  "0": 26
+                }
+              },
+              "CAB": {
+                "name": "Foxy 1x12",
+                "on": true,
+                "params": {
+                  "0": 75,
+                  "1": 50
+                }
+              },
+              "EQ": {
+                "name": "EQ 1",
+                "on": true,
+                "params": {
+                  "0": 0,
+                  "1": 1,
+                  "2": 0,
+                  "5": 50
+                }
+              },
+              "MOD": {
+                "name": "A-Chorus",
+                "on": false
+              },
+              "DLY": {
+                "name": "Sweet",
+                "on": false
+              },
+              "RVB": {
+                "name": "Room",
+                "on": true,
+                "params": {
+                  "0": 20,
+                  "1": 19,
+                  "2": 31,
+                  "3": 0
+                }
+              }
+            }
+          },
+          "doc": {
+            "comoTocar": [
+              "Golden Slumbers: ataque suave (a intro é quase limpa); Carry That Weight: abra a palhetada",
+              "Alternar dinâmica com o volume da guitarra"
+            ],
+            "teste": {
+              "riff": "'Golden Slumbers' inteira → 'Carry That Weight'",
+              "drum": "Pop 96 BPM",
+              "escutar": [
+                "contraste dinâmico claro entre as seções"
+              ]
+            },
+            "ajustes": [
+              "Golden limpa demais → foxy Vol +4",
+              "Carry mole → DST Gain +3"
+            ],
+            "evite": [
+              "Usar AC Sim ON junto com drive forte — fica artificial"
+            ],
+            "irNota": "AC30 — captura local opcional (User IR 2); a fábrica já entrega o alvo.",
+            "slotSugestao": "U18",
+            "guitarra": {
+              "seletor": "Posição 5 — neck com Tone 6",
+              "seletorCurto": "neck",
+              "volume": "8",
+              "tone": "6",
+              "receita": "Seletor 5 (neck) · Volume 8 · Tone 6 · use o Volume como pedal de dinâmica",
+              "tecnicas": [
+                "Golden Slumbers: ataque suave (a seção é quase limpa)",
+                "Carry That Weight: abra tudo — use o knob de Volume da guitarra como pedal"
+              ]
+            }
+          }
+        }
+      ],
+      "pasta": "Golden Slumbers - Carry That Weight"
+    },
+    {
+      "id": "END01",
+      "song": "The End",
+      "idAlbum": "AR",
+      "bpm": 124,
+      "resumo": "Os três solos ao vivo (Paul, George, John) com Lucy/Casino em Bassman estufado. Solos trocados de 2 compassos, uma take.",
+      "referencias": [
+        {
+          "role": "Solos: Paul, George e John, ao vivo na mesma sala",
+          "conf": "alta",
+          "ev": "Emerick conta a take única",
+          "src": "Guitar World — Abbey Road gear guide"
+        },
+        {
+          "role": "Bassman estufado",
+          "conf": "alta",
+          "ev": "backline",
+          "src": "boostguitarpedals"
+        }
+      ],
+      "patches": [
+        {
+          "camada": "Solos",
+          "sufixo": "SO",
+          "nome": "END01SO",
+          "emoji": "🏁",
+          "timbre": "Bassman morrendo de amor: Green OD + Bellman 59N Vol 80, sustain infinito para os 3 solos",
+          "spec": {
+            "name": "END01SO",
+            "type": "Rock",
+            "bpm": 124,
+            "volume": 63,
+            "ir_slot": null,
+            "modules": {
+              "PRE": {
+                "name": "COMP",
+                "on": false
+              },
+              "DST": {
+                "name": "Green OD",
+                "on": true,
+                "params": {
+                  "0": 48,
+                  "1": 55,
+                  "2": 64
+                }
+              },
+              "AMP": {
+                "name": "Bellman 59N",
+                "on": true,
+                "params": {
+                  "0": 80,
+                  "1": 55,
+                  "2": 62,
+                  "3": 55,
+                  "4": 55,
+                  "5": 50
+                }
+              },
+              "NR": {
+                "name": "Gate 1",
+                "on": true,
+                "params": {
+                  "0": 30
+                }
+              },
+              "CAB": {
+                "name": "TWD 2x12",
+                "on": true,
+                "params": {
+                  "0": 75,
+                  "1": 50
+                }
+              },
+              "EQ": {
+                "name": "EQ 1",
+                "on": true,
+                "params": {
+                  "0": 0,
+                  "1": 2,
+                  "2": 0,
+                  "5": 50
+                }
+              },
+              "MOD": {
+                "name": "A-Chorus",
+                "on": false
+              },
+              "DLY": {
+                "name": "Sweet",
+                "on": false
+              },
+              "RVB": {
+                "name": "Room",
+                "on": true,
+                "params": {
+                  "0": 20,
+                  "1": 19,
+                  "2": 31,
+                  "3": 0
+                }
+              }
+            }
+          },
+          "doc": {
+            "comoTocar": [
+              "Solo em A pentatônica blues, frases de 2 compassos alternando caráter (Paul melódico / George lírico / John áspero)",
+              "Termine com o acorde final de 'love you'"
+            ],
+            "teste": {
+              "riff": "bloco de solos completo (2:06-2:47)",
+              "drum": "Rock 124 BPM",
+              "escutar": [
+                "sustain infinito",
+                "troca de caráter entre frases"
+              ]
+            },
+            "ajustes": [
+              "mais sustain → Boost ON Ganho 25",
+              "mais áspero (John) → DST Gain +4"
+            ],
+            "evite": [
+              "Reverb grande — a sala era seca, o sustain vem do amp"
+            ],
+            "irNota": "Opção: Tweed Combo 1x12 Medium Mix (User IR 3) — a fábrica já entrega o alvo Bassman.",
+            "slotSugestao": "U19",
+            "guitarra": {
+              "seletor": "Posição 1 — bridge",
+              "seletorCurto": "bridge",
+              "volume": "9–10",
+              "tone": "8",
+              "receita": "Seletor 1 (bridge) · Volume 9–10 · Tone 8",
+              "tecnicas": [
+                "Troque o caráter a cada 2 compassos: Paul melódico → George lírico → John áspero",
+                "No final, sustente e incline a guitarra para o feedback nascer (tem amp na sala)"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "HM201",
+      "song": "Her Majesty",
+      "idAlbum": "AR",
+      "bpm": 100,
+      "resumo": "Esboço de 23 segundos: Paul no Casino (ou Martin?) limpo e rápido. Limpo e charmoso.",
+      "referencias": [
+        {
+          "role": "Paul: guitarra limpa rápida",
+          "conf": "média",
+          "ev": "análise de faixa",
+          "src": "Guitar World"
+        }
+      ],
+      "patches": [
+        {
+          "camada": "Clean",
+          "sufixo": "CL",
+          "nome": "HM201CL",
+          "emoji": "👑",
+          "timbre": "Limpo rápido e charmoso: Twin com Room curto, puro dedilhado",
+          "spec": {
+            "name": "HM201CL",
+            "type": "Pop",
+            "bpm": 100,
+            "volume": 58,
+            "ir_slot": null,
+            "modules": {
+              "PRE": {
+                "name": "COMP",
+                "on": false
+              },
+              "DST": {
+                "name": "Blues OD",
+                "on": false
+              },
+              "AMP": {
+                "name": "Dark Twin",
+                "on": true,
+                "params": {
+                  "0": 48,
+                  "1": 62,
+                  "2": 50,
+                  "3": 50,
+                  "4": 58,
+                  "5": 0
+                }
+              },
+              "NR": {
+                "name": "Gate 1",
+                "on": true,
+                "params": {
+                  "0": 20
+                }
+              },
+              "CAB": {
+                "name": "DarkTW 2x12",
+                "on": true,
+                "params": {
+                  "0": 75,
+                  "1": 50
+                }
+              },
+              "EQ": {
+                "name": "EQ 1",
+                "on": true,
+                "params": {
+                  "0": 0,
+                  "1": 0,
+                  "2": 0,
+                  "5": 50
+                }
+              },
+              "MOD": {
+                "name": "A-Chorus",
+                "on": false
+              },
+              "DLY": {
+                "name": "Sweet",
+                "on": false
+              },
+              "RVB": {
+                "name": "Room",
+                "on": true,
+                "params": {
+                  "0": 20,
+                  "1": 19,
+                  "2": 31,
+                  "3": 0
+                }
+              }
+            }
+          },
+          "doc": {
+            "comoTocar": [
+              "Dedilhado rápido em A-D-E com pulo de semitom final",
+              "Divirta-se: é um encerramento debochado"
+            ],
+            "teste": {
+              "riff": "faixa completa (23 s)",
+              "drum": "nenhum",
+              "escutar": [
+                "leveza e humor"
+              ]
+            },
+            "ajustes": [
+              "mais salto → COMP ON"
+            ],
+            "evite": [
+              "Qualquer drive"
+            ],
+            "irNota": "Twin padrão — captura local opcional (User IR 1); a fábrica já entrega o alvo.",
+            "slotSugestao": "U20",
+            "guitarra": {
+              "seletor": "Posição 4 — middle+neck",
+              "seletorCurto": "posição 4",
+              "volume": "8",
+              "tone": "8",
+              "receita": "Seletor 4 (middle+neck) · Volume 8 · Tone 8",
+              "tecnicas": [
+                "Dedilhado rápido em A–D–E com o pulo de semitom final",
+                "Leveza e humor — é o 'post-scriptum' debochado do álbum"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "meta": {
+    "album": "Abbey Road",
+    "banda": "The Beatles",
+    "ano": 1969,
+    "outraEntrada": {
+      "idAlbum": "PMH",
+      "song": "Piece of My Heart",
+      "banda": "Janis Joplin (Big Brother & The Holding Company)",
+      "album": "Cheap Thrills",
+      "ano": 1968
+    },
+    "regrasNomenclatura": [
+      "Nome do arquivo/painel = MUSICA-CAMADA, com no máximo 12 caracteres (limite do painel da GP-100).",
+      "MUSICA: até 4 letras da música + 2 dígitos da versão (01). Ex.: STH01 (Something), CT01 (Come Together), OHB01 (Oh! Darling), GW1001 (Golden Slumbers).",
+      "CAMADA: BA=base, SO=solo, RI=riff, CL=clean, FL=fills, AR=arpejos, AC=acústico, VO=voz-líder.",
+      "Camadas da mesma música compartilham o prefixo e ficam em slots vizinhos na pedaleira.",
+      "Uma música = um conjunto exclusivo de patches; nada de reutilizar o mesmo patch em músicas diferentes."
+    ]
+  },
+  "ir_local": {
+    "DarkTW 2x12": {
+      "captura": "American Twin 2x12",
+      "slot": "User IR 1"
+    },
+    "Foxy 1x12": {
+      "captura": "Brown Deluxe 1x12",
+      "slot": "User IR 2"
+    },
+    "TWD 2x12": {
+      "captura": "Tweed Combo 1x12",
+      "slot": "User IR 3"
+    }
+  }
+}

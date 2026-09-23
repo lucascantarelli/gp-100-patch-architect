@@ -257,15 +257,17 @@ jobs:
           fi
 
           if [ "$BASE" = "main" ]; then
-            # 2/3 · PR de release (develop → main): a gestão é o CHANGELOG + milestone.
+            # 3 · PR de release (develop → main): a gestão é o CHANGELOG + milestone.
             echo "PR de release para a main — isento de issue vinculada."
             ms="$(gh pr view "$PR" --repo "$REPO" --json milestone --jq '.milestone.title // ""')"
             if [ -z "$ms" ]; then
               echo "::warning::release sem milestone — associe a versão: gh pr edit $PR --milestone \"vX.Y.Z\""
             fi
           else
-            # 3 · Issue vinculada — a regra de ouro: nada entra sem issue; a issue
-            #     é fechada pelo PR (Closes #N), nunca à mão.
+            # 4 · Issue vinculada — a regra de ouro: nada entra sem issue. O
+            #     `Closes #N` é o vínculo visível no diff; quem FECHA a issue num
+            #     PR para a develop é o mantenedor (a keyword só age na branch
+            #     padrão — ver reference/18, seção 5).
             corpo="$(gh pr view "$PR" --repo "$REPO" --json body --jq '.body // ""')"
             ms="$(gh pr view "$PR" --repo "$REPO" --json milestone --jq '.milestone.title // ""')"
             if ! printf '%s' "$corpo" | grep -Eq '([Cc]loses|[Ff]ixes|[Rr]esolves|[Cc]loses:|[Ff]ixes:|[Rr]efs?) ?#[0-9]+'; then
@@ -277,7 +279,7 @@ jobs:
               fi
             fi
 
-            # 4 · Milestone — aviso, não reprova (decision: mantenedor único).
+            # 5 · Milestone — aviso, não reprova (decision: mantenedor único).
             if [ -z "$ms" ]; then
               echo "::warning::sem milestone — associe no review: gh pr edit $PR --milestone \"v1.1.0\""
             fi

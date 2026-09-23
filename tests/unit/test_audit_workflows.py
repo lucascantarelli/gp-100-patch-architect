@@ -94,3 +94,85 @@ def test_workflows_commitados_passam_no_auditor() -> None:
     for caminho in arquivos:
         erros, _avisos = auditor.audit(caminho)
         assert not erros, f'{caminho.name}: ' + '; '.join(t for _, t in erros)
+
+
+# ── Regra 10 · teto de permissões por workflow (#62) ──────────────────────────
+
+
+def falhas_com_teto(tmp_path: Path, permissions: str, nome: str) -> str:
+    """Mesmo de falhas(), mas gravando o nome de arquivo que define o teto."""
+    arquivo = tmp_path / nome
+    arquivo.write_text(f'name: teste\non: push\n{permissions}\n', encoding='utf-8')
+    erros, _avisos = auditor.audit(arquivo)
+    return '\n'.join(texto for _, texto in erros)
+
+
+def test_write_acima_do_teto_reprova(tmp_path: Path) -> None:
+    """ci.yml tem teto contents: read — write é a superfície que a regra barra."""
+    texto = falhas_com_teto(tmp_path, 'permissions:\n  contents: write', 'ci.yml')
+    assert 'acima do teto' in texto
+    assert 'contents: read' in texto  # o teto vai na mensagem
+    assert 'TETO_PERMISSOES' in texto  # e o caminho da correção
+
+
+def test_escopo_fora_do_teto_reprova(tmp_path: Path) -> None:
+    """Escopo que nem existe no teto reprova, mesmo em nível read."""
+    texto = falhas_com_teto(tmp_path, 'permissions:\n  contents: read\n  issues: write', 'ci.yml')
+    assert 'fora do teto' in texto
+    assert 'issues' in texto
+
+
+def test_job_com_write_acima_do_teto_reprova(tmp_path: Path) -> None:
+    """A elevação escondida num job é exatamente o buraco que a regra 10 fecha."""
+    texto = falhas_com_teto(
+        tmp_path,
+        'permissions:\n  contents: read\njobs:\n  a:\n'
+        '    permissions:\n      contents: write\n'
+        '    runs-on: ubuntu-24.04\n    timeout-minutes: 5\n',
+        'ci.yml',
+    )
+    assert 'acima do teto' in texto
+    assert 'em job' in texto
+
+
+def test_teto_respeitado_passa(tmp_path: Path) -> None:
+    """`contents: read` no topo continua sendo o caso normal."""
+    assert falhas_com_teto(tmp_path, 'permissions:\n  contents: read', 'ci.yml') == ''
+
+
+def test_nivel_abaixo_do_teto_passa(tmp_path: Path) -> None:
+    """security.yml tem pull-requests: write no teto — read está abaixo, não fere."""
+    texto = falhas_com_teto(
+        tmp_path,
+        'permissions:\n  contents: read\n  pull-requests: read',
+        'security.yml',
+    )
+    assert texto == ''
+
+
+def test_shorthand_concede_tudo_e_fere_o_teto(tmp_path: Path) -> None:
+    """read-all/write-all concedem todos os escopos — acima de qualquer teto."""
+    texto = falhas_com_teto(tmp_path, 'permissions: write-all', 'release.yml')
+    assert 'concede' in texto
+
+
+def test_todo_workflow_commitado_tem_teto_declarado() -> None:
+    """A tabela é fechada: workflow novo sem entrada reprova no main() do auditor."""
+    arquivos = sorted(WORKFLOWS.glob('*.y*ml'))
+    assert arquivos, f'nenhum workflow em {WORKFLOWS}'
+    sem_teto = [p.name for p in arquivos if p.name not in auditor.TETO_PERMISSOES]
+    assert not sem_teto, f'sem teto na TETO_PERMISSOES: {sem_teto}'
+
+
+def test_escritas_concedidas_sao_as_justificadas() -> None:
+    """Só há write onde a escrita É o trabalho — o mapa inteiro é o contrato."""
+    escritas = {
+        nome: {e for e, n in teto.items() if n == 'write'}
+        for nome, teto in auditor.TETO_PERMISSOES.items()
+    }
+    assert escritas == {
+        'ci.yml': set(),
+        'security.yml': {'security-events', 'pull-requests'},
+        'release.yml': {'contents'},
+        'project-automation.yml': set(),
+    }

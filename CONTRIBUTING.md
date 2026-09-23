@@ -50,7 +50,7 @@ python tools/render_manual_page.py 21        # página impressa NN = arquivo NN+
 ## ✅ Antes de commitar na `develop`: rode exatamente o que o CI roda
 
 ```bash
-# 1. Suíte completa (156 testes) com cobertura do pacote
+# 1. Suíte completa (256 testes) com cobertura do pacote
 uv run pytest -q --cov --cov-report=term-missing
 
 # 2. Gates de qualidade (pacote)
@@ -67,19 +67,17 @@ E, **se você mexeu em dados** (música, camada, patch, momento, pack de IR ou
 cab):
 
 ```bash
-# 3. Pipeline completo, na ordem do CI
+# 3. Pipeline completo, na ordem do CI (o defs É a fonte — nada de seeders)
 python tools/ir_library.py \
-  && python tools/add_pulse_defs.py \
-  && python tools/add_wishkah_defs.py \
-  && python tools/add_santana_defs.py \
-  && python tools/add_momentos.py \
   && python tools/build_song_patches.py \
   && python tools/gen_indexes.py
 ```
 
-O guarda de sincronia vive na suíte (`TestH_DadosEmSincronia`): ela roda o
-pipeline numa cópia temporária do repositório e compara com o commitado — se
-reprovar, o teste lista os arquivos divergentes. Suíte verde = PR coerente.
+O guarda de determinismo vive na suíte (`TestH_DadosEmSincronia`): ela roda o
+pipeline numa cópia temporária do repositório e compara com os derivados que você
+tem — num clone limpo (CI) prova que o defs determina a biblioteca inteira; na
+sua máquina, pega "editei o defs e esqueci de regenerar". Se reprovar, o teste
+lista os arquivos divergentes. Suíte verde = PR coerente.
 
 ## 🔁 O pipeline é obrigatório
 
@@ -104,7 +102,7 @@ Desde o ADR-0013, o `build_song_patches.py` passa o spec **in-memory** ao codec
 **não existe mais** nem em disco. Para comparar parâmetros entre duas versões,
 leia o defs (`tools/defs/`, a fonte) — o `.prst` muda o `preset_info/@time` a
 cada build, o defs não. Nada em `patches/**` é escrito à mão: tudo é derivado do
-defs e vigiado pelo guarda de sincronia.
+`patches/**` e vigiado pelo guarda de determinismo.
 
 ### ⚠️ O catálogo de IRs não é regenerável sem o pack
 
@@ -142,13 +140,12 @@ no PR** a menos que esteja reindexando o banco de propósito, e diga isso na des
 
 ### Um álbum inteiro novo
 
-1. Crie o seeder `tools/add_<album>_defs.py` seguindo `add_pulse_defs.py`
-   (o padrão é o seeder encadear `add_momentos`).
-2. Crie `tools/defs/<CHAVE>.json` com `idAlbum`, `album` (`banda`, `ano`, `pasta`,
-   `titulo`, o dossiê de rig e o `ir_local` de cada cab usado.
-3. Encadeie o novo seeder no `PIPELINE` de `tests/test_pipeline.py` —
-   um seeder fora da lista simplesmente não roda no guarda de sincronia.
-4. Rode o pipeline, revise os `MAPA-DO-ALBUM.md` gerados e a numeração de slots.
+1. Crie o fragmento do álbum `tools/defs/<CHAVE>.json` com `idAlbum`, `album`
+   (`banda`, `ano`, `pasta`, `titulo`), o dossiê de rig e o `ir_local` de cada cab
+   usado — e declare a chave em `tools/defs/_albums.json` (a ordem do manifesto é
+   a numeração U01…Uxx). Momentos de toggle vivem no próprio fragmento.
+2. Rode o pipeline completo (bloco acima), revise os `MAPA-DO-ALBUM.md` gerados
+   e a numeração de slots.
 
 ## 🚦 Regras de ouro (revisão bloqueia o que violar)
 

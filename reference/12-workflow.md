@@ -50,8 +50,8 @@ intermediário em disco; o antigo `spec.json` foi eliminado). IRs de terceiros *
 - [ ] Instruções de digitação na ordem real dos menus da pedaleira (incluindo os SOBRESSALENTES citados nos momentos).
 - [ ] Sugestão de captador (posição na Strat) para o timbre.
 - [ ] Teste sugerido (riff + o que escutar).
-- [ ] **Pipeline rodado e commitado**: `python tools/build_song_patches.py` → `python tools/gen_indexes.py` (e `python tools/ir_library.py` se baixou pack) — o guarda de sincronia da suíte reprova artefato gerado fora do commit.
-- [ ] **Suíte verde**: `python -m unittest discover -s tests -v` — `TestB_FonteUnica_IR` reprova mapa e `patch.md` divergindo sobre IR; `TestG_Indices` reprova índice defasado; `TestH_DadosEmSincronia` É o guarda de sincronia (pipeline numa cópia × commitado).
+- [ ] **Pipeline rodado**: `python tools/build_song_patches.py` → `python tools/gen_indexes.py` (e `python tools/ir_library.py` se baixou pack) — o guarda de determinismo da suíte reprova derivado divergente do que o defs produz (`patches/**` não é commitado).
+- [ ] **Suíte verde**: `python -m unittest discover -s tests -v` — `TestB_FonteUnica_IR` reprova mapa e `patch.md` divergindo sobre IR; `TestG_Indices` reprova índice defasado; `TestH_DadosEmSincronia` é o guarda de determinismo (pipeline numa cópia × derivados).
 
 ## Fluxo de ajuste (iteração com o músico)
 1. Músico testa e volta com descrição ("muito agudo", "cauda engolida", "riff some na banda").
@@ -72,23 +72,19 @@ intermediário em disco; o antigo `spec.json` foi eliminado). IRs de terceiros *
 | "Volume salta ao ligar efeito" | Level do efeito ≈ bypass (igualar) |
 | "Solo não corta" | EQ Mid +3 / Level +15, patch de solo separado |
 
-## Pipeline de dados (é o que o guarda de sincronia da suíte roda)
-Qualquer elemento novo (música, camada, patch, modelo de efeito, momento de toggle, pack de IR) exige o pipeline inteiro, na ordem, e o commit dos derivados:
+## Pipeline de dados (é o que o guarda de determinismo da suíte roda)
+Qualquer elemento novo (música, camada, patch, modelo de efeito, momento de toggle, pack de IR) exige rodar o pipeline, na ordem — `patches/**` é construído, não armazenado (ADR-0013):
 
 ```bash
 python tools/ir_library.py          # 1. biblioteca de IRs → tools/ir-library.json + reference/16
-python tools/add_pulse_defs.py      # 2. seeders de álbum (já encadeia add_momentos.py)
-python tools/add_wishkah_defs.py    # 3. Nirvana — Wishkah (encadeia add_momentos)
-python tools/add_santana_defs.py    # 4. Santana — Smooth (momentos embutidos)
-python tools/add_momentos.py        # 5. momentos de toggle (estado inverso; nunca AMP/CAB)
-python tools/build_song_patches.py  # 6. patch.md + .prst de todos os patches (+ spec.json local)
-python tools/gen_indexes.py         # 7. MAPA-DO-ALBUM.md + patches/README.md
-python -m unittest discover -s tests -v  # 8. guarda de sincronia: pipeline numa cópia × commitado
+python tools/build_song_patches.py  # 2. patch.md + .prst de todos os patches (momentos já vão no defs, spec in-memory)
+python tools/gen_indexes.py         # 3. MAPA-DO-ALBUM.md + patches/README.md
+python -m unittest discover -s tests -v  # 4. guarda de determinismo: pipeline numa cópia × derivados
 ```
 
 **Isso é literalmente o que o `TestH_DadosEmSincronia` roda**, a cada `unittest` — local e no CI. **Nenhum job escreve no repositório**: se algum derivado estiver defasado, o teste reprova e imprime o comando exato de conserto, para o autor rodar e commitar.
 
-O passo 6 é o que separa "rodei o pipeline" de "commitei o resultado": sem ele, um PR pode mergear com artefato defasado. A fonte única continua sendo o defs (`tools/defs/`) — nenhum script mantém tabela própria de músicas, álbuns ou cabs.
+O último passo é o que separa "rodei o pipeline" de "biblioteca coerente": sem ele, um PR pode mergear com artefato defasado. A fonte única é o defs (`tools/defs/`, schema v2) — nenhum script mantém tabela própria de músicas, álbuns ou cabs, e **nada do que o pipeline produz é commitado**: em clone limpo o build recria tudo a partir do defs.
 
 ## Limites declarados do projeto
 - A GP-100 não tem reorder de cadeia; não criar expectativa de "trocar ordem dos efeitos".

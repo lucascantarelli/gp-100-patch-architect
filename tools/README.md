@@ -11,20 +11,17 @@ Utilitários Python (**Python 3.14 apenas** — política do projeto, guardada p
 # 2. (Se baixou pack novo de IR) indexe a biblioteca
 python ir_library.py                        # tools/ir-library.json + reference/16-ir-library.md
 
-# 3. Reinsira/atualize os álbuns seedados e os momentos de toggle
-python add_pulse_defs.py                    # idempotente; já encadeia add_momentos.py
-
-# 4. Construa specs + patch.md + .prst de TODOS os patches
+# 3. Construa specs + patch.md + .prst de TODOS os patches (momentos já vão no defs)
 python build_song_patches.py
 
-# 5. Regenere mapas dos álbuns e o README da biblioteca
+# 4. Regenere mapas dos álbuns e o README da biblioteca
 python gen_indexes.py
 
-# 6. Valide tudo (mesma suíte que o CI roda) — ela inclui o guarda de sincronia
+# 5. Valide tudo (mesma suíte que o CI roda) — inclui o guarda de determinismo
 python -m unittest discover -s tests -v
 ```
 
-> **Essa é exatamente a sequência do guarda de sincronia da suíte** (`TestH_DadosEmSincronia`): o teste roda o pipeline inteiro numa cópia temporária do repositório e, se o resultado não for o que está commitado, reprova dizendo o que rodar. Quem acrescenta música, camada, patch, efeito, momento de toggle ou pack de IR precisa rodar isto e commitar os derivados. A suíte roda em push e em PR, e nos dois casos a correção é do autor: **nenhum job escreve no repositório**.
+> **Essa é exatamente a sequência do guarda de determinismo da suíte** (`TestH_DadosEmSincronia`): o teste roda o pipeline inteiro numa cópia temporária do repositório e reprova se o resultado divergir dos derivados que você tem — num clone limpo (CI), prova que o defs determina a biblioteca inteira; na sua máquina, pega "editei o defs e esqueci de regenerar". Quem acrescenta música, camada, patch, efeito, momento de toggle ou pack de IR precisa rodar isto. A suíte roda em push e em PR, e nos dois casos a correção é do autor: **nenhum job escreve no repositório**.
 >
 > **Atalho:** `python gp100.py build` encadeia exatamente essa sequência, e `python gp100.py verify` roda a suíte.
 
@@ -38,8 +35,7 @@ python -m unittest discover -s tests -v
 | `chain.py` | — | SHIM de transição (issue #28/#33): re-exporta `gp100_architect.domain.chain` para os consumidores legados até a remoção do `tools/`. |
 | `gp100.py` | `python gp100.py find <termo>` · `show <NOME>` · `diff A B` · `export [--album ID] [--destino D]` · `build` · `verify` | **CLI unificada** — busca por música/artista/captador, resumo do patch (cadeia, params com nomes oficiais, momentos, IR), diff legível entre dois patches, cópia dos `.prst` para pasta de importação USB (prefixo = slot), pipeline completo e suíte. Leitura pura não escreve nada no repositório; `build`/`verify` só executam os scripts existentes. |
 | `build_song_patches.py` | `python build_song_patches.py` | **Construtor principal.** Lê o defs (`tools/defs/`, schema v2) **validando-o primeiro** (loader + validador do domínio), escreve `patch.md` + `<NOME>.prst` (spec in-memory — ADR-0013) de cada patch em `patches/<Banda>/<Álbum>/<Música>/<NOME>/` e valida o resultado (XML conforme, nome ≤ 12 caracteres). Slots U01…Uxx calculados pela ordem global do defs. |
-_(aposentados no schema v2, issue #8: `add_pulse_defs.py`, `add_wishkah_defs.py`, `add_santana_defs.py`, `add_momentos.py` — um álbum novo entra como fragmento em `defs/`, sem seeder)_
-| `add_momentos.py` | `python add_momentos.py` | Injeta os momentos de toggle por patch (seção "Modos de atuação"): valida contra o spec (só estado inverso), herda o delay do patch-irmão de solo para as bases e registra os SOBRESSALENTES. |
+_(aposentados no schema v2, issue #8: `add_pulse_defs.py`, `add_wishkah_defs.py`, `add_santana_defs.py`, `add_momentos.py` — os momentos de toggle agora vivem no próprio fragmento do álbum; um álbum novo entra como fragmento em `defs/`, sem seeder)_
 | `generate_prst.py` | `python generate_prst.py <spec.json> <saída.prst>` | Gera **um** `.prst` no formato **single-patch, firmware 2.1** — réplica exata do export single que importou com sucesso no aparelho (sem `<ppIRInfo>`, com `<ppCtrl>`/`<ppEXP1>`, atributos na ordem exata, cadeia x=0–8). Valida nomes contra o catálogo fw 2.0. |
 | `gen_indexes.py` | `python gen_indexes.py` | Regenera os `MAPA-DO-ALBUM.md` de cada álbum e o `patches/README.md` **a partir do defs** (`albums`, `ir_local`, `pasta`/`display`) — tabelas música→patches, captador, IR recomendada e sequência de slots. `build_all()` é pura (monta o texto sem escrever) e `main()` só grava: é isso que a suíte usa para detectar índice defasado. |
 | `ir_library.py` | `python ir_library.py` | Indexa `impulse_responses/`: valida cada WAV (mono/24 bits/44.1 kHz) e gera `ir-library.json` (manifesto para os agentes) + `reference/16-ir-library.md`. **Rode sempre que baixar packs novos.** |
@@ -58,12 +54,12 @@ _(aposentados no schema v2, issue #8: `add_pulse_defs.py`, `add_wishkah_defs.py`
 ## 🧪 Testes
 
 ```bash
-python -m unittest discover -s tests -v      # 103 testes, stdlib pura (nada a instalar)
+python -m unittest discover -s tests -v      # 256 testes, stdlib pura (nada a instalar)
 ```
 
-`tests/test_pipeline.py` valida as invariantes que já quebraram uma vez: defs (ids/nomes únicos, nome ≤ 12 chars), **coerência mapa × `patch.md` sobre IR** (a divergência dos 38 patches do Pulse), formato `.prst` single fw 2.1, as 9 seções obrigatórias + zero HTML cru + **zero rótulo placeholder** (`(pN)` e `pN` solto — todo slot setado tem nome oficial, ver `reference/15`), momentos de toggle válidos (nunca AMP/CAB), cobertura de `PARAM_NAMES` (allowlist hoje **vazia** — modelo novo sem nome de parâmetro reprova), **drift dos índices** e o **guarda de sincronia** (`TestH_DadosEmSincronia`: o pipeline roda numa cópia temporária do repositório e tem de reproduzir o commitado; ignora o `time`, equipara CRLF/LF e não mascara mudança de parâmetro).
+`tests/test_pipeline.py` valida as invariantes que já quebraram uma vez: defs (ids/nomes únicos, nome ≤ 12 chars), **coerência mapa × `patch.md` sobre IR** (a divergência dos 38 patches do Pulse), formato `.prst` single fw 2.1, as 9 seções obrigatórias + zero HTML cru + **zero rótulo placeholder** (`(pN)` e `pN` solto — todo slot setado tem nome oficial, ver `reference/15`), momentos de toggle válidos (nunca AMP/CAB), cobertura de `PARAM_NAMES` (allowlist hoje **vazia** — modelo novo sem nome de parâmetro reprova), **drift dos índices** e o **guarda de determinismo** (`TestH_DadosEmSincronia`: o pipeline roda numa cópia temporária do repositório e tem de reproduzir os derivados — num clone limpo prova que o defs determina a biblioteca inteira; ignora o `time`, equipara CRLF/LF e não mascara mudança de parâmetro).
 
-Rodam no CI a cada push (`.github/workflows/ci.yml` — dois jobs em paralelo + portão `ci-gate`): a suíte (que inclui o **guarda de sincronia**) e o `tsc --noEmit` nos agentes (job `typecheck`). **Nenhum job escreve no repositório** — quando o guarda reprova por dado defasado, ele pede que o autor rode o pipeline e commite os derivados.
+Rodam no CI a cada push (`.github/workflows/ci.yml` — dois jobs em paralelo + portão `ci-gate`): a suíte (que inclui o **guarda de sincronia**) e o `tsc --noEmit` nos agentes (job `typecheck`). **Nenhum job escreve no repositório** — o workflow constrói os derivados antes da suíte, e quando o guarda reprova a falha lista exatamente o que o build produz de diferente (o autor roda o pipeline e regenera).
 
 ## ⚠️ Armadilhas conhecidas (já resolvidas nos scripts)
 
@@ -72,7 +68,7 @@ Rodam no CI a cada push (`.github/workflows/ci.yml` — dois jobs em paralelo + 
 - Ordem dos atributos do `<Effect>` importa (`params_0` antes de `x/y`) — mantida idêntica ao exemplo funcional.
 - Nomes no painel: **máx. 12 caracteres** (`ppName` truncado).
 - Console Windows em cp1252: os scripts reconfiguram o stdout para UTF-8.
-- **`preset_info/@time` é determinístico** (epoch ms fixo via `GP100_BUILD_TIME`; default constante) — regenerar só muda o `.prst` se um parâmetro mudar de verdade. Antes era `time.time()` a cada build: todo pipeline reescrevia os ~97 `.prst` e gerava conflito de merge em linha que não é conteúdo (e o review do PR #3 apontou o churn). Para diffar parâmetros, compare os `.prst` direto ou os `spec.json` (fonte determinística).
+- **`preset_info/@time` é determinístico** (epoch ms fixo via `GP100_BUILD_TIME`; default constante) — regenerar só muda o `.prst` se um parâmetro mudar de verdade. Antes era `time.time()` a cada build: todo pipeline reescrevia os ~97 `.prst` e gerava conflito de merge em linha que não é conteúdo (e o review do PR #3 apontou o churn). Para diffar parâmetros, compare os `.prst` direto ou leia o defs (fonte determinística — o spec vai in-memory ao codec, ADR-0013).
 - Modelos reais do fw 2.0 ausentes no export de fábrica ficam em `EXTRA_TEMPLATES` no `generate_prst.py` (atualmente `PRE/Saturate` — o Tube Driver do Gilmour).
 - **`sorted()` sobre `Path` é dependente do SO** — `Path` compara com `normcase`, que **minúsculas no Windows** e é identidade no Linux. Foi assim que o `ir-library.json` saiu com `4x12 Metal American` antes de `4x12 MFB` aqui e o inverso no CI (mesmo gerador, resultado diferente). Ao ordenar caminhos, use chave de **string** (`p.relative_to(...).as_posix()`), nunca o `Path` direto — há teste travando isso (`TestI_OrdemEstavel`).
 

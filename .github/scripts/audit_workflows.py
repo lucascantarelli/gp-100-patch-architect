@@ -48,8 +48,25 @@ Regras que REPROVAM:
                            `gh api repos/<owner>/<repo>/git/ref/tags/<tag>`
                            (dereferencie se `type` for `tag`).
 
+  8. `permissions:` — o NOME do escopo e o NÍVEL têm de ser válidos, no bloco do
+                           topo e em cada job. Um nome inexistente invalida o
+                           arquivo INTEIRO: o GitHub cria um "workflow file
+                           issue" a cada push e nenhum job roda (nem os que
+                           não têm nada a ver com o escopo). Foi o que
+                           aconteceu com o `project-automation.yml`, que
+                           declarava `repository-project: write` (sem o "s") e
+                           ficava vermelho em todo push sem ter executado um
+                           único passo desde que foi criado — e o GitHub
+                           exibe o nome do workflow como o próprio caminho
+                           quando isso acontece (é o sinal no `gh workflow
+                           list`). Escopo novo na plataforma? Confira em
+                           docs.github.com → "Workflow syntax for GitHub
+                           Actions" → permissions e acrescente aqui (a lista
+                           é fechada de propósito: é ela que transforma typo
+                           em erro de CI).
+
 Regra que AVISA (não reprova):
-  8. Action de PRIMEIRA PARTE (`actions/*`, `github/*`) sem SHA. São mantidas
+  9. Action de PRIMEIRA PARTE (`actions/*`, `github/*`) sem SHA. São mantidas
      no major de propósito — o Dependabot acompanha e o GitHub é o publicador.
 """
 import re
@@ -85,6 +102,20 @@ RUNNER_FLUTUANTE = re.compile(r'^[a-z0-9._-]+-latest$')
 # outro owner tem de vir fixada por commit SHA — a tag pode ser reescrita.
 PRIMEIRA_PARTE = {'actions', 'github'}
 
+# Escopos aceitos em `permissions:` (workflow syntax). Fechado de propósito:
+# `repository-project` (singular) invalidava o arquivo inteiro. Note que
+# `repository-projects` cobre Projects *clássicos* do repositório — Project v2
+# de usuário não se acessa por aqui: aquele token vem de secret (PAT).
+ESCOPOS_DE_PERMISSAO = {
+    'actions', 'attestations', 'checks', 'contents', 'deployments',
+    'discussions', 'id-token', 'issues', 'models', 'packages', 'pages',
+    'pull-requests', 'repository-projects', 'security-events', 'statuses',
+}
+NIVEIS_DE_PERMISSAO = {'read', 'write', 'none'}
+
+PERMISSOES = re.compile(r'^(\s*)permissions:\s*(\S*)\s*$')
+ESCOPO = re.compile(r'\s*([A-Za-z0-9_-]+):\s*([^\s#]+)')
+
 # Menor major de cada action de primeira parte que já declara `using: node24`
 # (lido do `action.yml` da tag). Abaixo disso, o runner força a action a rodar
 # em Node 24 e emite aviso de depreciação a cada job. Action fora desta tabela é
@@ -99,10 +130,53 @@ NODE24_MINIMO = {
 }
 
 
+def checar_permissoes(linhas: list[str]) -> list[tuple[int, str]]:
+    """Valida TODO bloco `permissions:` (topo e por job) — nomes e níveis.
+
+    Percorre o arquivo inteiro em vez de olhar só o topo: o `project-automation`
+    tinha o escopo inválido no bloco do topo, mas um job com permissão inválida
+    invalida o arquivo do mesmo jeito.
+    """
+    falhas: list[tuple[int, str]] = []
+    i = 0
+    while i < len(linhas):
+        m = PERMISSOES.match(linhas[i])
+        if not m:
+            i += 1
+            continue
+        indent, inline = len(m.group(1)), m.group(2)
+        if inline:  # forma curta: `permissions: read-all` / `write-all` / `{}`
+            if inline not in ('read-all', 'write-all', '{}'):
+                falhas.append((i + 1, f'`permissions: {inline}` inválido — use '
+                                      f'`read-all`, `write-all` ou um escopo por linha'))
+            i += 1
+            continue
+        i += 1
+        while i < len(linhas) and linhas[i].strip():
+            if len(linhas[i]) - len(linhas[i].lstrip()) <= indent:
+                break  # voltou ao nível do bloco: fim das permissões
+            mc = ESCOPO.match(linhas[i])
+            if mc:
+                escopo, nivel = mc.group(1), mc.group(2).strip('\'"')
+                if escopo not in ESCOPOS_DE_PERMISSAO:
+                    falhas.append((i + 1, f'`{escopo}: {nivel}` — "{escopo}" não é um '
+                                          f'escopo válido: ele invalida o ARQUIVO '
+                                          f'INTEIRO (o workflow nunca roda). Escopos '
+                                          f'aceitos: {", ".join(sorted(ESCOPOS_DE_PERMISSAO))}'))
+                elif nivel not in NIVEIS_DE_PERMISSAO:
+                    falhas.append((i + 1, f'`{escopo}: {nivel}` — nível inválido: use '
+                                          f'{", ".join(sorted(NIVEIS_DE_PERMISSAO))}'))
+            i += 1
+    return falhas
+
+
 def audit(path: Path):
     """Audita um workflow e devolve (falhas, avisos) — listas de (linha, texto)."""
     linhas = path.read_text(encoding='utf-8', errors='replace').splitlines()
     falhas, avisos = [], []
+
+    # ── 8. nomes e níveis de permissão (topo e por job) ─────────────────────
+    falhas.extend(checar_permissoes(linhas))
 
     # ── 1. permissions no topo (coluna 0) ────────────────────────────────────
     if not any(re.match(r'^permissions:', l) for l in linhas):
@@ -147,7 +221,7 @@ def audit(path: Path):
                 falhas.append((i, f'contexto não confiável interpolado em `run:` '
                                   f'(script injection): {l.strip()[:60]}'))
 
-    # ── 4 a 7. gatilho proibido, runner, runtime e pinagem ─────────────────
+    # ── 4 a 7 e 9. gatilho proibido, runner, runtime e pinagem ───────────────
     for i, l in enumerate(linhas, start=1):
         if re.match(r'^\s*(pull_request_target|workflow_run):', l):
             falhas.append((i, 'gatilho `pull_request_target`/`workflow_run` — dá '

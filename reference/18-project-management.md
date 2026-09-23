@@ -91,7 +91,7 @@ projeto elimina em outra frente.
 ## 4 · Instalação e operação
 
 ```bash
-# Escopo de Project no token (uma vez):  gh auth refresh -s project
+# Escopo de Project no token local (uma vez):  gh auth refresh -s project
 .github/scripts/bootstrap_project_management.sh --check   # diagnóstico (só leitura)
 .github/scripts/bootstrap_project_management.sh           # instala tudo (idempotente)
 ONLY=labels|.  ONLY=milestones|.  ONLY=project .          # fatias isoladas
@@ -101,8 +101,31 @@ DRY_RUN=1 .            # ensaio
 Instalado e operando: o Project "GP-100 Pipeline" é o **#7** do owner
 (`PROJECT_NUMBER: "7"` no `project-automation.yml`). Depois de uma reinstalação,
 confira o `PROJECT_NUMBER` no topo de
-`.github/workflows/project-automation.yml` (default `1`) e crie as 3 visões
-conforme o guia impresso no fim da execução do bootstrap.
+`.github/workflows/project-automation.yml` e crie as 3 visões conforme o guia
+impresso no fim da execução do bootstrap.
+
+### 4.1 O secret `PROJECT_TOKEN` (pré-requisito da automação)
+
+O `GITHUB_TOKEN` **não acessa Project v2 de usuário**: a permissão de workflow
+`repository-projects` cobre Projects **clássicos** do repositório, e este board é
+do owner (pessoa). Quem move card aqui é um PAT fine-grained guardado no secret
+`PROJECT_TOKEN` — com `Projects: read/write` (owner = você) e
+`Issues: read/write` (só este repositório). **Sem `contents: write`**: o token da
+gestão continua incapaz de empurrar em branch nenhuma (ADR-0006).
+
+```bash
+# 1. github.com/settings/personal-access-tokens → fine-grained, só este repo:
+#    Issues: read/write  ·  Account permissions → Projects: read/write
+# 2. guarde no repositório:
+gh secret set PROJECT_TOKEN
+# 3. confira que a automação está ligada (sem precisar abrir issue/PR de teste):
+gh workflow run project-automation.yml      # job 🩺 Diagnóstico do board
+```
+
+Sem o secret, os jobs do board **avisam com este comando e não reprovam** — um
+fork ou um clone novo não pode ficar vermelho por falta de configuração local,
+e a automação não finge que rodou. O detalhamento (e as alternativas
+descartadas) está no [`ADR-0011`](../docs/decisions/0011-gestao-de-project-com-pat.md).
 
 **O que a automação faz sozinha** (project-automation.yml): adiciona issue/PR ao
 Project; marca issue nova `needs-triage`; move card (`In Progress`/`In Review`/
@@ -150,9 +173,12 @@ gh pr merge 5 --merge          # card → Done; issue fechada por Closes #N
 gh api repos/lucascantarelli/gp-100-patch-architect/milestones \
   --jq '.[] | "\(.title): \(.closed_issues)/\(.open_issues + .closed_issues) fechados"'
 gh issue list --milestone "v1.1.0 — Álbuns e fluxo PR-driven" --state open
-gh project item-list 1 --owner @me --limit 100 --format json \
+gh project item-list 7 --owner lucascantarelli --format json \
   | python -c "import json,sys;[print(i['content']['title']) for i in json.load(sys.stdin)['items']]"
 ```
+
+> `item-list` não tem `--limit` (nem tem mais, em versão recente do `gh`): ele
+> lista o board inteiro. O filtro é `--query`, na sintaxe do próprio Projects.
 
 ### Fechamento do milestone
 
@@ -172,9 +198,18 @@ gh api -X PATCH repos/lucascantarelli/gp-100-patch-architect/milestones/1 -F sta
   diff. O guardian só **cobra**; o bootstrap **define**.
 - **Por que `Closes #N` no corpo e não autodetecção**: a keyword é o contrato
   visível no diff do PR; o guardian valida o corpo, e o GitHub fecha sozinho.
-- **Segurança do workflow**: `permissions` no piso por job, runner fixado
-  (`ubuntu-24.04`), zero interpolação de contexto não confiável em `run:` —
-  passa no `.github/scripts/audit_workflows.py`.
+- **Segurança do workflow**: `permissions` no piso por job (o `GITHUB_TOKEN`
+  nunca passa de `contents: read`; a escrita no board é do PAT do secret
+  `PROJECT_TOKEN`), runner fixado (`ubuntu-24.04`), zero interpolação de
+  contexto não confiável em `run:` — passa no
+  `.github/scripts/audit_workflows.py`.
+- **Por que o auditor confere NOME de permissão**: a versão anterior deste
+  workflow declarava `repository-project: write` (sem o "s"). Escopo inexistente
+  invalida o arquivo INTEIRO: o GitHub falhava todo push com "workflow file
+  issue" e **nenhum job jamais rodou** — o board nunca recebeu card automático.
+  O sinal barato de que isso aconteceu: `gh workflow list` mostra o **caminho**
+  do arquivo no lugar do `name:` (regra 8 do auditor, com teste em
+  `tests/unit/test_audit_workflows.py`).
 
 ---
 

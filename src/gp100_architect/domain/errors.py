@@ -7,7 +7,13 @@ defs.
 
 from __future__ import annotations
 
-__all__ = ['DefsInvalidos', 'Gp100Error']
+__all__ = [
+    'DefsInvalidos',
+    'FormatoPrstInvalido',
+    'Gp100Error',
+    'ModeloDesconhecido',
+    'SpecInvalido',
+]
 
 
 class Gp100Error(Exception):
@@ -24,3 +30,27 @@ class DefsInvalidos(Gp100Error):
         super().__init__(relatorio)
         self.relatorio = relatorio
         self.problemas = problemas
+
+
+class SpecInvalido(Gp100Error):
+    """O spec JSON do patch viola o contrato de entrada do gerador `.prst`.
+
+    Mensagem acionável: diz o campo, o valor recebido e o valor aceito
+    (ex.: `ir_slot deve ser 0..19 (user IR) ou null — recebi 25`).
+    """
+
+
+class ModeloDesconhecido(Gp100Error):
+    """O modelo do módulo não existe no catálogo do firmware 2.0/2.1.
+
+    A mensagem aponta `reference/15-firmware2-effects.md` — a fonte dos
+    modelos válidos (mesma orientação do erro original do gerador).
+    """
+
+
+class FormatoPrstInvalido(Gp100Error):
+    """O arquivo `.prst` lido não é um XML no formato esperado da GP-100.
+
+    Parse defensivo (issue #29): XML malformado ou sem `<preset_info>`/
+    `<presets>` reprova com mensagem acionável em vez de AttributeError.
+    """

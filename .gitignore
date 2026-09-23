@@ -7,9 +7,16 @@ node_modules/
 # Segredos
 .env
 
-# Python cache
+# Python cache e artefatos de build
 __pycache__/
 *.pyc
+*.egg-info/
+build/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
 
 # Ambientes virtuais
 .venv/

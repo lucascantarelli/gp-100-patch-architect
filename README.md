@@ -2,7 +2,7 @@
 
 ### *Agente Freebuff que cria patches Valeton GP-100 a partir do rig real de qualquer música*
 
-![Release](https://img.shields.io/badge/release-1.0-e02d2d?style=flat-square) ![Firmware](https://img.shields.io/badge/firmware-2.1%20(confirmado%20no%20device)-2ea44f?style=flat-square) ![Agentes](https://img.shields.io/badge/agentes-17-e02d2d?style=flat-square) ![Patches](https://img.shields.io/badge/patches-97%20·%206%20álbuns-e02d2d?style=flat-square) ![Formato](https://img.shields.io/badge/.prst-single%20fw%202.1-2ea44f?style=flat-square) ![Python](https://img.shields.io/badge/gerador-Python%203.14-f3a637?style=flat-square) [![CI](https://github.com/lucascantarelli/gp-100-patch-architect/actions/workflows/ci.yml/badge.svg)](https://github.com/lucascantarelli/gp-100-patch-architect/actions/workflows/ci.yml) [![Security](https://github.com/lucascantarelli/gp-100-patch-architect/actions/workflows/security.yml/badge.svg)](https://github.com/lucascantarelli/gp-100-patch-architect/actions/workflows/security.yml) [![CodeQL](https://img.shields.io/badge/CodeQL-Python%20·%20TypeScript-2f6fdd?style=flat-square)](https://github.com/lucascantarelli/gp-100-patch-architect/security/code-scanning) [![License: MIT](https://img.shields.io/badge/license-MIT-2ea44f?style=flat-square)](LICENSE) [![PRs welcome](https://img.shields.io/badge/PRs-welcome-e02d2d?style=flat-square)](CONTRIBUTING.md)
+![Release](https://img.shields.io/badge/release-1.0-e02d2d?style=flat-square) ![Firmware](https://img.shields.io/badge/firmware-2.1%20(confirmado%20no%20device)-2ea44f?style=flat-square) ![Agentes](https://img.shields.io/badge/agentes-19-e02d2d?style=flat-square) ![Skills](https://img.shields.io/badge/skills-11-e02d2d?style=flat-square) ![Patches](https://img.shields.io/badge/patches-97%20·%206%20álbuns-e02d2d?style=flat-square) ![Formato](https://img.shields.io/badge/.prst-single%20fw%202.1-2ea44f?style=flat-square) ![Python](https://img.shields.io/badge/gerador-Python%203.14-f3a637?style=flat-square) ![Testes](https://img.shields.io/badge/156%20testes%20·%20cobertura%2091%25-2ea44f?style=flat-square) [![CI](https://github.com/lucascantarelli/gp-100-patch-architect/actions/workflows/ci.yml/badge.svg)](https://github.com/lucascantarelli/gp-100-patch-architect/actions/workflows/ci.yml) [![Security](https://github.com/lucascantarelli/gp-100-patch-architect/actions/workflows/security.yml/badge.svg)](https://github.com/lucascantarelli/gp-100-patch-architect/actions/workflows/security.yml) [![CodeQL](https://img.shields.io/badge/CodeQL-Python%20·%20TypeScript-2f6fdd?style=flat-square)](https://github.com/lucascantarelli/gp-100-patch-architect/security/code-scanning) [![License: MIT](https://img.shields.io/badge/license-MIT-2ea44f?style=flat-square)](LICENSE) [![PRs welcome](https://img.shields.io/badge/PRs-welcome-e02d2d?style=flat-square)](CONTRIBUTING.md)
 
 ---
 
@@ -90,6 +90,8 @@ Cada patch entrega:
 ## 🗂️ Estrutura do projeto
 
 ```
+├── src/gp100_architect/ # PACOTE Python (domain · application · infrastructure · interfaces)
+├── docs/               # ADRs (docs/decisions/) — documentação de engenharia
 ├── .agents/            # 19 agentes + 11 skills (agents/skills/) — configuração do Freebuff
 ├── reference/          # base de conhecimento: manual V1.8 + catálogo fw 2.0/2.1 + catálogos de IR
 ├── prompts/            # fluxos prontos (criar, ajustar, sugerir, pesquisar referência)
@@ -97,8 +99,12 @@ Cada patch entrega:
 ├── patches/            # biblioteca (saída de script): Banda/Álbum/Música/PATCH (.prst + patch.md)
 ├── impulse_responses/  # banco local de IRs (WAV 44.1 kHz) — indexado por ir_library.py
 │                       # ⚠️ os WAV NÃO são versionados (licença de terceiro)
-├── tests/              # suíte do pipeline (unittest, sem dependências)
+├── tests/              # suíte (unit/ em pytest + testes históricos do pipeline)
 ├── .github/            # CI · segurança (CodeQL) · release · templates de issue/PR · CODEOWNERS
+├── pyproject.toml      # pacote: metadados, deps, entry point `gp100` e config dos gates
+├── uv.lock             # resolução travada — o CI instala com `uv sync --frozen`
+├── ARCHITECTURE.md     # arquitetura em 1 página (resumo; a decisão vive nos ADRs)
+├── DEVELOPMENT.md      # setup, comandos do dia a dia, regras que o CI cobra
 ├── knowledge.md        # regras de ouro do projeto
 ├── CONTRIBUTING.md     # ambiente, pipeline obrigatório, Conventional Commits, fluxo develop → main
 ├── SECURITY.md         # escopo de segurança, prazos e canal de divulgação privada
@@ -121,7 +127,8 @@ Cada patch entrega:
 
 | Script | Uso | O que faz |
 |---|---|---|
-| `tools/gp100.py` | `python tools/gp100.py find <termo>` | **CLI unificada** — `find` (busca por música/artista/captador), `show` (resumo do patch com cadeia e params), `diff` (compara dois patches), `export` (pasta de importação USB em ordem de slot), `build` e `verify` |
+| `gp100` (instalado) | `uv run gp100 validate` | **CLI oficial** (Typer + Rich) — hoje `validate` (valida o defs com relatório acionável) e `--version`; as famílias `setlist`, `find/show/diff`, `build/verify` e `release` chegam na 2.0 (PKG-004…007) |
+| `tools/gp100.py` | `python tools/gp100.py find <termo>` | **CLI legada** — `find` (busca por música/artista/captador), `show` (resumo do patch com cadeia e params), `diff` (compara dois patches), `export` (pasta de importação USB em ordem de slot), `build` e `verify`. Migra para a CLI oficial em PKG-005 |
 | `tools/build_song_patches.py` | `python tools/build_song_patches.py` | **Construtor principal** — a partir de `patches-defs.json`, gera `patch.md` + `.prst` (e o `spec.json` intermediário, não versionado) de todos os patches e valida (nome ≤ 12 chars, XML conforme) |
 | `tools/generate_prst.py` | `python tools/generate_prst.py spec.json saida.prst` | Gera **um** `.prst` single-patch fw 2.1 — réplica exata do formato single validado no aparelho (sem `<ppIRInfo>`, com `<ppCtrl>`/`<ppEXP1>`, cadeia x=0–8) |
 | `tools/render_manual_page.py` | `python tools/render_manual_page.py 21 [22 …] · --all` | Renderiza páginas do `manual.pdf` **sob demanda** (PNG alta + JPG leve em `manual_pages/`, efêmero) — página impressa NN = arquivo NN+2 |
@@ -150,12 +157,13 @@ Tudo que descreve uma música, um álbum ou uma IR vive **só** em `tools/patche
 
 ## ✅ Qualidade — o que o CI garante
 
-Cada PR (e cada push em `main` e `develop`) roda o workflow [`CI`](.github/workflows/ci.yml): **dois jobs em paralelo** (fase 1) e um **portão de veredito único** (fase 2) — é o check exigido pelas regras de proteção das duas branches:
+Cada PR (e cada push em `main` e `develop`) roda o workflow [`CI`](.github/workflows/ci.yml): **três jobs em paralelo** (fase 1) e um **portão de veredito único** (fase 2) — é o check exigido pelas regras de proteção das duas branches:
 
 | Job | O que faz |
 |---|---|
 | **🚦 `ci-gate`** | **Portão do CI** — reprova se qualquer job da fase 1 falhou e publica o resumo dos resultados |
-| **🧪 `test-suite`** | compila os scripts, verifica o runtime (**trava Python 3.14.* como primeiro passo**) e executa a suíte (**103 testes, sem dependências** — `unittest` da stdlib), incluindo o **guarda de sincronia**: o pipeline roda numa cópia temporária e é comparado com o commitado. **Nada é escrito no repositório:** o workflow roda com `contents: read`, então nenhum ator automatizado pode empurrar no `main` e a branch protection não precisa de exceção para o bot |
+| **🧪 `test-suite`** | instala o ambiente do lockfile (`uv sync --frozen`), verifica o runtime (**trava Python 3.14.* como primeiro passo**) e executa a suíte (**156 testes**) com pytest e **cobertura do pacote com piso de 90%** (hoje 91%), incluindo o **guarda de sincronia**: o pipeline roda numa cópia temporária e é comparado com o commitado. **Nada é escrito no repositório:** o workflow roda com `contents: read`, então nenhum ator automatizado pode empurrar no `main` e a branch protection não precisa de exceção para o bot |
+| **🧹 `quality`** | `ruff check` + `ruff format --check` + `mypy --strict` — hoje no pacote `src/gp100_architect`; cada módulo de `tools/` entra nos gates no PR que o migra |
 | **🔍 `typecheck`** | `tsc --noEmit` nos 19 agentes, com cache do TypeScript |
 
 Todos os jobs têm `timeout` e o resultado da sincronia dos dados é publicado no **resumo da execução** (Step Summary) do GitHub.
@@ -263,6 +271,9 @@ deles é que manda.
 
 | Documento | Conteúdo |
 |---|---|
+| [`ARCHITECTURE.md`](ARCHITECTURE.md) | Arquitetura em 1 página: camadas, estrutura, portões de qualidade |
+| [`DEVELOPMENT.md`](DEVELOPMENT.md) | Setup com uv, comandos do dia a dia e as regras que o CI cobra |
+| [`docs/decisions/`](docs/decisions/README.md) | **ADRs** 0001–0010: pacote/uv, camadas, CLI, UI, qualidade, CI, docs, agentes, governança, release |
 | [`knowledge.md`](knowledge.md) | Regras de ouro e convenções que os agentes seguem |
 | [`CONTRIBUTING.md`](CONTRIBUTING.md) | Ambiente, pipeline obrigatório, Conventional Commits e o fluxo develop → main |
 | [`SECURITY.md`](SECURITY.md) | Escopo de segurança, prazos de resposta e canal privado |

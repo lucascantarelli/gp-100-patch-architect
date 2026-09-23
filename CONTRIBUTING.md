@@ -12,23 +12,27 @@ Para vulnerabilidades, **não** abra issue: siga o [`SECURITY.md`](SECURITY.md).
 
 ## 🧰 Ambiente de desenvolvimento
 
-Tempo de setup: ~2 minutos. Não há dependências para instalar.
+Tempo de setup: ~2 minutos, com um comando (`ADR-0001`).
 
 | Requisito | Versão | Usado por |
 |---|---|---|
-| **Python** | 3.14 (3.11+ funciona) | `tools/`, `tests/` — **só a biblioteca padrão** |
+| **Python** | 3.14 (apenas) | pipeline, pacote `src/gp100_architect`, testes |
+| **uv** | qualquer recente | ambiente, dependências de dev, comandos (`uv run …`) |
 | **Node.js** | 26 (20+ funciona) | typecheck dos agentes em `.agents/` |
 | **Git** | qualquer | — |
 
 ```bash
 git clone https://github.com/lucascantarelli/gp-100-patch-architect.git
 cd gp-100-patch-architect
-
-# Não existe requirements.txt, package.json nem venv obrigatório:
-# os scripts usam a stdlib; o typecheck puxa o TypeScript via npx.
-python --version    # 3.14.x
-node --version      # v26.x
+uv sync             # cria .venv, instala o lockfile e o pacote (editável)
+uv run gp100 --version
+node --version      # v26.x (só para o typecheck dos agentes)
 ```
+
+O `tools/` legado continua rodando com a **stdlib pura** (`python tools/x.py`
+funciona sem instalar nada); o ambiente uv existe para os gates de qualidade
+e para a CLI oficial. Detalhes e comandos do dia a dia:
+[`DEVELOPMENT.md`](DEVELOPMENT.md).
 
 > **💡 Assinatura dos dados:** `tools/patches-defs.json` é a **fonte única** de
 > músicas, álbuns, patches e IRs recomendadas. Os scripts são renderizadores —
@@ -46,12 +50,18 @@ python tools/render_manual_page.py 21        # página impressa NN = arquivo NN+
 ## ✅ Antes de commitar na `develop`: rode exatamente o que o CI roda
 
 ```bash
-# 1. Suíte de testes (43 testes, stdlib pura)
-python -m unittest discover -s tests -v
+# 1. Suíte completa (156 testes) com cobertura do pacote
+uv run pytest -q --cov --cov-report=term-missing
 
-# 2. Typecheck dos 17 agentes
+# 2. Gates de qualidade (pacote)
+uv run ruff check . && uv run ruff format --check . && uv run mypy
+
+# 3. Typecheck dos 19 agentes
 npx -y -p typescript@5.9.2 tsc --noEmit -p tsconfig.json
 ```
+
+Opcional, mas recomendado: `uv run pre-commit install` — os hooks rodam lint e
+formatação antes do commit (o veredito continua sendo o CI).
 
 E, **se você mexeu em dados** (música, camada, patch, momento, pack de IR ou
 cab):

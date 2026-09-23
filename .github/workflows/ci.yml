@@ -43,9 +43,10 @@
 # agora reprova: imagem de runner que troca sem commit e o aviso "Node.js 20 is
 # deprecated", que aparecia em todo job e ninguém lia.
 #
-# `astral-sh/setup-uv` fica no `@v7` de propósito: a partir do v8 os releases são
-# imutáveis e o repositório do action não publica o tag móvel do major (issue
-# astral-sh/setup-uv#830) — subir para v8+ exige conferir o tag exato antes.
+# Actions de terceiro ficam fixadas por commit SHA (tag móvel pode ser
+# reescrita; o CodeQL reprova e o auditor de workflows também). Actions de
+# primeira parte (`actions/*`, `github/*`) seguem no major, com o Dependabot
+# vigiando. O pin do `astral-sh/setup-uv` abaixo resolve para a tag v7.
 #
 # Rode a mesma verificação localmente:
 #   uv sync && uv run ruff check . && uv run ruff format --check . && uv run mypy
@@ -100,8 +101,12 @@ jobs:
             exit 1
           }
 
+      # Action de TERCEIRO: fixada por commit (tag móvel pode ser reescrita por
+      # quem publica a Action). Este pin veio de um alerta real do CodeQL
+      # (security/code-scanning, PR #35) — e o auditor de workflows passou a
+      # reprovar Action de terceiro sem SHA depois disso.
       - name: uv (com cache) — toolchain oficial do projeto
-        uses: astral-sh/setup-uv@v7
+        uses: astral-sh/setup-uv@37802adc94f370d6bfd71619e3f0bf239e1f3b78  # v7
         with:
           enable-cache: true
           cache-dependency-glob: uv.lock
@@ -131,8 +136,12 @@ jobs:
         with:
           python-version: '3.14'
 
+      # Action de TERCEIRO: fixada por commit (tag móvel pode ser reescrita por
+      # quem publica a Action). Este pin veio de um alerta real do CodeQL
+      # (security/code-scanning, PR #35) — e o auditor de workflows passou a
+      # reprovar Action de terceiro sem SHA depois disso.
       - name: uv (com cache) — toolchain oficial do projeto
-        uses: astral-sh/setup-uv@v7
+        uses: astral-sh/setup-uv@37802adc94f370d6bfd71619e3f0bf239e1f3b78  # v7
         with:
           enable-cache: true
           cache-dependency-glob: uv.lock

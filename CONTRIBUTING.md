@@ -278,15 +278,44 @@ caixas de verdade, são elas que o revisor vai conferir.
 
 Um PR é aprovado quando:
 
-1. O `ci-gate` está verde (`test-suite`, `typecheck`).
-2. O diff **não** contém arquivo gerado editado à mão nem lixo de regeneração.
-3. Documentação e `reference/` acompanham a mudança — dado novo sem doc é
+1. O `ci-gate` está verde (`test-suite`, `quality`, `typecheck`).
+2. **O review foi lido** — checks verdes não são aprovação (ver checklist abaixo).
+3. O diff **não** contém arquivo gerado editado à mão nem lixo de regeneração.
+4. Documentação e `reference/` acompanham a mudança — dado novo sem doc é
    revisão incompleta.
-4. As regras de ouro acima valem no PR.
-5. Nada de binário de terceiro no diff (WAV de pack pago, PDF de fabricante).
+5. As regras de ouro acima valem no PR.
+6. Nada de binário de terceiro no diff (WAV de pack pago, PDF de fabricante).
 
 Se você não tiver certeza sobre um ponto, **abra a PR em draft e pergunte** — é
 mais barato que discutir depois do merge.
+
+### ✅ Antes de mergear (quem mergeia)
+
+`gh pr checks` mostra **checks**, não **review**. Aconteceu neste repositório:
+o PR #35 foi mergeado com o `ci-gate` verde e dois comentários de review do
+CodeQL apontando Action de terceiro sem pinagem — alerta que só apareceu dias
+depois, no painel de segurança. O ritual é:
+
+```bash
+# 1. Checks verdes
+gh pr checks <n>
+
+# 2. Review lido — reviews, comentários inline e a conversa toda
+gh api repos/{owner}/{repo}/pulls/<n>/reviews --jq '.[] | "\(.user.login) [\(.state)]\n\(.body)"'
+gh api repos/{owner}/{repo}/pulls/<n>/comments --jq '.[] | "\(.user.login) @ \(.path):\(.line)\n\(.body)"'
+gh pr view <n> --comments
+
+# 3. Alertas de segurança (inclusive os que viraram comentário de review)
+gh api repos/{owner}/{repo}/code-scanning/alerts?state=open
+```
+
+Regra de leitura: **comentário de review aberto é bloqueio**, mesmo com CI
+verde — inclusive quando vem de bot (`github-advanced-security`, CodeQL,
+Dependabot). Se o achado não for resolvido no PR, ele precisa de issue de
+acompanhamento **antes** do merge, citada no corpo.
+
+> **Se o review veio de bot e está vazio** (ex.: cota do Copilot esgotada), isso
+> não é aprovação: revise você mesmo o diff e diga no PR quem revisou.
 
 ## 🔒 Segurança e o escopo de escrita do CI
 

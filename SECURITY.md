@@ -83,7 +83,29 @@ Não são tratados como vulnerabilidades de segurança deste projeto:
 | Aferição de permissões dos workflows | ✅ via [`security.yml`](.github/workflows/security.yml) |
 | Runner fixo (`ubuntu-24.04`) e Actions em runtime suportado | ✅ via [`audit_workflows.py`](.github/scripts/audit_workflows.py), que **reprova** label de runner mutável e Action de primeira parte abaixo do `node24` |
 | Verificação de integridade dos dados em cada push/PR | ✅ via [`ci.yml`](.github/workflows/ci.yml) |
+| **Action de terceiro fixada por commit SHA** | ✅ via [`audit_workflows.py`](.github/scripts/audit_workflows.py), que **reprova** Action de outro owner sem SHA (`actions/*` e `github/*` seguem no major, com o Dependabot) |
 | Branch protection em `main` e `develop` (PR + check obrigatórios, sem exceção de bypass) | ✅ aplicar com [`setup_repo.sh`](setup_repo.sh) |
+
+### Cadeia de suprimentos — regra e origem
+
+Action de **terceiro** entra sempre fixada pelo commit completo, com a tag em
+comentário — tag móvel pode ser reescrita por quem publica a Action:
+
+```yaml
+- uses: owner/action@<sha-de-40-caracteres>  # vN
+```
+
+Como obter o SHA:
+
+```bash
+gh api repos/<owner>/<repo>/git/ref/tags/<tag> --jq '.object.sha'   # tag anotada → dereferencie em /git/tags/<sha>
+```
+
+**Esta regra nasceu de um erro real:** o PR #35 foi mergeado com o CI verde e
+dois comentários de review do CodeQL apontando `astral-sh/setup-uv@v7` sem
+pinagem (`security/code-scanning` #9 e #10). O pin foi aplicado e a regra deixou
+de ser aviso no auditor — o rastro está no [#35](https://github.com/lucascantarelli/gp-100-patch-architect/pull/35)
+e no checklist de merge do [`CONTRIBUTING.md`](CONTRIBUTING.md).
 
 ## Boas práticas para quem contribui
 
@@ -91,7 +113,7 @@ Não são tratados como vulnerabilidades de segurança deste projeto:
   padrões conhecidos, mas ele não é a sua única linha de defesa.
 - Não embuta binários de terceiros (WAVs de packs pagos, PDFs de fabricante)
   no repositório: eles são obtidos localmente e ficam no `.gitignore`.
-- Rode a suíte antes de abrir PR: `python -m unittest discover -s tests -v`.
+- Rode a suíte antes de abrir PR: `uv run pytest -q` (e os gates: `uv run ruff check .`, `uv run ruff format --check .`, `uv run mypy`).
 - Ao usar o agente para editar arquivos, revise o diff — o pipeline é
   reprodutível (só `preset_info/@time` varia) e o guarda de frescor reprova
   artefato gerado fora do commit, mas quem decide o que entra é a sua revisão.

@@ -53,6 +53,11 @@ Três camadas, cada uma respondendo por uma coisa:
 - ✅ O placar da release é uma barra, não uma soma de milestones.
 - ✅ "Do que isto depende?" é dado do GitHub, não parágrafo de doc.
 - ✅ Issue nova num epic existente não precisa de épico-guarda-chuva novo.
+- ✅ **Registro de premissa vencida (23/09/2026):** a automação do board opera
+  por GraphQL puro — `gh project` mascara PAT válido como `unknown owner type`
+  (cli/cli#8885) — e o bootstrap cria as três visões via API
+  (`createProjectV2View`); só agrupamento/ordenação segue manual (a API não
+  expõe `groupBy`). Fonte: `reference/18` § 3.3, nota de design atualizada.
 - ⚠️ O epic é mais uma coisa para manter coerente com o roadmap — o resumo
   legível (`docs/roadmap-2.0.md` § 2) e o dado (a issue pai) podem divergir.
   Mitigação: o linter de consistência de docs (#58) confere os `#N` citados.

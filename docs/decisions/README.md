@@ -24,6 +24,7 @@ ADR — é convenção de código (nesse caso, `CONTRIBUTING.md` ou o próprio d
 | [0008](0008-agents-e-contrato.md) | `.agents/` é contrato com o Freebuff — não se move para `.ai/` | aceito |
 | [0009](0009-governanca-open-source.md) | Governança: labels, milestones e templates com taxonomia única | aceito |
 | [0010](0010-release-engineering.md) | Release: `VERSION` como fonte única, changelog gerado, tag assinada | aceito |
+| [0011](0011-gestao-de-project-com-pat.md) | Gestão de Project v2 com PAT em secret, e permissões verificadas pelo auditor | aceito |
 
 ## Formato
 

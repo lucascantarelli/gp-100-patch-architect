@@ -38,11 +38,19 @@ Regras que REPROVAM:
                            `NODE24_MINIMO` guarda o major que já declara
                            `using: node24`, verificado no `action.yml` de cada
                            tag — não é chute de calendário.
+  7. Action de TERCEIRO sem SHA fixo — tag móvel é reescrevível por quem
+                           publica a Action (cadeia de suprimentos): a
+                           `astral-sh/setup-uv@v7` entrou assim no PR #35 e o
+                           CodeQL abriu alerta no review — que foi mergeado
+                           sem ser lido. A regra deixa de ser aviso e passa a
+                           reprovar: primeiro fixa-se o commit, depois o
+                           auditor impede a regressão. Como obter o SHA:
+                           `gh api repos/<owner>/<repo>/git/ref/tags/<tag>`
+                           (dereferencie se `type` for `tag`).
 
 Regra que AVISA (não reprova):
-  7. `uses:` sem SHA fixo. O Dependabot (`.github/dependabot.yml`) mantém as
-     Actions atualizadas, então fixar por SHA é viável — mas a migração é
-     gradual, e reprovar hoje deixaria todos os workflows vermelhos.
+  8. Action de PRIMEIRA PARTE (`actions/*`, `github/*`) sem SHA. São mantidas
+     no major de propósito — o Dependabot acompanha e o GitHub é o publicador.
 """
 import re
 import sys
@@ -72,6 +80,10 @@ MAJOR = re.compile(r'^v(\d+)')
 # Label de runner que flutua: "<algo>-latest". A imagem por trás dele é decisão
 # do GitHub, não do repositório.
 RUNNER_FLUTUANTE = re.compile(r'^[a-z0-9._-]+-latest$')
+
+# Owners de primeira parte: mantidos no major (Dependabot acompanha). Action de
+# outro owner tem de vir fixada por commit SHA — a tag pode ser reescrita.
+PRIMEIRA_PARTE = {'actions', 'github'}
 
 # Menor major de cada action de primeira parte que já declara `using: node24`
 # (lido do `action.yml` da tag). Abaixo disso, o runner força a action a rodar
@@ -167,7 +179,14 @@ def audit(path: Path):
                                   f'use `{repo}@v{minimo}` ou maior'))
 
             if not SHA_PINNED.search(alvo):
-                avisos.append((i, f'`{alvo}` não está fixado por SHA'))
+                owner = repo.split('/')[0].lower()
+                if owner in PRIMEIRA_PARTE:
+                    avisos.append((i, f'`{alvo}` não está fixado por SHA '
+                                      f'(primeira parte: aceito no major)'))
+                else:
+                    falhas.append((i, f'`{alvo}` é Action de TERCEIRO sem SHA — '
+                                      f'fixe o commit e deixe a tag em '
+                                      f'comentário (`{repo}@<sha> # vN`)'))
     return falhas, avisos
 
 

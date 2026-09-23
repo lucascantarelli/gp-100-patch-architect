@@ -25,7 +25,8 @@ reference/             ← BASE DE DADOS OFICIAL (ler antes de criar qualquer pa
   14-glossario.md      ← tradução nome-comum → nome-oficial GP-100
 .agents/               ← 17 agentes Freebuff/Codebuff (orchestrador + skills + validador + manual + tone-research/mapper)
 tools/                 ← build_song_patches.py (gera patches por música) · generate_prst.py (gera .prst single) · gen_indexes.py (regenera índices) · ir_library.py (indexa IRs) · render_manual_page.py (páginas do manual sob demanda) · analyze_prst.py (disseca exports) · add_pulse_defs.py/add_momentos.py (seeders de álbum) · build_release.py (empacota os ZIPs) · gen_changelog.py (gera o CHANGELOG) · patches-defs.json (FONTE DOS PATCHES)
-prompts/               ← templates de pedido do usuário (incl. criação por referência de artista)
+prompts/               ← templates de pedido do usuário (fonte canônica dos fluxos)
+.agents/skills/        ← skills versionadas (4 do GP-100 = versão executável dos fluxos + 7 genéricas)
 patches/               ← biblioteca (SAÍDA DE SCRIPT, nunca editar à mão): BANDA/ÁLBUM/MÚSICA/MUSICA-CAMADA com patch.md + .prst
 impulse_responses/     ← BIBLIOTECA LOCAL DE IRs (1 pasta por pack; os agentes consultam o catálogo 16)
 ```

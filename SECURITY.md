@@ -48,7 +48,7 @@ como questão de segurança:
 
 | Dentro do escopo | Por quê |
 |---|---|
-| Execução de código arbitrário nos scripts de `tools/` | Entrada hostil em `patches-defs.json`, caminhos de arquivo ou WAVs malformados |
+| Execução de código arbitrário nos scripts de `tools/` | Entrada hostil nos fragmentos do defs (`tools/defs/`), caminhos de arquivo ou WAVs malformados |
 | Traversal de caminho / escrita fora do repositório | Nomes de pasta/patch vindos dos defs são usados para montar caminhos |
 | XML/`Entity Expansion` nos `.prst` | Os geradores leem e escrevem XML; XXE ou billion-laughs em entrada de terceiros |
 | Escrita automatizada no branch principal | Nenhum workflow declara `contents: write` para empurrar em branch; um PR que introduza um job capaz de commitar no `main` é um achado válido |

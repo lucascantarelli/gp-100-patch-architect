@@ -1,0 +1,300 @@
+{
+  "idAlbum": "PMH",
+  "album": {
+    "banda": "Janis Joplin (Big Brother & The Holding Company)",
+    "album": "Cheap Thrills",
+    "ano": 1968,
+    "display": "Cheap Thrills — Piece of My Heart (1968)",
+    "pasta": "Janis Joplin/Piece of My Heart (1968)",
+    "rig": "## 📚 Rig real do álbum (fontes)\n\n- **Duas guitarras, dois papéis**: **James Gurley** (o pai da guitarra psicodélica de San Francisco — cerca de 60% dos leads) e **Sam Andrew** (formação clássica, rítmica cravada por trás dele).\n- **Guitarra**: **Gibson SG** nos dois — o instrumento padrão da cena de 67–68, citado nominalmente com Gurley e Andrew; Gurley chegou ao SG depois de perder a Les Paul Junior modificada (com o fuzz embutido dentro da guitarra).\n- **AMP**: **Fender Twin Reverb** — o amp do álbum para as duas guitarras. O sujo de Sam vem do próprio Twin estourado, não de pedal.\n- **Efeitos**: **Maestro FZ-1 (Fuzz Tone)** no Gurley (solos de Summertime e I Need a Man to Love) · **Fender Dimension IV Sound Expander** (eco a óleo — a textura psicodélica dessas duas faixas). Em **Piece of My Heart NÃO há fuzz**: Gurley faz a parte limpa e Sam a parte suja, provavelmente só um Twin estourado.\n- **Gravação**: seis meses entre estúdios de Nova York e Los Angeles, base ao vivo e muitas sobreposições; **Ball and Chain** é a única faixa totalmente ao vivo (Winterland — Gurley na Telecaster e Sam na Jazzmaster); disco **#1 por seis semanas**.\n- Sem pitch fixo no ensaio: a afinação solta e o vibrato/bend são a assinatura do álbum — não tente imitar com chorus.\n- 📖 Fontes: Guitar Player / Jas Obrecht (entrevista de 1978 com Sam Andrew e James Gurley, arquivo FoundSF) · Vintage Guitar, Pop 'N Hiss: Quicksilver Messenger Service (jun/2025 — SG de Gurley e Andrew) · The Gear Page, Big Brother… Fuzz Pedal? (2022, análise com fotos de estúdio) · Equipboard (band page)."
+  },
+  "songs": [
+    {
+      "id": "PMH01",
+      "song": "Piece of My Heart",
+      "idAlbum": "PMH",
+      "banda": "Janis Joplin (Big Brother & The Holding Company)",
+      "album": "Cheap Thrills",
+      "ano": 1968,
+      "bpm": 128,
+      "resumo": "Sam Andrew (SG + Twin estufado) na base quebrada; James Gurley no solo com sustain e feedback. Zero pedais — tudo é amp.",
+      "referencias": [
+        {
+          "role": "Sam Andrew: Gibson SG",
+          "conf": "alta",
+          "ev": "MusicRadar 2012: 'Mostly SGs, that's right'",
+          "src": "MusicRadar — Sam Andrew interview"
+        },
+        {
+          "role": "Fender Twin Reverb estufado",
+          "conf": "alta",
+          "ev": "'Columbia owned Fender, so we got a lot of Fender equipment'",
+          "src": "MusicRadar 2012"
+        },
+        {
+          "role": "Zero efeitos",
+          "conf": "alta",
+          "ev": "'We didn't have effects... We just turned the amps up'",
+          "src": "MusicRadar 2012"
+        },
+        {
+          "role": "Solo: James Gurley (mesmo rig, mais ganho/feedback)",
+          "conf": "média",
+          "ev": "TGP + análise da gravação",
+          "src": "The Gear Page 2022"
+        }
+      ],
+      "patches": [
+        {
+          "camada": "Base",
+          "sufixo": "BA",
+          "nome": "PMH01BA",
+          "emoji": "💔",
+          "timbre": "SG + Twin estufado adaptado para Strat: Blues OD empurrando Dark Twin no talo, spring curto",
+          "spec": {
+            "name": "PMH01BA",
+            "type": "Rock",
+            "bpm": 128,
+            "volume": 60,
+            "ir_slot": null,
+            "modules": {
+              "PRE": {
+                "name": "COMP",
+                "on": false
+              },
+              "DST": {
+                "name": "Blues OD",
+                "on": true,
+                "params": {
+                  "0": 45,
+                  "1": 55,
+                  "2": 65
+                }
+              },
+              "AMP": {
+                "name": "Dark Twin",
+                "on": true,
+                "params": {
+                  "0": 72,
+                  "1": 62,
+                  "2": 55,
+                  "3": 50,
+                  "4": 52,
+                  "5": 0
+                }
+              },
+              "NR": {
+                "name": "Gate 1",
+                "on": true,
+                "params": {
+                  "0": 28
+                }
+              },
+              "CAB": {
+                "name": "DarkTW 2x12",
+                "on": true,
+                "params": {
+                  "0": 75,
+                  "1": 50
+                }
+              },
+              "EQ": {
+                "name": "EQ 1",
+                "on": true,
+                "params": {
+                  "0": -1,
+                  "1": 2,
+                  "2": -1,
+                  "5": 50
+                }
+              },
+              "MOD": {
+                "name": "A-Chorus",
+                "on": false
+              },
+              "DLY": {
+                "name": "Sweet",
+                "on": false
+              },
+              "RVB": {
+                "name": "Spring",
+                "on": true,
+                "params": {
+                  "0": 40,
+                  "1": 99
+                }
+              }
+            }
+          },
+          "doc": {
+            "comoTocar": [
+              "Acordes D-A curtidos no contratempo com palhetada forte",
+              "Volume da guitarra 7-8: abrir a 10 'acorda' o OD"
+            ],
+            "teste": {
+              "riff": "groove completo da base",
+              "drum": "Rock 90-100 BPM (a música anda ~128)",
+              "escutar": [
+                "ataque quebra sem embolar",
+                "hum de single coil ausente"
+              ]
+            },
+            "ajustes": [
+              "acorde embolado → EQ Low -2",
+              "hum audível → NR Thr 32",
+              "ataque seco → DST Gain +3"
+            ],
+            "evite": [
+              "DST Gain ≥ 60 — vira pedal audível",
+              "Bright ON",
+              "Reverb Mix > 30"
+            ],
+            "irNota": "Recomendada: American Twin 2x12 Medium Mix (User IR 1) — o JBL D120F do Twin de Sam Andrew (Low Cut 5 · High Cut 8000 · Level 0).",
+            "slotSugestao": "U21+U22",
+            "guitarra": {
+              "seletor": "Posição 4 — middle+neck (o 'chop' da base)",
+              "seletorCurto": "posição 4",
+              "volume": "7–8",
+              "tone": "8–9",
+              "receita": "Seletor 4 (middle+neck) · Volume 7–8 · Tone 8–9 · abra a 10 no ataque",
+              "tecnicas": [
+                "Acordes D–A curtidos no contratempo com palhetada forte",
+                "Abra o Volume a 10 no ataque para 'acordar' o OD — é a dinâmica da música"
+              ]
+            }
+          }
+        },
+        {
+          "camada": "Solo",
+          "sufixo": "SO",
+          "nome": "PMH01SO",
+          "emoji": "⚡",
+          "timbre": "Gurley solo: Boost + Blues OD 55 + Dark Twin Vol 78, spring aberto e Vibe OFF (opcional para improviso)",
+          "spec": {
+            "name": "PMH01SO",
+            "type": "Rock",
+            "bpm": 128,
+            "volume": 62,
+            "ir_slot": null,
+            "modules": {
+              "PRE": {
+                "name": "Boost",
+                "on": true,
+                "params": {
+                  "0": 35,
+                  "1": 1
+                }
+              },
+              "DST": {
+                "name": "Blues OD",
+                "on": true,
+                "params": {
+                  "0": 55,
+                  "1": 60,
+                  "2": 70
+                }
+              },
+              "AMP": {
+                "name": "Dark Twin",
+                "on": true,
+                "params": {
+                  "0": 78,
+                  "1": 62,
+                  "2": 52,
+                  "3": 55,
+                  "4": 50,
+                  "5": 0
+                }
+              },
+              "NR": {
+                "name": "Gate 1",
+                "on": true,
+                "params": {
+                  "0": 30
+                }
+              },
+              "CAB": {
+                "name": "DarkTW 2x12",
+                "on": true,
+                "params": {
+                  "0": 75,
+                  "1": 50
+                }
+              },
+              "EQ": {
+                "name": "EQ 1",
+                "on": true,
+                "params": {
+                  "0": -1,
+                  "1": 3,
+                  "2": -1,
+                  "5": 50
+                }
+              },
+              "MOD": {
+                "name": "Vibe",
+                "on": false
+              },
+              "DLY": {
+                "name": "Sweet",
+                "on": false
+              },
+              "RVB": {
+                "name": "Spring",
+                "on": true,
+                "params": {
+                  "0": 40,
+                  "1": 99
+                }
+              }
+            }
+          },
+          "doc": {
+            "comoTocar": [
+              "Frases em D pentatônica maior/blues com bends cheios",
+              "Nota final sustentada: alivie a mão e deixe o feedback nascer",
+              "Volume 10 para o sustain aninhar"
+            ],
+            "teste": {
+              "riff": "solo oficial + improviso estilo Carousel Ballroom",
+              "drum": "Rock 128 BPM",
+              "escutar": [
+                "sustain ≥ 4 s sem digitar forte",
+                "feedback ao encostar na ponte",
+                "bends sem fizz"
+              ]
+            },
+            "ajustes": [
+              "sustain curto → Boost Ganho +5, AMP Vol +2",
+              "embolou → AMP Bass -2",
+              "piou → AMP Treble -2"
+            ],
+            "evite": [
+              "AMP Vol ≥ 85 — gate 'cuspe' ruído",
+              "Vibe + reverb aberto juntos"
+            ],
+            "irNota": "Recomendada: American Twin 2x12 Medium Mix (User IR 1); para o solo, o Bright Mix também rende (High Cut 7500).",
+            "slotSugestao": "U22",
+            "guitarra": {
+              "seletor": "Posição 1 — bridge (mordida e feedback)",
+              "seletorCurto": "bridge",
+              "volume": "10",
+              "tone": "9",
+              "receita": "Seletor 1 (bridge) · Volume 10 · Tone 9",
+              "tecnicas": [
+                "Volume 10: os sustains aninham sozinhos e o feedback nasce fácil",
+                "Na nota final, alivie a mão direita e deixe o amp sustentar (é o efeito Gurley)"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "ir_local": {
+    "DarkTW 2x12": {
+      "captura": "American Twin 2x12",
+      "slot": "User IR 1"
+    }
+  }
+}

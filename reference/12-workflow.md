@@ -15,7 +15,7 @@ Criar patches para a **Valeton GP-100** sob demanda: o usuário pede um estilo/m
 3. **Encaixe**: montar a cadeia final PRE→DST→AMP→NR→CAB→EQ→MOD→DLY→RVB com valores; respeitar regras de ouro (00-signal-chain).
 4. **IR** (se aplicável): acionar `gp100-ir-research` para achar IR gratuita + `gp100-ir-fit` para cortes/Level.
 5. **Validação**: passar o patch inteiro pelo `gp100-patch-validator` (nomes, ranges, coerência).
-6. **Persistência**: acrescentar o patch a `tools/patches-defs.json` e rodar o pipeline (`build_song_patches.py` → `gen_indexes.py`) e a suíte (guarda de sincronia). O `patch.md` e o `.prst` são **gerados** pelo pipeline, não escritos à mão.
+6. **Persistência**: acrescentar o patch ao fragmento do álbum (`tools/defs/<CHAVE>.json`) e rodar o pipeline (`build_song_patches.py` → `gen_indexes.py`) e a suíte (guarda de determinismo). O `patch.md` e o `.prst` são **gerados** pelo pipeline, não escritos à mão.
 7. **Entrega**: resumir o patch na conversa + apontar os arquivos gerados.
 
 ## Nomenclatura de patches (vigente)
@@ -31,7 +31,7 @@ patches/<Banda>/<Álbum>/<Música>/<NOME>/
 └── <NOME>.prst           # single fw 2.1, CAB de fábrica
 ```
 Nenhum desses é escrito à mão: o `tools/build_song_patches.py` os gera a partir de
-`tools/patches-defs.json` — o spec vai **in-memory** ao codec (ADR-0013: nenhum
+`tools/defs/` — o spec vai **in-memory** ao codec (ADR-0013: nenhum
 intermediário em disco; o antigo `spec.json` foi eliminado). IRs de terceiros **não** entram na biblioteca — elas vivem em
 `impulse_responses/<Pack>/`, fora do git (política em knowledge.md, regra 10).
 
@@ -88,7 +88,7 @@ python -m unittest discover -s tests -v  # 8. guarda de sincronia: pipeline numa
 
 **Isso é literalmente o que o `TestH_DadosEmSincronia` roda**, a cada `unittest` — local e no CI. **Nenhum job escreve no repositório**: se algum derivado estiver defasado, o teste reprova e imprime o comando exato de conserto, para o autor rodar e commitar.
 
-O passo 6 é o que separa "rodei o pipeline" de "commitei o resultado": sem ele, um PR pode mergear com artefato defasado. A fonte única continua sendo `tools/patches-defs.json` — nenhum script mantém tabela própria de músicas, álbuns ou cabs.
+O passo 6 é o que separa "rodei o pipeline" de "commitei o resultado": sem ele, um PR pode mergear com artefato defasado. A fonte única continua sendo o defs (`tools/defs/`) — nenhum script mantém tabela própria de músicas, álbuns ou cabs.
 
 ## Limites declarados do projeto
 - A GP-100 não tem reorder de cadeia; não criar expectativa de "trocar ordem dos efeitos".

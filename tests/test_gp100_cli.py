@@ -15,7 +15,8 @@ sys.path.insert(0, str(ROOT / 'tools'))
 
 import gp100  # noqa: E402
 
-DEFS = json.loads((ROOT / 'tools' / 'patches-defs.json').read_text(encoding='utf-8'))
+from gp100_architect.infrastructure.defs import carregar  # noqa: E402
+DEFS = carregar(ROOT / 'tools' / 'defs')  # schema v2 (issue #8): fragmentos por álbum
 
 
 class A_Slots(unittest.TestCase):

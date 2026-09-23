@@ -59,8 +59,8 @@ def main() -> int:
     if er.ok():
         songs = dados.get('songs', [])
         patches = sum(len(s.get('patches', [])) for s in songs)
-        print(f"✅ patches-defs.json válido — {len(songs)} músicas, {patches} patches, "
-              f"{len(dados.get('albums', {}))} álbuns")
+        print(f"✅ defs válido (tools/defs/, schema v2) — {len(songs)} músicas, "
+              f"{patches} patches, {len(dados.get('albums', {}))} álbuns")
         return 0
     print(er.relatorio())
     return 1

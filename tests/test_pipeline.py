@@ -19,13 +19,14 @@ máquina. Cobre as invariantes que **já quebraram uma vez** neste projeto:
                  (hoje vazia) existe para um modelo novo sem nome falhar alto
   G. índices   — os arquivos em disco são exatamente o que o gerador produz hoje
                  (pega "esqueci de rodar gen_indexes.py")
-  H. frescor  — GUARDA DE SINCRONIA: o pipeline, rodado inteiro numa cópia
-                 temporária do repositório, tem de reproduzir EXATAMENTE o que
-                 está commitado — pega "editei o defs e esqueci de regenerar" e
-                 "editei à mão arquivo gerado". A normalização ignora
-                 `preset_info/@time` (hoje determinístico; a normalização segue
-                 como rede de segurança e para compatibility com commits antigos),
-                 equipara CRLF/LF e NÃO mascara mudança de parâmetro
+  H. frescor  — GUARDA DE DETERMINISMO (ADR-0013): os derivados (patches/**)
+                 NÃO são mais commitados; o que se prova é que o build é
+                 DETERMINÍSTICO — o pipeline, rodado numa cópia temporária do
+                 repositório (SEM patches/), reproduz os mesmos bytes com
+                 `GP100_BUILD_TIME` fixo. A normalização ignora
+                 `preset_info/@time`, equipara CRLF/LF e NÃO mascara mudança de
+                 parâmetro. Quem precisa dos derivados usa o ZIP da Release
+                 (issue #82) ou roda o pipeline localmente.
   I. ordem    — os artefatos saem SEMPRE na mesma ordem, em qualquer sistema
                  operacional: `sorted()` sobre `Path` usa `normcase` (minúsculas
                  no Windows, identidade no Linux) e o manifesto de IRs divergia
@@ -338,10 +339,6 @@ class TestG_Indices(unittest.TestCase):
 # tocar no working tree — o `preset_info/@time` é determinístico (GP100_BUILD_TIME)).
 PIPELINE = (
     'tools/ir_library.py',             # indexa impulse_responses/ (se baixou pack)
-    'tools/add_pulse_defs.py',         # seeders de álbum (re-appendam o álbum no fim do defs)
-    'tools/add_wishkah_defs.py',       # Nirvana — Wishkah (já encadeia add_momentos)
-    'tools/add_santana_defs.py',       # Santana — Smooth (momentos embutidos no seeder)
-    'tools/add_momentos.py',           # momentos de toggle por patch
     'tools/build_song_patches.py',     # patch.md + .prst (spec in-memory, ADR-0013)
     'tools/gen_indexes.py',            # MAPA-DO-ALBUM.md + patches/README.md
 )
@@ -349,15 +346,16 @@ PIPELINE = (
 SUFIXOS_DE_ARTEFATO = {'.prst', '.md', '.json'}
 ARTEFATO_IGNORADO: set[str] = set()    # (antes: spec.json — eliminado no ADR-0013)
 ARTEFATOS_FIXOS = (
-    'tools/patches-defs.json',         # reescrito pelos seeders
     'tools/ir-library.json',           # ir_library.py
     'reference/16-ir-library.md',      # ir_library.py
 )
-# O sandbox precisa espelhar TUDO que o pipeline lê: desde PKG-001 os scripts de
-# tools/ reaproveitam o pacote em src/ (cadeia, catálogo de parâmetros, validação),
-# então a pasta entra na cópia — sem isso o guarda de sincronia reprovaria por
-# falta de arquivo, não por drift de dado.
-_PASTAS_DO_SANDBOX = ('tools', 'patches', 'reference', 'impulse_responses', 'src')
+# O sandbox precisa espelhar TUDO que o pipeline lê — e NADA do que ele produz.
+# patches/ fica FORA de propósito (ADR-0013): ela não é mais commitada, e é
+# justamente o que o teste prova — um clone limpo constrói todos os derivados.
+# Desde PKG-001 os scripts de tools/ reaproveitam o pacote em src/ (cadeia,
+# catálogo de parâmetros, validação), então a pasta entra na cópia — sem isso o
+# guarda reprovaria por falta de arquivo, não por drift de dado.
+_PASTAS_DO_SANDBOX = ('tools', 'reference', 'impulse_responses', 'src')
 
 _TIME_RE = re.compile(r'time="\d+"')
 
@@ -408,7 +406,7 @@ class TestH_DadosEmSincronia(unittest.TestCase):
 
     def test_artefatos_cobertos_sao_so_saida_de_script(self):
         gerados = ('patches/README.md',
-                   'tools/patches-defs.json', 'tools/ir-library.json',
+                   'tools/ir-library.json',
                    'reference/16-ir-library.md')
         monitorados = set(artefatos(ROOT))
         for rel in gerados:

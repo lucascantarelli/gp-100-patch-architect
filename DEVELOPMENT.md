@@ -23,7 +23,7 @@ funciona logo depois do clone.
 ## Comandos do dia a dia
 
 ```bash
-uv run gp100 validate              # valida o patches-defs.json (fonte única)
+uv run gp100 validate              # valida o defs (tools/defs/, fonte única)
 uv run pytest -q                   # suíte completa
 uv run pytest tests/unit -q        # só os testes do pacote (milissegundos)
 uv run pytest -q -m unit           # fatia por marcador da pirâmide

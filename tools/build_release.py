@@ -28,7 +28,7 @@ if hasattr(sys.stdout, 'reconfigure'):  # console Windows cp1252 -> UTF-8
 
 ROOT = Path(__file__).parent.parent
 VERSION_FILE = ROOT / 'VERSION'          # única fonte da versão (ex.: 1.0.0)
-DEFS_FILE = ROOT / 'tools' / 'patches-defs.json'   # única fonte da BIBLIOTECA
+DEFS_FILE = ROOT / 'tools' / 'defs'      # única fonte da BIBLIOTECA (schema v2, issue #8)
 DIST_DIR = ROOT / 'dist'                 # saída do empacotamento (não vai pro git)
 PATCHES_DIR = ROOT / 'patches'
 

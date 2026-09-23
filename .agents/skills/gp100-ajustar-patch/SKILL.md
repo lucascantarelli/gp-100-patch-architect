@@ -22,7 +22,7 @@ Manter: {o que está bom e não deve mudar}
 O agente vai:
 1. Mapear cada reclamação para módulo/parâmetro (tabela de troubleshooting em `reference/12-workflow.md`).
 2. Propor mudanças **mínimas** (1–2 parâmetros por problema).
-3. Atualizar o **`tools/patches-defs.json`** (campos `spec`/`doc` do patch) e rodar o pipeline — o `patch.md`, o `.prst` e o changelog do patch são gerados a partir dele; devolver a receita de digitação só dos itens alterados.
+3. Atualizar o **fragmento do álbum (`tools/defs/<CHAVE>.json`)** (campos `spec`/`doc` do patch) e rodar o pipeline — o `patch.md`, o `.prst` e o changelog do patch são gerados a partir dele; devolver a receita de digitação só dos itens alterados.
 
 Exemplo preenchido:
 ```

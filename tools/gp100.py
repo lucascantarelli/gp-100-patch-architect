@@ -32,20 +32,18 @@ for _stream in (sys.stdout, sys.stderr):
         _stream.reconfigure(encoding='utf-8')  # console Windows (cp1252)
 
 ROOT = Path(__file__).resolve().parent.parent
-DEFS = ROOT / 'tools' / 'patches-defs.json'
+DEFS = ROOT / 'tools' / 'defs'          # schema v2 (issue #8): fragmentos por álbum
 PATCHES = ROOT / 'patches'
 
 # cadeia fixa da GP-100 — mesma ordem do gerador (x=0..8)
 # fonte única da cadeia fixa (review doc 21, M1)
 from chain import CHAIN  # noqa: E402,F401
 
-# ordem do guarda de sincronia (TestH) — os seeders re-appendam seu álbum
+# Ordem do guarda de determinismo (TestH): indexa IRs → gera os derivados.
+# Os seeders add_*.py foram aposentados no schema v2 (issue #8): o defs é a
+# única fonte e um álbum novo entra direto nos fragmentos de tools/defs/.
 PIPELINE = (
     'tools/ir_library.py',
-    'tools/add_pulse_defs.py',
-    'tools/add_wishkah_defs.py',
-    'tools/add_santana_defs.py',
-    'tools/add_momentos.py',
     'tools/build_song_patches.py',
     'tools/gen_indexes.py',
 )

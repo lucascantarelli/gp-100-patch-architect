@@ -6,7 +6,7 @@ arquivo de saída usa `tmp_path` e aponta `GP100_DEFS` para lá.
 
 from __future__ import annotations
 
-import json
+import sys
 from pathlib import Path
 from typing import Any
 
@@ -21,8 +21,13 @@ def raiz() -> Path:
 
 @pytest.fixture(scope='session')
 def defs_real(raiz: Path) -> dict[str, Any]:
-    """O defs commitado, parseado uma vez — a fonte de verdade da biblioteca."""
-    return json.loads((raiz / 'tools' / 'patches-defs.json').read_text(encoding='utf-8'))
+    """O defs commitado, consolidado pelo loader v2 — a fonte de verdade."""
+    src = str(raiz / 'src')
+    if src not in sys.path:
+        sys.path.insert(0, src)
+    from gp100_architect.infrastructure.defs import carregar
+
+    return carregar(raiz / 'tools' / 'defs')
 
 
 @pytest.fixture

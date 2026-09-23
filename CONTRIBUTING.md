@@ -2,7 +2,7 @@
 
 Obrigado pelo interesse. Este projeto tem uma característica que muda tudo:
 **metade dele é saída de script**. Os arquivos em `patches/**` são *gerados* a
-partir de `tools/patches-defs.json`, e o CI reprova quem editar o gerado à mão.
+partir de `tools/defs/` (schema v2: fragmentos por álbum), e o CI reprova quem editar o gerado à mão.
 Antes de commitar na `develop`, leia a seção [O pipeline é obrigatório](#-o-pipeline-é-obrigatório).
 
 Ao participar, você concorda com o [`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md).
@@ -34,7 +34,7 @@ funciona sem instalar nada); o ambiente uv existe para os gates de qualidade
 e para a CLI oficial. Detalhes e comandos do dia a dia:
 [`DEVELOPMENT.md`](DEVELOPMENT.md).
 
-> **💡 Assinatura dos dados:** `tools/patches-defs.json` é a **fonte única** de
+> **💡 Assinatura dos dados:** `tools/defs/` é a **fonte única** de
 > músicas, álbuns, patches e IRs recomendadas. Os scripts são renderizadores —
 > nenhum deles tem lista de músicas ou de cabs dentro do código. Acrescentar
 > dado é editar o defs, nunca o gerador.
@@ -88,13 +88,13 @@ no [`README.md`](README.md)), então o CI trata esquecimento como falha de build
 
 | Você mexeu em | Obrigatório rodar |
 |---|---|
-| `tools/patches-defs.json` (álbum, música, patch, momento) | `add_pulse_defs.py` → `add_momentos.py` → `build_song_patches.py` → `gen_indexes.py` |
+| `tools/defs/` (álbum, música, patch, momento) | `build_song_patches.py` → `gen_indexes.py` |
 | Novos packs de IR em `impulse_responses/` | `ir_library.py` |
 | Scripts em `tools/` | a suíte + o pipeline inteiro (a saída tem de continuar idêntica) |
 
 **Nunca edite à mão** um arquivo gerado: `patches/**/*.prst`, `patches/**/patch.md`,
 `patches/**/MAPA-DO-ALBUM.md`, `patches/README.md`,
-`tools/patches-defs.json`, `tools/ir-library.json`, `reference/16-ir-library.md`.
+`tools/ir-library.json`, `reference/16-ir-library.md` (o defs deixou de ser saída de script no schema v2 — ele É a fonte).
 Sua edição será apagada na próxima execução do pipeline e reprovada pelo guarda.
 
 ### ℹ️ O spec vai direto ao codec — sem intermediário em disco
@@ -102,7 +102,7 @@ Sua edição será apagada na próxima execução do pipeline e reprovada pelo g
 Desde o ADR-0013, o `build_song_patches.py` passa o spec **in-memory** ao codec
 (`src/gp100_architect/infrastructure/prst/`): o antigo `spec.json` intermediário
 **não existe mais** nem em disco. Para comparar parâmetros entre duas versões,
-leia o `patches-defs.json` (a fonte) — o `.prst` muda o `preset_info/@time` a
+leia o defs (`tools/defs/`, a fonte) — o `.prst` muda o `preset_info/@time` a
 cada build, o defs não. Nada em `patches/**` é escrito à mão: tudo é derivado do
 defs e vigiado pelo guarda de sincronia.
 
@@ -126,7 +126,7 @@ no PR** a menos que esteja reindexando o banco de propósito, e diga isso na des
 
 ### Um patch novo para uma música existente
 
-1. Abra `tools/patches-defs.json` e localize o álbum e a música.
+1. Abra o fragmento do álbum (`tools/defs/<CHAVE>.json`) e localize a música.
 2. Acrescente a camada no array de patches da música. O `nome` no painel é
    `MÚSICA+CAMADA` e tem **máximo 12 caracteres** (`STH01BA`, `CT01RIF`).
 3. Preencha o dossiê do rig com **fontes** — o projeto exige lastro pesquisável,
@@ -137,14 +137,14 @@ no PR** a menos que esteja reindexando o banco de propósito, e diga isso na des
 
 > **Pelo agente**, este caminho é o mesmo: `@gp100-patch-architect` entrevista,
 > consulta as skills, valida com o `gp100-patch-validator` e **acrescenta o item no
-> `patches-defs.json`** — ele não escreve em `patches/**` (ver `knowledge.md`,
+> `tools/defs/`** — ele não escreve em `patches/**` (ver `knowledge.md`,
 > regra 8). O que você revisa no PR é o **defs** e os derivados que o pipeline gerou.
 
 ### Um álbum inteiro novo
 
 1. Crie o seeder `tools/add_<album>_defs.py` seguindo `add_pulse_defs.py`
    (o padrão é o seeder encadear `add_momentos`).
-2. Adicione o álbum em `tools/patches-defs.json` com `banda`, `ano`, `pasta`,
+2. Crie `tools/defs/<CHAVE>.json` com `idAlbum`, `album` (`banda`, `ano`, `pasta`,
    `titulo`, o dossiê de rig e o `ir_local` de cada cab usado.
 3. Encadeie o novo seeder no `PIPELINE` de `tests/test_pipeline.py` —
    um seeder fora da lista simplesmente não roda no guarda de sincronia.
@@ -226,7 +226,7 @@ git switch develop && git pull
 
 # ... edite os defs, rode o pipeline e a suíte ...
 
-git add tools/patches-defs.json patches/ reference/
+git add tools/defs/ reference/
 git commit -m "feat(pulse): adiciona camada de solo em Time"
 git push
 ```

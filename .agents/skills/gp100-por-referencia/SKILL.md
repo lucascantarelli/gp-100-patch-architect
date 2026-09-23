@@ -21,7 +21,7 @@ IR de terceiros: {quero IR / CAB de fábrica}
 O agente então:
 1. `gp100-tone-research` — pesquisa na internet guitarra, amps, cabines e pedais usados naquela música/era (com fontes e nível de confiança).
 2. `gp100-tone-mapper` — traduz cada equipamento real para os modelos reais da GP-100 (fw 2.0), com similaridade e parâmetros.
-3. `gp100-patch-architect` — monta, valida e **persiste o patch em `tools/patches-defs.json`**; o `patch.md` e o `.prst` saem do pipeline.
+3. `gp100-patch-architect` — monta, valida e **persiste o patch em `tools/defs/`** (fragmento do álbum); o `patch.md` e o `.prst` saem do pipeline.
 
 Exemplo preenchido:
 ```

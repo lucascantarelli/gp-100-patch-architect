@@ -10,7 +10,8 @@ Uma biblioteca de **conteúdo** para a pedaleira Valeton GP-100, com um pipeline
 reprodutível:
 
 ```
-tools/patches-defs.json        ← FONTE ÚNICA (música, cadeia, params, doc)
+tools/defs/                    ← FONTE ÚNICA (schema v2, issue #8):
+        _albums.json + <ÁLBUM>.json   música, cadeia, params, doc
         │
         ├─→ patches/**/*.prst   arquivo que a pedaleira lê (byte a byte)
         └─→ patches/**/patch.md doc prática-primeiro + MAPA-DO-ALBUM.md

@@ -15,7 +15,8 @@ sys.path.insert(0, str(ROOT / 'tools'))
 
 import defs_schema  # noqa: E402
 
-DEFS = json.loads((ROOT / 'tools' / 'patches-defs.json').read_text(encoding='utf-8'))
+from gp100_architect.infrastructure.defs import carregar  # noqa: E402
+DEFS = carregar(ROOT / 'tools' / 'defs')  # schema v2 (issue #8): fragmentos por álbum
 
 
 def patch_por_nome(d, nome):

@@ -1,4 +1,4 @@
-"""Validação do `patches-defs.json` — regras puras, sem I/O.
+"""Validação do defs — regras puras, sem I/O.
 
 Cada erro aponta o **caminho JSON exato** e **como corrigir**: o objetivo é que
 um defs errado falhe aqui, com uma instrução, em vez de estourar um `KeyError`
@@ -6,7 +6,10 @@ no meio do build.
 
 O defs é a fonte única do projeto (patch, doc e índice saem dele), então esta
 validação roda em toda porta de entrada: build, CLI, índices e release
-(documentado no review do doc 21, achado M2).
+(documentado no review do doc 21, achado M2). Desde o schema v2 (issue #8) o
+defs vive em fragmentos por álbum sob `tools/defs/` — esta função recebe o
+CONSOLIDADO (o loader `infrastructure.defs` junta os fragmentos antes de
+chamar), então os caminhos JSON dos erros continuam os mesmos de sempre.
 """
 
 from __future__ import annotations
@@ -76,8 +79,8 @@ class Erros:
     def relatorio(self) -> str:
         """Relatório legível — usado pela CLI e pelo build."""
         return (
-            f'\n❌ {len(self.itens)} problema(s) no patches-defs.json '
-            f'(fonte única — corrija nele, nunca no arquivo gerado):\n\n'
+            f'\n❌ {len(self.itens)} problema(s) no defs (fonte única em '
+            f'tools/defs/ — corrija no fragmento, nunca no arquivo gerado):\n\n'
             + '\n'.join(self.itens)
             + '\n'
         )
@@ -335,7 +338,7 @@ def _validar_doc(doc: dict[str, Any], base: str, er: Erros) -> None:
 def _validar_ir_local(defs: dict[str, Any], er: Erros) -> None:
     """Captura de IR órfã: entrada em ir_local que nenhum CAB usa."""
     cabs = {
-        p['spec']['modules'].get('CAB', {}).get('name')
+        p['spec'].get('modules', {}).get('CAB', {}).get('name')
         for s in defs.get('songs', [])
         for p in s.get('patches', [])
         if isinstance(p.get('spec'), dict)

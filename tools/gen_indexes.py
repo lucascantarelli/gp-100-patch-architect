@@ -29,8 +29,13 @@ DEFS_PATH = ROOT / 'tools' / 'patches-defs.json'
 # ---- carregamento ---------------------------------------------------------------
 
 def load_defs():
-    """Lê tools/patches-defs.json (fonte única: meta, albums, ir_local, songs)."""
-    return json.loads(DEFS_PATH.read_text(encoding='utf-8'))
+    """Lê tools/patches-defs.json (fonte única: meta, albums, ir_local, songs).
+
+    Passa pela validação acionável (defs_schema) — o mapa não pode gerar
+    índices "corretos" a partir de um defs quebrado (review doc 21, M2).
+    """
+    from defs_schema import carregar_e_validar
+    return carregar_e_validar(DEFS_PATH)
 
 
 def load_ir_library():

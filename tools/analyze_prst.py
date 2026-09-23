@@ -37,7 +37,7 @@ def parse(path):
     info = root.find('preset_info').attrib
     # <ppIRInfo> existe só no export "all" — o formato single fw 2.1 (o que este
     # projeto gera) não o tem. Sem o guarda, `for ir in None` estourava TypeError
-    # em todos os 62 patches da própria biblioteca.
+    # nos patches da própria biblioteca (62 à época; 97 hoje).
     ir_node = root.find('ppIRInfo')
     irs = [ir.attrib for ir in ir_node] if ir_node is not None else []
     patches = []

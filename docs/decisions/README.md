@@ -22,9 +22,10 @@ ADR — é convenção de código (nesse caso, `CONTRIBUTING.md` ou o próprio d
 | [0006](0006-ci-cd-sem-escrita.md) | CI/CD: workflows separados, uv com lockfile, zero escrita no repositório | aceito |
 | [0007](0007-documentacao-em-duas-camadas.md) | Documentação em duas camadas (`docs/` × `reference/`) | aceito |
 | [0008](0008-agents-e-contrato.md) | `.agents/` é contrato com o Freebuff — não se move para `.ai/` | aceito |
-| [0009](0009-governanca-open-source.md) | Governança: labels, milestones e templates com taxonomia única | aceito |
+| [0009](0009-governanca-open-source.md) | Governança: labels, milestones e templates com taxonomia única | aceito (itens 3 e a alternativa "issue-mãe" revogados por ADR-0012) |
 | [0010](0010-release-engineering.md) | Release: `VERSION` como fonte única, changelog gerado, tag assinada | aceito |
 | [0011](0011-gestao-de-project-com-pat.md) | Gestão de Project v2 com PAT em secret, e permissões verificadas pelo auditor | aceito |
+| [0012](0012-epics-com-sub-issues.md) | Milestone é a release; a fase é um epic com sub-issues e `blocked by` nativo | aceito |
 
 ## Formato
 

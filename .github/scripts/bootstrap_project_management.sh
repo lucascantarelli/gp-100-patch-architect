@@ -68,8 +68,13 @@ APAGAR
 ok "defaults substituídos (bug, good first issue e help wanted são reaproveitados)"
 
 # (b) Taxonomia: nome|cor|descrição  (cria; se existe, atualiza via --force)
+# O total é CONTADO na tabela abaixo, não escrito à mão: número memorizado
+# envelhece a cada label nova (achado A8 da auditoria).
+instaladas=0
 while IFS='|' read -r nome cor desc; do
   [ -z "$nome" ] && continue
+  case "$nome" in \#*) continue ;; esac   # comentário da tabela não é label
+  instaladas=$((instaladas + 1))
   if [ "$DRY_RUN" = "1" ]; then
     printf '  %s[dry-run]%s label: %s\n' "$Y" "$Z" "$nome"
   else
@@ -107,8 +112,29 @@ release|0e8a16|Preparação de versão (VERSION + CHANGELOG)
 breaking change|d93f0b|Mudança incompatível (força bump MAJOR)
 good first issue|7057ff|Bom para quem está começando
 help wanted|008672|Atenção extra é bem-vinda
+
+# ── Extensões que nasceram com o pacote e com os epics ────────────────
+# Toda label do repositório está nesta tabela: ela é a fonte única da
+# taxonomia (o bootstrap --check confere, e o `epic` marca issue pai).
+type: architecture|5319e7|Arquitetura, camadas e ADRs
+type: ci|1d76db|CI/CD, workflows e automações
+type: security|b60205|Segurança e supply chain
+type: test|0e8a16|Testes automatizados e cobertura
+area: ai|fbca04|Agentes, skills e rules de IA
+area: api|fbca04|API HTTP (2.1)
+area: ci|fbca04|GitHub Actions e pipelines
+area: cli|fbca04|Interface de linha de comando
+area: docs|fbca04|Documentação técnica
+area: packaging|fbca04|Empacotamento, uv e dependências
+area: python|fbca04|Código Python (pacote, domínio, aplicação)
+area: security|fbca04|Segurança e políticas
+area: ui|fbca04|Interface gráfica/web (2.1)
+accessibility|f143ab|Barrier affecting people with disabilities
+dependencies|c5def5|Atualização de dependências
+documentation|0075ca|Improvements or additions to documentation
+epic|3E4B9E|Issue pai: agrupa tasks (sub-issues) de um mesmo fluxo da release
 LABELS
-ok "taxonomia instalada (28 labels; domínio tone-mismatch/prst-import preservados)"
+ok "taxonomia instalada ($instaladas labels; domínio tone-mismatch/prst-import preservados)"
 }
 
 # ═══════════════════════ 2 · MILESTONES ══════════════════════════════════════

@@ -69,6 +69,7 @@ permissions:
 env:
   PROJECT_OWNER: lucascantarelli # owner do Project (usuário, não o repo)
   PROJECT_NUMBER: "7" # número do Project v2 "GP-100 Pipeline" (gh project list)
+  PROJECT_ID: PVT_kwHOAPGrkM4BkXGa # node id do Project — as mutações GraphQL usam id, não número
   REPO: ${{ github.repository }} # "dono/repo" para gh --repo
 
 jobs:
@@ -109,16 +110,22 @@ jobs:
         env:
           URL: ${{ github.event.issue.html_url || github.event.pull_request.html_url }}
         run: |
-          # Captura o stderr: o `gh project` mascara falha de autenticação como
-          # "unknown owner type" (cli/cli#8885) — aqui o erro real vai para o log
-          # com a causa provável, em vez de matar o job sem dizer por quê.
-          if saida="$(gh project item-add "$PROJECT_NUMBER" --owner "$PROJECT_OWNER" --url "$URL" 2>&1)"; then
-            echo "no Project #$PROJECT_NUMBER: $URL"
-          else
-            echo "::error::item-add falhou: $saida"
-            echo "::error::'unknown owner type' = o PAT foi rejeitado (cli/cli#8885) — confira: não expirou, tem Account permissions → Projects: read/write e acesso a este repositório"
-            exit 1
-          fi
+          # GraphQL puro (cli/cli#8885): o `gh project item-add` rejeita PAT
+          # VÁLIDO com "unknown owner type" — provado neste repo em 23/09 (PAT ok
+          # na API e no teste local; item-add do runner rejeitado com o mesmo
+          # valor). As mutações GraphQL funcionam com o mesmo token.
+          set -euo pipefail
+          conteudo="$(gh api graphql -f query='
+          query($url: URI!) {
+            resource(url: $url) { ... on Issue { id } ... on PullRequest { id } }
+          }' -f url="$URL" --jq '.data.resource.id // empty')"
+          [ -n "$conteudo" ] || { echo "::error::não resolve o conteúdo de $URL"; exit 1; }
+          # addProjectV2ItemById é idempotente: item já existente volta sem duplicar.
+          gh api graphql -f query='
+          mutation($p: ID!, $c: ID!) {
+            addProjectV2ItemById(input: { projectId: $p, contentId: $c }) { item { id } }
+          }' -f p="$PROJECT_ID" -f c="$conteudo" >/dev/null \
+            && echo "no Project #$PROJECT_NUMBER: $URL"
 
       # Issue nova recebe needs-triage: ninguém deve pegar tarefa não triada.
       - name: Marca issue nova como needs-triage
@@ -200,44 +207,48 @@ jobs:
         run: |
           set -euo pipefail
 
-          # Campo e opção: o `gh` reclama de forma genérica; aqui o erro diz
-          # exatamente o que falta e onde criar (a opção que não existe é silenciosa
-          # no fluxo por nome). Captura com a mesma regra do item-add:
-          # "unknown owner type" = PAT rejeitado (cli/cli#8885).
-          if ! campos="$(gh project field-list "$PROJECT_NUMBER" --owner "$PROJECT_OWNER" --format json 2>&1)"; then
-            echo "::error::field-list falhou: $campos"
-            echo "::error::'unknown owner type' = o PAT foi rejeitado (cli/cli#8885) — confira: não expirou, tem Account permissions → Projects: read/write e acesso a este repositório"
-            exit 1
-          fi
-          if ! printf '%s' "$campos" \
-            | jq -e --arg v "$VALOR" \
-              '.fields[] | select(.name == "Kanban") | .options[] | select(.name == $v)' >/dev/null; then
-            echo "::error::o campo 'Kanban' (opção '$VALOR') não existe no Project #$PROJECT_NUMBER — rode: .github/scripts/bootstrap_project_management.sh ONLY=project"
-            exit 1
-          fi
+          # Tudo por GraphQL puro (cli/cli#8885): o `gh project` mascara falha de
+          # auth como "unknown owner type" MESMO COM PAT VÁLIDO — provado neste
+          # repo em 23/09 (PAT ok na API e no teste local; `gh project` do runner
+          # rejeitado com o mesmo valor; mutações GraphQL funcionam). O add é
+          # idempotente e já devolve o id do item — 3 chamadas, zero gh project.
 
-          # O item pode não estar no board (o add-to-project é pulado no `closed`).
-          # `item-list` (sem `--limit`: ele não existe) confirma antes de editar.
-          if ! itens="$(gh project item-list "$PROJECT_NUMBER" --owner "$PROJECT_OWNER" --format json 2>&1)"; then
-            echo "::error::item-list falhou: $itens"
-            exit 1
-          fi
-          if ! printf '%s' "$itens" | jq -e --arg u "$URL" '.items[] | select((.content.url // "") == $u)' >/dev/null; then
-            gh project item-add "$PROJECT_NUMBER" --owner "$PROJECT_OWNER" --url "$URL" >/dev/null
-          fi
+          # 1 · Campo Kanban (opções com id) + conteúdo do evento, numa query.
+          leitura="$(gh api graphql -f query='
+          query($id: ID!, $url: URI!) {
+            project: node(id: $id) {
+              ... on ProjectV2 {
+                field(name: "Kanban") { ... on ProjectV2SingleSelectField { id options { id name } } }
+              }
+            }
+            resource(url: $url) { ... on Issue { id } ... on PullRequest { id } }
+          }' -f id="$PROJECT_ID" -f url="$URL")"
 
-          # Edição por nome (--url/--field/--value): dispensa caçar node IDs de
-          # item e campo a cada evento, que era onde a versão anterior errava
-          # (`--item-id`/`--option-id` não existem). Erro capturado com a mesma
-          # regra do item-add: "unknown owner type" = PAT rejeitado (#8885).
-          if saida="$(gh project item-edit "$PROJECT_NUMBER" --owner "$PROJECT_OWNER" \
-            --url "$URL" --field "Kanban" --value "$VALOR" 2>&1)"; then
-            echo "$URL → $VALOR"
-          else
-            echo "::error::item-edit falhou: $saida"
-            echo "::error::'unknown owner type' = o PAT foi rejeitado (cli/cli#8885) — confira: não expirou, tem Account permissions → Projects: read/write e acesso a este repositório"
-            exit 1
-          fi
+          campo="$(printf '%s' "$leitura" | jq -r '.data.project.field.id // empty')"
+          opcao="$(printf '%s' "$leitura" | jq -r --arg v "$VALOR" '.data.project.field.options[]? | select(.name == $v) | .id')"
+          conteudo="$(printf '%s' "$leitura" | jq -r '.data.resource.id // empty')"
+
+          [ -n "$campo" ]    || { echo "::error::campo 'Kanban' não existe no Project #$PROJECT_NUMBER — rode: .github/scripts/bootstrap_project_management.sh ONLY=project"; exit 1; }
+          [ -n "$opcao" ]    || { echo "::error::opção '$VALOR' não existe no campo Kanban — rode: .github/scripts/bootstrap_project_management.sh ONLY=project"; exit 1; }
+          [ -n "$conteudo" ] || { echo "::error::não resolve o conteúdo de $URL"; exit 1; }
+
+          # 2 · Garante o item no board e recebe o id (idempotente).
+          item="$(gh api graphql -f query='
+          mutation($p: ID!, $c: ID!) {
+            addProjectV2ItemById(input: { projectId: $p, contentId: $c }) { item { id } }
+          }' -f p="$PROJECT_ID" -f c="$conteudo" --jq '.data.addProjectV2ItemById.item.id')"
+          [ -n "$item" ] || { echo "::error::addProjectV2ItemById não devolveu item para $URL"; exit 1; }
+
+          # 3 · Aplica o estado no campo. Nota: singleSelectOptionId é String! no
+          # schema (não ID!) — declarar ID! reprova com "Type mismatch ... (ID! / String)".
+          gh api graphql -f query='
+          mutation($p: ID!, $i: ID!, $f: ID!, $o: String!) {
+            updateProjectV2ItemFieldValue(input: {
+              projectId: $p, itemId: $i, fieldId: $f,
+              value: { singleSelectOptionId: $o }
+            }) { projectV2Item { id } }
+          }' -f p="$PROJECT_ID" -f i="$item" -f f="$campo" -f o="$opcao" >/dev/null
+          echo "$URL → $VALOR"
 
   guardian:
     name: 🛡 Guardian — PR precisa de gestão
@@ -357,19 +368,26 @@ jobs:
             exit 1
           fi
 
-          if ! campos="$(gh project field-list "$PROJECT_NUMBER" --owner "$PROJECT_OWNER" --format json 2>&1)"; then
-            echo "::error::o token não leu o Project #$PROJECT_NUMBER do owner $PROJECT_OWNER: $campos"
+          # GraphQL puro também aqui: o cli/cli#8885 vale para o dispatch —
+          # `gh project` mascararia PAT válido como "unknown owner type".
+          if ! leitura="$(gh api graphql -f query='
+          query($id: ID!) {
+            node(id: $id) {
+              ... on ProjectV2 {
+                title
+                field(name: "Kanban") { ... on ProjectV2SingleSelectField { options { name } } }
+                items(first: 5) { totalCount nodes { content { ... on Issue { title } ... on PullRequest { title } } } }
+              }
+            }
+          }' -f id="$PROJECT_ID" 2>&1)"; then
+            echo "::error::o token não leu o Project #$PROJECT_NUMBER: $leitura"
             exit 1
           fi
 
-          kanban="$(printf '%s' "$campos" | jq -r '.fields[] | select(.name == "Kanban") | .options | map(.name) | join(" → ")')"
-          # O relatório usa só campos estáveis do item-list (title) — o nome da
-          # chave de um campo customizado no JSON depende do board, e relatório de
-          # diagnóstico que quebra por causa disso não serve para nada.
-          itens="$(gh project item-list "$PROJECT_NUMBER" --owner "$PROJECT_OWNER" --format json)"
-          total="$(printf '%s' "$itens" | jq -r '.items | length')"
-          amostra="$(printf '%s' "$itens" \
-            | jq -r '[.items[] | (.title // .content.title // "(sem título)")] | .[0:5] | join(" · ")')"
+          kanban="$(printf '%s' "$leitura" | jq -r '.data.node.field.options | map(.name) | join(" → ") // empty')"
+          total="$(printf '%s' "$leitura" | jq -r '.data.node.items.totalCount // empty')"
+          amostra="$(printf '%s' "$leitura" \
+            | jq -r '[.data.node.items.nodes[].content.title // "(sem título)"] | join(" · ")')"
 
           {
             echo "### 🩺 Diagnóstico da gestão de projetos"

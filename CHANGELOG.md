@@ -10,8 +10,10 @@ Formato: [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/) · versiona
 >
 > A v1.0.0 é a **baseline escrita à mão**: a história anterior a esta
 > automação não seguia Conventional Commits, então ela não é derivável.
-> Daqui para frente, o título do PR (que vira o commit do squash) é o que
-> alimenta o changelog — ver CONTRIBUTING.md.
+> Daqui para frente, o que alimenta o changelog é a **mensagem de cada commit**
+> (o gerador roda `git log --no-merges`): os merges na `develop` são merge
+> commits, então o histórico dos branches entra inteiro — escreva o commit como
+> você quer vê-lo no changelog. Ver CONTRIBUTING.md.
 
 ## [1.0.0] — 2026-09-21
 

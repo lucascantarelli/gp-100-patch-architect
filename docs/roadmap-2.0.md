@@ -1,86 +1,129 @@
-# Roadmap 2.0 — fases, issues e critério de pronto
+# Roadmap 2.0 — epics, ordem de execução e critério de pronto
 
-> **Este documento é o plano de execução** (fases, dependências, portões). O
-> escopo de produto por versão continua em
+> **Este documento é o plano de execução.** O escopo de produto vive em
 > [`reference/19-roadmap-v2.md`](../reference/19-roadmap-v2.md) — pilares e
 > ambição. Divergência entre os dois é bug deste arquivo.
 >
-> **Fonte das issues**: <https://github.com/lucascantarelli/gp-100-patch-architect/issues>
-> (milestones `2.0 · F1 … F5` + `2.0 · Release`).
+> **Tudo o que está aqui entra na release 2.0.0 — uma só.** A execução se organiza
+> em **epics** (issues pai, label `epic`) com **sub-issues** (tasks); o milestone
+> é a **release**, não a fase.
 
-## Fases
+## 1 · Como o board se organiza
 
-| Fase | Milestone (nome exato no GitHub) | Objetivo | Issues |
-|---|---|---|---|
-| **F1 · Fundação** | `2.0 · F1 — Fundação` | pacote, uv, gates, ADRs, docs de engenharia | #25–#34 (**criadas**; #25, #26, #27 entregues) |
-| **F2 · Núcleo e CLI** | `2.0 · F2 — Núcleo e CLI` | domínio, infraestrutura `.prst`, casos de uso, CLI completa, fim do legado, suíte nova | #28–#34 abertas; complementos na abertura da fase |
-| **F3 · Automação e CI** | `2.0 · F3 — Automação e CI` | workflows separados, segurança, dependabot, release automation | a criar na abertura da fase |
-| **F4 · Documentação** | `2.0 · F4 — Documentação` | site MkDocs, guias por público, FAQ, exemplos | a criar na abertura da fase |
-| **F5 · IA e governança** | `2.0 · F5 — IA e governança` | agentes especializados, agente de versionamento, templates, labels, board | a criar na abertura da fase |
-| **Release** | `2.0 · Release` | auditoria de consistência, validação final, changelog, tag | a criar no fim de F5 |
-
-As issues são criadas fase a fase **com o contexto da fase anterior já
-executado** — issue detalhada sobre código que vai mudar é issue que nasce
-errada.
-
-## Dependências
-
-```
-F1 (fundação)
- ├── ARCH-001 ADRs + ARCHITECTURE ─┬── PKG-001 pacote/uv ── PKG-002 gates
- │                                │        │
- │                                │        ├── PKG-003 domínio
- │                                │        ├── PKG-004 infraestrutura .prst
- │                                │        ├── PKG-005 application + CLI (consulta)
- │                                │        ├── PKG-006 application + CLI (setlist)
- │                                │        ├── PKG-007 application + CLI (release)
- │                                │        ├── PKG-008 remove legado  ← só depois de 003…007
- │                                │        └── PKG-009 suíte em pirâmide (#23)
- └── governança (labels, milestones, templates) ── F5
-```
-
-Regra de sequência: **nada de F2 antes de F1 fechada** (o pacote precisa dos
-gates para não regredir) e **PKG-008 é o último** (o legado só sai quando todo
-consumidor estiver no pacote).
-
-## Definition of Done da 2.0
-
-| Métrica | Alvo | Onde é verificado |
+| Camada | O que é | Onde vive |
 |---|---|---|
-| Suíte | 100% verde, em pytest, com pirâmide declarada | CI (`pytest`) |
-| Cobertura do pacote | ≥ 90% (hoje 91%) | CI (`fail_under`) |
-| Lint e formatação | zero violação em **todo** o Python do repositório (inclusive `tools/`, que sai das exclusões) | CI (`ruff`) |
-| Tipos | `mypy --strict` no pacote; legado fora | CI (`mypy`) |
-| Agentes | `tsc --noEmit` limpo | CI (`typecheck`) |
-| Sincronia do pipeline | TestH verde (nenhum derivado defasado) | CI |
-| CI | tempo total ≤ 6 min, com cache de uv | medido no job |
-| Segurança | 0 alerta crítico (CodeQL + dependency review + auditor de workflows) | `security.yml` |
-| Documentação | nenhum doc descrevendo arquitetura inexistente; link quebrado reprova | auditoria de consistência (fase final) + revisão |
-| Releases | changelog gerado dos commits, versão de fonte única, tag assinada | ADR-0010 |
-| Onboarding | `git clone && uv sync && uv run pytest` verde em máquina limpa | README/DEVELOPMENT |
-| Legado | `tools/` contém apenas conteúdo/scripts de conteúdo — nenhum código de produto | PKG-008 |
+| **Release** | o que sai publicado junto | milestone `v2.0.0 — Formato, site e escala` |
+| **Stream (epic)** | frente com objetivo, escopo e critério de saída próprios | issue pai com a label `epic` |
+| **Task** | entrega de **um** PR | sub-issue do epic |
+| **Triagem** | `status: needs-triage` · `blocked` · `ready-for-pr` · `in-review` | label (o quadro visual é o campo `Kanban` do Project) |
 
-## Fronteira de escopo
+Duas regras que mantêm isso coerente:
 
-**Entra na 2.0**: pacote, uv, camadas, CLI completa, testes em pirâmide, gates,
-CI/CD por responsabilidade, segurança, ADRs, documentação de engenharia,
-governança (labels/milestones/templates), agentes especializados, fim do legado.
+1. **Issue nova nasce como sub-issue de um epic.** Se não tem epic, ou o epic
+   está errado ou a issue não deveria existir.
+2. **Task nasce quando a stream vai começar**, não antes: issue detalhada sobre
+   código que ainda vai mudar nasce errada (foi o que aconteceu com metade da
+   primeira leva — ver § 5).
+
+## 2 · Streams (epics)
+
+| EPIC | Stream | Objetivo | Tasks |
+|---|---|---|---|
+| [#41](../../issues/41) | **Núcleo, CLI e fim do legado** | o produto sai de `tools/` para `src/gp100_architect` | #25–#27 (entregues), #28–#34, #48, #49 |
+| [#42](../../issues/42) | **Formato e dados** | as quebras que justificam o MAJOR: schema v2, stomps/EXP1, `-USERIR` | #8 (→ #50–#53), #9, #10 |
+| [#43](../../issues/43) | **Site e documentação** | biblioteca navegável + doc por público | #11, #60, #61 |
+| [#44](../../issues/44) | **CI, automação e segurança** | o que vigia o repositório | #37 (entregue), #54, #55, #62 |
+| [#45](../../issues/45) | **IA e governança** | agentes com contrato e board como fonte de verdade | #39 (entregue), #56, #57, #63 |
+| [#46](../../issues/46) | **Conteúdo (pilar D)** | primeiro álbum novo e a meta de escala | #12 |
+| [#47](../../issues/47) | **Release 2.0.0** | auditoria de consistência e publicação | #58, #64, #59 |
+
+> **Cada linha desta tabela é a mesma coisa que a barra de progresso do epic no
+> GitHub**: a tabela é o resumo legível, o epic é o dado. Divergência é bug —
+> quem edita um confere o outro (§ 5 do `reference/18`).
+
+## 3 · Ordem de execução
+
+```
+#41 Núcleo, CLI e fim do legado          ← começa aqui: é o que destrava o resto
+  #28 domínio ──┬── #29 codec .prst ── #30 aplicação ──┬── #48, #49 (CLI)
+                ├── #31 migrações                      │
+                ├── #32 release ──────────────────────┘
+                └── #34 suíte em pirâmide
+                                   #33 limpa tools/ (o último de todos)
+
+#42 Formato e dados    ← depois do #30: o gerador precisa estar no pacote, senão
+                          a mudança de formato é feita duas vezes
+#43 Site               ← depois do #30 (consome dado gerado)
+#44 CI e segurança     ← independente (roda em paralelo)
+#45 IA e governança    ← independente
+#46 Conteúdo           ← independente (conteúdo não bloqueia engenharia)
+#47 Release 2.0.0      ← último: auditoria e publicação
+```
+
+Regra de sequência: **#33 é o último** (o legado só sai quando todo consumidor
+estiver no pacote) e **#42 só começa depois do #30** — as duas decisões existem
+para não fazer o mesmo trabalho em dois lugares.
+
+O diagrama acima não é a única cópia da ordem: **cada seta está declarada no
+GitHub** como relação `blocked by`, visível no card e no board. Quem abre a
+issue vê do que ela depende sem consultar este arquivo.
+
+```
+#29 #31 #32 #34  ← #28        #48 ← #30            #11 #60 #61 ← #30
+#30              ← #29        #49 ← #30, #32       #8  #9 #10 ← #30
+#33              ← #29–#34    #59 ← #64
+```
+
+## 4 · Fronteira de escopo
+
+**Entra na 2.0.0**: os sete streams acima — pacote, CLI, fim do legado, formato e
+dados, site, documentação, CI/segurança, IA/governança, conteúdo e a publicação.
 
 **Fica para 2.1**: API FastAPI, UI, autenticação, TUI (Textual) se houver uso.
 
-**Fica para 3.0**: schema v2 do defs (#8) e a aposentadoria dos seeders, site
-público de patches, empacotamento para PyPI.
+**Não existe 3.0.** O escopo de produto que em algum momento foi escrito como
+"3.0" (schema v2, site público, escala) é **2.0** — é o que
+o [`reference/19-roadmap-v2.md`](../reference/19-roadmap-v2.md) §9 sempre disse,
+e o que dá ao MAJOR a razão de existir. Menção a 3.0 no repositório é resíduo.
 
 **Fora de escopo, explicitamente**: aplicar patches na pedaleira por USB/serial
 (o formato é gerado, não enviado), app mobile, suporte a firmware V1.8.
 
-## Ritual de release (ADR-0010)
+## 5 · Definition of Done da 2.0
+
+| Métrica | Alvo | Onde é verificado |
+|---|---|---|
+| Suíte | 100% verde, em pytest, com pirâmide declarada | CI (`pytest`) |
+| Cobertura do pacote | ≥ 90% (gate do `pyproject.toml`; 91% hoje) | CI (`fail_under`) |
+| Lint e formatação | zero violação em **todo** o Python do repositório — as exclusões atuais (`tools/`, `.github/scripts`, testes históricos) saem junto com cada migração | CI (`ruff`) |
+| Tipos | `mypy --strict` no pacote | CI (`mypy`) |
+| Agentes | `tsc --noEmit` limpo | CI (`typecheck`) |
+| Sincronia do pipeline | guarda verde (nenhum derivado defasado) | CI |
+| CI | tempo total ≤ 6 min, com cache de uv | medido no job |
+| Segurança | 0 alerta aberto (CodeQL + dependency review + auditor de workflows) | `security.yml` |
+| Documentação | nenhum doc descrevendo arquitetura inexistente; issue/caminho/link/milestone citados existem | **linter de consistência (#58)** + revisão |
+| Releases | changelog gerado dos commits, versão de fonte única, tag | ADR-0010 |
+| Onboarding | `git clone && uv sync && uv run pytest` verde em máquina limpa | README/DEVELOPMENT |
+| Legado | `tools/` contém apenas conteúdo — nenhum código de produto | #33 |
+
+## 6 · Ritual de release (ADR-0010)
 
 ```
 suíte verde → build regenerado (idempotente) → changelog → VERSION
   → commit de release → tag → PR develop → main → artefatos anexados
 ```
 
-Publicação é decisão humana: agente propõe o bump e o changelog, mantenedor
-aprova. A dívida atual — `main` em 1.0.0 com v1.1.0 e v1.2.0 entregues — é
-justamente o que a 1.2.0 cortada antes da 2.0 resolve.
+Publicação é decisão humana: o agente propõe o bump e o changelog, o mantenedor
+aprova.
+
+**A 2.0.0 é a próxima release.** `VERSION` está em `1.0.0` na `develop` e na
+`main`, e a única tag publicada é a `v1.0.0`: os milestones `v1.1.0` e `v1.2.0`
+foram **entregues e não publicados**, e o conteúdo deles entra na 2.0.0. A regra
+que nasce deste caso: **milestone de release só fecha com a tag publicada** — sem
+ela, o trabalho da fase seguinte entra no corte da anterior.
+
+## 7 · Issues
+
+Fonte: <https://github.com/lucascantarelli/gp-100-patch-architect/issues> — os
+epics (#41–#47) são o índice vivo. Não repetir contagem de issues aqui: número
+memorizado envelhece (é o achado A8 da auditoria).

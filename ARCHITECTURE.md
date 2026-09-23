@@ -71,10 +71,12 @@ Runtime: **Python 3.14 apenas** (ADR-0001). Ambiente e comandos: **uv**.
 
 ## Evolução
 
-- **2.0** — fundação (este ADR-0001…0010), migração dos scripts para o pacote,
-  CLI completa, suíte em pirâmide, docs de engenharia.
+- **2.0** — fundação (ADR-0001…0012), migração dos scripts para o pacote, CLI
+  completa, suíte em pirâmide, docs de engenharia **e as quebras de formato**
+  (schema v2 do defs, stomps/EXP1, `-USERIR`): é a release que aposenta os
+  seeders e formaliza o formato.
 - **2.1** — API FastAPI + UI, sobre os mesmos casos de uso (ADR-0004).
-- **3.0** — schema v2 do defs: aposenta os seeders e formaliza o formato.
 
-O escopo por versão está em [`reference/19-roadmap-v2.md`](reference/19-roadmap-v2.md)
-e a organização em milestones no [roadmap do GitHub](https://github.com/lucascantarelli/gp-100-patch-architect/milestones).
+O escopo por versão está em [`reference/19-roadmap-v2.md`](reference/19-roadmap-v2.md),
+a execução em [`docs/roadmap-2.0.md`](docs/roadmap-2.0.md) e a estrutura de
+issues (epic × task, ADR-0012) nos [epics do GitHub](https://github.com/lucascantarelli/gp-100-patch-architect/labels/epic).

@@ -35,7 +35,7 @@ status: ready-for-pr      Closes #N liga a issue       próximo marco
 | Etapa | Quem faz | Onde | O que acontece de automático |
 |---|---|---|---|
 | 1. Abrir issue | Autor | `gh issue create --template` | Entra no Project (Backlog) + `status: needs-triage` |
-| 2. Triagem | Mantenedor | board + `gh issue edit` | Aplica `type:`/`scope:`/`size:`; `status: ready-for-pr` quando pronta |
+| 2. Triagem | Mantenedor | board + `gh issue edit` | Aplica `type:`/`priority:`/`size:` + `area:`/`scope:`; `status: ready-for-pr` quando pronta |
 | 3. Branch | Autor | `git switch -c` | — (nome livre; padrão de facto: `feature/…`) |
 | 4. PR | Autor | `gh pr create --base develop` | Entra no Project; `In Progress` (draft) / `In Review` (ready); guardian valida |
 | 5. Review | Mantenedor | `gh pr review` | Discussões resolvidas; revalidação a cada push |
@@ -48,11 +48,15 @@ CHANGELOG + milestone da versão).
 
 ## 3 · A estrutura instalada
 
-### 3.1 Labels (28) — fonte única: `.github/scripts/bootstrap_project_management.sh`
+### 3.1 Labels — fonte única: `.github/scripts/bootstrap_project_management.sh`
+
+> **Sem número no título de propósito**: contagem memorizada envelhece (achado A8 da auditoria). A conferência é automática — o bootstrap instala a tabela inteira, e o que existe no repositório tem de estar nela.
 
 | Família | Labels | Regra de uso |
 |---|---|---|
-| **Type** | `type: bug` `type: feature` `type: refactor` `type: docs` `type: chore` | exatamente **uma** por issue/PR (bug reaproveita a label `bug`) |
+| **Type** | `type: bug` `type: feature` `type: refactor` `type: docs` `type: chore` `type: test` `type: ci` `type: security` `type: architecture` | exatamente **uma** por issue/PR (bug reaproveita a label `bug`) |
+| **Area** | `area: python` `area: cli` `area: api` `area: ui` `area: ci` `area: security` `area: docs` `area: ai` `area: packaging` | onde a mudança mora; uma ou mais |
+| **Epic** | `epic` | marca **issue pai**: só ela agrupa sub-issues (ver §3.2) |
 | **Priority** | `priority: p0-critical` `p1-high` `p2-medium` `p3-low` | opcional na issue; p0/p1 definem a fila do milestone |
 | **Status** | `status: needs-triage` `status: blocked` `status: ready-for-pr` `status: in-review` | issue: triagem aplica; `in-review`/`Done` são movidos pelo **board** |
 | **Scope** | `scope: pipeline` `scope: data` `scope: ir-library` `scope: agents` `scope: docs` | uma ou mais |
@@ -64,13 +68,40 @@ Status vive em **dois lugares por design**: a *label* dá o corte via `gh issue 
 --label`; o *campo Kanban* dá o quadro visual. Quem consome via CLI usa a label;
 quem consome visual usa o board.
 
-### 3.2 Milestones = versões (não sprints)
+### 3.2 Milestone = release · epic = frente de trabalho · sub-issue = task
 
-Cada milestone é uma **release**: `v1.1.0 — Álbuns e fluxo PR-driven`,
-`v1.2.0 — Expansão da biblioteca`. Fecha quando todos os itens fecham (o
-workflow emite o relatório e avisa o que ficou pendente); o PR de release
-(`develop` → `main`) carrega o milestone da versão. Sprints, quando existirem,
-são o campo `Sprint` do Project — não milestones.
+Três camadas, e cada uma responde por uma coisa:
+
+| Camada | O que é | Exemplo |
+|---|---|---|
+| **Milestone** | a **release** — o que sai publicado junto | `v2.0.0 — Formato, site e escala` |
+| **Epic** (issue pai, label `epic`) | frente de trabalho com objetivo, escopo e critério de saída próprios | `EPIC · Núcleo, CLI e fim do legado` (#41) |
+| **Sub-issue** (task) | entrega de **um** PR | `refactor(domain): camada de domínio pura` (#28) |
+
+Consequências práticas:
+
+- **Um milestone por release.** Fase do plano **não** vira milestone: enquanto a
+  release está aberta há um milestone só, e o progresso aparece nas barras dos
+  epics (sub-issues fechadas / total).
+- **Issue nova nasce como sub-issue de um epic.** Sem epic, ou o epic está
+  errado ou a issue não deveria existir.
+- **Task nasce quando a frente vai começar** — issue detalhada sobre código que
+  ainda vai mudar nasce errada (o que aconteceu com metade da primeira leva da
+  2.0: quatro issues pediam um caminho de pacote que já tinha mudado).
+- **Todo item fechado por cinco eixos**: exatamente **um** `type:`, **um**
+  `priority:`, **um** `size:` e ao menos **um** `area:` ou `scope:`. É o que faz
+  o filtro responder "o que é p0 e mexe em python?".
+- **Dependência é declarada no item que espera**, com
+  `gh issue edit <task> --add-blocked-by <task>` — a relação nativa do GitHub, que
+  o board e o card mostram. A label `status: blocked` **acompanha**, não
+  substitui: label é rótulo de leitura, a relação é o dado. Dependência vive na
+  **task**, não no epic — o epic herda a ordem das filhas.
+- **O milestone só fecha com a tag publicada** e com **todas** as sub-issues dos
+  epics fechadas: as barras de progresso dos epics são o placar da release.
+- **Milestone de release só fecha com a tag publicada.** A 1.1.0 e a 1.2.0 foram
+  entregues e não publicadas, e o trabalho da fase seguinte entrou no corte
+  delas — a regra existe para isso não repetir.
+- Sprints, quando existirem, são o campo `Sprint` do Project — não milestone.
 
 ### 3.3 Project v2 "GP-100 Pipeline"
 
@@ -142,9 +173,11 @@ release, fechamento do milestone (`gh api -X PATCH …/milestones/N -F state=clo
 
 ```bash
 gh issue list --label "status: needs-triage"                  # o que chegou
-gh issue edit 12 --add-label "type: feature,scope: data,size: M" \
+gh issue edit 12 --add-label "type: feature,scope: data,size: M,priority: p1-high" \
                 --remove-label "status: needs-triage" \
-                --milestone "v1.1.0 — Álbuns e fluxo PR-driven"
+                --milestone "v2.0.0 — Formato, site e escala" \
+                --parent 46                                   # nasce sob um epic
+gh issue edit 12 --add-blocked-by 30                          # se espera outra task
 gh issue edit 12 --add-label "status: ready-for-pr"           # pronta para puxar
 ```
 
@@ -155,9 +188,9 @@ gh issue list --label "status: ready-for-pr" --state open     # fila pronta
 git switch develop && git pull
 git switch -c feature/<slug>                                  # branch do trabalho
 # ... edits + pipeline + suíte ...
-gh pr create --base develop --fill --milestone "v1.1.0 — Álbuns e fluxo PR-driven" \
-  --label "type: feature" --label "scope: data" --label "size: M" \
-  --body "…Closes #12"
+gh pr create --base develop --fill --milestone "v2.0.0 — Formato, site e escala" \
+  --label "type: feature" --label "scope: data" --label "size: M" --label "priority: p1-high" \
+  --assignee "@me" --body "…Closes #12"
 gh pr ready                    # draft → In Review (automação move o card)
 gh pr checks                   # guardian + CI
 ```
@@ -180,7 +213,7 @@ gh pr merge 5 --merge --delete-branch   # card → Done; branch do trabalho remo
 ```bash
 gh api repos/lucascantarelli/gp-100-patch-architect/milestones \
   --jq '.[] | "\(.title): \(.closed_issues)/\(.open_issues + .closed_issues) fechados"'
-gh issue list --milestone "v1.1.0 — Álbuns e fluxo PR-driven" --state open
+gh issue list --milestone "v2.0.0 — Formato, site e escala" --state open
 gh project item-list 7 --owner lucascantarelli --format json \
   | python -c "import json,sys;[print(i['content']['title']) for i in json.load(sys.stdin)['items']]"
 ```
@@ -191,8 +224,9 @@ gh project item-list 7 --owner lucascantarelli --format json \
 ### Fechamento do milestone
 
 ```bash
-gh issue list --milestone "v1.1.0 — Álbuns e fluxo PR-driven" --state open   # migre o que sobrou
-gh api -X PATCH repos/lucascantarelli/gp-100-patch-architect/milestones/1 -F state=closed
+gh issue list --milestone "v2.0.0 — Formato, site e escala" --state open   # migre o que sobrou
+gh api -X PATCH repos/lucascantarelli/gp-100-patch-architect/milestones/3 -F state=closed
+# e só DEPOIS da tag publicada (regra que nasceu do caso 1.1.0/1.2.0)
 # o workflow publica o relatório; então: PR de release develop → main
 ```
 

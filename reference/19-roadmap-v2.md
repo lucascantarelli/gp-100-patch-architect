@@ -9,14 +9,16 @@
 
 | Dimensão | Estado |
 |---|---|
-| Biblioteca | **66 patches / 41 músicas / 5 álbuns** (Abbey Road 20 · Pulse 38 · Supernatural 4 · Apostrophe 2 · Cheap Thrills 2) |
-| Pipeline | Reprodutível e guardado pela suíte (43 testes, incluindo o `TestH` de sincronia) · CLI unificada `gp100.py` |
-| Em voo | **Wishkah (Nirvana)**: 17 músicas / 31 patches prontos em branch própria, aguardando merge |
-| Em voo | **Smooth (Santana)**: 4 patches com stomps, à frente da `develop` |
-| Gestão | Taxonomia, milestones, Project v2 e guardian definidos no repo (doc 18) — **bootstrap ainda não rodado contra o GitHub** |
-| Formato | `patches-defs.json` monolítico (~1 arquivo, 41 músicas); stomps ad-hoc no defs; `<ppEXP1>` ainda não explorado |
+| Biblioteca | **97 patches / 58 músicas / 6 álbuns** — derivado, não memorizado: `python -c "import json;d=json.load(open('tools/patches-defs.json'));print(len(d['songs']),'músicas',sum(len(s['patches']) for s in d['songs']),'patches')"` (o detalhe por álbum está no [README](../README.md)) |
+| Pipeline | Reprodutível e guardado pela suíte — **165 testes** (`uv run pytest -q`), com pytest desde a v1.2.0 e o `TestH` de sincronia · CLI unificada `gp100.py` (→ pacote `src/gp100_architect` na 2.0) |
+| Em voo | **nada**: `main` + `develop`, zero branch de trabalho — Smooth e Wishkah mergeados, as 10 branches antigas removidas |
+| Concluído | **Smooth (Santana)** (4 patches com stomps, #5) e **Wishkah (Nirvana)** (17 músicas / 31 patches, #6) — na `develop`, com a `1.1.0` e a `1.2.0` entregues e **não publicadas** |
+| Gestão | Taxonomia, milestones, **epics com sub-issues** (ADR-0012) e guardian vivos no GitHub (doc 18) — o board ainda pende o secret `PROJECT_TOKEN` (ADR-0011) |
+| Formato | `patches-defs.json` monolítico (58 músicas); stomps ad-hoc no defs; `<ppEXP1>` ainda não explorado |
 
-> ⚠️ O README ainda anuncia 62 patches — atualizar junto com o próximo merge de álbum (é saída de texto do próprio README, não de script).
+> **Zero número escrito à mão neste arquivo sem o comando que o deriva** — foi o
+> que apodreceu a versão anterior (66 patches, 43 testes, "Wishkah em voo").
+> Caminho do produto e da execução: [`docs/roadmap-2.0.md`](../docs/roadmap-2.0.md).
 
 ## 2 · Filosofia do major
 
@@ -178,30 +180,41 @@ dossiê do rig real (o fluxo de hoje já cobra isso).
 
 ```
 v1.1.0 — Álbuns e fluxo PR-driven
-  □ bootstrap da gestão rodado contra o GitHub (labels + milestones; Project pende escopo `project`) ✓
+  □ bootstrap da gestão rodado contra o GitHub (labels + milestones ✓; Project #7 criado ✓, pendente o secret `PROJECT_TOKEN` — ADR-0011)
   □ camada de gestão commitada (doc 18, bootstrap, guardian) → PR → merge — issue #4
   □ merge de Smooth (Santana) — 4 patches com stomps — issue #5
   □ merge do Wishkah (Nirvana) — 17 músicas / 31 patches — issue #6
   □ README atualizado (contagens por álbum pós-merges) — issue #7
 
-v1.2.0 — Fundações do 2.0 (tudo aditivo; issues a abrir)
+v1.2.0 — Fundações do 2.0 (tudo aditivo)
   □ CLI gp100.py (find/show/diff/export/build/verify) — issue #13 ✅
   □ defs_schema.py (validação acionável) — issue #14 ✅
   □ skills gp100-setlist + A/B + golden set dos agentes — issue #15 ✅
   □ trava Python 3.14 no CI + testes dos scripts soltos — issue #16 ✅
-  □ 1º álbum novo do pilar D (SRV ou Mayer)
 
-v2.0.0 — Formato, site e escala (as quebras)
+v2.0.0 — Formato, site e escala (as quebras + a fundação de engenharia)
   □ schema v2: defs por álbum + migrate_defs_v2.py + guarda atualizado — issue #8
   □ stomps/EXP1 formais no schema, com validação e seções novas na doc — issue #9
   □ variante -USERIR gerável — issue #10
   □ gen_site.py + GitHub Pages (busca + página por patch) — issue #11
   □ ≥ 100 patches / ≥ 10 álbuns (1º álbum: SRV / Hendrix / Mayer) — issue #12
+  □ o programa de engenharia que a 2.0 exige (pacote, CLI, docs, CI) — epics #41–#47
 ```
 
+> **Este quadro é escopo de produto, não plano de execução.** A divisão em tasks,
+> a ordem e as dependências vivem nos **epics** (#41–#47) e no
+> [`docs/roadmap-2.0.md`](../docs/roadmap-2.0.md) § 2–3 — repetir a lista aqui foi
+> o que deixou cinco números vencidos na versão anterior (achado A8).
+
+**Estado das releases (23/09/2026).** A `v1.1.0` e a `v1.2.0` foram **entregues
+na `develop` e não publicadas**: o `VERSION` e a única tag do repositório são
+`1.0.0`. O conteúdo das duas entra na **2.0.0**, que é a próxima release — e a
+regra que nasce daí é: *milestone de release só fecha com a tag publicada*.
+
 Regras herdadas valem para tudo acima: nenhum job escreve no git; patches/** é
-saída de script; todo PR fecha issue com `Closes #N`; suíte verde antes do
-merge (doc 18).
+saída de script; o PR referencia a issue com `Closes #N` (no fluxo para a
+`develop`, quem fecha é o mantenedor no merge); suíte verde antes do merge
+(doc 18).
 
 ## 10 · Itens para decidir nas issues (não aqui)
 

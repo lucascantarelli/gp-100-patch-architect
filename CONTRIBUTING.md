@@ -285,9 +285,9 @@ memória de quem abriu:
 gh pr create --base develop --fill \
   --title "feat(agents): gp100-setlist" \
   --label "type: feature" --label "scope: agents" --label "size: M" --label "priority: p2-medium" \
-  --milestone "2.0 · F2 — Núcleo e CLI" \
+  --milestone "v2.0.0 — Formato, site e escala" \
   --assignee @me \
-  --body "... Closes #31"
+  --body "... Closes #48"
 ```
 
 Regra prática dos rótulos: **um** `type:`, **um ou mais** `scope:`/`area:`, **um**

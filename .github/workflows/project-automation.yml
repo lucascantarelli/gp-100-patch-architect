@@ -9,7 +9,8 @@ name: Gestão de projetos
 #      que é aberto. Issue nova ganha `status: needs-triage`.
 #   2. status — move o card conforme o evento:
 #        PR aberto (draft)  → In Progress   · PR ready_for_review → In Review
-#        PR fechado/merged  → Done          · issue aberta/reaberta → Backlog
+#        PR fechado/merged  → Done          · issue fechada → Done
+#        issue aberta/reaberta → Backlog   (fim dos cards zumbis de issue fechada)
 #      Os estados intermediários (Ready → In Progress) são arraste manual:
 #      código não adivinha intenção humana.
 #   3. guardian — reprova o PR sem label, sem issue vinculada e sem milestone
@@ -50,7 +51,7 @@ name: Gestão de projetos
 
 on:
   issues:
-    types: [opened, labeled, reopened]
+    types: [opened, labeled, reopened, closed]
   pull_request:
     # synchronize/labeled/edited estão aqui porque o guardian os cita no `if`:
     # sem o gatilho ele nunca revalidava o PR a cada push ou label nova.
@@ -79,8 +80,10 @@ jobs:
     timeout-minutes: 5
     env:
       GH_TOKEN: ${{ secrets.PROJECT_TOKEN }}
+    # `closed` fica de fora: item fechado já está (ou deveria estar) no board,
+    # e o job `status` re-adiciona idempotentemente antes de mover para Done.
     if: >-
-      github.event_name == 'issues' ||
+      (github.event_name == 'issues' && github.event.action != 'closed') ||
       (github.event_name == 'pull_request' &&
         (github.event.action == 'opened' || github.event.action == 'reopened'))
     steps:
@@ -194,6 +197,9 @@ jobs:
               if [ "$IS_DRAFT" = "true" ]; then valor="In Progress"; else valor="In Review"; fi ;;
             pull_request/converted_to_draft) valor="In Progress" ;;
             pull_request/closed)             valor="Done" ;;
+            issues/closed)                   valor="Done" ;;
+            # Reaberta volta para Backlog (volto a triar); fechada sai da fila —
+            # `Done` cobre completed E not_planned: no board, "Done" é fim de fila.
             issues/opened|issues/reopened)   valor="Backlog" ;;
             *) echo "evento sem transição de card: $EVENT/$ACTION — nada a fazer" ;;
           esac

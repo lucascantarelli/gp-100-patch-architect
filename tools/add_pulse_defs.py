@@ -69,7 +69,6 @@ def P(camada, suf, nome, emoji, timbre, spec, riff, drum, escutar, ajustes, evit
                     "ajustes": ajustes, "evite": evite, "irNota": irnota}}
 
 # ---------- presets reutilizáveis ------------------------------------------------
-AMP_FLAG_CLEAN = mod('Flagman', True, 35, 55, 62, 50, 55, 58)
 AMP_FLAG_CRUNCH = mod('Flagman', True, 44, 55, 62, 50, 55, 58)
 AMP_FLAG_LEAD = mod('Flagman', True, 50, 58, 64, 50, 55, 58)
 AMP_FLAG_FUZZ = mod('Flagman', True, 40, 50, 58, 50, 52, 56)

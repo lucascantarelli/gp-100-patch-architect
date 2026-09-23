@@ -32,6 +32,7 @@ Tudo que os agentes consultam antes de propor um patch. **Fontes na ordem de pre
 | 19 | `19-roadmap-v2.md` | 🗺 Roadmap da v2.0: schema v2 do defs, CLI unificada, site estático e meta de 100+ patches |
 | 20 | `20-golden-set.md` | 🥇 Golden set: 20 músicas/43 patches canônicos como régua de avaliação dos agentes de pesquisa |
 | 21 | `21-code-review.md` | 🔍 Code review do código Python: forças, achados (M/B) e proposta do agente gp100-code-reviewer |
+| 22 | `22-dead-code-analysis.md` | 🧹 Análise de código obsoleto/morto: método, achados corrigidos e prevenção |
 
 > `16` e `17` foram criados depois do manual; `15` é a ponte entre os nomes do manual V1.8 e os nomes reais do firmware. `18` não é sobre som — é sobre como o repositório se gerencia; `19` é o plano do próximo major.
 

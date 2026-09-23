@@ -22,7 +22,6 @@ Exemplos:
   python tools/gp100.py verify
 """
 import argparse
-import json
 import shutil
 import subprocess
 import sys

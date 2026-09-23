@@ -18,7 +18,6 @@ no pacote (formato single, firmware 2.1 — o mesmo check da suíte).
 A versão é sempre validada como SemVer (`MAIOR.MENOR.PATCH`); `VERSION` é a
 fonte única usada pelo CI (job release) e por quem empacota localmente.
 """
-import json
 import re
 import sys
 import zipfile

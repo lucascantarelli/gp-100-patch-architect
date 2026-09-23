@@ -122,6 +122,10 @@ def validar(defs: dict) -> Erros:
             if len(nome) > 12:
                 er.add(f'{pb}.nome', f"'{nome}' tem {len(nome)} chars",
                        'máx. 12 (limite do painel da GP-100) — renomeie')
+            sufixo = patch.get('sufixo')
+            if sufixo not in CAMS:
+                er.add(f'{pb}.sufixo', f"'{sufixo}' não é uma camada conhecida",
+                       f'use um de: {", ".join(sorted(CAMS))}')
             if not patch.get('camada'):
                 er.add(f'{pb}.camada', 'obrigatória (aparece na doc e nos índices)',
                        'ex.: "Base", "Solo", "Riff"')

@@ -61,10 +61,11 @@ IR_LOCAL_POR_CAB = {cab: (v['captura'], v['slot']) for cab, v in DEFS['ir_local'
 # 415 ms). Toda a família de delays documenta e usa Mix, Time, Fdbk (Sweet,
 # P-Echo, M-Echo, 999 Echo, Slapbk), logo a linha do T-Echo trocou a ordem dos
 # dois últimos rótulos: aqui p0=Mix · p1=Time · p2=Fdbk.
-# nomes oficiais vivem em param_names.py (fonte única, sem ciclo de import)
-from param_names import PARAM_NAMES  # noqa: E402
-# fonte única da cadeia fixa (review doc 21, M1)
-from chain import CHAIN  # noqa: E402,F401
+# fonte única da cadeia fixa e dos nomes oficiais: o domínio do pacote.
+# (defs_schema, importado acima, já pôs src/ no sys.path; param_names.py — a
+# cópia legada — foi removida pela issue #28: uma fonte só, sem dead code.)
+from defs_schema import PARAM_NAMES  # noqa: E402  # re-exporta o domínio
+from chain import CHAIN  # noqa: E402,F401  # shim do domínio (sai no #33)
 DOT, CIRCLE = '**🔴**', '~~⚪~~'
 
 # base real de cada modelo (mapeamento rig real → GP-100, exibido na doc)

@@ -17,6 +17,9 @@ Fontes (nenhuma duplicada aqui):
   tools/patches-defs.json — músicas, patches, cadeias (spec.modules) e docs
   tools/gen_indexes.py    — slot_map (numeração U01… contínua, a mesma do
                             MAPA-DO-ALBUM e dos índices; nunca recalcular)
+  gp100_architect.domain.setlist — assinatura, distância, otimizador e dif
+                            (issue #28): as REGRAS moram no domínio; este
+                            script é o consumidor (I/O, resolução, relatórios)
 """
 import argparse
 import json
@@ -27,30 +30,21 @@ if hasattr(sys.stdout, 'reconfigure'):  # console Windows cp1252 -> UTF-8
     sys.stdout.reconfigure(encoding='utf-8', errors='replace')
 
 ROOT = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(ROOT / 'tools'))
-
-from gen_indexes import load_defs, slot_map  # noqa: E402
-
 DEFS_FILE = ROOT / 'tools' / 'patches-defs.json'
+sys.path.insert(0, str(ROOT / 'tools'))
+sys.path.insert(0, str(ROOT / 'src'))
 
+from defs_schema import carregar_e_validar  # noqa: E402  (põe src/ no sys.path)
+from gp100_architect.domain.setlist import (  # noqa: E402
+    assinatura as chave,
+    dif_cadeia,
+    otimizar,
+    trocas_totais,
+)
+from gen_indexes import slot_map  # noqa: E402
 
-# ── modelo de domínio ────────────────────────────────────────────────────────
-
-def chave(patch):
-    """Assinatura da cadeia: ((modelo, ligado) por posição, PRE → RVB).
-
-    Igual posição com igual par = zero trocas no device; a distância entre
-    dois patches é o número de posições em que a assinatura difere.
-    """
-    return tuple(
-        (m.get('name'), bool(m.get('on')))
-        for m in patch['spec']['modules'].values()
-    )
-
-
-def distancia(a, b):
-    """Trocas concretas entre dois patches: posições com assinatura diferente."""
-    return sum(1 for x, y in zip(a, b) if x != y)
+# regras vivem no domínio (issue #28); o script é consumidor. O alias `chave`
+# mantém a suíte legada (tests/test_setlist.py) funcionando até o #34 migrá-la.
 
 
 class Biblioteca:
@@ -118,39 +112,7 @@ class Biblioteca:
         return linhas
 
 
-# ── otimização ───────────────────────────────────────────────────────────────
-
-def otimizar(itens):
-    """Vizinho mais próximo: da primeira música, sempre o par mais parecido.
-
-    Exato o suficiente para repertório (10–30 músicas) e explicável: a cola
-    mostra exatamente o que muda a cada passo. Retorna a ordem escolhida.
-    """
-    restantes = list(itens)
-    plano = [restantes.pop(0)]
-    while restantes:
-        atual = chave(plano[-1][1])
-        melhor = min(restantes, key=lambda it: (distancia(atual, chave(it[1])),))
-        restantes.remove(melhor)
-        plano.append(melhor)
-    return plano
-
-
-# ── relatórios ───────────────────────────────────────────────────────────────
-
-def dif_cadeia(atual, proximo):
-    """O que o músico precisa mexer: 'DST: Blues OD → La Charger' etc."""
-    mods_atual = list(atual['spec']['modules'].items())
-    mods_prox = list(proximo['spec']['modules'].items())
-    diffs = []
-    for (ka, va), (kb, vb) in zip(mods_atual, mods_prox):
-        if va.get('name') != vb.get('name'):
-            diffs.append(f'{ka}: {va.get("name")} → {vb.get("name")}')
-        elif bool(va.get('on')) != bool(vb.get('on')):
-            estado = 'ligar' if vb.get('on') else 'desligar'
-            diffs.append(f'{ka}: {estado} {vb.get("name")}')
-    return diffs
-
+# ── relatórios (formatação é do script; as regras, do domínio) ─────────────
 
 def plano_json(plano, total_trocas, slots):
     itens = []
@@ -205,7 +167,7 @@ def main(argv=None):
     ap.add_argument('--out', metavar='ARQUIVO', help='Grava o relatório em arquivo')
     args = ap.parse_args(argv)
 
-    defs = load_defs()
+    defs = carregar_e_validar(DEFS_FILE)
     lib = Biblioteca(defs)
 
     if args.list:
@@ -236,9 +198,7 @@ def main(argv=None):
                          + ', '.join(sorted(forcar)))
 
     plano = itens if args.keep_order else otimizar(itens)
-    total = sum(
-        distancia(chave(plano[i - 1][1]), chave(plano[i][1]))
-        for i in range(1, len(plano)))
+    total = trocas_totais(plano)
 
     if args.json:
         saida = json.dumps(plano_json(plano, total, lib.slots),

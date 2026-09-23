@@ -52,7 +52,7 @@
 | # | Achado | Plano |
 |---|---|---|
 | M1 | Seeders `add_*.py` são fonte executável da história do defs, não código morto — mas serão aposentados pelo schema v2 | #8 (EPIC #42) → schema v2 é **2.0**, não 3.0 |
-| M2 | `tools/param_names.py` duplica `domain/params.py` durante a transição | último passo de #28 (depende de decisão sobre a edição pendente nesse arquivo) |
+| M2 | `tools/param_names.py` duplicava `domain/params.py` | **resolvido no delta da #28**: o arquivo foi removido (decisão do mantenedor: sem re-export, sem cópia) e o build importa o domínio |
 | M3 | Cinco test files históricos fora dos gates de estilo | #34 |
 | M4 | Documentação sem site/publicação | EPIC **Site e documentação** (#43): #11 (site da biblioteca) e #60 (site de docs, MkDocs Material) |
 | M5 | Sem dependabot para dependências Python (só para Actions) | EPIC **CI, automação e segurança** (#44) — #54 |
@@ -114,7 +114,7 @@ na `develop`. A ordem é a das dependências em
 | Risco | Probabilidade | Mitigação |
 |---|---|---|
 | Migração alterar byte do `.prst` | baixa | teste de contrato (TestC) roda a cada PR; nenhum passo toca no gerador sem ele |
-| `tools/` e pacote divergirem durante a transição | média | shim é a única ponte, e o conteúdo duplicado (`param_names`) é idêntico e verificável |
+| `tools/` e pacote divergirem durante a transição | média | shim é a única ponte (`tools/chain.py`, removido no #33); a cópia do `param_names` já saiu |
 | Adoção de pytest quebrar os testes históricos | baixa | pytest roda `unittest` nativamente — comprovado: a suíte inteira roda sob pytest (`uv run pytest -q` é a contagem, não uma promessa) |
 | Escopo da 2.0 crescer sem controle | média | **um milestone (a release) + epics** com critério de saída (#41–#47) e o DoD em `docs/roadmap-2.0.md`; o que não é 2.0 vai para 2.1 |
 | Dependência nova sem justificativa | baixa | ADR obrigatório para dependência de runtime (ADR-0001/0003/0005 registram typer, rich, uv, pytest) |

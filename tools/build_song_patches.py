@@ -2,10 +2,10 @@
 build_song_patches.py — Constrói todos os patches por MÚSICA a partir de tools/patches-defs.json.
 
 Para cada patch:
-  1. escreve <pasta da música>/<NOME>/spec.json
-  2. escreve <...>/patch.md  (documentação prática-primeiro, Markdown puro)
-  3. gera <...>/<NOME>.prst  via tools/generate_prst.py (formato single fw 2.1)
-  4. valida o XML resultante
+  1. escreve <...>/patch.md  (documentação prática-primeiro, Markdown puro)
+  2. gera <...>/<NOME>.prst  via codec (infrastructure/prst, spec in-memory —
+     ADR-0013: nenhum intermediário em disco)
+  3. valida o XML resultante
 
 Estrutura da doc (o prático vem ANTES do técnico):
   1. Sua guitarra agora   — seletor/volume/tone + técnica (o usuário toca certo já no 1º minuto)
@@ -21,7 +21,7 @@ Uso: python tools/build_song_patches.py
 """
 import copy
 import json
-import subprocess
+import os
 import sys
 import xml.etree.ElementTree as ET
 from pathlib import Path
@@ -66,6 +66,12 @@ IR_LOCAL_POR_CAB = {cab: (v['captura'], v['slot']) for cab, v in DEFS['ir_local'
 # cópia legada — foi removida pela issue #28: uma fonte só, sem dead code.)
 from defs_schema import PARAM_NAMES  # noqa: E402  # re-exporta o domínio
 from chain import CHAIN  # noqa: E402,F401  # shim do domínio (sai no #33)
+from gp100_architect.domain.errors import Gp100Error  # noqa: E402
+from gp100_architect.infrastructure.prst.codec import (  # noqa: E402
+    BUILD_TIME_PADRAO,
+    gerar_xml,
+    load_templates,
+)
 DOT, CIRCLE = '**🔴**', '~~⚪~~'
 
 # base real de cada modelo (mapeamento rig real → GP-100, exibido na doc)
@@ -600,13 +606,16 @@ _Legenda: **🔴** ligado · ⚪ desligado — a ordem é o caminho do sinal._
 def main():
     """Ponto de entrada: regenera TODOS os patches definidos em patches-defs.json.
 
-    Para cada patch: escreve spec.json (com author/notes derivados da música),
-    patch.md (build_doc) e <NOME>.prst (delegando ao generate_prst.py), depois
-    valida o XML resultante (nome ≤ 12 chars e igual ao definido). Os slots
+    Para cada patch: escreve patch.md (build_doc) e <NOME>.prst (gerado
+    in-memory pelo codec `infrastructure/prst` — ADR-0013: o spec.json
+    intermediário não é mais escrito em disco), depois valida o XML resultante
+    (nome ≤ 12 chars e igual ao definido). Os slots
     U01…Uxx são calculados pela ordem global dos defs (AR → ZP → PMH) — a
     numeração nunca fica defasada quando um álbum novo entra.
     """
     made = []
+    templates = load_templates()   # catálogo carregado UMA vez (dados puros)
+    build_time = os.environ.get('GP100_BUILD_TIME', BUILD_TIME_PADRAO)
     # slots calculados pela ordem global dos defs (AR → ZP → PMH) — nunca defasados
     slot_map, n = {}, 0
     for song in DEFS['songs']:
@@ -623,17 +632,15 @@ def main():
             folder = album_root / SONG_FOLDER[song['id']] / patch['nome']
             folder.mkdir(parents=True, exist_ok=True)
 
-            spec_path = folder / 'spec.json'
-            spec_path.write_text(json.dumps(spec, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
-
             (folder / 'patch.md').write_text(build_doc(song, patch, spec, slot), encoding='utf-8', newline='\r\n')
 
             prst = folder / f"{patch['nome']}.prst"
-            r = subprocess.run([sys.executable, str(ROOT / 'tools' / 'generate_prst.py'),
-                                str(spec_path), str(prst)], capture_output=True, text=True)
-            if r.returncode != 0:
-                print(f"FALHA {patch['nome']}: {r.stdout}{r.stderr}")
+            try:
+                xml = gerar_xml(spec, templates, build_time=build_time)
+            except Gp100Error as e:
+                print(f"FALHA {patch['nome']}: {e}")   # erro previsto: acionável
                 sys.exit(1)
+            prst.write_bytes(xml)
             root = ET.parse(prst).getroot()
             p = root.find('presets')
             assert p.get('ppName') == patch['nome'], f"nome no painel diverge: {p.get('ppName')}"

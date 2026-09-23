@@ -43,13 +43,6 @@ impulse_responses/*
 # `tools/render_manual_page.py` lê este arquivo localmente.
 manual.pdf
 
-# ── Intermediário do pipeline: NÃO versionado ──────────────────────────────────
-# `spec.json` é o que o `generate_prst.py` consome para gerar o `.prst`; o
-# pipeline o escreve no disco a cada rodada. Ninguém o consome depois (não vai ao
-# pacote de release) e ele é 100% regenerável do `patches-defs.json` — o que se
-# versiona é a fonte (`patches-defs.json`) e o produto (`.prst` + `patch.md`).
-patches/**/spec.json
-
 # ── Saída de empacotamento de release ─────────────────────────────────────────
 # `tools/build_release.py` escreve os ZIPs aqui; eles vão anexados à Release,
 # nunca para o histórico do git.

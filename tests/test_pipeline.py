@@ -208,8 +208,7 @@ class TestC_Prst(unittest.TestCase):
     def test_readme_da_pasta_do_patch(self):
         for song, patch in todas_as_musicas():
             pasta = pasta_do_patch(song, patch)
-            # `spec.json` não entra: é intermediário, gerado pelo pipeline e não
-            # versionado — num clone limpo (o job test-suite) ele não existe.
+            # ADR-0013: o spec vai in-memory ao codec; spec.json não existe mais.
             for arquivo in ('patch.md', f"{patch['nome']}.prst"):
                 self.assertTrue((pasta / arquivo).is_file(),
                                 f'{patch["nome"]}: falta {arquivo} em {pasta}')
@@ -343,12 +342,12 @@ PIPELINE = (
     'tools/add_wishkah_defs.py',       # Nirvana — Wishkah (já encadeia add_momentos)
     'tools/add_santana_defs.py',       # Santana — Smooth (momentos embutidos no seeder)
     'tools/add_momentos.py',           # momentos de toggle por patch
-    'tools/build_song_patches.py',     # patch.md + .prst (+ spec.json local)
+    'tools/build_song_patches.py',     # patch.md + .prst (spec in-memory, ADR-0013)
     'tools/gen_indexes.py',            # MAPA-DO-ALBUM.md + patches/README.md
 )
 # O que o pipeline escreve: patches/** (essas extensões) + os 3 arquivos fixos.
 SUFIXOS_DE_ARTEFATO = {'.prst', '.md', '.json'}
-ARTEFATO_IGNORADO = {'spec.json'}      # intermediário, fora do git
+ARTEFATO_IGNORADO: set[str] = set()    # (antes: spec.json — eliminado no ADR-0013)
 ARTEFATOS_FIXOS = (
     'tools/patches-defs.json',         # reescrito pelos seeders
     'tools/ir-library.json',           # ir_library.py

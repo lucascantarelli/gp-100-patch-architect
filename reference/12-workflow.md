@@ -28,11 +28,11 @@ Criar patches para a **Valeton GP-100** sob demanda: o usuário pede um estilo/m
 ```
 patches/<Banda>/<Álbum>/<Música>/<NOME>/
 ├── patch.md              # documento completo — renderizado pelo build_doc()
-├── spec.json             # parâmetros estruturados (não versionado: insumo do gerador)
 └── <NOME>.prst           # single fw 2.1, CAB de fábrica
 ```
-Nenhum desses três é escrito à mão: o `tools/build_song_patches.py` os gera a partir de
-`tools/patches-defs.json`. IRs de terceiros **não** entram na biblioteca — elas vivem em
+Nenhum desses é escrito à mão: o `tools/build_song_patches.py` os gera a partir de
+`tools/patches-defs.json` — o spec vai **in-memory** ao codec (ADR-0013: nenhum
+intermediário em disco; o antigo `spec.json` foi eliminado). IRs de terceiros **não** entram na biblioteca — elas vivem em
 `impulse_responses/<Pack>/`, fora do git (política em knowledge.md, regra 10).
 
 ```
@@ -93,5 +93,5 @@ O passo 6 é o que separa "rodei o pipeline" de "commitei o resultado": sem ele,
 ## Limites declarados do projeto
 - A GP-100 não tem reorder de cadeia; não criar expectativa de "trocar ordem dos efeitos".
 - Não há bloco de IR separado do CAB — IR substitui o CAB.
-- O `.prst` **é gerado** (`generate_prst.py`, formato single fw 2.1 validado no aparelho) e a entrega inclui `.prst` + `patch.md` + receita de digitação (o `spec.json` intermediário não é entregue nem versionado); IR de terceiros entra **documentada** (não embutida).
+- O `.prst` **é gerado** (codec `infrastructure/prst`, formato single fw 2.1 validado no aparelho) e a entrega inclui `.prst` + `patch.md` + receita de digitação; IR de terceiros entra **documentada** (não embutida).
 - Teste sonoro final é humano (músico + fones); o agente otimiza a probabilidade de acerto.

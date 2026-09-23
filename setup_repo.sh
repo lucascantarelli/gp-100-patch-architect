@@ -106,10 +106,22 @@ fazer() {
 
 # Proteção da branch de release (`main`): PR obrigatório + ci-gate verde.
 proteger() {
-  local b="$1" code_owners="$2" protecao
-  # Sem `bypass_pull_request_allowances`: ninguém precisa furar nada. O bot não
-  # escreve em branch (ver o cabeçalho) e o mantenedor passa por PR como qualquer
-  # pessoa. Force-push e deleção ficam bloqueados para todos, inclusive admins.
+  local b="$1" code_owners="$2" protecao bypass
+  # Sem exceção de bypass para ninguém. O bot não escreve em branch (ver o
+  # cabeçalho) e o mantenedor passa por PR como qualquer pessoa. Force-push e
+  # deleção ficam bloqueados para todos, inclusive admins.
+  #
+  # `bypass_pull_request_allowances` só existe em repositório de ORGANIZAÇÃO:
+  # em repo de pessoa a API reprova o PUT inteiro (HTTP 422 "Only organization
+  # repositories can have users and team restrictions") — por isso a chave só
+  # entra no payload quando o owner é Organization. (Bug latente: o script
+  # nunca tinha rodado; descoberto ao aplicar a proteção pela primeira vez.)
+  if [ "$(gh api "repos/$REPO" --jq '.owner.type' 2>/dev/null)" = "Organization" ]; then
+    bypass=$',
+    "bypass_pull_request_allowances": { "users": [], "teams": [], "apps": [] }'
+  else
+    bypass=""
+  fi
   #
   # `required_linear_history: false` é obrigatório aqui: o release vai de `develop`
   # para `main` como merge commit (ver o passo 4), e histórico linear proibiria
@@ -124,12 +136,7 @@ proteger() {
   "required_pull_request_reviews": {
     "dismiss_stale_reviews": true,
     "require_code_owner_reviews": $code_owners,
-    "required_approving_review_count": $REQUIRED_APPROVALS,
-    "bypass_pull_request_allowances": {
-      "users": [],
-      "teams": [],
-      "apps": []
-    }
+    "required_approving_review_count": $REQUIRED_APPROVALS$bypass
   },
   "restrictions": null,
   "required_linear_history": false,
@@ -266,8 +273,10 @@ ok "merge commit para o release; rebase desligado (squash só em PR externo, se 
 
 # ── 5 · Permissões das Actions ───────────────────────────────────────────────
 passo "5 · Permissões das Actions"
+# `-F` (booleano real), não `-f`: a API rejeita a string "true" em `enabled`
+# (HTTP 422 — For 'properties/enabled', "true" is not a boolean).
 fazer gh api -X PUT "repos/$REPO/actions/permissions" \
-  -f enabled=true -f allowed_actions=all
+  -F enabled=true -f allowed_actions=all
 ok "Actions habilitadas"
 
 fazer gh api -X PUT "repos/$REPO/actions/permissions/workflow" \

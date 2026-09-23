@@ -194,8 +194,13 @@ jobs:
 
           # Campo e opção: o `gh` reclama de forma genérica; aqui o erro diz
           # exatamente o que falta e onde criar (a opção que não existe é silenciosa
-          # no fluxo por nome).
-          campos="$(gh project field-list "$PROJECT_NUMBER" --owner "$PROJECT_OWNER" --format json)"
+          # no fluxo por nome). Captura com a mesma regra do item-add:
+          # "unknown owner type" = PAT rejeitado (cli/cli#8885).
+          if ! campos="$(gh project field-list "$PROJECT_NUMBER" --owner "$PROJECT_OWNER" --format json 2>&1)"; then
+            echo "::error::field-list falhou: $campos"
+            echo "::error::'unknown owner type' = o PAT foi rejeitado (cli/cli#8885) — confira: não expirou, tem Account permissions → Projects: read/write e acesso a este repositório"
+            exit 1
+          fi
           if ! printf '%s' "$campos" \
             | jq -e --arg v "$VALOR" \
               '.fields[] | select(.name == "Kanban") | .options[] | select(.name == $v)' >/dev/null; then
@@ -205,7 +210,10 @@ jobs:
 
           # O item pode não estar no board (o add-to-project é pulado no `closed`).
           # `item-list` (sem `--limit`: ele não existe) confirma antes de editar.
-          itens="$(gh project item-list "$PROJECT_NUMBER" --owner "$PROJECT_OWNER" --format json)"
+          if ! itens="$(gh project item-list "$PROJECT_NUMBER" --owner "$PROJECT_OWNER" --format json 2>&1)"; then
+            echo "::error::item-list falhou: $itens"
+            exit 1
+          fi
           if ! printf '%s' "$itens" | jq -e --arg u "$URL" '.items[] | select((.content.url // "") == $u)' >/dev/null; then
             gh project item-add "$PROJECT_NUMBER" --owner "$PROJECT_OWNER" --url "$URL" >/dev/null
           fi

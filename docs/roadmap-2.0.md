@@ -10,13 +10,13 @@
 
 ## Fases
 
-| Fase | Milestone | Objetivo | Issues |
+| Fase | Milestone (nome exato no GitHub) | Objetivo | Issues |
 |---|---|---|---|
-| **F1 · Fundação** | `2.0 · F1` | pacote, uv, gates, ADRs, docs de engenharia | #25–#34 (**criadas**) |
-| **F2 · Núcleo** | `2.0 · F2` | domínio, infraestrutura `.prst`, casos de uso, CLI completa, fim do legado, suíte nova | a criar na abertura da fase |
-| **F3 · Automação** | `2.0 · F3` | workflows separados, segurança, dependabot, release automation | a criar na abertura da fase |
-| **F4 · Documentação** | `2.0 · F4` | site MkDocs, guias por público, FAQ, exemplos | a criar na abertura da fase |
-| **F5 · IA e governança** | `2.0 · F5` | agentes especializados, agente de versionamento, templates, labels, board | a criar na abertura da fase |
+| **F1 · Fundação** | `2.0 · F1 — Fundação` | pacote, uv, gates, ADRs, docs de engenharia | #25–#34 (**criadas**; #25, #26, #27 entregues) |
+| **F2 · Núcleo e CLI** | `2.0 · F2 — Núcleo e CLI` | domínio, infraestrutura `.prst`, casos de uso, CLI completa, fim do legado, suíte nova | #28–#34 abertas; complementos na abertura da fase |
+| **F3 · Automação e CI** | `2.0 · F3 — Automação e CI` | workflows separados, segurança, dependabot, release automation | a criar na abertura da fase |
+| **F4 · Documentação** | `2.0 · F4 — Documentação` | site MkDocs, guias por público, FAQ, exemplos | a criar na abertura da fase |
+| **F5 · IA e governança** | `2.0 · F5 — IA e governança` | agentes especializados, agente de versionamento, templates, labels, board | a criar na abertura da fase |
 | **Release** | `2.0 · Release` | auditoria de consistência, validação final, changelog, tag | a criar no fim de F5 |
 
 As issues são criadas fase a fase **com o contexto da fase anterior já

@@ -15,7 +15,8 @@ name: 📋 Gestão de projetos
 #   3. guardian — reprova o PR sem label, sem issue vinculada e sem milestone
 #      (o milestone em falta é aviso). Isenta o PR de release (develop → main).
 #      Roda em opened/synchronize/labeled/edited: revalida a cada push e a cada
-#      label aplicada — o erro diz qual regra falta, não só que falhou.
+#      label aplicada — o erro diz qual regra falta, não só que falhou. Sem
+#      assignee também avisa: PR sem dono é PR que ninguém puxa.
 #   4. milestone — relatório de fechamento: quantos itens ficaram abertos e o
 #      lembrete de migrá-los para o próximo marco.
 #   5. diagnostico (workflow_dispatch) — confere token, Project, campo Kanban e
@@ -231,7 +232,7 @@ jobs:
        github.event.action == 'reopened' || github.event.action == 'labeled' ||
        github.event.action == 'edited')
     steps:
-      - name: Valida label, issue vinculada e milestone
+      - name: Valida label, assignee, issue vinculada e milestone
         env:
           PR: ${{ github.event.number }}
           BASE: ${{ github.event.pull_request.base.ref }}
@@ -247,6 +248,14 @@ jobs:
             falha=1
           fi
 
+          # 2 · Assignee — sem dono, o card do board não tem responsável e o PR
+          #     fica sem quem o puxe. Aviso, não reprova (o mantenedor é único
+          #     hoje: `@me` resolve em um comando).
+          donos="$(gh pr view "$PR" --repo "$REPO" --json assignees --jq '.assignees | length')"
+          if [ "${donos:-0}" -eq 0 ]; then
+            echo "::warning::PR sem assignee — aplique o responsável: gh pr edit $PR --add-assignee @me"
+          fi
+
           if [ "$BASE" = "main" ]; then
             # 2/3 · PR de release (develop → main): a gestão é o CHANGELOG + milestone.
             echo "PR de release para a main — isento de issue vinculada."
@@ -255,7 +264,7 @@ jobs:
               echo "::warning::release sem milestone — associe a versão: gh pr edit $PR --milestone \"vX.Y.Z\""
             fi
           else
-            # 2 · Issue vinculada — a regra de ouro: nada entra sem issue; a issue
+            # 3 · Issue vinculada — a regra de ouro: nada entra sem issue; a issue
             #     é fechada pelo PR (Closes #N), nunca à mão.
             corpo="$(gh pr view "$PR" --repo "$REPO" --json body --jq '.body // ""')"
             ms="$(gh pr view "$PR" --repo "$REPO" --json milestone --jq '.milestone.title // ""')"
@@ -268,7 +277,7 @@ jobs:
               fi
             fi
 
-            # 3 · Milestone — aviso, não reprova (decision: mantenedor único).
+            # 4 · Milestone — aviso, não reprova (decision: mantenedor único).
             if [ -z "$ms" ]; then
               echo "::warning::sem milestone — associe no review: gh pr edit $PR --milestone \"v1.1.0\""
             fi

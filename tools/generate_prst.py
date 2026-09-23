@@ -58,7 +58,9 @@ GENRE_CODES = {
     'Metal': '0', 'World': '1', 'Indie': '2', 'Country': '3', 'Rock': '4',
     'Funk': '5', 'Pop': '6', 'Blues': '7', 'Jazz': '8', 'Bass': '9', 'Acoustic': '10',
 }
-CHAIN = ['PRE', 'DST', 'AMP', 'NR', 'CAB', 'EQ', 'MOD', 'DLY', 'RVB']
+# fonte única da cadeia fixa (review doc 21, M1); CHAIN_POS/EXPORT_ORDER
+# permanecem aqui — são particulares do formato .prst
+from chain import CHAIN  # noqa: E402,F401
 CHAIN_POS = {'PRE': 0, 'DST': 1, 'AMP': 2, 'NR': 3, 'CAB': 4,
              'EQ': 5, 'MOD': 6, 'DLY': 7, 'RVB': 8}
 FACTORY_IR = '27'  # IR padrão dos 99 patches de fábrica

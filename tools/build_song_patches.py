@@ -63,7 +63,8 @@ IR_LOCAL_POR_CAB = {cab: (v['captura'], v['slot']) for cab, v in DEFS['ir_local'
 # dois últimos rótulos: aqui p0=Mix · p1=Time · p2=Fdbk.
 # nomes oficiais vivem em param_names.py (fonte única, sem ciclo de import)
 from param_names import PARAM_NAMES  # noqa: E402
-CHAIN = ['PRE', 'DST', 'AMP', 'NR', 'CAB', 'EQ', 'MOD', 'DLY', 'RVB']
+# fonte única da cadeia fixa (review doc 21, M1)
+from chain import CHAIN  # noqa: E402,F401
 DOT, CIRCLE = '**🔴**', '~~⚪~~'
 
 # base real de cada modelo (mapeamento rig real → GP-100, exibido na doc)

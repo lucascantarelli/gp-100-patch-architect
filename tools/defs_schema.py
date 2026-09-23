@@ -35,7 +35,9 @@ sys.path.insert(0, str(Path(__file__).parent))
 from param_names import PARAM_NAMES  # noqa: E402
 
 CAMS = {'BA', 'SO', 'RI', 'CL', 'FL', 'AR', 'AC', 'VO', 'SL', 'AM', 'EC', 'JM', 'FZ', 'IN', 'S2', 'VOX'}  # documental
-CHAIN = ['PRE', 'DST', 'AMP', 'NR', 'CAB', 'EQ', 'MOD', 'DLY', 'RVB']
+
+# fonte única da cadeia fixa (review doc 21, M1)
+from chain import CHAIN  # noqa: E402,F401
 
 
 class Erros:

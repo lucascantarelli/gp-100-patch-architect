@@ -148,9 +148,10 @@ class TestRelatorios(unittest.TestCase):
         self.assertIn('U', md)  # slots vêm do slot_map
 
     def test_json_bate_com_o_plano(self):
-        out = sl.plano_json(self.plano, self.total)
+        out = sl.plano_json(self.plano, self.total, self.lib.slots)
         self.assertEqual(len(out['itens']), len(self.plano))
         self.assertEqual(out['itens'][0]['patch'], self.plano[0][1]['nome'])
+        self.assertEqual(out['itens'][0]['slot'], 'U01')  # slot real, não morto
 
     def test_out_grava_em_tmpdir(self):
         with tempfile.TemporaryDirectory() as td:

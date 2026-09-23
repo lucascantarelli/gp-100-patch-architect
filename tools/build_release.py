@@ -65,7 +65,10 @@ def collect_patches():
     pipeline, num clone limpo (é o que o job de release tem, já que ele não roda o
     pipeline) a lista sairia VAZIA e a release não empacotaria nada.
     """
-    defs = json.loads(DEFS_FILE.read_text(encoding='utf-8'))
+    # validação acionável também no empacotamento (review doc 21, M2): a
+    # release não pode sair de um defs quebrado
+    from defs_schema import carregar_e_validar
+    defs = carregar_e_validar(DEFS_FILE)
     items = []
     for song in defs['songs']:
         album = defs['albums'][song['idAlbum']]['pasta']
@@ -129,7 +132,8 @@ def package(version: str):
         print(f'  📦 {alvo.name}: {len(patches)} patches')
 
     # ---- notas da release ----
-    defs = json.loads((ROOT / 'tools' / 'patches-defs.json').read_text(encoding='utf-8'))
+    from defs_schema import carregar_e_validar
+    defs = carregar_e_validar(DEFS_FILE)
     n_songs = len(defs.get('songs', []))
     linhas = [
         f'# GP-100 Patches v{version}', '',

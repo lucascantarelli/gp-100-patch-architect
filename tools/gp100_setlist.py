@@ -152,13 +152,13 @@ def dif_cadeia(atual, proximo):
     return diffs
 
 
-def plano_json(plano, total_trocas):
+def plano_json(plano, total_trocas, slots):
     itens = []
     for pos, (musica, patch) in enumerate(plano):
         anterior = plano[pos - 1][1] if pos else None
         itens.append({
             'ordem': pos + 1,
-            'slot': None if anterior is None else None,  # preenchido abaixo
+            'slot': slots[patch['nome']],
             'musica': musica['song'],
             'patch': patch['nome'],
             'trocas': [] if anterior is None else dif_cadeia(anterior, patch),
@@ -241,7 +241,8 @@ def main(argv=None):
         for i in range(1, len(plano)))
 
     if args.json:
-        saida = json.dumps(plano_json(plano, total), ensure_ascii=False, indent=1)
+        saida = json.dumps(plano_json(plano, total, lib.slots),
+                           ensure_ascii=False, indent=1)
     else:
         saida = plano_markdown(plano, total, lib.slots, args.title)
 

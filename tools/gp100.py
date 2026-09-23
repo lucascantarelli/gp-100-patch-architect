@@ -37,7 +37,8 @@ DEFS = ROOT / 'tools' / 'patches-defs.json'
 PATCHES = ROOT / 'patches'
 
 # cadeia fixa da GP-100 — mesma ordem do gerador (x=0..8)
-CHAIN = ['PRE', 'DST', 'AMP', 'NR', 'CAB', 'EQ', 'MOD', 'DLY', 'RVB']
+# fonte única da cadeia fixa (review doc 21, M1)
+from chain import CHAIN  # noqa: E402,F401
 
 # ordem do guarda de sincronia (TestH) — os seeders re-appendam seu álbum
 PIPELINE = (
@@ -61,9 +62,10 @@ except Exception:  # pragma: no cover — fallback: a CLI ainda funciona sem ró
 # ---------------------------------------------------------------- dados ----
 
 def carregar_defs():
-    if not DEFS.exists():
-        raise SystemExit(f"defs não encontrado: {DEFS}")
-    return json.loads(DEFS.read_text(encoding='utf-8'))
+    """Lê o defs via validação acionável — a CLI não exibe dados de defs quebrado
+    (review doc 21, M2); o erro sai com caminho JSON e correção sugerida."""
+    from defs_schema import carregar_e_validar
+    return carregar_e_validar(DEFS)
 
 
 def song_pasta(song):

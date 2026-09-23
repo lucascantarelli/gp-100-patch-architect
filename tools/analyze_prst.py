@@ -1,162 +1,63 @@
 #!/usr/bin/env python3
-"""Analisa arquivos .prst da Valeton GP-100 (XML) e extrai dados oficiais.
+"""analyze_prst.py — shim de CLI do leitor `.prst` (issue #29).
+
+O parse e as estatísticas vivem em
+`src/gp100_architect/infrastructure/prst/reader.py` (biblioteca pura, parse
+defensivo com `FormatoPrstInvalido`); aqui fica só a cara de terminal:
+resolver argumentos, imprimir o relatório e, com `--json`, salvar o dump.
 
 Uso:
     python tools/analyze_prst.py <arquivo>.prst            # resumo completo
     python tools/analyze_prst.py <arquivo>.prst --json out # dump JSON
-
-Gera:
-- Lista de modelos por módulo (com effectCode)
-- Estatísticas empíricas de params_0..14 por modelo (min/max/distintos)
-- Catálogo dos patches (nome, gênero, BPM, IR, cadeia)
-
-Nota: foi este script que drenou o export de fábrica do aparelho para
-`tools/factory-catalog.json` (99 presets · 891 effects · 117 modelos). O
-export original foi removido do repositório na limpeza — exporte a biblioteca
-no GP-100 Edits se precisar regenerar o catálogo.
-
-Valores de preenchimento observados nos slots não usados dos efeitos de fábrica:
-65535, 12800 e 65280 (o gerador os trata em `is_junk`, em generate_prst.py).
 """
-import sys
+from __future__ import annotations
+
 import json
-import xml.etree.ElementTree as ET
+import sys
 from collections import defaultdict
+from pathlib import Path
 
-def parse(path):
-    """Lê um export .prst (XML) e devolve (info, irs, patches).
+if hasattr(sys.stdout, 'reconfigure'):  # console Windows cp1252 -> UTF-8
+    sys.stdout.reconfigure(encoding='utf-8', errors='replace')
 
-    info    — atributos de <preset_info> (software/firmware/product/count).
-    irs     — lista de User IRs do bloco <ppIRInfo> (só existe no export "all").
-    patches — cada preset com nome, gênero, bpm, volume e a lista de <Effect>
-              (módulo, nome normalizado sem espaços, effectCode, estado, x/y e
-              params_0..14 com None nos slots ausentes).
-    """
-    tree = ET.parse(path)
-    root = tree.getroot()
-    info = root.find('preset_info').attrib
-    # <ppIRInfo> existe só no export "all" — o formato single fw 2.1 (o que este
-    # projeto gera) não o tem. Sem o guarda, `for ir in None` estourava TypeError
-    # nos patches da própria biblioteca (62 à época; 97 hoje).
-    ir_node = root.find('ppIRInfo')
-    irs = [ir.attrib for ir in ir_node] if ir_node is not None else []
-    patches = []
-    for p in root.findall('presets'):
-        effects = []
-        for e in p.findall('Effect'):
-            attrib = e.attrib
-            params = []
-            for i in range(15):
-                v = attrib.get(f'params_{i}')
-                params.append(v if v is not None else None)
-            effects.append({
-                'module': attrib.get('effectModuleName'),
-                # 'COMP  ' vem com espaços no export de fábrica — normaliza
-                'name': (attrib.get('effectName') or '').strip(),
-                'code': attrib.get('effectCode'),
-                'state': attrib.get('effectState'),
-                'x': attrib.get('x'),
-                'y': attrib.get('y'),
-                'params': params,
-            })
-        patches.append({
-            'name': p.attrib.get('ppName'),
-            'id': p.attrib.get('ppID'),
-            'type': p.attrib.get('ppTypeName'),
-            'type_code': p.attrib.get('ppType'),
-            'bpm': p.attrib.get('ppBPM'),
-            'volume': p.attrib.get('ppVolume'),
-            'ir_num': p.attrib.get('ppIRNum'),
-            'bank': p.attrib.get('ppBank'),
-            'effects': effects,
-        })
-    return info, irs, patches
+ROOT = Path(__file__).parent.parent
+sys.path.insert(0, str(ROOT / 'src'))
+
+from gp100_architect.domain.errors import Gp100Error  # noqa: E402
+from gp100_architect.infrastructure.prst.reader import analyze, fmt_stat, parse  # noqa: E402
+
+ORDEM_CADEIA = ['PRE', 'DST', 'AMP', 'NR', 'CAB', 'EQ', 'MOD', 'DLY', 'RVB']
 
 
-def analyze(patches):
-    """Agrega estatísticas empíricas dos patches parseados.
-
-    Devolve (models, param_stats):
-      models      — {(modulo, modelo): {codes, count, x}} — quantos presets usam
-                    o modelo, quais effectCode e posições de cadeia (x) assumiu.
-      param_stats — {(modulo, modelo): [{valor: ...} x 15]} — conjunto de valores
-                    distintos observados em cada params_i (base dos ranges reais).
-    """
-    # modelos por módulo
-    models = defaultdict(lambda: {'codes': set(), 'count': 0, 'x': set()})
-    # params por (modulo, modelo)
-    param_stats = defaultdict(lambda: [defaultdict(set) for _ in range(15)])
-    for p in patches:
-        for e in p['effects']:
-            key = (e['module'], e['name'])
-            m = models[key]
-            m['codes'].add(e['code'])
-            m['count'] += 1
-            if e['x'] is not None:
-                m['x'].add(e['x'])
-            vals = e['params']
-            for i, v in enumerate(vals):
-                if v is None:
-                    continue
-                param_stats[key][i][v].add(0)
-    return models, param_stats
-
-
-def fmt_stat(sets_by_idx):
-    """Formata as estatísticas de params de um modelo (saída de analyze).
-
-    Para cada params_i observado imprime uma linha: valor fixo, faixa min/max
-    com contagem de valores distintos, ou a lista de valores quando não numéricos.
-    """
-    lines = []
-    for i in range(15):
-        vals = set(sets_by_idx[i].keys())
-        if not vals:
-            continue
-        nums = []
-        for v in vals:
-            try:
-                nums.append(float(v))
-            except ValueError:
-                # Valor não numérico (ex.: 'Sync', 'OFF') — não é erro: o
-                # parâmetro aceita não-números e eles ficam fora do min/max.
-                pass
-        if len(vals) == 1:
-            lines.append(f'  p{i}: fixo={next(iter(vals))}')
-        elif nums:
-            lines.append(f'  p{i}: min={min(nums):g} max={max(nums):g} distintos={len(vals)}')
-        else:
-            lines.append(f'  p{i}: valores={sorted(vals)[:8]}')
-    return '\n'.join(lines)
-
-
-def main():
-    """Imprime o relatório completo do .prst e, com --json <arquivo>, salva o dump.
-
-    Seções: preset_info, User IRs, modelos por módulo (com estatísticas de
-    params) e catálogo de presets (cadeia completa de cada um).
-    """
+def main() -> None:
+    """Imprime o relatório completo do .prst e, com --json <arquivo>, salva o dump."""
+    if len(sys.argv) < 2:
+        print(__doc__)
+        sys.exit(1)
     path = sys.argv[1]
     info, irs, patches = parse(path)
     models, param_stats = analyze(patches)
 
-    print(f"== preset_info: software={info.get('software')} firmware={info.get('firmware')} product={info.get('product')} count={info.get('count')}")
-    print(f"== User IRs: {len(irs)} slots")
+    print(f"== preset_info: software={info.get('software')} firmware={info.get('firmware')} "
+          f"product={info.get('product')} count={info.get('count')}")
+    print(f'== User IRs: {len(irs)} slots')
 
-    by_module = defaultdict(list)
+    by_module: dict[str, list[tuple[str, dict]]] = defaultdict(list)
     for (module, name), data in sorted(models.items()):
         by_module[module].append((name, data))
-    for module in ['PRE', 'DST', 'AMP', 'NR', 'CAB', 'EQ', 'MOD', 'DLY', 'RVB']:
-        print(f"\n=== {module} ({len(by_module[module])} modelos) ===")
+    for module in ORDEM_CADEIA:
+        print(f'\n=== {module} ({len(by_module[module])} modelos) ===')
         for name, data in by_module[module]:
             codes = ','.join(sorted(data['codes']))
-            print(f"  {name:24s} code={codes:12s} usado_em={data['count']:3d} x={sorted(data['x'])}")
+            print(f'  {name:24s} code={codes:12s} usado_em={data["count"]:3d} '
+                  f'x={sorted(data["x"])}')
             print(fmt_stat(param_stats[(module, name)]))
 
-    print(f"\n=== CATALOGO ({len(patches)} patches) ===")
+    print(f'\n=== CATALOGO ({len(patches)} patches) ===')
     for p in patches:
         chain = ' '.join(f"{e['module']}:{e['name']}({e['state']})" for e in p['effects'])
-        print(f"  #{int(p['id'])+1:03d} [{p['type']}] {p['name']} bpm={p['bpm']} vol={p['volume']} ir={p['ir_num']}\n      {chain}")
+        print(f'  #{int(p["id"]) + 1:03d} [{p["type"]}] {p["name"]} bpm={p["bpm"]} '
+              f'vol={p["volume"]} ir={p["ir_num"]}\n      {chain}')
 
     if '--json' in sys.argv:
         out = {
@@ -167,8 +68,12 @@ def main():
         outpath = sys.argv[sys.argv.index('--json') + 1]
         with open(outpath, 'w', encoding='utf-8') as f:
             json.dump(out, f, ensure_ascii=False, indent=1)
-        print(f"\nJSON salvo em {outpath}")
+        print(f'\nJSON salvo em {outpath}')
 
 
 if __name__ == '__main__':
-    main()
+    try:
+        main()
+    except Gp100Error as e:
+        print(f'ERRO: {e}', file=sys.stderr)
+        sys.exit(1)

@@ -109,8 +109,16 @@ jobs:
         env:
           URL: ${{ github.event.issue.html_url || github.event.pull_request.html_url }}
         run: |
-          gh project item-add "$PROJECT_NUMBER" --owner "$PROJECT_OWNER" --url "$URL" \
-            && echo "no Project #$PROJECT_NUMBER: $URL"
+          # Captura o stderr: o `gh project` mascara falha de autenticação como
+          # "unknown owner type" (cli/cli#8885) — aqui o erro real vai para o log
+          # com a causa provável, em vez de matar o job sem dizer por quê.
+          if saida="$(gh project item-add "$PROJECT_NUMBER" --owner "$PROJECT_OWNER" --url "$URL" 2>&1)"; then
+            echo "no Project #$PROJECT_NUMBER: $URL"
+          else
+            echo "::error::item-add falhou: $saida"
+            echo "::error::'unknown owner type' = o PAT foi rejeitado (cli/cli#8885) — confira: não expirou, tem Account permissions → Projects: read/write e acesso a este repositório"
+            exit 1
+          fi
 
       # Issue nova recebe needs-triage: ninguém deve pegar tarefa não triada.
       - name: Marca issue nova como needs-triage
@@ -194,8 +202,13 @@ jobs:
 
           # Campo e opção: o `gh` reclama de forma genérica; aqui o erro diz
           # exatamente o que falta e onde criar (a opção que não existe é silenciosa
-          # no fluxo por nome).
-          campos="$(gh project field-list "$PROJECT_NUMBER" --owner "$PROJECT_OWNER" --format json)"
+          # no fluxo por nome). Captura com a mesma regra do item-add:
+          # "unknown owner type" = PAT rejeitado (cli/cli#8885).
+          if ! campos="$(gh project field-list "$PROJECT_NUMBER" --owner "$PROJECT_OWNER" --format json 2>&1)"; then
+            echo "::error::field-list falhou: $campos"
+            echo "::error::'unknown owner type' = o PAT foi rejeitado (cli/cli#8885) — confira: não expirou, tem Account permissions → Projects: read/write e acesso a este repositório"
+            exit 1
+          fi
           if ! printf '%s' "$campos" \
             | jq -e --arg v "$VALOR" \
               '.fields[] | select(.name == "Kanban") | .options[] | select(.name == $v)' >/dev/null; then
@@ -205,17 +218,26 @@ jobs:
 
           # O item pode não estar no board (o add-to-project é pulado no `closed`).
           # `item-list` (sem `--limit`: ele não existe) confirma antes de editar.
-          itens="$(gh project item-list "$PROJECT_NUMBER" --owner "$PROJECT_OWNER" --format json)"
+          if ! itens="$(gh project item-list "$PROJECT_NUMBER" --owner "$PROJECT_OWNER" --format json 2>&1)"; then
+            echo "::error::item-list falhou: $itens"
+            exit 1
+          fi
           if ! printf '%s' "$itens" | jq -e --arg u "$URL" '.items[] | select((.content.url // "") == $u)' >/dev/null; then
             gh project item-add "$PROJECT_NUMBER" --owner "$PROJECT_OWNER" --url "$URL" >/dev/null
           fi
 
           # Edição por nome (--url/--field/--value): dispensa caçar node IDs de
           # item e campo a cada evento, que era onde a versão anterior errava
-          # (`--item-id`/`--option-id` não existem).
-          gh project item-edit "$PROJECT_NUMBER" --owner "$PROJECT_OWNER" \
-            --url "$URL" --field "Kanban" --value "$VALOR"
-          echo "$URL → $VALOR"
+          # (`--item-id`/`--option-id` não existem). Erro capturado com a mesma
+          # regra do item-add: "unknown owner type" = PAT rejeitado (#8885).
+          if saida="$(gh project item-edit "$PROJECT_NUMBER" --owner "$PROJECT_OWNER" \
+            --url "$URL" --field "Kanban" --value "$VALOR" 2>&1)"; then
+            echo "$URL → $VALOR"
+          else
+            echo "::error::item-edit falhou: $saida"
+            echo "::error::'unknown owner type' = o PAT foi rejeitado (cli/cli#8885) — confira: não expirou, tem Account permissions → Projects: read/write e acesso a este repositório"
+            exit 1
+          fi
 
   guardian:
     name: 🛡 Guardian — PR precisa de gestão

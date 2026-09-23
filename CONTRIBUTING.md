@@ -60,6 +60,8 @@ cab):
 # 3. Pipeline completo, na ordem do CI
 python tools/ir_library.py \
   && python tools/add_pulse_defs.py \
+  && python tools/add_wishkah_defs.py \
+  && python tools/add_santana_defs.py \
   && python tools/add_momentos.py \
   && python tools/build_song_patches.py \
   && python tools/gen_indexes.py

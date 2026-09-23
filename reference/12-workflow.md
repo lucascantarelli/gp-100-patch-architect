@@ -78,10 +78,12 @@ Qualquer elemento novo (música, camada, patch, modelo de efeito, momento de tog
 ```bash
 python tools/ir_library.py          # 1. biblioteca de IRs → tools/ir-library.json + reference/16
 python tools/add_pulse_defs.py      # 2. seeders de álbum (já encadeia add_momentos.py)
-python tools/add_momentos.py        # 3. momentos de toggle (estado inverso; nunca AMP/CAB)
-python tools/build_song_patches.py  # 4. patch.md + .prst de todos os patches (+ spec.json local)
-python tools/gen_indexes.py         # 5. MAPA-DO-ALBUM.md + patches/README.md
-python -m unittest discover -s tests -v  # 6. guarda de sincronia: pipeline numa cópia × commitado
+python tools/add_wishkah_defs.py    # 3. Nirvana — Wishkah (encadeia add_momentos)
+python tools/add_santana_defs.py    # 4. Santana — Smooth (momentos embutidos)
+python tools/add_momentos.py        # 5. momentos de toggle (estado inverso; nunca AMP/CAB)
+python tools/build_song_patches.py  # 6. patch.md + .prst de todos os patches (+ spec.json local)
+python tools/gen_indexes.py         # 7. MAPA-DO-ALBUM.md + patches/README.md
+python -m unittest discover -s tests -v  # 8. guarda de sincronia: pipeline numa cópia × commitado
 ```
 
 **Isso é literalmente o que o `TestH_DadosEmSincronia` roda**, a cada `unittest` — local e no CI. **Nenhum job escreve no repositório**: se algum derivado estiver defasado, o teste reprova e imprime o comando exato de conserto, para o autor rodar e commitar.

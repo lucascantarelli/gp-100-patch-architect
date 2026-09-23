@@ -169,9 +169,13 @@ e a automação não finge que rodou. O detalhamento (e as alternativas
 descartadas) está no [`ADR-0011`](../docs/decisions/0011-gestao-de-project-com-pat.md).
 
 **O que a automação faz sozinha** (project-automation.yml): adiciona issue/PR ao
-Project; marca issue nova `needs-triage`; move card (`In Progress`/`In Review`/
-`Done`/`Backlog`); **guardian** reprova PR sem label ou sem `Closes #N`
+Project; marca issue nova `needs-triage`; move card — PR: `In Progress`
+(draft), `In Review` (ready), `Done` (fechado/merged); issue: `Backlog`
+(aberta/reaberta), `Done` (fechada, por qualquer motivo — fim dos cards
+zumbis); **guardian** reprova PR sem label ou sem `Closes #N`
 (avisa quando falta milestone ou assignee); relatório de fechamento de milestone.
+As transições de **issue** executam a versão do workflow que está na branch
+padrão (`main`): viram efetivas no PR de release `develop → main`.
 **O que é humano:** triagem, arraste `Ready → In Progress`, datas de
 release, fechamento do milestone (`gh api -X PATCH …/milestones/N -F state=closed`).
 

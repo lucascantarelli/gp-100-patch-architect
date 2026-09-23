@@ -68,6 +68,15 @@ Regras que REPROVAM:
 Regra que AVISA (não reprova):
   9. Action de PRIMEIRA PARTE (`actions/*`, `github/*`) sem SHA. São mantidas
      no major de propósito — o Dependabot acompanha e o GitHub é o publicador.
+
+ 10. TETO de permissões por workflow (#62) — "menor privilégio" verificável:
+     cada arquivo declara na tabela TETO_PERMISSOES o MÁXIMO que tem direito a
+     pedir; qualquer `permissions:` (topo ou job) acima do teto reprova, com a
+     mensagem dizendo qual é o teto e por quê. Um workflow de leitura com
+     `contents: write` é superfície de ataque sem motivo. A tabela é FECHADA:
+     workflow novo sem teto declarado reprova no main() (adicionar a entrada É
+     a decisão explícita de poder). A única exceção é onde a escrita É o
+     trabalho: o job de publicar da `release.yml` (`contents: write`).
 """
 import re
 import sys
@@ -115,6 +124,26 @@ NIVEIS_DE_PERMISSAO = {'read', 'write', 'none'}
 
 PERMISSOES = re.compile(r'^(\s*)permissions:\s*(\S*)\s*$')
 ESCOPO = re.compile(r'\s*([A-Za-z0-9_-]+):\s*([^\s#]+)')
+
+# ── Regra 10 · Teto de permissões por workflow (fechado por padrão) ──────────
+# O MÁXIMO que cada arquivo tem direito a declarar (no topo ou em job). Escopo
+# fora da entrada reprova; nível acima do teto reprova. Workflow novo SEM
+# entrada aqui reprova no main() — adicionar a entrada é a decisão explícita
+# de poder, lida em review como qualquer outra mudança de código.
+NIVEL = {'none': 0, 'read': 1, 'write': 2}
+TETO_PERMISSOES: dict[str, dict[str, str]] = {
+    # CI inteiro é leitura — nenhum job escreve no repositório (ver ci.yml).
+    'ci.yml': {'contents': 'read'},
+    # CodeQL publica resultados; revisão de dependências comenta no PR.
+    'security.yml': {'contents': 'read', 'actions': 'read',
+                     'security-events': 'write', 'pull-requests': 'write'},
+    # EXCEÇÃO JUSTIFICADA: publicar é o trabalho do job (tag + Release).
+    'release.yml': {'contents': 'write'},
+    # A escrita no board vem do PAT (secret), nunca do GITHUB_TOKEN (ADR-0006).
+    # `issues: read`: só o job `milestone`, para o relatório de fechamento.
+    'project-automation.yml': {'contents': 'read', 'pull-requests': 'read',
+                               'issues': 'read'},
+}
 
 # Menor major de cada action de primeira parte que já declara `using: node24`
 # (lido do `action.yml` da tag). Abaixo disso, o runner força a action a rodar
@@ -170,6 +199,57 @@ def checar_permissoes(linhas: list[str]) -> list[tuple[int, str]]:
     return falhas
 
 
+def checar_teto(nome_arquivo: str, linhas: list[str]) -> list[tuple[int, str]]:
+    """Regra 10 — nenhum `permissions:` acima do teto declarado para o arquivo.
+
+    O teto vive em TETO_PERMISSOES (fonte única, lida em review); arquivo fora
+    da tabela reprova no main(), não aqui — um arquivo novo tem de ganhar a
+    entrada ANTES de passar no auditor.
+    """
+    teto = TETO_PERMISSOES.get(nome_arquivo)
+    if teto is None:
+        return []  # avaliado no main() — mensagem própria lá
+
+    falhas: list[tuple[int, str]] = []
+    i = 0
+    while i < len(linhas):
+        m = PERMISSOES.match(linhas[i])
+        if not m:
+            i += 1
+            continue
+        indent, inline = len(m.group(1)), m.group(2)
+        contexto = 'no topo' if indent == 0 else 'em job'
+        if inline:  # read-all/write-all concedem TUDO — acima de qualquer teto
+            falhas.append((i + 1, f'`permissions: {inline}` ({contexto}) — concede '
+                                  f'todos os escopos e fere o teto de '
+                                  f'`{nome_arquivo}`: {{' +
+                                  ', '.join(f'{k}: {v}' for k, v in sorted(teto.items())) + '}}'))
+            i += 1
+            continue
+        i += 1
+        while i < len(linhas) and linhas[i].strip():
+            if len(linhas[i]) - len(linhas[i].lstrip()) <= indent:
+                break  # voltou ao nível do bloco: fim das permissões
+            mc = ESCOPO.match(linhas[i])
+            if mc:
+                escopo, nivel = mc.group(1), mc.group(2).strip("'\"")
+                if escopo not in teto:
+                    falhas.append((i + 1, f'`{escopo}: {nivel}` ({contexto}) — fora do teto '
+                                          f'de `{nome_arquivo}`: este workflow não tem '
+                                          f'direito a `{escopo}`. Teto declarado: ' +
+                                          ', '.join(f'{k}: {v}' for k, v in sorted(teto.items())) +
+                                          '. Se o workflow passou a precisar disso de '
+                                          'verdade, eleve o teto na TETO_PERMISSOES com '
+                                          'justificativa no PR'))
+                elif NIVEL.get(nivel, 99) > NIVEL.get(teto[escopo], -1):
+                    falhas.append((i + 1, f'`{escopo}: {nivel}` ({contexto}) — acima do teto '
+                                          f'`{escopo}: {teto[escopo]}` de `{nome_arquivo}`. '
+                                          f'Se a elevação é real, mude o teto na '
+                                          f'TETO_PERMISSOES com justificativa no PR'))
+            i += 1
+    return falhas
+
+
 def audit(path: Path):
     """Audita um workflow e devolve (falhas, avisos) — listas de (linha, texto)."""
     linhas = path.read_text(encoding='utf-8', errors='replace').splitlines()
@@ -177,6 +257,9 @@ def audit(path: Path):
 
     # ── 8. nomes e níveis de permissão (topo e por job) ─────────────────────
     falhas.extend(checar_permissoes(linhas))
+
+    # ── 10. teto de permissões deste arquivo ─────────────────────────────────
+    falhas.extend(checar_teto(path.name, linhas))
 
     # ── 1. permissions no topo (coluna 0) ────────────────────────────────────
     if not any(re.match(r'^permissions:', l) for l in linhas):
@@ -274,6 +357,12 @@ def main():
     total_falhas = total_avisos = 0
     for path in arquivos:
         falhas, avisos = audit(path)
+        if path.name not in TETO_PERMISSOES:
+            falhas.append((1, f'workflow sem teto declarado na TETO_PERMISSOES — '
+                              f'toda permissão nova nasce sem limite. Declare em '
+                              f'`audit_workflows.py` o máximo que `{path.name}` tem '
+                              f'direito a pedir (com justificativa no PR) e o auditor '
+                              f'passa a vigiar'))
         total_falhas += len(falhas)
         total_avisos += len(avisos)
         estado = '❌' if falhas else '✅'

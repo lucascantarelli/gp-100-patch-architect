@@ -84,6 +84,7 @@ Não são tratados como vulnerabilidades de segurança deste projeto:
 | Runner fixo (`ubuntu-24.04`) e Actions em runtime suportado | ✅ via [`audit_workflows.py`](.github/scripts/audit_workflows.py), que **reprova** label de runner mutável e Action de primeira parte abaixo do `node24` |
 | Verificação de integridade dos dados em cada push/PR | ✅ via [`ci.yml`](.github/workflows/ci.yml) |
 | **Action de terceiro fixada por commit SHA** | ✅ via [`audit_workflows.py`](.github/scripts/audit_workflows.py), que **reprova** Action de outro owner sem SHA (`actions/*` e `github/*` seguem no major, com o Dependabot) |
+| **Menor privilégio com teto por workflow** | ✅ via [`audit_workflows.py`](.github/scripts/audit_workflows.py) — tabela `TETO_PERMISSOES` declara o máximo de cada arquivo; permissão acima do teto **reprova**, e workflow novo sem teto declarado também (a entrada é a decisão explícita de poder) |
 | Branch protection em `main` e `develop` (PR + check obrigatórios, sem exceção de bypass) | ✅ aplicar com [`setup_repo.sh`](setup_repo.sh) |
 
 ### Cadeia de suprimentos — regra e origem

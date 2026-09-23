@@ -239,9 +239,10 @@ jobs:
           }' -f p="$PROJECT_ID" -f c="$conteudo" --jq '.data.addProjectV2ItemById.item.id')"
           [ -n "$item" ] || { echo "::error::addProjectV2ItemById não devolveu item para $URL"; exit 1; }
 
-          # 3 · Aplica o estado no campo.
+          # 3 · Aplica o estado no campo. Nota: singleSelectOptionId é String! no
+          # schema (não ID!) — declarar ID! reprova com "Type mismatch ... (ID! / String)".
           gh api graphql -f query='
-          mutation($p: ID!, $i: ID!, $f: ID!, $o: ID!) {
+          mutation($p: ID!, $i: ID!, $f: ID!, $o: String!) {
             updateProjectV2ItemFieldValue(input: {
               projectId: $p, itemId: $i, fieldId: $f,
               value: { singleSelectOptionId: $o }

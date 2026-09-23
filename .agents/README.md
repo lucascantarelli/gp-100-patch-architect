@@ -1,6 +1,6 @@
 # 🤖 Agentes — configuração do Freebuff
 
-Os 17 agentes deste projeto são carregados automaticamente pelo Freebuff (CLI, Desktop ou Web) ao abrir a pasta — não há chave, registro nem setup além do `npm install -g freebuff`. O modelo padrão é **GLM 5.3 Flash** (`z-ai/glm-5.3-flash`).
+Os 19 agentes deste projeto são carregados automaticamente pelo Freebuff (CLI, Desktop ou Web) ao abrir a pasta — não há chave, registro nem setup além do `npm install -g freebuff`. O modelo padrão é **GLM 5.3 Flash** (`z-ai/glm-5.3-flash`).
 
 ## 🏗️ Arquitetura
 
@@ -16,9 +16,9 @@ Os 17 agentes deste projeto são carregados automaticamente pelo Freebuff (CLI, 
 └──────┴──────┴──────┴──────┴──────┴──────┴──────┴──────┴──────┘
                  ↓ apoio (invocadas conforme o fluxo)
 ┌────────────────┬────────────────┬────────────────┬───────────────────┐
-│ tone-research  │  tone-mapper   │ ir-research/   │ patch-validator   │
-│ (rig real,     │  (rig → GP-100)│ ir-fit +       │ (conformidade     │
-│ fontes, época) │                │ globals        │  e doc)           │
+│ tone-research  │  tone-mapper   │ ir-research/   │ patch-validator + │
+│ (rig real,     │  (rig → GP-100)│ ir-fit +       │ ab-tester +       │
+│ fontes, época) │                │ globals        │ setlist           │
 └────────────────┴────────────────┴────────────────┴───────────────────┘
 ```
 
@@ -43,6 +43,8 @@ Os 17 agentes deste projeto são carregados automaticamente pelo Freebuff (CLI, 
 | `gp100-ir-fit.ts` | Ajuste fino de IR (Low/High Cut, Level) |
 | `gp100-manual-reader.ts` | Consulta ao manual V1.8 e ao catálogo fw 2.0 |
 | `gp100-patch-validator.ts` | Validação técnica e documental do patch |
+| `gp100-ab-tester.ts` | A/B pós-criação: entrevista guiada pelo protocolo universal (doc 12), mudanças mínimas |
+| `gp100-setlist.ts` | Cola de palco: ordem de slots do repertório via `tools/gp100_setlist.py` |
 
 ## ➕ Como criar um agente novo
 

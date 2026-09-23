@@ -90,7 +90,7 @@ Cada patch entrega:
 ## 🗂️ Estrutura do projeto
 
 ```
-├── .agents/            # 17 agentes (orquestrador + 16 skills) — configuração do Freebuff
+├── .agents/            # 19 agentes (orquestrador + skills + apoio) — configuração do Freebuff
 ├── reference/          # base de conhecimento: manual V1.8 + catálogo fw 2.0/2.1 + catálogos de IR
 ├── prompts/            # fluxos prontos (criar, ajustar, sugerir, pesquisar referência)
 ├── tools/              # scripts Python (ver 🔧 Ferramentas abaixo)
@@ -154,8 +154,8 @@ Cada PR (e cada push em `main` e `develop`) roda o workflow [`CI`](.github/workf
 | Job | O que faz |
 |---|---|
 | **🚦 `ci-gate`** | **Portão do CI** — reprova se qualquer job da fase 1 falhou e publica o resumo dos resultados |
-| **🧪 `test-suite`** | compila os scripts, verifica o runtime (**trava Python 3.14.* como primeiro passo**) e executa a suíte (**80 testes, sem dependências** — `unittest` da stdlib), incluindo o **guarda de sincronia**: o pipeline roda numa cópia temporária e é comparado com o commitado. **Nada é escrito no repositório:** o workflow roda com `contents: read`, então nenhum ator automatizado pode empurrar no `main` e a branch protection não precisa de exceção para o bot |
-| **🔍 `typecheck`** | `tsc --noEmit` nos 17 agentes, com cache do TypeScript |
+| **🧪 `test-suite`** | compila os scripts, verifica o runtime (**trava Python 3.14.* como primeiro passo**) e executa a suíte (**103 testes, sem dependências** — `unittest` da stdlib), incluindo o **guarda de sincronia**: o pipeline roda numa cópia temporária e é comparado com o commitado. **Nada é escrito no repositório:** o workflow roda com `contents: read`, então nenhum ator automatizado pode empurrar no `main` e a branch protection não precisa de exceção para o bot |
+| **🔍 `typecheck`** | `tsc --noEmit` nos 19 agentes, com cache do TypeScript |
 
 Todos os jobs têm `timeout` e o resultado da sincronia dos dados é publicado no **resumo da execução** (Step Summary) do GitHub.
 
@@ -193,9 +193,9 @@ A suíte cobre as invariantes que **já quebraram uma vez** neste projeto:
 - ✅ Seções obrigatórias presentes nos 97 docs (guitarra → ajustes finos → IR → modos de atuação → objetivo → dossiê → parâmetros → carga → evite) e 67 momentos de toggle validados contra o spec.
 - ✅ **Zero rótulo `pN` nos 97 docs**: os 40 `patch.md` do Pulse e as 28 menções em textos de ajustes/evite passaram a usar os nomes do manual V2.0 (rótulos acima); os slots **internos** do firmware (que o editor não expõe) não são setados nem rotulados — ficam no default de fábrica.
 - ✅ **Dossiê de rig de Cheap Thrills** (Big Brother & The Holding Company): duas guitarras em **Gibson SG** (Gurley e Andrew), **Fender Twin Reverb**, Maestro FZ-1 no Gurley — e o achado que fecha o timbre da faixa: **Piece of My Heart sem fuzz** (Gurley limpo, Sam sujo no Twin estourado); o mapa da Janis voltou a ter seção de rig, com fontes.
-- ✅ **CI + suíte de testes** ([`.github/workflows/ci.yml`](.github/workflows/ci.yml)): **80 testes** em `tests/` validam defs, formato dos 97 `.prst`, docs, momentos, nomes de parâmetro, drift dos índices, a ordem estável entre OS e a **sincronia dos derivados** — o `TestH` roda o pipeline completo numa cópia temporária e compara com o commitado (só o timestamp `preset_info/@time` é ignorado — são reprodutíveis em 204 artefatos, com timestamp determinístico); **nenhum job escreve no repositório**, e o portão **`ci-gate`** concentra o veredito final.
+- ✅ **CI + suíte de testes** ([`.github/workflows/ci.yml`](.github/workflows/ci.yml)): **103 testes** em `tests/` validam defs, formato dos 97 `.prst`, docs, momentos, nomes de parâmetro, drift dos índices, a ordem estável entre OS e a **sincronia dos derivados** — o `TestH` roda o pipeline completo numa cópia temporária e compara com o commitado (só o timestamp `preset_info/@time` é ignorado — são reprodutíveis em 204 artefatos, com timestamp determinístico); **nenhum job escreve no repositório**, e o portão **`ci-gate`** concentra o veredito final.
 - ✅ **Pipeline reprodutível entre sistemas**: a ordem dos artefatos derivados não depende do SO — a comparação de `Path` usa `normcase` (minúsculas no Windows, identidade no Linux) e fazia o manifesto de IRs divergir entre a máquina e o CI; a ordenação agora é por string (ordem de code point), com teste travando a regressão (`TestI_OrdemEstavel`).
-- ✅ Typecheck `tsc --noEmit` limpo nos 17 agentes.
+- ✅ Typecheck `tsc --noEmit` limpo nos 19 agentes.
 - ✅ Manual V1.8 transcrito página a página para `reference/` + catálogo empírico extraído do export de fábrica (`tools/factory-catalog.json`, 99 presets · 117 modelos).
 - ✅ Banco local de IRs indexado (291 WAVs — Origin Effects IR-Cab Library V3).
 - ✅ Limpeza: export de fábrica, arquivos de exemplo e páginas pré-renderizadas do manual removidos — todo o conhecimento drenado para `reference/` + `tools/`; manual renderizável sob demanda.
@@ -269,7 +269,7 @@ deles é que manda.
 | [`CHANGELOG.md`](CHANGELOG.md) | Histórico de versões (gerado dos commits) |
 | [`LICENSE`](LICENSE) | MIT (texto canônico, para detecção automática) |
 | [`NOTICE.md`](NOTICE.md) | Escopo da licença: o que **não** é coberto (marcas, títulos, manual, packs de IR) |
-| [`.agents/README.md`](.agents/README.md) | Arquitetura dos 17 agentes e como criar um novo |
+| [`.agents/README.md`](.agents/README.md) | Arquitetura dos 19 agentes e como criar um novo |
 | [`tools/README.md`](tools/README.md) | Scripts de geração/análise, arquivos de dados e armadilhas do formato |
 | [`reference/README.md`](reference/README.md) | Índice da base de conhecimento + ordem de precedência das fontes |
 | [`impulse_responses/README.md`](impulse_responses/README.md) | Banco local de IRs: política, formato aceito e fluxo de indexação |
@@ -321,7 +321,7 @@ O que o repositório roda sozinho, a cada push, PR e semanalmente:
 
 | Workflow | O que garante |
 |---|---|
-| [`ci.yml`](.github/workflows/ci.yml) | Dados em sincronia + 80 testes + typecheck dos agentes (Python 3.14 fixado e travado no job) |
+| [`ci.yml`](.github/workflows/ci.yml) | Dados em sincronia + 103 testes + typecheck dos agentes (Python 3.14 fixado e travado no job) |
 | [`security.yml`](.github/workflows/security.yml) | CodeQL (Python e TypeScript), revisão de dependências em PR e auditoria de permissões dos próprios workflows |
 | [`release.yml`](.github/workflows/release.yml) | Release **automática no merge para a `main`**: tag SemVer a partir do `VERSION` e ZIPs publicados |
 

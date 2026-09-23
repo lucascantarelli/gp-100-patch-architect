@@ -116,6 +116,13 @@ ignore = ["RUF001", "RUF002", "RUF003"]
 # Typer exige `typer.Argument(...)`/`typer.Option(...)` como default do parâmetro:
 # é a API, não uma chamada cara por chamada de função (falso positivo do B008).
 "src/gp100_architect/interfaces/cli/**" = ["B008"]
+# Módulos de template editorial (issue #30): a linha longa É o conteúdo —
+# markdown entregue ao músico e tabelas de dados do catálogo de IRs. Quebrá-la
+# mudaria o artefato byte a byte que o TestH congela; a lógica continua no
+# limite normal.
+"src/gp100_architect/application/rendering/**" = ["E501"]
+"src/gp100_architect/application/indices.py" = ["E501"]
+"src/gp100_architect/application/ir_library.py" = ["E501"]
 
 [tool.ruff.format]
 quote-style = "single"

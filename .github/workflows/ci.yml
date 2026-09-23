@@ -118,10 +118,23 @@ jobs:
 
       # Os scripts de tools/ ainda não estão nos gates de estilo (migração em
       # curso): a compilação continua sendo a rede que pega erro de sintaxe lá.
-      - name: 2/3 · Compilar o legado ainda fora dos gates (tools/ + tests/)
+      - name: 2/4 · Compilar o legado ainda fora dos gates (tools/ + tests/)
         run: uv run python -m py_compile tools/*.py tests/*.py
 
-      - name: 3/3 · pytest — defs, .prst, docs, momentos, índices, sincronia, ordem entre OS
+      # ADR-0013 (issue #8): patches/** não é mais commitado — os testes de
+      # produto (A–G: formato do .prst, seções do patch.md, concordância mapa ×
+      # doc) precisam dos derivados, então o CI os CONSTRÓI a partir do defs.
+      # O próprio TestH (H) prova em seguida que o build é determinístico num
+      # sandbox sem patches/. GP100_BUILD_TIME fixo ⇒ @time estável entre runs.
+      - name: 3/4 · Construir os derivados da biblioteca (defs → patches/)
+        env:
+          GP100_BUILD_TIME: '1700000000000'
+        run: |
+          uv run python tools/ir_library.py
+          uv run python tools/build_song_patches.py
+          uv run python tools/gen_indexes.py
+
+      - name: 4/4 · pytest — defs, .prst, docs, momentos, índices, determinismo, ordem entre OS
         run: uv run pytest -q --cov --cov-report=term-missing
 
   # ── Fase 1 · qualidade ─────────────────────────────────────────────────────

@@ -129,7 +129,7 @@ Cada patch entrega:
 |---|---|---|
 | `gp100` (instalado) | `uv run gp100 validate` | **CLI oficial** (Typer + Rich) — hoje `validate` (valida o defs com relatório acionável) e `--version`; as famílias `setlist`, `find/show/diff`, `build/verify` e `release` chegam na 2.0 (PKG-004…007) |
 | `tools/gp100.py` | `python tools/gp100.py find <termo>` | **CLI legada** — `find` (busca por música/artista/captador), `show` (resumo do patch com cadeia e params), `diff` (compara dois patches), `export` (pasta de importação USB em ordem de slot), `build` e `verify`. Migra para a CLI oficial em PKG-005 |
-| `tools/build_song_patches.py` | `python tools/build_song_patches.py` | **Construtor principal** — a partir de `patches-defs.json`, gera `patch.md` + `.prst` (e o `spec.json` intermediário, não versionado) de todos os patches e valida (nome ≤ 12 chars, XML conforme) |
+| `tools/build_song_patches.py` | `python tools/build_song_patches.py` | **Construtor principal** — a partir de `patches-defs.json`, gera `patch.md` + `.prst` via codec in-memory (ADR-0013) de todos os patches e valida (nome ≤ 12 chars, XML conforme) |
 | `tools/generate_prst.py` | `python tools/generate_prst.py spec.json saida.prst` | Gera **um** `.prst` single-patch fw 2.1 — réplica exata do formato single validado no aparelho (sem `<ppIRInfo>`, com `<ppCtrl>`/`<ppEXP1>`, cadeia x=0–8) |
 | `tools/render_manual_page.py` | `python tools/render_manual_page.py 21 [22 …] · --all` | Renderiza páginas do `manual.pdf` **sob demanda** (PNG alta + JPG leve em `manual_pages/`, efêmero) — página impressa NN = arquivo NN+2 |
 | `tools/gen_indexes.py` | `python tools/gen_indexes.py` | Regenera os `MAPA-DO-ALBUM.md` e o `patches/README.md` — slots U01…Uxx calculados pela ordem dos defs |

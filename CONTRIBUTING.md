@@ -97,14 +97,14 @@ no [`README.md`](README.md)), então o CI trata esquecimento como falha de build
 `tools/patches-defs.json`, `tools/ir-library.json`, `reference/16-ir-library.md`.
 Sua edição será apagada na próxima execução do pipeline e reprovada pelo guarda.
 
-### ⚠️ `spec.json` existe no disco, mas não no git
+### ℹ️ O spec vai direto ao codec — sem intermediário em disco
 
-O pipeline escreve `patches/**/spec.json` a cada rodada: é o que o
-`generate_prst.py` consome para gerar o `.prst`, e é a forma estável de comparar
-parâmetros entre duas versões (o `.prst` muda o `preset_info/@time` a cada build;
-o `spec.json` não). Fora isso **ninguém o consome** — não vai ao pacote de release
-e é 100% regenerável a partir do `patches-defs.json`. Por isso ele está no
-`.gitignore` e o guarda de sincronia o ignora: **não o commite**.
+Desde o ADR-0013, o `build_song_patches.py` passa o spec **in-memory** ao codec
+(`src/gp100_architect/infrastructure/prst/`): o antigo `spec.json` intermediário
+**não existe mais** nem em disco. Para comparar parâmetros entre duas versões,
+leia o `patches-defs.json` (a fonte) — o `.prst` muda o `preset_info/@time` a
+cada build, o defs não. Nada em `patches/**` é escrito à mão: tudo é derivado do
+defs e vigiado pelo guarda de sincronia.
 
 ### ⚠️ O catálogo de IRs não é regenerável sem o pack
 
@@ -166,8 +166,8 @@ Estas são as invariantes que a suíte testa. Um PR que as quebre não passa:
 - **NR obrigatório com ganho ≥ 55**; **um** efeito espacial dominante por patch.
 - **`.prst` sempre no formato single fw 2.1** com CAB de fábrica. IR de terceiro
   é **documentada**, nunca embutida (ver política abaixo).
-- **`spec.json` não é versionado** — insumo do gerador: não vai ao pacote de
-  release nem ao git (gerado a cada rodada do pipeline).
+- **O spec não vira arquivo** — vai in-memory do defs ao codec (ADR-0013): não
+  existe intermediário em disco, logo nada a versionar ou empacotar.
 
 ## 📡 Política de IR
 

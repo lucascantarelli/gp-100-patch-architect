@@ -168,6 +168,11 @@ dossiê do rig real (o fluxo de hoje já cobra isso).
 - Testes para os scripts hoje fora da suíte: `analyze_prst`, `build_release`,
   `gen_changelog` — **entregues** (24 testes em `tests/test_scripts.py`).
 - `dependabot` já vigia Actions; manter.
+- **Migração da suíte para pytest na 2.0** (decisão do mantenedor, set/2026): o
+  pytest será a **primeira dependência real** do projeto — a política "stdlib
+  pura" vale até a 1.x; na 2.0 a suíte unittest (103 testes) migra para pytest
+  (fixtures, parametrize, marcadores) e a skill global
+  `python-testing-patterns` passa a valer como convenção de teste.
 
 ## 9 · Sequência de releases
 

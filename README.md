@@ -90,7 +90,7 @@ Cada patch entrega:
 ## 🗂️ Estrutura do projeto
 
 ```
-├── .agents/            # 19 agentes (orquestrador + skills + apoio) — configuração do Freebuff
+├── .agents/            # 19 agentes + 11 skills (agents/skills/) — configuração do Freebuff
 ├── reference/          # base de conhecimento: manual V1.8 + catálogo fw 2.0/2.1 + catálogos de IR
 ├── prompts/            # fluxos prontos (criar, ajustar, sugerir, pesquisar referência)
 ├── tools/              # scripts Python (ver 🔧 Ferramentas abaixo)

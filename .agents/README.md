@@ -2,6 +2,10 @@
 
 Os 19 agentes deste projeto são carregados automaticamente pelo Freebuff (CLI, Desktop ou Web) ao abrir a pasta — não há chave, registro nem setup além do `npm install -g freebuff`. O modelo padrão é **GLM 5.3 Flash** (`z-ai/glm-5.3-flash`).
 
+## 🧩 Skills (Agent Skills)
+
+O projeto também versiona **11 skills** em [`skills/`](skills/) (formato pasta + `SKILL.md`): 4 do GP-100 (`gp100-criar-patch`, `gp100-por-referencia`, `gp100-ajustar-patch`, `gp100-sugerir-timbres` — a forma executável dos fluxos de `prompts/`) e 7 genéricas curadas (brainstorming, writing-plans, finishing-a-development-branch, github-actions-docs, python-testing-patterns, documentation-writer, frontend-design). Inventário, vereditos e precedência: [`reference/23-skills-curation.md`](../reference/23-skills-curation.md).
+
 ## 🏗️ Arquitetura
 
 ```

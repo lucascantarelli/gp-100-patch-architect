@@ -149,13 +149,18 @@ dossiê do rig real (o fluxo de hoje já cobra isso).
 
 1. **Skill `gp100-setlist`**: dado um repertório, monta a ordem de slots
    (minimizando trocas de patch entre músicas consecutivas) e imprime a cola de
-   palco — o `gen_indexes` já calcula slots.
+   palco — **entregue**: cálculo em `tools/gp100_setlist.py` (vizinho mais
+   próximo sobre a assinatura PRE→RVB; slots do `slot_map`), agente
+   `gp100-setlist` conduz a conversa e roda a CLI.
 2. **Skill de A/B pós-criação**: automatiza o "protocolo universal" de ajustes
    (está lamacento? → CAB High Cut −5 …) como entrevista guiada em vez de texto
-   fixo na doc.
+   fixo na doc — **entregue**: agente `gp100-ab-tester` (fonte única: tabela de
+   troubleshooting do doc 12; uma pergunta concreta por vez; mudanças mínimas).
 3. **Golden set para tone-research/tone-mapper**: ~20 músicas canônicas com
    cadeia esperada, para avaliar a *qualidade* dos agentes de pesquisa — hoje os
-   testes só cobrem o pipeline.
+   testes só cobrem o pipeline — **entregue**: `reference/20-golden-set.md`
+   (20 músicas / 43 patches extraídos do defs, ponderação por bloco e critério
+   de aprovação).
 
 ## 8 · Pilar F — Qualidade e CI (aditivo, entra em 1.x)
 
@@ -175,10 +180,10 @@ v1.1.0 — Álbuns e fluxo PR-driven
   □ README atualizado (contagens por álbum pós-merges) — issue #7
 
 v1.2.0 — Fundações do 2.0 (tudo aditivo; issues a abrir)
-  □ CLI gp100.py (find/show/diff/export/build/verify)
-  □ defs_schema.py (validação acionável)
-  □ skills gp100-setlist + A/B + golden set dos agentes
-  □ matriz Python no CI + testes dos scripts soltos
+  □ CLI gp100.py (find/show/diff/export/build/verify) — issue #13 ✅
+  □ defs_schema.py (validação acionável) — issue #14 ✅
+  □ skills gp100-setlist + A/B + golden set dos agentes — issue #15 ✅
+  □ trava Python 3.14 no CI + testes dos scripts soltos — issue #16 ✅
   □ 1º álbum novo do pilar D (SRV ou Mayer)
 
 v2.0.0 — Formato, site e escala (as quebras)

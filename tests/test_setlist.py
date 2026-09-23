@@ -13,6 +13,15 @@ if sys.version_info[:2] < (3, 14):
     raise SystemExit('Este projeto roda Python 3.14 APENAS (ver tools/defs_schema.py).')
 
 import gp100_setlist as sl  # noqa: E402
+from gen_indexes import load_defs  # noqa: E402
+# o script usa `carregar_e_validar`; a suíte legada chamava `load_defs` — mantida
+# aqui para não reescrever os testes históricos (são migrados no #34)
+sl.load_defs = load_defs
+# a regra da distância também foi para o domínio (issue #28): o módulo legado
+# não a define mais; a suíte histórica testa comportamento, não localização
+from gp100_architect.domain.setlist import distancia as _distancia  # noqa: E402
+
+sl.distancia = _distancia
 
 
 class TestBiblioteca(unittest.TestCase):

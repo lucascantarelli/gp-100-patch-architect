@@ -107,8 +107,8 @@ Consequências práticas:
 
 | Visão | Layout | Agrupamento | Uso |
 |---|---|---|---|
-| **Kanban** | Table/Board | campo `Kanban` | dia a dia: `Backlog → Ready → In Progress → In Review → Done` |
-| **Sprint** | Table | campo `Sprint`, ordenado por `Story Points` | o que cabe na iteração |
+| **Kanban** | Board | campo `Kanban` | dia a dia: `Backlog → Ready → In Progress → In Review → Done` |
+| **Sprint** | Table (filtro `Sprint:*`) | campo `Sprint`, ordenado por `Story Points` | o que cabe na iteração |
 | **Roadmap** | Roadmap | por `Milestone` | datas das releases |
 
 **Custom fields:** `Kanban` (SINGLE_SELECT — substitui o Status nativo, que a
@@ -117,9 +117,17 @@ não são campos: leem-se das **labels** e do **timeline da issue** (PR vinculad
 aparece lá) — duplicar no Project era redundância exatamente do tipo que este
 projeto elimina em outra frente.
 
-> **Nota de design:** o `gh project` **não** edita as opções do Status nativo nem
-> cria visões — por isso o campo `Kanban` (opções na ordem certa, criado via
-> `field-create`) e as visões são 3 cliques manuais, guiados pelo bootstrap.
+> **Nota de design (atualizada em 23/09/2026 — duas premissas antigas caíram):**
+> (1) A GraphQL v2 **cria, edita e apaga views** (`createProjectV2View`,
+> `updateProjectV2View`, `deleteProjectV2View`): as três visões nascem do
+> bootstrap, com layout e filtro; só agrupamento/ordenação segue manual (1
+> clique por view — a API não expõe `groupBy`). (2) O subcomando `gh project`
+> **mascara PAT válido** como `unknown owner type` (cli/cli#8885, provado aqui
+> em 23/09): a automação fala **GraphQL puro** — leitura de campo/opções/
+> conteúdo → `addProjectV2ItemById` (idempotente) →
+> `updateProjectV2ItemFieldValue`, com `singleSelectOptionId` como `String!`
+> (não `ID!`). O campo `Kanban` continua existindo porque o Status nativo segue
+> sem edição pela CLI.
 
 ## 4 · Instalação e operação
 

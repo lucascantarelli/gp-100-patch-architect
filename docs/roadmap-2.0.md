@@ -17,6 +17,12 @@
 | **Task** | entrega de **um** PR | sub-issue do epic |
 | **Triagem** | `status: needs-triage` · `blocked` · `ready-for-pr` · `in-review` | label (o quadro visual é o campo `Kanban` do Project) |
 
+As três visões do Project #7 — **Kanban** (Board), **Sprint** (Tabela, filtro
+`Sprint:*`) e **Roadmap** (Roadmap) — nascem do bootstrap por GraphQL
+(`createProjectV2View`); só agrupamento/ordenação é manual, pois a API não
+expõe `groupBy` (premissa vencida registrada em `reference/18` § 3.3 e
+ADR-0012).
+
 Duas regras que mantêm isso coerente:
 
 1. **Issue nova nasce como sub-issue de um epic.** Se não tem epic, ou o epic

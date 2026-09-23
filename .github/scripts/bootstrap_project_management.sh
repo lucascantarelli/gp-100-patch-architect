@@ -171,17 +171,21 @@ passo "3 · Project v2 '$PROJECT_TITLE'"
 OWNER="${OWNER:-@me}"
 # `--format json` é aceito por toda a família `gh project`; se um `gh` antigo
 # reclamar, o fallback localiza pelo título em `project list`.
-PRJ="$(gh project create --owner "$OWNER" --title "$PROJECT_TITLE" --format json --jq '.number' 2>/dev/null || true)"
-
-if [ -n "${PRJ:-}" ]; then
-  ok "criado — Project #$PRJ"
-else
-  PRJ="$(gh project list --owner "$OWNER" --format json | python -c "
+# Procura ANTES de criar: o GitHub aceita títulos duplicados de Project, então
+# criar primeiro nunca seria idempotente — cada rodada gerava um Project novo.
+# Aconteceu de verdade em 23/09/2026: os Projects #8 e #9 nasceram assim
+# (vazios) e foram apagados.
+PRJ="$(gh project list --owner "$OWNER" --format json | python -c "
 import json,sys
 for p in json.load(sys.stdin)['projects']:
     if p['title'] == '$PROJECT_TITLE':
         print(p['number']); break")"
-  [ -n "$PRJ" ] && ok "já existe — Project #$PRJ (reaproveitado)"
+
+if [ -n "${PRJ:-}" ]; then
+  ok "já existe — Project #$PRJ (reaproveitado)"
+else
+  PRJ="$(gh project create --owner "$OWNER" --title "$PROJECT_TITLE" --format json --jq '.number')" \
+    && ok "criado — Project #$PRJ"
 fi
 
 if [ -z "$PRJ" ]; then
@@ -219,14 +223,44 @@ else
     || aviso "Kanban já existe"
 fi
 
-# ── Milha extra: marcos do repositório como iterações ────────────────────────
-# (o gh ainda não cria campos DATE no board; quem quiser Roadmap com datas
-#  nativas usa as visões — ver o guia no fim da execução)
-printf '\n'
-aviso "visões (única etapa manual — 3 cliques em https://github.com/users/$login/projects/$PRJ/views):"
-aviso "  1. View padrão → agrupar por 'Kanban'  → este é o KANBAN"
-aviso "  2. Nova view 'Sprint'  → filtro \"Sprint:*\" → agrupar por 'Sprint', ordenar por 'Story Points'"
-aviso "  3. Nova view 'Roadmap' → layout 'Roadmap' → agrupar por 'Milestone' (o gh não cria views)"
+# ── Views do board (Kanban · Sprint · Roadmap) ───────────────────────────────
+# A API GraphQL v2 cria e apaga views (createProjectV2View/updateProjectV2View/
+# deleteProjectV2View) — a premissa antiga de que "o gh não cria views" caiu
+# (provado no Project #7 em 23/09/2026). Ainda não vão pela API: agrupamento e
+# ordenação — 1 clique por view, indicado no aviso ao fim.
+if [ "$DRY_RUN" = "1" ]; then
+  printf '  %s[dry-run]%s views: Kanban (BOARD) · Sprint (TABLE, filtro Sprint:*) · Roadmap (ROADMAP)\n' "$Y" "$Z"
+else
+  projeto_id="$(gh project view "$PRJ" --owner "$OWNER" --format json --jq .id)"
+  views_existentes="$(gh api graphql -f query='query($id: ID!){node(id:$id){... on ProjectV2{views(first:20){nodes{id name}}}}}' -f id="$projeto_id" --jq '[.data.node.views.nodes[].name]')"
+
+  criar_view() {
+    # $1 = nome · $2 = layout (BOARD_LAYOUT|TABLE_LAYOUT|ROADMAP_LAYOUT) · $3 = filtro (opcional)
+    local nome="$1" layout="$2" filtro="$3"
+    if printf '%s' "$views_existentes" | grep -q "\"$nome\""; then
+      ok "view: $nome (já existe)"
+      return 0
+    fi
+    local vid
+    vid="$(gh api graphql -f query='mutation($p: ID!, $n: String!, $l: ProjectV2ViewLayout!){createProjectV2View(input:{projectId:$p,name:$n,layout:$l}){projectV2View{id}}}' \
+      -f p="$projeto_id" -f n="$nome" -f l="$layout" --jq '.data.createProjectV2View.projectV2View.id')" \
+      || { aviso "view: $nome — falhou ao criar (crie à mão em projects/$PRJ)"; return 1; }
+    if [ -n "$filtro" ]; then
+      gh api graphql -f query='mutation($v: ID!, $f: String!){updateProjectV2View(input:{viewId:$v,filter:$f}){projectV2View{id}}}' \
+        -f v="$vid" -f f="$filtro" >/dev/null \
+        || aviso "view: $nome — filtro '$filtro' não aplicado (1 clique na view resolve)"
+    fi
+    ok "view: $nome"
+  }
+
+  criar_view "Kanban" "BOARD_LAYOUT" ""
+  criar_view "Sprint" "TABLE_LAYOUT" "Sprint:*"
+  criar_view "Roadmap" "ROADMAP_LAYOUT" ""
+
+  printf '\n'
+  aviso "agrupamento/ordenação das views não vão na API — 1 clique por view em https://github.com/users/$login/projects/$PRJ/views:"
+  aviso "  Kanban → agrupar por 'Kanban' · Sprint → agrupar por 'Sprint' + ordenar por 'Story Points' · Roadmap → agrupar por 'Milestone'"
+fi
 }
 
 # ── Execução ─────────────────────────────────────────────────────────────────

@@ -118,14 +118,20 @@ def _stomps(stomps: list[dict[str, Any]]) -> str:
     )
 
 
-def _pagina(titulo: str, corpo: str, voltas: list[tuple[str, str]]) -> str:
-    """Página inteira — o CSS é o mesmo para todas (uma cópia, no index)."""
+def _pagina(
+    titulo: str, corpo: str, voltas: list[tuple[str, str]], *, profundidade: int = 1
+) -> str:
+    """Página inteira — o CSS é o mesmo para todas (uma cópia, na raiz do site).
+
+    `profundidade` é a distância até a raiz do site (index = 0, álbum/patch = 1)
+    — sem ela o index citaria `../style.css` e cairia FORA da base do Pages.
+    """
     nav = ' · '.join(f'<a href="{escape(href)}">{escape(rotulo)}</a>' for rotulo, href in voltas)
     return (
         '<!doctype html>\n<html lang="pt-BR"><head><meta charset="utf-8">\n'
         '<meta name="viewport" content="width=device-width, initial-scale=1">\n'
         f'<title>{escape(titulo)} — GP-100 Patch Architect</title>\n'
-        '<link rel="stylesheet" href="../style.css">\n'
+        f'<link rel="stylesheet" href="{"".join(["../"] * profundidade)}style.css">\n'
         '</head><body>\n'
         f'<nav>{nav}</nav>\n<main>\n{corpo}\n</main>\n'
         '<footer>gerado por <code>gp100 site</code> — fonte única: data/defs/'
@@ -218,7 +224,7 @@ def _pagina_index(
         '<th>Patches</th></tr></thead><tbody>' + linhas + '</tbody></table>'
         '<script>' + _script_busca() + '</script>'
     )
-    return _pagina('Biblioteca', corpo, [('Início', 'index.html')])
+    return _pagina('Biblioteca', corpo, [('Início', 'index.html')], profundidade=0)
 
 
 def _pagina_album(

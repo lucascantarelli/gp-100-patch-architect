@@ -21,7 +21,7 @@ body:
         - Camada nova em uma música que já está na biblioteca
         - Música nova em um álbum que já está na biblioteca
         - Álbum novo
-        - Melhoria no pipeline / nos scripts de tools/
+        - Melhoria no pipeline (`gp100 build`) / no pacote (src/gp100_architect)
         - Correção ou ampliação de documentação (reference/, README, knowledge.md)
         - Nova skill ou agente em .agents/
         - Outro (descreva abaixo)

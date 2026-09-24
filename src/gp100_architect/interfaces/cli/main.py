@@ -9,8 +9,9 @@ comportamento.
 
 Consulta (#48): `find` · `show` · `diff` · `export` — sobre
 `application.consulta`. Produção (#49): `build` · `verify` · `setlist` ·
-`release` — sobre `application.setlist`/`release` e o pipeline do guarda.
-Utilidades: `version` · `validate`.
+`release` — sobre `application.setlist`/`release` e o pipeline do guarda
+(`application.pipeline`, in-process desde a #33). Utilidades: `version` ·
+`validate` · `analyze` · `manual-page` · `changelog`.
 
 ## Para agentes
 
@@ -41,7 +42,7 @@ from gp100_architect import __version__
 from gp100_architect.application import consulta
 from gp100_architect.application import release as release_app
 from gp100_architect.application import setlist as setlist_app
-from gp100_architect.domain.chain import CHAIN  # noqa: F401  (contrato da cadeia)
+from gp100_architect.domain.chain import CHAIN
 from gp100_architect.domain.errors import Gp100Error
 from gp100_architect.infrastructure.defs import DEFS_PADRAO, carregar_e_validar
 
@@ -105,7 +106,7 @@ def version() -> None:
 def validate(
     defs_caminho: Path | None = typer.Argument(
         None,
-        help='Caminho do diretório de fragmentos do defs (padrão: tools/defs).',
+        help='Caminho do diretório de fragmentos do defs (padrão: data/defs).',
     ),
 ) -> None:
     """Valida o defs e sai com 0 (válido) ou 1 (problemas acionáveis)."""
@@ -293,34 +294,40 @@ def export(
     )
 
 
-# ── produção (#49) ──────────────────────────────────────────────────────────
+# ── produção (#49; pipeline in-process desde a #33) ─────────────────────────
 
-# Ordem do guarda de determinismo (TestH): indexa IRs → gera os derivados.
-# Os seeders add_*.py foram aposentados no schema v2 (issue #8): o defs é a
-# única fonte e um álbum novo entra direto nos fragmentos de tools/defs/.
+# Ordem do guarda de determinismo (TestH): indexa IRs → gera os derivados →
+# índices. Os nomes são os passos de `application.pipeline` (não caminhos de
+# script — os shims de `tools/` foram removidos na #33).
 PIPELINE = (
-    'tools/ir_library.py',
-    'tools/build_song_patches.py',
-    'tools/gen_indexes.py',
+    'ir_library',
+    'patches',
+    'indices',
 )
 
 
-def _rodar(passos: tuple[str, ...], titulo: str, quiet: bool) -> int:
-    """Executa passos do pipeline na raiz do repositório; para no primeiro erro."""
+def _rodar(passos: tuple[str, ...], titulo: str, quiet: bool, com_variantes: bool) -> int:
+    """Executa o pipeline in-process na raiz do repositório; para no primeiro erro."""
     if not quiet:
         console.print(f'\n▶ {titulo}')
-    for passo in passos:
-        if not quiet:
-            console.print(f'  $ python {passo}')
-        r = subprocess.run([sys.executable, str(_raiz() / passo)], cwd=_raiz())
-        if r.returncode != 0:
-            if not quiet:
-                console.print(f'\n✗ falhou em {passo} — corrija e rode de novo')
-            else:
-                err_console.print(f'falhou em {passo} (código {r.returncode})')
-            return r.returncode
-    if not quiet:
-        console.print(f'\n✅ {titulo} concluído')
+    from gp100_architect.application import pipeline
+
+    if quiet:
+        # sem relatório passo a passo: só a linha final (contrato do agente)
+        from io import StringIO
+
+        buffer = StringIO()
+        codigo = pipeline.executar(_raiz(), passos=passos, com_variante=com_variantes, out=buffer)
+        if codigo != 0:
+            trecho = buffer.getvalue().strip().splitlines()[-1:]  # última linha é a causa
+            err_console.print(trecho[0] if trecho else f'falhou (código {codigo})')
+            return codigo
+        return 0
+    codigo = pipeline.executar(_raiz(), passos=passos, com_variante=com_variantes)
+    if codigo != 0:
+        console.print(f'\n✗ falhou (código {codigo}) — corrija e rode de novo')
+        return codigo
+    console.print(f'\n✅ {titulo} concluído')
     return 0
 
 
@@ -329,12 +336,131 @@ def build(
     quiet: bool = typer.Option(
         False, '--quiet', '-q', help='Só exit code + linha final (para agentes).'
     ),
+    with_user_ir: bool = typer.Option(
+        False,
+        '--with-user-ir',
+        help='Gera também a variante experimental <NOME>-USERIR.prst dos patches '
+        'com captura no ir_local (issue #10).',
+    ),
 ) -> None:
     """Roda o pipeline completo na ordem do guarda de determinismo (TestH)."""
-    codigo = _rodar(PIPELINE, 'pipeline completo (ordem do guarda de sincronia)', quiet)
+    codigo = _rodar(
+        PIPELINE, 'pipeline completo (ordem do guarda de sincronia)', quiet, with_user_ir
+    )
     if quiet and codigo == 0:
         console.print('build ok')
     raise typer.Exit(code=codigo)
+
+
+@app.command()
+def analyze(
+    arquivo: Path = typer.Argument(..., help='Export .prst (single ou "all") a dissecar.'),
+    saida_json: Path = typer.Option(
+        None, '--json', help='Salva o dump completo (info, IRs, patches) no arquivo.'
+    ),
+) -> None:
+    """Disseca um export .prst: modelos, códigos e estatísticas de params."""
+    from collections import defaultdict
+
+    from gp100_architect.domain.errors import FormatoPrstInvalido
+    from gp100_architect.infrastructure.prst.reader import analyze, fmt_stat, parse
+
+    ORDEM_CADEIA = list(CHAIN)  # seções na ordem da cadeia (PRE → RVB), como no shim
+    try:
+        info, irs, patches = parse(str(arquivo))
+    except FormatoPrstInvalido as erro:
+        _erro(erro)
+    models, param_stats = analyze(patches)
+
+    console.print(
+        f'== preset_info: software={info.get("software")} firmware={info.get("firmware")} '
+        f'product={info.get("product")} count={info.get("count")}'
+    )
+    console.print(f'== User IRs: {len(irs)} slots')
+
+    by_module: dict[str, list[tuple[str, dict[str, Any]]]] = defaultdict(list)
+    for (modulo, nome), dados in sorted(models.items()):
+        by_module[modulo].append((nome, dados))
+    for modulo in ORDEM_CADEIA:
+        console.print(f'\n=== {modulo} ({len(by_module[modulo])} modelos) ===')
+        for nome, dados in by_module[modulo]:
+            codes = ','.join(sorted(dados['codes']))
+            console.print(
+                f'  {nome:24s} code={codes:12s} usado_em={dados["count"]:3d} x={sorted(dados["x"])}'
+            )
+            console.print(fmt_stat(param_stats[(modulo, nome)]))
+
+    console.print(f'\n=== CATALOGO ({len(patches)} patches) ===')
+    for p in patches:
+        cadeia = ' '.join(f'{e["module"]}:{e["name"]}({e["state"]})' for e in p['effects'])
+        console.print(
+            f'  #{int(p["id"]) + 1:03d} [{p["type"]}] {p["name"]} bpm={p["bpm"]} '
+            f'vol={p["volume"]} ir={p["ir_num"]}\n      {cadeia}'
+        )
+
+    if saida_json:
+        dump = {'info': info, 'user_irs': irs, 'patches': patches}
+        saida_json.parent.mkdir(parents=True, exist_ok=True)
+        saida_json.write_text(json.dumps(dump, ensure_ascii=False, indent=1), encoding='utf-8')
+        console.print(f'\nJSON salvo em {saida_json}')
+
+
+@app.command()
+def manual_page(
+    paginas: list[int] = typer.Argument(None, help='Páginas IMPRESSAS do manual.pdf.'),
+    todas: bool = typer.Option(False, '--all', help='Re-renderiza o manual inteiro.'),
+) -> None:
+    """Renderiza páginas do manual.pdf sob demanda (requer pymupdf)."""
+    try:
+        import pymupdf  # type: ignore[import-not-found]
+    except ImportError:
+        try:
+            import fitz as pymupdf  # type: ignore[import-not-found]
+        except ImportError as exc:
+            err_console.print(
+                'pymupdf não instalado — rode: uv tool install pymupdf (ou '
+                'pip install --user pymupdf).'
+            )
+            raise typer.Exit(code=1) from exc
+    raiz = _raiz()
+    pdf = raiz / 'manual.pdf'
+    if not pdf.exists():
+        err_console.print(f'manual.pdf não encontrado em {pdf}')
+        raise typer.Exit(code=1)
+    out_dir = raiz / 'manual_pages'
+    preview = out_dir / 'preview'
+    doc = pymupdf.open(pdf)
+    total = doc.page_count
+    if todas:
+        nums: list[int] = list(range(1, total + 1))
+    elif not paginas:
+        err_console.print('informe as páginas impressas (ex.: gp100 manual-page 21) ou --all')
+        raise typer.Exit(code=2)
+    else:
+        nums = [n + 2 for n in paginas]  # impressa → página do PDF (mapa da casa)
+    doc.close()
+    ZOOM_ALTA = 2.0
+    PREVIEW_LARGURA = 900
+    for n in nums:
+        if not 1 <= n <= total:
+            err_console.print(f'Página {n} fora do intervalo (1..{total}).')
+            raise typer.Exit(code=1)
+        d = pymupdf.open(pdf)
+        page = d[n - 1]
+        out_dir.mkdir(parents=True, exist_ok=True)
+        preview.mkdir(parents=True, exist_ok=True)
+        pix = page.get_pixmap(matrix=pymupdf.Matrix(ZOOM_ALTA, ZOOM_ALTA))
+        png = out_dir / f'p{n:02d}.png'
+        pix.save(png)
+        escala = PREVIEW_LARGURA / pix.width
+        prev = page.get_pixmap(matrix=pymupdf.Matrix(ZOOM_ALTA * escala, ZOOM_ALTA * escala))
+        jpg = preview / f'p{n:02d}.jpg'
+        prev.save(jpg)
+        d.close()
+        console.print(f'✅ PDF p{n:02d} → manual_pages/p{n:02d}.png + preview/p{n:02d}.jpg')
+    if not todas:
+        impressas = ', '.join(str(n) for n in paginas or [])
+        console.print(f'\n💡 Página impressa = arquivo p(NN+2). Renderizadas: {impressas}.')
 
 
 @app.command()
@@ -397,6 +523,43 @@ def setlist(
         console.print(f'✅ {out}')
     else:
         console.print(conteudo)
+
+
+@app.command()
+def changelog(
+    versao: str | None = typer.Option(
+        None, '--version', help='Versão da seção (default: bump sugerido).'
+    ),
+    escrever: bool = typer.Option(False, '--write', help='Prepende a seção no CHANGELOG.md.'),
+    destino: Path = typer.Option(None, '--out', help='Grava a seção neste arquivo.'),
+    tudo: bool = typer.Option(False, '--all', help='Inclui tipos ocultos (refactor, ci…).'),
+) -> None:
+    """Seção do CHANGELOG derivada dos commits (Conventional Commits)."""
+    from gp100_architect.application import changelog as changelog_app
+
+    raiz = _raiz()
+    itens = changelog_app.coletar(changelog_app.ultima_tag(raiz), raiz=raiz)
+    if versao is None:
+        versao = changelog_app.bump_sugerido(itens, changelog_app.ler_versao_atual(raiz))
+    elif not release_app.SEMVER_RE.match(versao):
+        err_console.print(f"Versão inválida: '{versao}' — use SemVer (ex.: 1.1.0).")
+        raise typer.Exit(code=1)
+    bloco = changelog_app.secao(versao, itens, tudo)
+    if escrever:
+        changelog_app.escrever_no_changelog(bloco, versao, raiz / 'CHANGELOG.md')
+        console.print(
+            f'✅ CHANGELOG.md: seção [{versao}] prependida '
+            f'({len(itens)} commit(s) desde {changelog_app.ultima_tag(raiz) or "o início"}).'
+        )
+    elif destino:
+        destino.parent.mkdir(parents=True, exist_ok=True)
+        destino.write_text(bloco, encoding='utf-8')
+        console.print(f'✅ {destino}')
+    else:
+        console.print(bloco)
+        tag = changelog_app.ultima_tag(raiz) or 'o início da história'
+        bump = changelog_app.bump_sugerido(itens, changelog_app.ler_versao_atual(raiz))
+        console.print(f'--- {len(itens)} commit(s) desde {tag} · bump sugerido: v{bump}')
 
 
 @app.command()

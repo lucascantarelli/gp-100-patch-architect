@@ -20,8 +20,8 @@
 #   * NÃO faz push — ele imprime os comandos e você decide.
 #
 # Uso:
-#   ./tools/purge_redistributed_assets.sh            # mostra o plano e sai
-#   CONFIRMAR=1 ./tools/purge_redistributed_assets.sh  # executa (pede PURGE)
+#   ./scripts/purge_redistributed_assets.sh          # mostra o plano e sai
+#   CONFIRMAR=1 ./scripts/purge_redistributed_assets.sh  # executa (pede PURGE)
 #
 # Depois de executar, para publicar (você, manualmente):
 #   git remote add origin git@github.com:<owner>/<repo>.git   # o filter-repo remove

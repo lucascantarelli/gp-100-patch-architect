@@ -1,8 +1,8 @@
 """Changelog derivado da história — regras puras de parsing e formatação (issue #32).
 
 Migração de `tools/gen_changelog.py`: o que **pensa** sobre commits (regex,
-seções, bump sugerido, prepend idempotente) vira biblioteca; o shim de
-`tools/` fica só com argv e impressão. O changelog é **derivado da história**,
+seções, bump sugerido, prepend idempotente) vira biblioteca; a CLI
+(`gp100 changelog`) fica só com argv e impressão. O changelog é **derivado da história**,
 não escrito à mão — nada de dois lugares discordando sobre o que mudou.
 
 Regras preservadas (são contrato, não detalhe):
@@ -188,7 +188,7 @@ def _cabecalho() -> str:
         'Todas as mudanças relevantes deste projeto, por versão.\n'
         'Formato: [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/) · '
         'versionamento: [SemVer](https://semver.org/lang/pt-BR/).\n\n'
-        '> Gerado por `gp100 release` / `tools/gen_changelog.py` a partir dos commits\n'
+        '> Gerado por `gp100 release` / `gp100 changelog` a partir dos commits\n'
         '> (Conventional Commits) — **não edite à mão**. Quem publica roda\n'
         '> `gen_changelog.py --version X.Y.Z --write` antes de subir o `VERSION`;\n'
         '> o workflow `Release` só valida e publica.\n'

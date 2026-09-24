@@ -20,7 +20,7 @@ REGRAS DO FORMATO (aprendidas na prática, validadas no aparelho):
   - timestamp determinístico (epoch ms): `GP100_BUILD_TIME` ou o padrão
     1688207360000 — build reprodutível, sem churn em 97+ arquivos.
 
-Fonte dos templates: `tools/factory-catalog.json` (export de fábrica drenado
+Fonte dos templates: `data/factory-catalog.json` (export de fábrica drenado
 por `analyze_prst`). Somente params declarados no spec sobrescrevem o template.
 
 Camada: infrastructure (o domínio nunca importa daqui). Funções PURAS no
@@ -148,14 +148,14 @@ EXTRA_TEMPLATES: dict[tuple[str, str], dict[str, Any]] = {
 
 
 def caminho_catalogo() -> Path:
-    """`tools/factory-catalog.json` a partir da raiz do repositório.
+    """`data/factory-catalog.json` a partir da raiz do repositório.
 
     O pacote é desenvolvido DENTRO do repo (ADR-0001): o catálogo fica em
-    `tools/` e o caminho sobe quatro níveis (prst → infrastructure →
+    `data/` e o caminho sobe quatro níveis (prst → infrastructure →
     gp100_architect → src → raiz). Num pacote instalado isolado o catálogo não
     existe — o projeto não se destina a isso (o TestH roda o sandbox do repo).
     """
-    return Path(__file__).resolve().parents[4] / 'tools' / 'factory-catalog.json'
+    return Path(__file__).resolve().parents[4] / 'data' / 'factory-catalog.json'
 
 
 def load_templates(catalogo: Path | None = None) -> dict[tuple[str, str], dict[str, Any]]:
@@ -171,7 +171,7 @@ def load_templates(catalogo: Path | None = None) -> dict[tuple[str, str], dict[s
     except FileNotFoundError as exc:
         msg = (
             f'catálogo do firmware não encontrado: {caminho}\n'
-            f'Ele é versionado em tools/factory-catalog.json — '
+            f'Ele é versionado em data/factory-catalog.json — '
             f'restaurá-lo ou regenerá-lo (reference/15).'
         )
         raise FormatoPrstInvalido(msg) from exc

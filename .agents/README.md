@@ -48,7 +48,7 @@ O projeto também versiona **11 skills** em [`skills/`](skills/) (formato pasta 
 | `gp100-manual-reader.ts` | Consulta ao manual V1.8 e ao catálogo fw 2.0 |
 | `gp100-patch-validator.ts` | Validação técnica e documental do patch |
 | `gp100-ab-tester.ts` | A/B pós-criação: entrevista guiada pelo protocolo universal (doc 12), mudanças mínimas |
-| `gp100-setlist.ts` | Cola de palco: ordem de slots do repertório via `tools/gp100_setlist.py` |
+| `gp100-setlist.ts` | Cola de palco: ordem de slots do repertório via `gp100 setlist` (CLI do pacote) |
 
 ## ➕ Como criar um agente novo
 

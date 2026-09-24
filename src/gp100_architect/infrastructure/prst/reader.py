@@ -1,8 +1,8 @@
 """Codec de leitura do `.prst` — parse e estatísticas (issue #29).
 
 Migração de `tools/analyze_prst.py`: a leitura do XML vira biblioteca
-(`parse`/`analyze`/`fmt_stat` puras), e a CLI de relatório continua no shim
-de `tools/` — que agora só resolve argumentos e imprime.
+(`parse`/`analyze`/`fmt_stat` puras), e o comando `gp100 analyze` resolve
+argumentos e imprime.
 
 Parse defensivo (novo no #29): XML malformado ou sem a estrutura esperada
 reprova com `FormatoPrstInvalido` e mensagem acionável em vez de estourar
@@ -10,9 +10,10 @@ reprova com `FormatoPrstInvalido` e mensagem acionável em vez de estourar
 como corrigir.
 
 Foi o script original que drenou o export de fábrica do aparelho para
-`tools/factory-catalog.json` (99 presets · 891 effects · 117 modelos). O
+`data/factory-catalog.json` (99 presets · 891 effects · 117 modelos). O
 export original foi removido do repositório na limpeza — exporte a biblioteca
-no GP-100 Edits e rode o shim de `tools/` se precisar regenerar o catálogo.
+no GP-100 Edits e rode `gp100 analyze <arquivo>.prst --json
+data/factory-catalog.json` se precisar regenerar o catálogo.
 
 Camada: infrastructure (o domínio nunca importa daqui).
 """

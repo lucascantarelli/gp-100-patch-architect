@@ -201,8 +201,7 @@ Exemplos: `STH01BA` = Something 01 · Base · `CT01RIF` = Come Together 01 · Ri
 ## 🔧 Regenerar tudo
 
 ```bash
-python tools/build_song_patches.py   # patch.md + .prst a partir de tools/patches-defs.json
-python tools/gen_indexes.py          # mapas dos álbuns + este README
+uv run gp100 build                   # patch.md + .prst a partir do defs (data/defs/)
 ```
 
 ---

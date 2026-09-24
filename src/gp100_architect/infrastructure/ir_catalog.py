@@ -1,9 +1,9 @@
 """Catálogo local de IRs — leitura do manifesto e consulta por gabinete (issue #30).
 
 Migração de `tools/build_song_patches.py` (`ir_catalog`, `ir_mixes`): a leitura
-de `tools/ir-library.json` e a escolha do mix recomendado viram biblioteca, e o
-AVISO de manifesto ilegível passa a ser responsabilidade do shim — a camada de
-aplicação nunca imprime (contrato do `application/__init__`).
+do manifesto `data/ir-library.json` e a escolha do mix recomendado viram
+biblioteca, e o aviso de manifesto ilegível é responsabilidade da CLI — a
+camada de aplicação nunca imprime (contrato do `application/__init__`).
 
 O manifesto é INSUMO da documentação: `build_song_patches` cita o arquivo exato
 na seção 📡 de cada `patch.md` e `gen_indexes` marca 📁 no mapa do álbum. Sem

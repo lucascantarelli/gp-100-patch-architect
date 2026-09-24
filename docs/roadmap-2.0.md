@@ -55,7 +55,7 @@ Duas regras que mantêm isso coerente:
                 ├── #32 release ✅ ────────────────────┘
                 ├── #34 suíte em pirâmide
                 └── #91 agentes consomem a CLI
-                                   #33 limpa tools/ (o último de todos)
+                                   #33 limpa tools/ ✅ (o último de todos)
 
 #42 Formato e dados    ← depois do #30: o gerador precisa estar no pacote, senão
                           a mudança de formato é feita duas vezes
@@ -103,7 +103,7 @@ e o que dá ao MAJOR a razão de existir. Menção a 3.0 no repositório é res�
 |---|---|---|
 | Suíte | 100% verde, em pytest, com pirâmide declarada | CI (`pytest`) |
 | Cobertura do pacote | ≥ 90% (gate do `pyproject.toml`; 91% hoje) | CI (`fail_under`) |
-| Lint e formatação | zero violação em **todo** o Python do repositório — as exclusões atuais (`tools/`, `.github/scripts`, testes históricos) saem junto com cada migração | CI (`ruff`) |
+| Lint e formatação | zero violação em **todo** o Python do repositório — `src/` e a suíte inteira já estão nos gates; `.github/scripts` e skills de terceiros ficam fora (superfície shell/conteúdo externo) | CI (`ruff`) |
 | Tipos | `mypy --strict` no pacote | CI (`mypy`) |
 | Agentes | `tsc --noEmit` limpo | CI (`typecheck`) |
 | Sincronia do pipeline | guarda verde (nenhum derivado defasado) | CI |
@@ -112,7 +112,7 @@ e o que dá ao MAJOR a razão de existir. Menção a 3.0 no repositório é res�
 | Documentação | nenhum doc descrevendo arquitetura inexistente; issue/caminho/link/milestone citados existem | **linter de consistência (#58)** + revisão |
 | Releases | changelog gerado dos commits, versão de fonte única, tag | ADR-0010 |
 | Onboarding | `git clone && uv sync && uv run pytest` verde em máquina limpa | README/DEVELOPMENT |
-| Legado | `tools/` contém apenas conteúdo — nenhum código de produto | #33 |
+| Legado | `tools/` extinta — dados em `data/`, pipeline no pacote (`gp100 build`) | #33 ✅ |
 
 ## 6 · Ritual de release (ADR-0010)
 

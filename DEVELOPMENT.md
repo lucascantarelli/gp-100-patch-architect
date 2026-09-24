@@ -23,7 +23,7 @@ funciona logo depois do clone.
 ## Comandos do dia a dia
 
 ```bash
-uv run gp100 validate              # valida o defs (tools/defs/, fonte única)
+uv run gp100 validate              # valida o defs (data/defs/, fonte única)
 uv run pytest -q                   # suíte completa
 uv run pytest tests/unit -q        # só os testes do pacote (milissegundos)
 uv run pytest -q -m unit           # fatia por marcador da pirâmide
@@ -38,7 +38,7 @@ uv run pre-commit run --all-files  # roda os hooks em tudo
 ```
 
 O pipeline de dados (patches → `.prst` → docs) ainda roda pelos scripts de
-`tools/`; a forma canônica está em [`tools/README.md`](tools/README.md) e no
+do pacote; a forma canônica está no README (seção Ferramentas) e no
 [`CONTRIBUTING.md`](CONTRIBUTING.md) — e o guarda de sincronia reprova se você
 editar o defs e esquecer de regenerar.
 
@@ -50,7 +50,7 @@ editar o defs e esquecer de regenerar.
 | ler/escrever arquivo, defs, `.prst`, zip | `src/gp100_architect/infrastructure/` |
 | caso de uso (montar setlist, exportar, publicar) | `src/gp100_architect/application/` |
 | comando de terminal, help, saída | `src/gp100_architect/interfaces/cli/` |
-| script do pipeline ainda não migrado | `tools/` (migração em curso) |
+| dado versionado do pipeline | `data/` (defs, catálogo, manifesto de IRs) |
 | conteúdo de domínio (timbre, IR, álbum) | `reference/` |
 | decidir arquitetura | `docs/decisions/` — ADR novo **com** o PR |
 
@@ -85,5 +85,5 @@ Detalhes de branch, review e release: [`CONTRIBUTING.md`](CONTRIBUTING.md).
 | `python: command not found` ou versão ≠ 3.14 | runtime fora da política | instale 3.14; o CI e os scripts recusam outra versão de propósito |
 | `uv: command not found` | uv não instalado | `pip install uv` |
 | TestH acusa derivado defasado | editou o defs e não regenerou | o teste imprime o comando exato de conserto |
-| `mypy` reclama no legado | `tools/` está fora do escopo | rode `uv run mypy` (sem argumento) — ele usa a config |
+| `mypy` reclama em outro lugar | o gate cobre só o pacote | rode `uv run mypy` (sem argumento) — ele usa a config |
 | Suíte completa lenta (~1 min) | TestH roda o pipeline numa cópia | use `uv run pytest tests/unit -q` enquanto itera |

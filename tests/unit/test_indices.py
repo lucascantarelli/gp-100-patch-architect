@@ -91,7 +91,7 @@ def test_build_readme_resume_albuns_e_total(tmp_path: Path):
     readme = indices.build_readme(album_blocks, 5)
     assert 'patches-5-e02d2d' in readme
     assert album_blocks in readme
-    assert 'python tools/gen_indexes.py' in readme
+    assert 'uv run gp100 build' in readme
 
 
 def test_nomes_derivados_do_defs():

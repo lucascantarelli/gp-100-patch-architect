@@ -3,7 +3,7 @@
 Migração de `tools/build_release.py`: a biblioteca **não imprime** e **não
 estoura `SystemExit`** — devolve dados (`{Path: bytes/texto}`) e levanta
 `ReleaseInvalida` com mensagem acionável; quem imprime e sai é a CLI
-(`gp100 release`) ou o shim de `tools/`. É o contrato que a #49 consome.
+(`gp100 release`). É o contrato que a #49 consome.
 
 O que vai em cada ZIP: apenas o que o músico precisa — `<NOME>.prst` e
 `patch.md`, na estrutura `<Banda>/<Álbum>/<Música>/`. Os `.prst` são

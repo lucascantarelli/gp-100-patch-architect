@@ -79,7 +79,7 @@ def test_tabela_nao_tem_mais_nomes_que_parametros_reais() -> None:
 
 
 def test_indices_em_disco_sao_os_gerados_hoje(defs_real: dict[str, Any], raiz: Path) -> None:
-    manifesto = json.loads((raiz / 'tools' / 'ir-library.json').read_text(encoding='utf-8'))
+    manifesto = json.loads((raiz / 'data' / 'ir-library.json').read_text(encoding='utf-8'))
     from gp100_architect.infrastructure.ir_catalog import indice_por_cab
 
     saidas, _total = indices.build_all(defs_real, raiz=raiz, ir_index=indice_por_cab(manifesto))
@@ -90,7 +90,7 @@ def test_indices_em_disco_sao_os_gerados_hoje(defs_real: dict[str, Any], raiz: P
     for caminho, texto in saidas.items():
         assert caminho.is_file(), f'{caminho} não existe — rode gen_indexes.py'
         assert norm(caminho.read_text(encoding='utf-8')) == norm(texto), (
-            f'{caminho} está defasado — rode: uv run python tools/gen_indexes.py'
+            f'{caminho} está defasado — rode: uv run gp100 build'
         )
 
 
@@ -128,7 +128,7 @@ def test_mfb_vem_antes_de_metal_american() -> None:
 
 def test_manifesto_esta_em_ordem_de_code_point(raiz: Path) -> None:
     """O JSON commitado já sai ordenado por string em todo pack."""
-    manifesto = json.loads((raiz / 'tools' / 'ir-library.json').read_text(encoding='utf-8'))
+    manifesto = json.loads((raiz / 'data' / 'ir-library.json').read_text(encoding='utf-8'))
     for pack, mp in manifesto['packs'].items():
         arquivos = [f['file'] for f in mp['files']]
         assert arquivos == sorted(arquivos), f'ordem instável no pack {pack}'
@@ -148,7 +148,7 @@ def test_todo_patch_no_disco_esta_no_defs(defs_real: dict[str, Any], raiz: Path)
     definidos = {patch['nome'] for _s, patch in _travessia(defs_real)}
     no_disco = {d.name for d in (raiz / 'patches').glob('*/*/*/*') if d.is_dir()}
     assert sorted(no_disco - definidos) == [], (
-        'patch(s) em patches/ que não existem no defs (tools/defs/)'
+        'patch(s) em patches/ que não existem no defs (data/defs/)'
     )
 
 

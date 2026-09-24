@@ -46,7 +46,7 @@ Closes #
 - [ ] `npx -y -p typescript@5.9.2 tsc --noEmit -p tsconfig.json` passa (se toquei em `.agents/`)
 - [ ] **Não editei à mão** arquivo gerado: `patches/**/*.prst`, `patch.md`,
       `MAPA-DO-ALBUM.md`, `patches/README.md`,
-      `tools/ir-library.json`, `reference/16-ir-library.md` — e não comitei
+      `data/ir-library.json`, `reference/16-ir-library.md` — e não comitei
       derivado de `patches/**` (só o `defs/` e os índices são fonte)
 
 ### Invariantes do projeto

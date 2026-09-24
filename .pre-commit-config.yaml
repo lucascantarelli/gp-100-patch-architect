@@ -10,8 +10,8 @@
 #   * formatação de `patches/**` e `impulse_responses/**` — o formato do `.prst`
 #     é contrato de CRLF e byte a byte (TestC), e mexer nele por hook de
 #     higiene seria sabotar o único artefato que a pedaleira lê;
-#   * `tools/**`, `.github/scripts/**` e as skills de terceiros enquanto a
-#     migração (PKG-003…009) não os trouxer para os gates — mesma lista do ruff.
+#   * `.github/scripts/**` e as skills de terceiros ficam fora dos gates —
+#     mesma lista do ruff.
 default_language_version:
   python: python3.14
 

@@ -15,7 +15,7 @@ trim_trailing_whitespace = true
 indent_style = space
 indent_size = 2
 
-# ── Python: PEP 8 (4 espaços). Vale para tools/, tests/ e o codec do formato.
+# ── Python: PEP 8 (4 espaços). Vale para src/, tests/ e o codec do formato.
 [*.py]
 indent_size = 4
 max_line_length = 100

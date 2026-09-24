@@ -98,7 +98,7 @@ def test_ler_versao_rejeita_nao_semver(tmp_path: Path) -> None:
 
 
 def test_collect_patches_espelha_o_defs(raiz: Path) -> None:
-    defs = carregar(raiz / 'tools' / 'defs')
+    defs = carregar(raiz / 'data' / 'defs')
     items = release.collect_patches(defs, raiz / 'patches')
     n_definidos = sum(len(s['patches']) for s in defs['songs'])
     assert len(items) == n_definidos
@@ -108,7 +108,7 @@ def test_collect_patches_espelha_o_defs(raiz: Path) -> None:
 
 def test_package_em_tmpdir_produz_zips_e_notas(raiz: Path, tmp_path: Path) -> None:
     """Empacota tudo num tmpdir lendo os `.prst` do repositório (só leitura)."""
-    defs = carregar(raiz / 'tools' / 'defs')
+    defs = carregar(raiz / 'data' / 'defs')
     relatorio = release.package('9.9.9', defs=defs, patches_dir=raiz / 'patches', destino=tmp_path)
 
     completo = tmp_path / 'gp100-patches-v9.9.9.zip'

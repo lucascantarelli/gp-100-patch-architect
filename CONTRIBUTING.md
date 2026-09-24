@@ -2,7 +2,7 @@
 
 Obrigado pelo interesse. Este projeto tem uma característica que muda tudo:
 **metade dele é saída de script**. Os arquivos em `patches/**` são *gerados* a
-partir de `tools/defs/` (schema v2: fragmentos por álbum), e o CI reprova quem editar o gerado à mão.
+partir de `data/defs/` (schema v2: fragmentos por álbum), e o CI reprova quem editar o gerado à mão.
 Antes de commitar na `develop`, leia a seção [O pipeline é obrigatório](#-o-pipeline-é-obrigatório).
 
 Ao participar, você concorda com o [`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md).
@@ -29,22 +29,21 @@ uv run gp100 --version
 node --version      # v26.x (só para o typecheck dos agentes)
 ```
 
-O `tools/` legado continua rodando com a **stdlib pura** (`python tools/x.py`
-funciona sem instalar nada); o ambiente uv existe para os gates de qualidade
-e para a CLI oficial. Detalhes e comandos do dia a dia:
-[`DEVELOPMENT.md`](DEVELOPMENT.md).
+O produto é o **pacote** (`src/gp100_architect`) — CLI `gp100` e pipeline
+in-process; o ambiente uv é o ambiente de desenvolvimento. Detalhes e
+comandos do dia a dia: [`DEVELOPMENT.md`](DEVELOPMENT.md).
 
-> **💡 Assinatura dos dados:** `tools/defs/` é a **fonte única** de
-> músicas, álbuns, patches e IRs recomendadas. Os scripts são renderizadores —
-> nenhum deles tem lista de músicas ou de cabs dentro do código. Acrescentar
+> **💡 Assinatura dos dados:** `data/defs/` é a **fonte única** de
+> músicas, álbuns, patches e IRs recomendadas. O pacote é o renderizador —
+> nenhum módulo tem lista de músicas ou de cabs dentro do código. Acrescentar
 > dado é editar o defs, nunca o gerador.
 
 Páginas do manual sob demanda (opcional; requer `pymupdf` e o `manual.pdf`
 local, que não é versionado):
 
 ```bash
-pip install pymupdf
-python tools/render_manual_page.py 21        # página impressa NN = arquivo NN+2
+uv tool install pymupdf
+uv run gp100 manual-page 21                  # página impressa NN = arquivo NN+2
 ```
 
 ## ✅ Antes de commitar na `develop`: rode exatamente o que o CI roda
@@ -68,9 +67,7 @@ cab):
 
 ```bash
 # 3. Pipeline completo, na ordem do CI (o defs É a fonte — nada de seeders)
-python tools/ir_library.py \
-  && python tools/build_song_patches.py \
-  && python tools/gen_indexes.py
+uv run gp100 build
 ```
 
 O guarda de determinismo vive na suíte (`TestH_DadosEmSincronia`): ela roda o
@@ -86,45 +83,45 @@ no [`README.md`](README.md)), então o CI trata esquecimento como falha de build
 
 | Você mexeu em | Obrigatório rodar |
 |---|---|
-| `tools/defs/` (álbum, música, patch, momento) | `build_song_patches.py` → `gen_indexes.py` |
-| Novos packs de IR em `impulse_responses/` | `ir_library.py` |
-| Scripts em `tools/` | a suíte + o pipeline inteiro (a saída tem de continuar idêntica) |
+| `data/defs/` (álbum, música, patch, momento) | `uv run gp100 build` |
+| Novos packs de IR em `impulse_responses/` | `uv run gp100 build` |
+| Código do pacote (`src/`) | a suíte + o pipeline inteiro (a saída tem de continuar idêntica) |
 
 **Nunca edite à mão** um arquivo gerado: `patches/**/*.prst`, `patches/**/patch.md`,
 `patches/**/MAPA-DO-ALBUM.md`, `patches/README.md`,
-`tools/ir-library.json`, `reference/16-ir-library.md` (o defs deixou de ser saída de script no schema v2 — ele É a fonte).
+`data/ir-library.json`, `reference/16-ir-library.md` (o defs deixou de ser saída de script no schema v2 — ele É a fonte).
 Sua edição será apagada na próxima execução do pipeline e reprovada pelo guarda.
 
 ### ℹ️ O spec vai direto ao codec — sem intermediário em disco
 
-Desde o ADR-0013, o `build_song_patches.py` passa o spec **in-memory** ao codec
+Desde o ADR-0013, o pipeline passa o spec **in-memory** ao codec
 (`src/gp100_architect/infrastructure/prst/`): o antigo `spec.json` intermediário
 **não existe mais** nem em disco. Para comparar parâmetros entre duas versões,
-leia o defs (`tools/defs/`, a fonte) — o `.prst` muda o `preset_info/@time` a
+leia o defs (`data/defs/`, a fonte) — o `.prst` muda o `preset_info/@time` a
 cada build, o defs não. Nada em `patches/**` é escrito à mão: tudo é derivado do
 `patches/**` e vigiado pelo guarda de determinismo.
 
 ### ⚠️ O catálogo de IRs não é regenerável sem o pack
 
 O **banco** de IRs (`impulse_responses/**`) não é versionado — licença de terceiro.
-O **catálogo** (`tools/ir-library.json` + `reference/16-ir-library.md`) é, porque é
+O **catálogo** (`data/ir-library.json` + `reference/16-ir-library.md`) é, porque é
 insumo da documentação: é dele que sai o caminho exato da captura citado na seção 📡
 no `patch.md` e o marcador 📁 no `MAPA-DO-ALBUM.md` de cada álbum.
 
-Consequência para o seu PR: se você rodar `ir_library.py` **sem** o pack completo
+Consequência para o seu PR: se você reindexar **sem** o pack completo
 que gerou o catálogo commitado, 97 docs perderiam a recomendação do banco local.
 Como o `patch.md` e o mapa cairiam para "fábrica" juntos, a suíte passaria — então
-o próprio script reprova a rodada
-(`python tools/ir_library.py --force` só quando a remoção for intencional).
+o próprio pipeline reprova a rodada (guarda de encolhimento;
+só a remoção intencional de pack pode encolher o catálogo, com revisão).
 
-Regra prática: **não inclua `tools/ir-library.json` nem `reference/16-ir-library.md`
+Regra prática: **não inclua `data/ir-library.json` nem `reference/16-ir-library.md`
 no PR** a menos que esteja reindexando o banco de propósito, e diga isso na descrição.
 
 ## 🎸 Acrescentando conteúdo (o caminho mais comum)
 
 ### Um patch novo para uma música existente
 
-1. Abra o fragmento do álbum (`tools/defs/<CHAVE>.json`) e localize a música.
+1. Abra o fragmento do álbum (`data/defs/<CHAVE>.json`) e localize a música.
 2. Acrescente a camada no array de patches da música. O `nome` no painel é
    `MÚSICA+CAMADA` e tem **máximo 12 caracteres** (`STH01BA`, `CT01RIF`).
 3. Preencha o dossiê do rig com **fontes** — o projeto exige lastro pesquisável,
@@ -135,14 +132,14 @@ no PR** a menos que esteja reindexando o banco de propósito, e diga isso na des
 
 > **Pelo agente**, este caminho é o mesmo: `@gp100-patch-architect` entrevista,
 > consulta as skills, valida com o `gp100-patch-validator` e **acrescenta o item no
-> `tools/defs/`** — ele não escreve em `patches/**` (ver `knowledge.md`,
+> `data/defs/`** — ele não escreve em `patches/**` (ver `knowledge.md`,
 > regra 8). O que você revisa no PR é o **defs** e os derivados que o pipeline gerou.
 
 ### Um álbum inteiro novo
 
-1. Crie o fragmento do álbum `tools/defs/<CHAVE>.json` com `idAlbum`, `album`
+1. Crie o fragmento do álbum `data/defs/<CHAVE>.json` com `idAlbum`, `album`
    (`banda`, `ano`, `pasta`, `titulo`), o dossiê de rig e o `ir_local` de cada cab
-   usado — e declare a chave em `tools/defs/_albums.json` (a ordem do manifesto é
+   usado — e declare a chave em `data/defs/_albums.json` (a ordem do manifesto é
    a numeração U01…Uxx). Momentos de toggle vivem no próprio fragmento.
 2. Rode o pipeline completo (bloco acima), revise os `MAPA-DO-ALBUM.md` gerados
    e a numeração de slots.
@@ -205,7 +202,7 @@ git commit -m "docs(contributing): detalha o fluxo de commit"
 ```
 
 Breaking change: `feat(prst)!: ...` ou um rodapé `BREAKING CHANGE:` explicando a
-migração. O `tools/gen_changelog.py` lê este padrão para montar o `CHANGELOG.md`
+migração. O `gp100 changelog` lê este padrão para montar o `CHANGELOG.md`
 e sugerir o próximo bump de versão — commit fora do padrão **não aparece** no
 changelog.
 
@@ -223,7 +220,7 @@ git switch develop && git pull
 
 # ... edite os defs, rode o pipeline e a suíte ...
 
-git add tools/defs/ reference/
+git add data/defs/ reference/
 git commit -m "feat(pulse): adiciona camada de solo em Time"
 git push
 ```
@@ -245,7 +242,7 @@ Na `develop`, prepara a versão; quando a release for aprovada, o PR alimenta a 
 
 ```bash
 git switch develop && git pull
-python tools/gen_changelog.py --version 1.1.0 --write   # prepende a seção no CHANGELOG.md
+uv run gp100 changelog --version 1.1.0 --write   # prepende a seção no CHANGELOG.md
 printf '%s\n' 1.1.0 > VERSION
 git commit -am "chore(release): v1.1.0"
 git push

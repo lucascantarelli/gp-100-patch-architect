@@ -40,19 +40,19 @@ impulse_responses/*
 !impulse_responses/README.md
 
 # Manual oficial da Valeton (obra de terceiro) — obtenha no site do fabricante.
-# `tools/render_manual_page.py` lê este arquivo localmente.
+# O comando `gp100 manual-page` lê este arquivo localmente.
 manual.pdf
 
 # ── Saída de empacotamento de release ─────────────────────────────────────────
-# `tools/build_release.py` escreve os ZIPs aqui; eles vão anexados à Release,
+# O comando `gp100 release` escreve os ZIPs aqui; eles vão anexados à Release,
 # nunca para o histórico do git.
 dist/
 
 # ── Derivados da biblioteca: CONSTRUÍDOS, não armazenados (ADR-0013, issue #8) ─
 # Todo `.prst` e todo `patch.md` de patches/** são deriváveis do defs
-# (`tools/defs/`) — o guarda de determinismo (TestH) prova byte a byte, e o job
+# (`data/defs/`) — o guarda de determinismo (TestH) prova byte a byte, e o job
 # de release constrói os ZIPs (issue #82). Quem precisa dos arquivos: ZIP da
-# Release ou `python tools/build_song_patches.py && python tools/gen_indexes.py`.
+# Release ou `gp100 build`.
 patches/**
 !patches/**/
 

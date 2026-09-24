@@ -5,7 +5,7 @@
 > agentes `gp100-tone-research` e `gp100-tone-mapper` — hoje os testes cobrem o
 > pipeline de dados, não o julgamento musical dos agentes.
 >
-> **Fonte única**: as cadeias vêm de `tools/patches-defs.json` (campo
+> **Fonte única**: as cadeias vêm de `data/defs/` (campo
 > `spec.modules`, estado `on`). Se o defs mudar, regenere a tabela — este doc
 > é derivado, como o `patch.md` e o `.prst`. Notação: `BLOCO:Modelo+` (ligado)
 > e `BLOCO:Modelo-` (presente, desligado) — a ordem é sempre PRE→DST→AMP→NR→

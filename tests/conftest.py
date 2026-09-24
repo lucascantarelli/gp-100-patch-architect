@@ -5,7 +5,7 @@ Regras da casa materializadas no conftest:
 * **nenhum teste escreve no repositório** — quem precisa de arquivo usa
   `tmp_path` e aponta `GP100_DEFS` para lá; com `--guarda-repo` (padrão no CI),
   o fim da sessão compara o working tree e reprova qualquer sujeira de teste;
-* **Python 3.14 apenas** — a política guardada em `tools/defs_schema.py`
+* **Python 3.14 apenas** — a política do projeto (travada no CI e nos entry points)
   (`PY_OK`) fica repetida aqui para a mensagem sair antes do primeiro import
   do pacote (a suíte inteira se recusa a rodar em runtime diferente, com a
   mesma mensagem acionável do validador);
@@ -23,7 +23,7 @@ from typing import Any
 
 import pytest
 
-# ── guarda de runtime (a mesma política de tools/defs_schema.py) ────────────
+# ── guarda de runtime (política do projeto: Python 3.14 APENAS) ─────────────
 _PY_ALVO = (3, 14)
 if sys.version_info[:2] < _PY_ALVO:
     raise SystemExit(
@@ -61,7 +61,7 @@ def pytest_configure(config: pytest.Config) -> None:
 
 @pytest.fixture(scope='session')
 def raiz() -> Path:
-    """Raiz do repositório (onde vivem tools/, patches/ e VERSION)."""
+    """Raiz do repositório (onde vivem data/, patches/ e VERSION)."""
     return Path(__file__).resolve().parent.parent
 
 
@@ -82,7 +82,7 @@ def defs_real(raiz: Path) -> dict[str, Any]:
     """O defs commitado, consolidado pelo loader v2 — a fonte de verdade."""
     from gp100_architect.infrastructure.defs import carregar
 
-    return carregar(raiz / 'tools' / 'defs')
+    return carregar(raiz / 'data' / 'defs')
 
 
 @pytest.fixture

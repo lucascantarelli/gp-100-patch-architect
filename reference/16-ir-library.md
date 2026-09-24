@@ -1,8 +1,8 @@
 # 📚 Biblioteca local de IRs — catálogo
 
-> **Gerado por** `tools/ir_library.py` — rode de novo após baixar packs novos.
+> **Gerado por** `gp100 build` — rode de novo após baixar packs novos.
 > Os agentes (gp100-cab-ir, gp100-ir-fit, gp100-ir-research) consultam **este arquivo**
-> e `tools/ir-library.json` antes de sugerir IR de terceiros: se já existe na biblioteca,
+> e `data/ir-library.json` antes de sugerir IR de terceiros: se já existe na biblioteca,
 > **não pesquise na internet — use a local**.
 
 ## 📦 25 Analog Cab IRs ⚠️ (parte precisa conversão)
@@ -11,7 +11,7 @@
 | Mix recomendado | Taxa | Bits | Dur. | Compatível GP-100 |
 |---|---|---|---|---|
 
-> Variações de microfone individuais: 25 arquivos (ver `tools/ir-library.json`).
+> Variações de microfone individuais: 25 arquivos (ver `data/ir-library.json`).
 
 > 💡 Packs com pastas 44.1/48/96 kHz: **use sempre a pasta 44.1 kHz** — as outras
 > são as mesmas capturas em outra taxa (a GP-100 exige 44.1 kHz).
@@ -106,7 +106,7 @@
 | `96kHz Origin effects IR Cab Library/Tweed Combo 1x12/Tweed Combo 1x12 Dark Mix.wav` | 96000 | 24 | 500 ms | ⚠️ converter · aparar >1024 samp. |
 | `96kHz Origin effects IR Cab Library/Tweed Combo 1x12/Tweed Combo 1x12 Medium Mix.wav` | 96000 | 24 | 500 ms | ⚠️ converter · aparar >1024 samp. |
 
-> Variações de microfone individuais: 210 arquivos (ver `tools/ir-library.json`).
+> Variações de microfone individuais: 210 arquivos (ver `data/ir-library.json`).
 
 > 💡 Packs com pastas 44.1/48/96 kHz: **use sempre a pasta 44.1 kHz** — as outras
 > são as mesmas capturas em outra taxa (a GP-100 exige 44.1 kHz).
@@ -119,7 +119,7 @@
 4. No patch: bloco CAB → navegue até `User IR n` → ajuste **Low Cut / High Cut / Level**.
 5. Exporte/importe patches normalmente — o `.prst` fica associado ao slot.
 
-> ⚠️ Regra dos agentes: `.prst` gerado por `tools/generate_prst.py` usa CAB de fábrica
+> ⚠️ Regra dos agentes: `.prst` gerado pelo codec do pacote usa CAB de fábrica
 > (formato single validado). Para patch com User IR, use a variante experimental
 > `<NOME>-USERIR.prst` gerada com `build_song_patches.py --with-user-ir` — a captura
 > e o slot vêm do `ir_local` do defs (issue #10). Teste na pedaleira antes de adotar.

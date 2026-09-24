@@ -38,7 +38,7 @@ def _reg(file: str, **extra: Any) -> dict[str, Any]:
 
 def _manifesto(**packs: tuple[int, list[str]]) -> dict[str, Any]:
     return {
-        'generated_by': 'tools/ir_library.py',
+        'generated_by': 'gp100 build (ir_library)',
         'packs': {
             nome: {'wavs': n, 'cabs': cabs, 'all_compatible': True, 'meta': {}, 'files': []}
             for nome, (n, cabs) in packs.items()
@@ -89,7 +89,7 @@ def test_montar_manifesto_agrupa_por_pack_e_cita_o_conhecido():
         'Origin Effects - IR-Cab Library V3',
         'Pack Novo',
     ]
-    assert manifesto['generated_by'] == 'tools/ir_library.py'
+    assert manifesto['generated_by'] == 'gp100 build (ir_library)'
     novo = manifesto['packs']['Pack Novo']
     assert novo['wavs'] == 2
     assert novo['cabs'] == ['Cab A']  # Mics não vira um "gabinete"
@@ -144,7 +144,7 @@ def test_encolhimento_aprova_crescimento_e_rodada_igual():
 
 def test_catalogo_md_cita_fonte_e_lista_apenas_os_mixes():
     manifesto = {
-        'generated_by': 'tools/ir_library.py',
+        'generated_by': 'gp100 build (ir_library)',
         'packs': {
             'Origin Effects - IR-Cab Library V3': {
                 'wavs': 2,
@@ -191,7 +191,7 @@ def test_catalogo_md_cita_fonte_e_lista_apenas_os_mixes():
 def test_catalogo_md_registra_pack_sem_procedencia():
     md = ir_library.catalogo_md(
         {
-            'generated_by': 'tools/ir_library.py',
+            'generated_by': 'gp100 build (ir_library)',
             'packs': {
                 'Pack Novo': {
                     'wavs': 1,

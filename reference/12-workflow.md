@@ -15,7 +15,7 @@ Criar patches para a **Valeton GP-100** sob demanda: o usuário pede um estilo/m
 3. **Encaixe**: montar a cadeia final PRE→DST→AMP→NR→CAB→EQ→MOD→DLY→RVB com valores; respeitar regras de ouro (00-signal-chain).
 4. **IR** (se aplicável): acionar `gp100-ir-research` para achar IR gratuita + `gp100-ir-fit` para cortes/Level.
 5. **Validação**: passar o patch inteiro pelo `gp100-patch-validator` (nomes, ranges, coerência).
-6. **Persistência**: acrescentar o patch ao fragmento do álbum (`tools/defs/<CHAVE>.json`) e rodar o pipeline (`build_song_patches.py` → `gen_indexes.py`) e a suíte (guarda de determinismo). O `patch.md` e o `.prst` são **gerados** pelo pipeline, não escritos à mão.
+6. **Persistência**: acrescentar o patch ao fragmento do álbum (`data/defs/<CHAVE>.json`) e rodar o pipeline (`build_song_patches.py` → `gen_indexes.py`) e a suíte (guarda de determinismo). O `patch.md` e o `.prst` são **gerados** pelo pipeline, não escritos à mão.
 7. **Entrega**: resumir o patch na conversa + apontar os arquivos gerados.
 
 ## Nomenclatura de patches (vigente)
@@ -30,8 +30,8 @@ patches/<Banda>/<Álbum>/<Música>/<NOME>/
 ├── patch.md              # documento completo — renderizado pelo build_doc()
 └── <NOME>.prst           # single fw 2.1, CAB de fábrica
 ```
-Nenhum desses é escrito à mão: o `tools/build_song_patches.py` os gera a partir de
-`tools/defs/` — o spec vai **in-memory** ao codec (ADR-0013: nenhum
+Nenhum desses é escrito à mão: o pipeline do pacote (`gp100 build`) os gera a partir de
+`data/defs/` — o spec vai **in-memory** ao codec (ADR-0013: nenhum
 intermediário em disco; o antigo `spec.json` foi eliminado). IRs de terceiros **não** entram na biblioteca — elas vivem em
 `impulse_responses/<Pack>/`, fora do git (política em knowledge.md, regra 10).
 
@@ -50,8 +50,8 @@ intermediário em disco; o antigo `spec.json` foi eliminado). IRs de terceiros *
 - [ ] Instruções de digitação na ordem real dos menus da pedaleira (incluindo os SOBRESSALENTES citados nos momentos).
 - [ ] Sugestão de captador (posição na Strat) para o timbre.
 - [ ] Teste sugerido (riff + o que escutar).
-- [ ] **Pipeline rodado**: `python tools/build_song_patches.py` → `python tools/gen_indexes.py` (e `python tools/ir_library.py` se baixou pack) — o guarda de determinismo da suíte reprova derivado divergente do que o defs produz (`patches/**` não é commitado).
-- [ ] **Suíte verde**: `python -m unittest discover -s tests -v` — `TestB_FonteUnica_IR` reprova mapa e `patch.md` divergindo sobre IR; `TestG_Indices` reprova índice defasado; `TestH_DadosEmSincronia` é o guarda de determinismo (pipeline numa cópia × derivados).
+- [ ] **Pipeline rodado**: `gp100 build` (e de novo após baixar pack de IR) — o guarda de determinismo da suíte reprova derivado divergente do que o defs produz (`patches/**` não é commitado).
+- [ ] **Suíte verde**: `uv run pytest` — `TestB_FonteUnica_IR` reprova mapa e `patch.md` divergindo sobre IR; `TestG_Indices` reprova índice defasado; `TestH_DadosEmSincronia` é o guarda de determinismo (pipeline numa cópia × derivados).
 
 ## Fluxo de ajuste (iteração com o músico)
 1. Músico testa e volta com descrição ("muito agudo", "cauda engolida", "riff some na banda").
@@ -76,15 +76,13 @@ intermediário em disco; o antigo `spec.json` foi eliminado). IRs de terceiros *
 Qualquer elemento novo (música, camada, patch, modelo de efeito, momento de toggle, pack de IR) exige rodar o pipeline, na ordem — `patches/**` é construído, não armazenado (ADR-0013):
 
 ```bash
-python tools/ir_library.py          # 1. biblioteca de IRs → tools/ir-library.json + reference/16
-python tools/build_song_patches.py  # 2. patch.md + .prst de todos os patches (momentos já vão no defs, spec in-memory)
-python tools/gen_indexes.py         # 3. MAPA-DO-ALBUM.md + patches/README.md
-python -m unittest discover -s tests -v  # 4. guarda de determinismo: pipeline numa cópia × derivados
+uv run gp100 build    # 1–3. IRs → patches → índices (data/ir-library.json + reference/16)
+uv run pytest         # 4. guarda de determinismo: pipeline numa cópia × derivados
 ```
 
-**Isso é literalmente o que o `TestH_DadosEmSincronia` roda**, a cada `unittest` — local e no CI. **Nenhum job escreve no repositório**: se algum derivado estiver defasado, o teste reprova e imprime o comando exato de conserto, para o autor rodar e commitar.
+**Isso é literalmente o que o `TestH_DadosEmSincronia` roda**, a cada `pytest` — local e no CI. **Nenhum job escreve no repositório**: se algum derivado estiver defasado, o teste reprova e imprime o comando exato de conserto, para o autor rodar e commitar.
 
-O último passo é o que separa "rodei o pipeline" de "biblioteca coerente": sem ele, um PR pode mergear com artefato defasado. A fonte única é o defs (`tools/defs/`, schema v2) — nenhum script mantém tabela própria de músicas, álbuns ou cabs, e **nada do que o pipeline produz é commitado**: em clone limpo o build recria tudo a partir do defs.
+O último passo é o que separa "rodei o pipeline" de "biblioteca coerente": sem ele, um PR pode mergear com artefato defasado. A fonte única é o defs (`data/defs/`, schema v2) — nenhum script mantém tabela própria de músicas, álbuns ou cabs, e **nada do que o pipeline produz é commitado**: em clone limpo o build recria tudo a partir do defs.
 
 ## Limites declarados do projeto
 - A GP-100 não tem reorder de cadeia; não criar expectativa de "trocar ordem dos efeitos".

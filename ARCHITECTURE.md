@@ -10,7 +10,7 @@ Uma biblioteca de **conteúdo** para a pedaleira Valeton GP-100, com um pipeline
 reprodutível:
 
 ```
-tools/defs/                    ← FONTE ÚNICA (schema v2, issue #8):
+data/defs/                     ← FONTE ÚNICA (schema v2, issue #8):
         _albums.json + <ÁLBUM>.json   música, cadeia, params, doc
         │
         ├─→ patches/**/*.prst   arquivo que a pedaleira lê (byte a byte)
@@ -49,7 +49,7 @@ from gp100_architect.infrastructure.defs import carregar_e_validar
 | Caminho | O que é |
 |---|---|
 | `src/gp100_architect/` | o pacote (domain/application/infrastructure/interfaces) |
-| `tools/` | scripts do pipeline — **em migração** para o pacote (PKG-003…008) |
+| `data/` | dados versionados do pipeline — defs, catálogo do firmware e manifesto de IRs (issue #33) |
 | `patches/` | produto: `.prst` + `patch.md` por patch (gerado) |
 | `tests/` | suíte (histórica em `tests/`, nova em `tests/unit/`) |
 | `reference/` | 24 documentos de **domínio** (timbre, catálogo, dossiês, histórico) |

@@ -176,7 +176,7 @@ def build_ir_section(
         '',
         '```',
         'impulse_responses/<Nome do Pack>/   ← extraia aqui',
-        'python tools/ir_library.py          ← reindexa e valida os WAVs',
+        'uv run gp100 build                  ← reindexa e valida os WAVs',
         '```',
         '',
         '**Formato obrigatório**: `.wav` **44,1 kHz · 24 bits · mono** · máx **1024 samples** (cabinet IR; '

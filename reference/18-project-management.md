@@ -268,4 +268,4 @@ gh api -X PATCH repos/lucascantarelli/gp-100-patch-architect/milestones/3 -F sta
 
 ---
 
-[`📖 README do projeto`](../README.md) · [`🌊 12-workflow`](12-workflow.md) · [`🔧 tools/`](../tools/README.md)
+[`📖 README do projeto`](../README.md) · [`🌊 12-workflow`](12-workflow.md) · [`📦 CLI de agentes`](../DEVELOPMENT.md)

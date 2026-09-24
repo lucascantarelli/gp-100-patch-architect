@@ -11,17 +11,16 @@
 
 # ── Núcleo do motor: pipeline de dados e formato .prst ────────────────────────
 # Mudança aqui pode regenerar centenas de artefatos; exige leitura atenta do diff.
-/tools/                 @lucascantarelli
+/src/                  @lucascantarelli
+/data/                 @lucascantarelli
 /tests/                 @lucascantarelli
 
 # ── Formato do dispositivo: o codec do XML single fw 2.1 ──────────────────────
 # Se este arquivo quebrar, os patches deixam de importar na pedaleira.
-/tools/generate_prst.py     @lucascantarelli
-/tools/analyze_prst.py      @lucascantarelli
-/tools/patches-defs.json    @lucascantarelli
+/src/gp100_architect/infrastructure/prst/  @lucascantarelli
 
 # ── Gates de integridade: não podem ser afrouxados sem justificativa ──────────
-/tools/check_data_freshness.py  @lucascantarelli
+/src/gp100_architect/application/pipeline.py  @lucascantarelli
 
 # ── Conteúdo da biblioteca: patches, mapas e dossiês de rig ──────────────────
 /patches/               @lucascantarelli
@@ -41,8 +40,6 @@
 /NOTICE.md              @lucascantarelli
 /setup_repo.sh          @lucascantarelli
 
-# ── Release: o que sai para o usuário final ──────────────────────────────────
-/VERSION                @lucascantarelli
-/CHANGELOG.md           @lucascantarelli
-/tools/build_release.py @lucascantarelli
-/tools/gen_changelog.py @lucascantarelli
+# ── Release: o que sai para o usuário final ──────────────────────────────
+/VERSION               @lucascantarelli
+/CHANGELOG.md          @lucascantarelli

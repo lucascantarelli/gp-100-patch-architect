@@ -53,7 +53,7 @@ O comportamento do agente é 100% definido por arquivos versionados nesta pasta 
 | **Skills de apoio** | `.agents/gp100-{tone-research,tone-mapper,ir-research,ir-fit,manual-reader,patch-validator}.ts` | Pesquisa de referência, mapeamento rig→GP-100, política de IRs, validação |
 | **Regras de ouro** | `knowledge.md` | Convenções do projeto (patches por música, nomenclatura, política de IR) |
 | **Base técnica** | `reference/00…17` | Manual V1.8 transcrito + catálogo empírico do firmware 2.0/2.1 |
-| **Persistência** | `tools/defs/` (fragmentos por álbum, schema v2) | Fonte única do patch: `_albums.json` + um JSON por álbum; o pipeline (`build_song_patches.py`) gera `patch.md` e `.prst` a partir deles |
+| **Persistência** | `data/defs/` (fragmentos por álbum, schema v2) | Fonte única do patch: `_albums.json` + um JSON por álbum; o pipeline (`gp100 build`) gera `patch.md` e `.prst` a partir deles |
 | **Prompts prontos** | `prompts/*.md` | Fluxos de criação, ajuste, sugestão e pesquisa |
 
 ## 🚀 Como usar
@@ -85,7 +85,7 @@ Cada patch entrega:
 
 > **📡 Política de IR** — a seção exclusiva de cada `patch.md` segue sempre: **1.** o que o `.prst` usa agora (CAB de fábrica, funciona imediatamente) → **2.** captura melhor no banco local `impulse_responses/` (arquivo exato + slot User IR + passo a passo) → **3.** download gratuito na internet quando nem banco nem fábrica cobrem → **4.** fallback garantido no CAB de fábrica.
 
-> Fonte única dos patches: `tools/defs/` (schema v2) · regenerar com `python tools/build_song_patches.py` + `python tools/gen_indexes.py`.
+> Fonte única dos patches: `data/defs/` (schema v2) · regenerar com `uv run gp100 build`.
 
 ## 🗂️ Estrutura do projeto
 
@@ -95,9 +95,9 @@ Cada patch entrega:
 ├── .agents/            # 19 agentes + 11 skills (agents/skills/) — configuração do Freebuff
 ├── reference/          # base de conhecimento: manual V1.8 + catálogo fw 2.0/2.1 + catálogos de IR
 ├── prompts/            # fluxos prontos (criar, ajustar, sugerir, pesquisar referência)
-├── tools/              # scripts Python (ver 🔧 Ferramentas abaixo)
+├── data/               # dados do pipeline: defs/, factory-catalog.json, ir-library.json
 ├── patches/            # biblioteca (saída de script): Banda/Álbum/Música/PATCH (.prst + patch.md)
-├── impulse_responses/  # banco local de IRs (WAV 44.1 kHz) — indexado por ir_library.py
+├── impulse_responses/  # banco local de IRs (WAV 44.1 kHz) — indexado por gp100 build
 │                       # ⚠️ os WAV NÃO são versionados (licença de terceiro)
 ├── tests/              # suíte (unit/ em pytest + testes históricos do pipeline)
 ├── .github/            # CI · segurança (CodeQL) · release · templates de issue/PR · CODEOWNERS
@@ -109,7 +109,7 @@ Cada patch entrega:
 ├── CONTRIBUTING.md     # ambiente, pipeline obrigatório, Conventional Commits, fluxo develop → main
 ├── SECURITY.md         # escopo de segurança, prazos e canal de divulgação privada
 ├── CODE_OF_CONDUCT.md  # Contributor Covenant 2.1
-├── CHANGELOG.md        # gerado por tools/gen_changelog.py a partir dos commits
+├── CHANGELOG.md        # gerado pelo comando gp100 changelog a partir dos commits
 ├── VERSION             # fonte única da versão (SemVer) — lida pelo CI de release
 ├── manual.pdf          # manual oficial (V1.8) — NÃO versionado: obtenha no site do fabricante
 ├── .editorconfig       # indentação e fim de linha (CRLF em .prst e docs de patch)
@@ -120,38 +120,34 @@ Cada patch entrega:
 > **📡 O banco de IRs e o `manual.pdf` não vivem no repositório.** As licenças são de
 > terceiros — a IR-Cab Library V3 é gratuita com cadastro no site da Origin Effects,
 > mas não concede redistribuição. O que **é** versionado é o catálogo derivado
-> (`tools/ir-library.json` + `reference/16-ir-library.md`), porque é ele que diz a cada
+> (`data/ir-library.json` + `reference/16-ir-library.md`), porque é ele que diz a cada
 > `patch.md` qual arquivo exato do banco usar. Detalhes: [`impulse_responses/README.md`](impulse_responses/README.md).
 
 ## 🔧 Ferramentas
 
-| Script | Uso | O que faz |
+| Comando / caminho | Uso | O que faz |
 |---|---|---|
-| `gp100` (instalado) | `uv run gp100 validate` | **CLI oficial** (Typer + Rich) — hoje `validate` (valida o defs com relatório acionável) e `--version`; as famílias `setlist`, `find/show/diff`, `build/verify` e `release` chegam na 2.0 (PKG-004…007) |
-| `tools/gp100.py` | `python tools/gp100.py find <termo>` | **CLI legada** — `find` (busca por música/artista/captador), `show` (resumo do patch com cadeia e params), `diff` (compara dois patches), `export` (pasta de importação USB em ordem de slot), `build` e `verify`. Migra para a CLI oficial em PKG-005 |
-| `tools/build_song_patches.py` | `python tools/build_song_patches.py` | **Construtor principal** — a partir de `tools/defs/`, gera `patch.md` + `.prst` via codec in-memory (ADR-0013) de todos os patches e valida (nome ≤ 12 chars, XML conforme) |
-| `tools/generate_prst.py` | `python tools/generate_prst.py spec.json saida.prst` | Gera **um** `.prst` single-patch fw 2.1 — réplica exata do formato single validado no aparelho (sem `<ppIRInfo>`, com `<ppCtrl>`/`<ppEXP1>`, cadeia x=0–8) |
-| `tools/render_manual_page.py` | `python tools/render_manual_page.py 21 [22 …] · --all` | Renderiza páginas do `manual.pdf` **sob demanda** (PNG alta + JPG leve em `manual_pages/`, efêmero) — página impressa NN = arquivo NN+2 |
-| `tools/gen_indexes.py` | `python tools/gen_indexes.py` | Regenera os `MAPA-DO-ALBUM.md` e o `patches/README.md` — slots U01…Uxx calculados pela ordem dos defs |
-| `tools/ir_library.py` | `python tools/ir_library.py` | Indexa `impulse_responses/` (valida mono/24-bit/44.1 kHz) → `tools/ir-library.json` + `reference/16-ir-library.md` |
-| `tools/analyze_prst.py` | `python tools/analyze_prst.py <arquivo>.prst [--json out.json]` | Disseca qualquer export `.prst` (modelos, ranges empíricos de params, catálogo) — é dele que nasceu o catálogo fw 2.0 |
+| `gp100` | `uv run gp100 <comando>` | **CLI oficial** (Typer + Rich) — consulta: `find` · `show` · `diff` · `export`; produção: `build` · `verify` · `setlist` · `release`; utilidades: `validate` · `analyze` · `manual-page` · `changelog` · `version`. Saídas `--json` estáveis para agentes |
+| `gp100 build` | `uv run gp100 build [--with-user-ir]` | **O pipeline completo** in-process (`application/pipeline.py`) — indexa `impulse_responses/` → `data/ir-library.json` + `reference/16-ir-library.md`, gera `patch.md` + `.prst` via codec in-memory (ADR-0013) e regenera os `MAPA-DO-ALBUM.md` + `patches/README.md`. Com `--with-user-ir` (issue #10), escreve também as variantes experimentais `-USERIR` |
+| `gp100 analyze` | `uv run gp100 analyze <arquivo>.prst [--json out.json]` | Disseca qualquer export `.prst` (modelos, ranges empíricos de params, catálogo) — é dele que nasceu o catálogo fw 2.0 (`data/factory-catalog.json`) |
+| `gp100 manual-page` | `uv run gp100 manual-page 21 [22 …] · --all` | Renderiza páginas do `manual.pdf` **sob demanda** (requer pymupdf; PNG alta + JPG leve em `manual_pages/`, efêmero) — página impressa NN = arquivo NN+2 |
+| `gp100 changelog` | `uv run gp100 changelog [--version X.Y.Z] [--write]` | **Changelog derivado dos commits** (Conventional Commits): agrupa por tipo, isola breaking changes e sugere o bump SemVer |
 | `tests/` | `uv run pytest` | **Suíte em pirâmide** (issue #34): `unit` (regras puras) → `integration` (defs real) → `contract` (formato `.prst` e CLI `gp100`) → `e2e` (derivados e guardas, incluindo a sincronia do pipeline). Fatias: `uv run pytest -m unit`, `-m "not slow"` |
-| `tools/build_release.py` | `python tools/build_release.py [versão]` | **Empacota a Release** — ZIP da biblioteca completa + um por álbum, validando cada `.prst`, e escreve as notas em `dist/`. A versão vem de `VERSION` se você não passar nenhuma |
-| `tools/gen_changelog.py` | `python tools/gen_changelog.py [--version X.Y.Z] [--write]` | **Changelog derivado dos commits** (Conventional Commits): agrupa por tipo, isola breaking changes e sugere o bump SemVer |
+| `data/` | — | **Dados versionados do pipeline**: `defs/` (fonte única, schema v2), `factory-catalog.json` (catálogo empírico do firmware) e `ir-library.json` (manifesto do banco local de IRs, gerado) |
+| `scripts/purge_redistributed_assets.sh` | `CONFIRMAR=1 bash scripts/purge_redistributed_assets.sh` | Ferramenta de manutenção: plano/execução de remoção de ativos redistribuíveis (licença) |
 | `.github/scripts/audit_workflows.py` | `python .github/scripts/audit_workflows.py` | **Guarda dos workflows** — reprova permissões ausentes ou ACIMA DO TETO declarado por arquivo, job sem `timeout`, injeção em `run:` e `pull_request_target`; avisa sobre Action não fixada por SHA |
 
-**Cadeia típica ao acrescentar um álbum:** crie `tools/defs/<CHAVE>.json` (e declare a chave em `_albums.json`) → `build_song_patches.py` → `gen_indexes.py` → **rode a suíte de testes** (ela inclui o guarda de determinismo). **Baixou packs de IR?** Extraia em `impulse_responses/<Pack>/` → rode `ir_library.py`. Downloads recomendados: [`reference/17-free-ir-packs.md`](reference/17-free-ir-packs.md).
+**Cadeia típica ao acrescentar um álbum:** crie `data/defs/<CHAVE>.json` (e declare a chave em `_albums.json`) → `uv run gp100 build` → **rode a suíte de testes** (ela inclui o guarda de determinismo). **Baixou packs de IR?** Extraia em `impulse_responses/<Pack>/` → `uv run gp100 build`. Downloads recomendados: [`reference/17-free-ir-packs.md`](reference/17-free-ir-packs.md).
 
 > **Acrescentou elemento novo?** (música, camada, patch, efeito, momento de toggle, pack de IR) O pipeline é obrigatório, e o guarda de determinismo da suíte reprova o PR que esquecer de regenerar:
 >
 > ```bash
-> python tools/ir_library.py && python tools/build_song_patches.py \
->   && python tools/gen_indexes.py
+> uv run gp100 build
 > ```
 
 ### 📍 Fonte única de dados
 
-Tudo que descreve uma música, um álbum ou uma IR vive **só** em `tools/defs/` (`albums` → banda/ano/pasta/título/dossiê do rig · `ir_local` → captura recomendada por CAB · cada música → `song`, `pasta`, `display`, patches). Os scripts são renderizadores: nenhum deles tem lista de músicas ou de cabs. Foi a duplicação dessas tabelas que fez o mapa do álbum recomendar "fábrica" enquanto o `patch.md` mandava carregar uma IR do banco nos 38 patches do Pulse — hoje o teste `TestB_FonteUnica_IR` reprova isso.
+Tudo que descreve uma música, um álbum ou uma IR vive **só** em `data/defs/` (`albums` → banda/ano/pasta/título/dossiê do rig · `ir_local` → captura recomendada por CAB · cada música → `song`, `pasta`, `display`, patches). O pacote é o renderizador: nenhum módulo tem lista de músicas ou de cabs. Foi a duplicação dessas tabelas que fez o mapa do álbum recomendar "fábrica" enquanto o `patch.md` mandava carregar uma IR do banco nos 38 patches do Pulse — hoje o teste `TestB_FonteUnica_IR` reprova isso.
 
 ## ✅ Qualidade — o que o CI garante
 
@@ -161,7 +157,7 @@ Cada PR (e cada push em `main` e `develop`) roda o workflow [`CI`](.github/workf
 |---|---|
 | **🚦 `ci-gate`** | **Portão do CI** — reprova se qualquer job da fase 1 falhou e publica o resumo dos resultados |
 | **🧪 `test-suite`** | instala o ambiente do lockfile (`uv sync --frozen`), verifica o runtime (**trava Python 3.14.* como primeiro passo**) e executa a suíte (**256 testes**) com pytest e **cobertura do pacote com piso de 90%** (hoje 91%), incluindo o **guarda de determinismo**: o pipeline roda numa cópia temporária e tem de reproduzir exatamente o que o defs determina (em clone limpo, a biblioteca inteira — `patches/**` não é commitado). **Nada é escrito no repositório:** o workflow roda com `contents: read`, então nenhum ator automatizado pode empurrar no `main` e a branch protection não precisa de exceção para o bot |
-| **🧹 `quality`** | `ruff check` + `ruff format --check` + `mypy --strict` — hoje no pacote `src/gp100_architect`; cada módulo de `tools/` entra nos gates no PR que o migra |
+| **🧹 `quality`** | `ruff check` + `ruff format --check` + `mypy --strict` — no pacote `src/gp100_architect` e em toda a suíte `tests/` |
 | **🔍 `typecheck`** | `tsc --noEmit` nos 19 agentes, com cache do TypeScript |
 
 Todos os jobs têm `timeout` e o resultado da sincronia dos dados é publicado no **resumo da execução** (Step Summary) do GitHub.
@@ -201,12 +197,12 @@ A suíte cobre as invariantes que **já quebraram uma vez** neste projeto:
 - ✅ Seções obrigatórias presentes nos 97 docs (guitarra → ajustes finos → IR → modos de atuação → objetivo → dossiê → parâmetros → carga → evite) e 67 momentos de toggle validados contra o spec.
 - ✅ **Zero rótulo `pN` nos 97 docs**: os 40 `patch.md` do Pulse e as 28 menções em textos de ajustes/evite passaram a usar os nomes do manual V2.0 (rótulos acima); os slots **internos** do firmware (que o editor não expõe) não são setados nem rotulados — ficam no default de fábrica.
 - ✅ **Dossiê de rig de Cheap Thrills** (Big Brother & The Holding Company): duas guitarras em **Gibson SG** (Gurley e Andrew), **Fender Twin Reverb**, Maestro FZ-1 no Gurley — e o achado que fecha o timbre da faixa: **Piece of My Heart sem fuzz** (Gurley limpo, Sam sujo no Twin estourado); o mapa da Janis voltou a ter seção de rig, com fontes.
-- ✅ **CI + suíte de testes** ([`.github/workflows/ci.yml`](.github/workflows/ci.yml)): **256 testes** em `tests/` validam defs, formato dos 97 `.prst`, docs, momentos, nomes de parâmetro, drift dos índices, a ordem estável entre OS e o **determinismo dos derivados** — o `TestH` roda o pipeline completo numa cópia temporária e compara com o que o defs produz (em clone limpo, a biblioteca inteira; só o timestamp `preset_info/@time` é ignorado); **nenhum job escreve no repositório**, e o portão **`ci-gate`** concentra o veredito final.
+- ✅ **CI + suíte de testes** ([`.github/workflows/ci.yml`](.github/workflows/ci.yml)): **321 testes** em pirâmide pytest (`tests/`) validam defs, formato dos 97 `.prst`, docs, momentos, nomes de parâmetro, drift dos índices, a ordem estável entre OS e o **determinismo dos derivados** — o guarda de sincronia (TestH) roda o pipeline completo numa cópia temporária e compara com o que o defs produz (em clone limpo, a biblioteca inteira; só o timestamp `preset_info/@time` é ignorado); **nenhum job escreve no repositório** (auditoria `--guarda-repo`), e o portão **`ci-gate`** concentra o veredito final.
 - ✅ **Pipeline reprodutível entre sistemas**: a ordem dos artefatos derivados não depende do SO — a comparação de `Path` usa `normcase` (minúsculas no Windows, identidade no Linux) e fazia o manifesto de IRs divergir entre a máquina e o CI; a ordenação agora é por string (ordem de code point), com teste travando a regressão (`TestI_OrdemEstavel`).
 - ✅ Typecheck `tsc --noEmit` limpo nos 19 agentes.
-- ✅ Manual V1.8 transcrito página a página para `reference/` + catálogo empírico extraído do export de fábrica (`tools/factory-catalog.json`, 99 presets · 117 modelos).
+- ✅ Manual V1.8 transcrito página a página para `reference/` + catálogo empírico extraído do export de fábrica (`data/factory-catalog.json`, 99 presets · 117 modelos).
 - ✅ Banco local de IRs indexado (291 WAVs — Origin Effects IR-Cab Library V3).
-- ✅ Limpeza: export de fábrica, arquivos de exemplo e páginas pré-renderizadas do manual removidos — todo o conhecimento drenado para `reference/` + `tools/`; manual renderizável sob demanda.
+- ✅ Limpeza: export de fábrica, arquivos de exemplo e páginas pré-renderizadas do manual removidos — todo o conhecimento drenado para `reference/` e o pacote; manual renderizável sob demanda.
 
 ## ❓ FAQ
 
@@ -240,7 +236,7 @@ A documentação (`patch.md`) é útil como receita de timbre em qualquer plataf
 
 **Preciso do banco de IRs que você indexou?**
 Não é obrigatório — e ele **não está no repositório**, por licença. Os catálogos
-(`tools/ir-library.json` e `reference/16-ir-library.md`) ficam versionados e continuam
+(`data/ir-library.json` e `reference/16-ir-library.md`) ficam versionados e continuam
 dizendo qual arquivo exato usar. O fluxo de download está em
 [`impulse_responses/README.md`](impulse_responses/README.md).
 
@@ -253,7 +249,7 @@ Um patch "genérico de Pink Floyd" não tem a informação que faz a diferença.
 É a instrução de ligar/desligar um módulo **em tempo real** (painel ou modo STOMP)
 durante a música — por exemplo, um patch de base com DLY sobressalente vira solo ao
 ligar o eco, sem trocar de patch. Os momentos vivem em `doc.momentos` no
-`tools/defs/` e são validados pelos testes `TestE_Momentos`.
+`data/defs/` e são validados pela camada e2e da suíte (momentos).
 
 **O projeto tem dependências?**
 Não. Os scripts usam só a biblioteca padrão do Python; o TypeScript dos agentes é baixado
@@ -281,7 +277,7 @@ deles é que manda.
 | [`LICENSE`](LICENSE) | MIT (texto canônico, para detecção automática) |
 | [`NOTICE.md`](NOTICE.md) | Escopo da licença: o que **não** é coberto (marcas, títulos, manual, packs de IR) |
 | [`.agents/README.md`](.agents/README.md) | Arquitetura dos 19 agentes e como criar um novo |
-| [`tools/README.md`](tools/README.md) | Scripts de geração/análise, arquivos de dados e armadilhas do formato |
+| [`ARCHITECTURE.md`](ARCHITECTURE.md) | Camadas do pacote e fluxo de dados do pipeline |
 | [`reference/README.md`](reference/README.md) | Índice da base de conhecimento + ordem de precedência das fontes |
 | [`impulse_responses/README.md`](impulse_responses/README.md) | Banco local de IRs: política, formato aceito e fluxo de indexação |
 | [`reference/00-signal-chain.md`](reference/00-signal-chain.md) | Visão da cadeia de sinal da GP-100 |
@@ -308,8 +304,7 @@ e ele tem uma regra que muda tudo: **`patches/**` é saída de script**.
 uv run pytest
 
 # Se você mexeu em dados, o pipeline (a suíte cuida do guarda de determinismo):
-python tools/ir_library.py && python tools/build_song_patches.py \
-  && python tools/gen_indexes.py
+uv run gp100 build
 ```
 
 Fluxo: **desenvolve na `develop`** (push direto, CI a cada push, Conventional Commit

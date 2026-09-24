@@ -1,7 +1,7 @@
 # pyproject.toml — metadados do pacote, entry points e configuração das ferramentas.
 #
 # Fonte única da versão: o arquivo `VERSION` (lido dinamicamente). O release.yml
-# e o tools/gen_changelog.py continuam sendo os donos do fluxo de publicação —
+# e o comando `gp100 changelog` continuam sendo os donos do fluxo de publicação —
 # aqui só não criamos um segundo lugar para a versão divergir.
 
 [build-system]
@@ -47,10 +47,8 @@ dev = [
 ]
 
 [project.scripts]
-# A CLI oficial substitui, aos poucos, os scripts de tools/ (ver PKG-008).
-# Nota: o import name é `gp100_architect`, não `gp100` — `tools/gp100.py` (script
-# legado, ainda documentado) sombreia o pacote sempre que `tools/` entra no
-# sys.path. Detalhamento no ADR-0001.
+# A CLI única do projeto (issues #48/#49/#33 — ADR-0001 detalha a decisão).
+# O import name é `gp100_architect`, o comando é `gp100`.
 gp100 = "gp100_architect.interfaces.cli.main:app"
 
 [project.urls]
@@ -80,12 +78,11 @@ line-length = 100
 target-version = "py314"
 src = ["src", "tests"]
 
-# O legado em tools/ e .github/scripts entra na migração item a item (PKG-003…009);
-# enquanto isso, fica fora dos gates de estilo para não travar a fundação — cada
-# arquivo sai desta lista no PR que o migra. A SUÍTE inteira (unit, integration,
-# contract, e2e, fixtures) entrou nos gates na migração da pirâmide (issue #34).
+# Os dados-fonte do pipeline moram em `data/` (defs/, ir-library.json,
+# factory-catalog.json — movidos da extinta `tools/` na #33) e a superfície
+# shell em `scripts/` e `.github/scripts/`: os gates de estilo cobrem src/ e
+# tests/ (a SUÍTE inteira, desde a pirâmide da issue #34).
 extend-exclude = [
-  "tools",
   ".github/scripts",
   "patches",
   "impulse_responses",

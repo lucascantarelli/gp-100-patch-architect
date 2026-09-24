@@ -3,7 +3,7 @@
 Migração de `tools/build_song_patches.py`: o script vira biblioteca. A camada
 de aplicação **orquestra** (numera slots, monta o spec final, chama a
 renderização e o codec) e devolve dados tipados; quem escreve no disco é o
-`infrastructure.escrita`, e quem imprime é o shim de `tools/`.
+`infrastructure.escrita`, e quem imprime é a CLI (`gp100 build`).
 
 Contrato que a migração preserva byte a byte (provado pelo TestH):
 

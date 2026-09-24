@@ -95,7 +95,7 @@ status: needs-triage|ededed|Aguardando triagem do mantenedor
 status: blocked|e99695|Impedida por outra issue, decisão ou recurso externo
 status: ready-for-pr|0e8a16|Triada e pronta: qualquer branch/parte pode implementá-la
 status: in-review|bfd4f2|Existe PR aberto vinculado (o guardian do project-automation seta)
-scope: pipeline|5319e7|tools/, geração de dados e CI
+scope: pipeline|5319e7|geração de dados e CI
 scope: data|0e8a16|Dados gerados: patches, índices, defs, catálogo de IRs
 scope: ir-library|c5def5|Packs de IR, slots de User IR e política de IR
 scope: agents|bea3dd|Agentes em .agents/ (orquestrador e subagentes)

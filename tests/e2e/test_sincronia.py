@@ -1,13 +1,14 @@
-"""GUARDA DE SINCRONIA (TestH) — o pipeline reproduz os derivados? (issue #34)
+"""GUARDA DE SINCRONIA (TestH) — o pipeline reproduz os derivados? (issues #34/#33)
 
 Migração de `TestH_DadosEmSincronia` (`tests/test_pipeline.py`), o teste que
 era o job `data-pipeline` do CI. Prova duas coisas:
 
-* **determinismo** — o pipeline, rodado numa cópia temporária do repositório
-  (SEM patches/), reproduz byte a byte o que está em `patches/**` e nos
-  arquivos fixos (`tools/ir-library.json`, `reference/16-ir-library.md`); a
-  normalização ignora `preset_info/@time`, equipara CRLF/LF e NÃO mascara
-  mudança de parâmetro;
+* **determinismo** — o pipeline (`application.pipeline`, in-process desde a
+  #33), rodado sobre uma cópia temporária do repositório (SEM patches/),
+  reproduz byte a byte o que está em `patches/**` e nos arquivos fixos
+  (`data/ir-library.json`, `reference/16-ir-library.md`); a normalização
+  ignora `preset_info/@time`, equipara CRLF/LF e NÃO mascara mudança de
+  parâmetro;
 * **cobertura do guarda** — todo arquivo que o pipeline escreve está sob
   vigilância (quem gera um arquivo novo tem de ensinar o guarda a vê-lo).
 
@@ -17,54 +18,40 @@ sua máquina, é o working tree — o teste reprova antes do commit, sem sujar
 nada (o @time muda só no sandbox).
 
 ADR-0013: os derivados não são commitados; o CI os constrói ANTES do pytest e
-quem precisa deles no dia a dia roda o pipeline ou baixa o ZIP da Release
+quem precisa deles no dia a dia roda `gp100 build` ou baixa o ZIP da Release
 (issue #82).
 
-Marcadores `e2e` + `slow` (o pipeline inteiro roda dentro do teste — a fatia
-rápida da suíte é `-m "not slow"`).
+Marcadores por teste: a normalização é `unit` (rápida, roda em toda fatia), a
+cobertura do guarda é `e2e` e o sandbox é `e2e` + `slow` — módulo inteiro
+marcado slow tiraria a normalização da fatia `-m "not slow"`.
 """
 
 from __future__ import annotations
 
-import os
 import re
 import shutil
-import subprocess
-import sys
 import tempfile
 from pathlib import Path
 
 import pytest
 
+from gp100_architect.application import pipeline
 from gp100_architect.infrastructure.defs import carregar_e_validar
 
-# Marcadores POR TESTE (sem pytestmark de módulo): a normalização é unit (rápida,
-# roda em toda fatia), a cobertura do guarda é e2e e o sandbox é e2e + slow —
-# módulo inteiro marcado slow tiraria a normalização da fatia `-m "not slow"`.
-
-# Pipeline na ordem real; rodado numa CÓPIA temporária do repositório. Os
-# scripts derivam todos os caminhos de `Path(__file__).parent.parent`, então a
-# cópia é autocontida (sem .git, sem tocar no working tree).
-PIPELINE = (
-    'tools/ir_library.py',  # indexa impulse_responses/ (se baixou pack)
-    'tools/build_song_patches.py',  # patch.md + .prst (spec in-memory, ADR-0013)
-    'tools/gen_indexes.py',  # MAPA-DO-ALBUM.md + patches/README.md
-)
 # O que o pipeline escreve: patches/** (essas extensões) + os 2 arquivos fixos.
 SUFIXOS_DE_ARTEFATO = {'.prst', '.md', '.json'}
 ARTEFATO_IGNORADO: set[str] = set()  # (antes: spec.json — eliminado no ADR-0013)
 SUFIXO_VARIANTE = '-USERIR'  # issue #10: variante experimental, FORA do guarda
 # (não é commitada; a prova local dela é test_variantes_userir_sao_deterministicas)
 ARTEFATOS_FIXOS = (
-    'tools/ir-library.json',  # ir_library.py
-    'reference/16-ir-library.md',  # ir_library.py
+    'data/ir-library.json',  # pipeline · passo ir_library
+    'reference/16-ir-library.md',  # pipeline · passo ir_library
 )
 # O sandbox precisa espelhar TUDO que o pipeline lê — e NADA do que ele produz.
 # patches/ fica FORA de propósito (ADR-0013): ela não é mais commitada, e é
 # justamente o que o teste prova — um clone limpo constrói todos os derivados.
-# Os scripts reaproveitam o pacote em src/ (cadeia, catálogo de parâmetros,
-# validação), então a pasta entra na cópia.
-PASTAS_DO_SANDBOX = ('tools', 'reference', 'impulse_responses', 'src')
+# O pipeline é in-process (o pacote já está importado), então src/ não entra.
+PASTAS_DO_SANDBOX = ('data', 'reference', 'impulse_responses')
 
 _TIME_RE = re.compile(r'time="\d+"')
 
@@ -114,21 +101,23 @@ def artefatos_variantes(raiz: Path) -> dict[str, str]:
     return textos
 
 
-def sandbox_do_repo(raiz: Path) -> Path:
-    """Cópia temporária do repositório com TUDO que o pipeline lê (e nada que
-    ele escreve — patches/ fica fora de propósito, ADR-0013)."""
-    tmp = tempfile.mkdtemp(prefix='gp100-sandbox-')
-    sandbox = Path(tmp) / 'repo'
-    sandbox.mkdir()
+def _monta_sandbox(raiz: Path, destino: Path) -> Path:
+    """Cópia do que o pipeline lê (nada do que ele escreve — ADR-0013)."""
+    destino.mkdir(parents=True)
     for nome in PASTAS_DO_SANDBOX:
         origem = raiz / nome
         if origem.is_dir():
             shutil.copytree(
                 origem,
-                sandbox / nome,
+                destino / nome,
                 ignore=shutil.ignore_patterns('__pycache__', '*.pyc'),
             )
-    return sandbox
+    return destino
+
+
+def _aponta_defs_do_sandbox(monkeypatch: pytest.MonkeyPatch, sandbox: Path) -> None:
+    """`GP100_DEFS` → fragmentos do SANDBOX (o pipeline lê de lá, não do repo)."""
+    monkeypatch.setenv('GP100_DEFS', str(sandbox / 'data' / 'defs'))
 
 
 # ── normalização (as regras de comparação em si) ────────────────────────────
@@ -154,12 +143,21 @@ def test_parametro_diferente_nao_e_mascarado() -> None:
     assert 'linha 1' in primeira_diferenca(a, b)
 
 
+@pytest.mark.unit
+def test_passos_do_pipeline_sao_a_ordem_do_guarda() -> None:
+    """A constante simbólica da CLI bate com a execução in-process (issue #33)."""
+    from gp100_architect.interfaces.cli.main import PIPELINE
+
+    assert pipeline.PIPELINE_PASSOS == ('ir_library', 'patches', 'indices')
+    assert PIPELINE == pipeline.PIPELINE_PASSOS
+
+
 # ── cobertura do guarda ─────────────────────────────────────────────────────
 
 
 @pytest.mark.e2e
 def test_artefatos_cobertos_sao_so_saida_de_script(raiz: Path) -> None:
-    gerados = ('patches/README.md', 'tools/ir-library.json', 'reference/16-ir-library.md')
+    gerados = ('patches/README.md', 'data/ir-library.json', 'reference/16-ir-library.md')
     monitorados = set(artefatos(raiz))
     for rel in gerados:
         assert rel in monitorados, f'{rel} deveria ser monitorado'
@@ -169,16 +167,10 @@ def test_artefatos_cobertos_sao_so_saida_de_script(raiz: Path) -> None:
         'reference/03-amp.md',
         'reference/16-ir-library.md.bak',
         'CONTRIBUTING.md',
-        'tools/build_song_patches.py',
+        'src/gp100_architect/application/pipeline.py',
         'impulse_responses/README.md',
     ):
         assert rel not in monitorados, f'{rel} não deveria ser monitorado'
-
-
-@pytest.mark.e2e
-def test_pipeline_declarado_existe_no_disco(raiz: Path) -> None:
-    for rel in PIPELINE:
-        assert (raiz / rel).is_file(), f'pipeline cita script ausente: {rel}'
 
 
 @pytest.mark.e2e
@@ -205,21 +197,21 @@ def test_toda_saida_do_pipeline_esta_coberta(raiz: Path) -> None:
 
 @pytest.mark.slow
 @pytest.mark.e2e
-def test_pipeline_reproduz_todos_os_artefatos_commitados(raiz: Path) -> None:
-    """O pipeline inteiro numa cópia temporária do repo × o commitado/working tree."""
-    sandbox = sandbox_do_repo(raiz)
-    for script in PIPELINE:
-        r = subprocess.run(
-            [sys.executable, str(sandbox / script)],
-            cwd=sandbox,
-            capture_output=True,
-            encoding='utf-8',
-            errors='replace',
-        )
-        assert r.returncode == 0, (
-            f'{script} falhou no sandbox:\n{r.stdout[-1500:]}\n{r.stderr[-1500:]}'
-        )
-    commitado, produzido = artefatos(raiz), artefatos(sandbox)
+def test_pipeline_reproduz_todos_os_artefatos_commitados(
+    raiz: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """O pipeline inteiro sobre uma cópia temporária do repo × o working tree.
+
+    In-process desde a #33: `pipeline.executar` roda os três passos sobre o
+    sandbox (defs lido via `GP100_DEFS`), e o resultado tem de reproduzir o
+    que está no working tree — byte a byte, salvo o `@time`.
+    """
+    with tempfile.TemporaryDirectory(prefix='gp100-sandbox-') as tmp:
+        sandbox = _monta_sandbox(raiz, Path(tmp) / 'repo')
+        _aponta_defs_do_sandbox(monkeypatch, sandbox)
+        codigo = pipeline.executar(sandbox)
+        assert codigo == 0, f'pipeline falhou no sandbox (código {codigo})'
+        commitado, produzido = artefatos(raiz), artefatos(sandbox)
 
     problemas = []
     for rel in sorted(set(commitado) | set(produzido)):
@@ -241,31 +233,20 @@ def test_pipeline_reproduz_todos_os_artefatos_commitados(raiz: Path) -> None:
 
 @pytest.mark.slow
 @pytest.mark.e2e
-def test_variantes_userir_sao_deterministicas(raiz: Path) -> None:
+def test_variantes_userir_sao_deterministicas(raiz: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     """A variante -USERIR (issue #10) não é commitada, então o guarda de
     determinismo não a cobre — este teste cobre: o build com --with-user-ir,
     rodado DUAS vezes no sandbox com GP100_BUILD_TIME fixo, produz bytes
     idênticos (a variante segue o mesmo contrato do canônico).
     """
-    sandbox = sandbox_do_repo(raiz)
-    ambiente = dict(os.environ, GP100_BUILD_TIME='1688207360000')
-    rodadas: list[dict[str, str]] = []
-    for _ in range(2):
-        r = subprocess.run(
-            [
-                sys.executable,
-                str(sandbox / 'tools' / 'build_song_patches.py'),
-                '--with-user-ir',
-            ],
-            cwd=sandbox,
-            capture_output=True,
-            encoding='utf-8',
-            errors='replace',
-            env=ambiente,
-        )
-        assert r.returncode == 0, (
-            f'build --with-user-ir falhou no sandbox:\n{r.stdout[-1500:]}\n{r.stderr[-1500:]}'
-        )
-        rodadas.append(artefatos_variantes(sandbox))
+    monkeypatch.setenv('GP100_BUILD_TIME', '1688207360000')
+    with tempfile.TemporaryDirectory(prefix='gp100-sandbox-') as tmp:
+        sandbox = _monta_sandbox(raiz, Path(tmp) / 'repo')
+        _aponta_defs_do_sandbox(monkeypatch, sandbox)
+        rodadas: list[dict[str, str]] = []
+        for _ in range(2):
+            codigo = pipeline.executar(sandbox, passos=('patches',), com_variante=True)
+            assert codigo == 0, f'build --with-user-ir falhou no sandbox (código {codigo})'
+            rodadas.append(artefatos_variantes(sandbox))
     assert rodadas[0], 'nenhuma variante -USERIR gerada no sandbox'
     assert rodadas[0] == rodadas[1], 'variantes -USERIR não determinísticas entre dois builds'

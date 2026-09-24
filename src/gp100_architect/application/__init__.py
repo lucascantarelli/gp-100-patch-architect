@@ -3,7 +3,7 @@
 O que entra aqui (PKG-004…006, na ordem do roadmap 2.0):
 
 * `validar_defs`   — relatório acionável para a CLI (hoje só o domínio existe)
-* `montar_setlist` — a cola de palco (hoje em `tools/gp100_setlist.py`)
+* `montar_setlist` — a cola de palco (`application.setlist`, issue #49)
 * `consultar_defs` — busca/diff/export usados pela CLI e, depois, pela API
 
 Contrato da camada: recebe **dados já carregados** ou caminhos explícitos,

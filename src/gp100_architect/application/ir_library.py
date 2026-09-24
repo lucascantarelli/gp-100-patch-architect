@@ -30,7 +30,7 @@ __all__ = [
     'wav_order',
 ]
 
-GERADO_POR = 'tools/ir_library.py'
+GERADO_POR = 'gp100 build (ir_library)'
 
 # Packs com procedência e licença conhecidas — o resto do manifesto registra o
 # que foi lido, mas sem fonte citável (o agente de IR reporta a ausência).
@@ -124,9 +124,9 @@ def catalogo_md(manifesto: dict[str, Any]) -> str:
     linhas = [
         '# 📚 Biblioteca local de IRs — catálogo',
         '',
-        '> **Gerado por** `tools/ir_library.py` — rode de novo após baixar packs novos.',
+        '> **Gerado por** `gp100 build` — rode de novo após baixar packs novos.',
         '> Os agentes (gp100-cab-ir, gp100-ir-fit, gp100-ir-research) consultam **este arquivo**',
-        '> e `tools/ir-library.json` antes de sugerir IR de terceiros: se já existe na biblioteca,',
+        '> e `data/ir-library.json` antes de sugerir IR de terceiros: se já existe na biblioteca,',
         '> **não pesquise na internet — use a local**.',
         '',
     ]
@@ -155,7 +155,7 @@ def catalogo_md(manifesto: dict[str, Any]) -> str:
             )
         linhas.append('')
         linhas.append(
-            f'> Variações de microfone individuais: {n_mics} arquivos (ver `tools/ir-library.json`).'
+            f'> Variações de microfone individuais: {n_mics} arquivos (ver `data/ir-library.json`).'
         )
         linhas.append('')
         linhas.append(
@@ -173,7 +173,7 @@ def catalogo_md(manifesto: dict[str, Any]) -> str:
         '4. No patch: bloco CAB → navegue até `User IR n` → ajuste **Low Cut / High Cut / Level**.',
         '5. Exporte/importe patches normalmente — o `.prst` fica associado ao slot.',
         '',
-        '> ⚠️ Regra dos agentes: `.prst` gerado por `tools/generate_prst.py` usa CAB de fábrica',
+        '> ⚠️ Regra dos agentes: `.prst` gerado pelo codec do pacote usa CAB de fábrica',
         '> (formato single validado). Para patch com User IR, use a variante experimental',
         '> `<NOME>-USERIR.prst` gerada com `build_song_patches.py --with-user-ir` — a captura',
         '> e o slot vêm do `ir_local` do defs (issue #10). Teste na pedaleira antes de adotar.',

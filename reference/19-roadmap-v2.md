@@ -9,12 +9,12 @@
 
 | Dimensão | Estado |
 |---|---|
-| Biblioteca | **97 patches / 58 músicas / 6 álbuns** — derivado, não memorizado: `python -c "import sys;sys.path.insert(0,'src');from gp100_architect.infrastructure.defs import carregar_e_validar;d=carregar_e_validar();print(len(d['songs']),'músicas',sum(len(s['patches']) for s in d['songs']),'patches')"` (fragmentos em `tools/defs/`, schema v2 — o detalhe por álbum está no [README](../README.md)) |
-| Pipeline | Reprodutível e guardado pela suíte — **315 testes** em pirâmide pytest (`uv run pytest`): unit → integration → contract → e2e, com markers e auditoria de escrita no repo (`--guarda-repo`; issue #34), `TestH` de determinismo (derivados fora do git, ADR-0013) · CLI do pacote `gp100` (9 comandos, `--json`; shims de `tools/` delegam — issues #48/#49) |
+| Biblioteca | **97 patches / 58 músicas / 6 álbuns** — derivado, não memorizado: `gp100 validate` (fragmentos em `data/defs/`, schema v2 — o detalhe por álbum está no [README](../README.md)) |
+| Pipeline | Reprodutível e guardado pela suíte — **321 testes** em pirâmide pytest (`uv run pytest`): unit → integration → contract → e2e, com markers e auditoria de escrita no repo (`--guarda-repo`; issue #34), `TestH` de determinismo (derivados fora do git, ADR-0013) · CLI única do pacote `gp100` (`--json`; pipeline in-process desde a #33) |
 | Em voo | **nada**: `main` + `develop`, zero branch de trabalho — Smooth e Wishkah mergeados, as 10 branches antigas removidas |
 | Concluído | **Smooth (Santana)** (4 patches com stomps, #5) e **Wishkah (Nirvana)** (17 músicas / 31 patches, #6) — na `develop`, com a `1.1.0` e a `1.2.0` entregues e **não publicadas** |
 | Gestão | Taxonomia, milestones, **epics com sub-issues** (ADR-0012) e guardian vivos no GitHub (doc 18) — board com escopo `project` ativo, automação end-to-end (ADR-0011) |
-| Formato | **Schema v2** (fragmentos por álbum em `tools/defs/`); `doc.stomps` + `spec.exp1` formais (#9); variante `-USERIR` gerável com `--with-user-ir` (#10) — **epic #42 concluído** |
+| Formato | **Schema v2** (fragmentos por álbum em `data/defs/`); `doc.stomps` + `spec.exp1` formais (#9); variante `-USERIR` gerável com `--with-user-ir` (#10) — **epic #42 concluído** |
 
 > **Zero número escrito à mão neste arquivo sem o comando que o deriva** — foi o
 > que apodreceu a versão anterior (66 patches, 43 testes, "Wishkah em voo").
@@ -43,7 +43,7 @@ sem dor.
 **Proposta:**
 
 ```
-tools/
+data/
   defs/
     _albums.json        ← albums + meta (o que é hoje albums/meta)
     abbey-road.json     ← só as músicas do álbum (AR)
@@ -51,17 +51,16 @@ tools/
     cheap-thrills.json  ← PMH
     apostrophe.json     ← ZP
     supernatural.json   ← SN
-  patches-defs.json     ← LEGADO: loader continua lendo (ou migrado por script)
 ```
 
-- **Loader único**: um `tools/defs_loader.py` concatena os fragmentos na ordem
+- **Loader único**: `infrastructure.defs` concatena os fragmentos na ordem
   declarada em `_albums.json` — a ordem dos slots U01…Uxx continua
   determinística (regra de estável entre SOs, `TestI_OrdemEstavel`, se aplica).
 - **Fonte única preservada**: nenhum script passa a manter tabela própria; o
   que muda é só a *granularidade física* do defs.
 - **Guarda de sincronia**: o `TestH` passa a comparar o resultado do pipeline
   sobre os fragmentos com o commitado — a mesma garantia, novo formato.
-- **Migração**: script one-shot `tools/migrate_defs_v2.py` escreve os
+- **Migração**: script one-shot (`tools/migrate_defs_v2.py` na época) escreveu os
   fragmentos a partir do monolito; o monolito sai do repo no mesmo PR (ou fica
   como alias de leitura por um ciclo, se decidirmos suavizar).
 
@@ -89,7 +88,7 @@ validador passa a *exigir* o campo — decidir na issue).
 ### A3. Validação de dados com mensagem acionável
 
 Hoje um erro de edição no defs estoura como `KeyError` no meio do build.
-Proposta: um `tools/defs_schema.py` (stdlib pura) que valida o defs **antes** de
+Proposta: um validador (stdlib pura) que valida o defs **antes** de
 qualquer script tocar nele — campos obrigatórios, tipos, ranges de nome
 (`≤ 12 chars`), unicidade de ids, referências cruzadas (`ir_local` ↔ CAB usado).
 Mensagem aponta o caminho JSON exato e o que fazer.
@@ -103,9 +102,8 @@ com confiança de que o canônico não mudou.
 
 ## 4 · Pilar B — CLI unificada
 
-**`gp100`** — entry point do pacote (`src/gp100_architect/interfaces/cli`); os
-shims `tools/gp100.py` e `tools/gp100_setlist.py` delegam ao mesmo código até a
-aposentadoria de `tools/` (#33, após #91):
+**`gp100`** — entry point do pacote (`src/gp100_architect/interfaces/cli`); a
+CLI única do projeto desde a #33 (o pipeline roda in-process, sem scripts):
 
 | Comando | O que faz |
 |---|---|
@@ -123,7 +121,7 @@ ordenação estável). Reaproveita `patches-defs` + catálogos; nada de rede.
 
 ## 5 · Pilar C — Site estático da biblioteca
 
-**`tools/gen_site.py`** → GitHub Pages, gerado dos mesmos dados do `gen_indexes`:
+Um gerador (`gp100 site`, epics #43) → GitHub Pages, dos mesmos dados do índice:
 
 - **Página por álbum** e **página por patch**: cadeia, tabela de parâmetros
   (nomes oficiais), ajustes finos, seção 📡 de IR, momentos/stomps, badges.
@@ -173,7 +171,7 @@ dossiê do rig real (o fluxo de hoje já cobra isso).
 
 ## 8 · Pilar F — Qualidade e CI (aditivo, entra em 1.x)
 
-- ~~Matriz Python 3.10–3.13 no CI~~ **Reorientado (decisão do mantenedor): Python 3.14 APENAS** — travado em código: guarda de runtime nos entry points (`tools/defs_schema.py`), suíte inteira recusa outro runtime e verificação `3.14.*` como primeiro passo do job `test-suite` no CI.
+- ~~Matriz Python 3.10–3.13 no CI~~ **Reorientado (decisão do mantenedor): Python 3.14 APENAS** — travado em código: guarda de runtime na suíte e na CLI do pacote, suíte inteira recusa outro runtime e verificação `3.14.*` como primeiro passo do job `test-suite` no CI.
 - Testes para os scripts hoje fora da suíte: `analyze_prst`, `build_release`,
   `gen_changelog` — **entregues** e migrados para o pacote com a pirâmide (issue #34:
   `tests/integration/test_release.py`).
@@ -234,4 +232,4 @@ saída de script; o PR referencia a issue com `Closes #N` (no fluxo para a
 
 ---
 
-[`📖 README do projeto`](../README.md) · [`🗂 18-project-management`](18-project-management.md) · [`🌊 12-workflow`](12-workflow.md) · [`🔧 tools/`](../tools/README.md)
+[`📖 README do projeto`](../README.md) · [`🗂 18-project-management`](18-project-management.md) · [`🌊 12-workflow`](12-workflow.md) · [`📦 DEVELOPMENT`](../DEVELOPMENT.md)

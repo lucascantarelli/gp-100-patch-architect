@@ -2,7 +2,7 @@
 
 Migração de `tests/test_defs_schema.py` (issue #34): o alvo agora é
 `domain.validation.validar` + o loader `infrastructure.defs` (o shim
-`tools/defs_schema.py` é delegação a estes). Cobertura em três frentes:
+(o shim `tools/defs_schema.py` foi removido na #33). Cobertura em três frentes:
 
 * **o defs commitado é válido** — sempre (o build inteiro depende disso);
 * **as invariâncias de base** — álbuns declarados e completos, ids e pastas

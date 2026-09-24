@@ -49,7 +49,7 @@ def test_bump_tres_componentes_e_parte_invalida():
 def defs_real_pkg(raiz: Path):
     from gp100_architect.infrastructure.defs import carregar
 
-    return carregar(raiz / 'tools' / 'defs')
+    return carregar(raiz / 'data' / 'defs')
 
 
 def test_package_produz_zips_e_notas_em_destino(raiz: Path, defs_real_pkg, tmp_path: Path):

@@ -1,9 +1,9 @@
 """Carregamento do defs — a fonte única do projeto (schema v2, issue #8).
 
-O defs vive em **fragmentos por álbum** sob `tools/defs/`:
+O defs vive em **fragmentos por álbum** sob `data/defs/`:
 
-    tools/defs/_albums.json         ← manifesto: chaves de álbum, EM ORDEM
-    tools/defs/<slug-do-álbum>.json ← { "idAlbum": "AR", "album": {...},
+    data/defs/_albums.json          ← manifesto: chaves de álbum, EM ORDEM
+    data/defs/<slug-do-álbum>.json  ← { "idAlbum": "AR", "album": {...},
                                         "songs": [ …na ordem da tracklist ] }
 
 `consolidar()` concatena os fragmentos **na ordem de `_albums.json`** e devolve
@@ -53,15 +53,15 @@ MANIFESTO = '_albums.json'
 
 
 def raiz_do_repo() -> Path:
-    """Raiz do repositório — onde estão `tools/`, `patches/` e `VERSION`."""
+    """Raiz do repositório — onde estão `data/`, `patches/` e `VERSION`."""
     return Path(__file__).resolve().parents[3]
 
 
-DEFS_PADRAO: Path = raiz_do_repo() / 'tools' / 'defs'
+DEFS_PADRAO: Path = raiz_do_repo() / 'data' / 'defs'
 
 
 def caminho_defs(caminho: Path | None = None) -> Path:
-    """Prioridade: argumento → `GP100_DEFS` → `tools/defs/`."""
+    """Prioridade: argumento → `GP100_DEFS` → `data/defs/`."""
     if caminho is not None:
         return caminho
     do_ambiente = os.environ.get(VAR_DEFS)
@@ -78,7 +78,7 @@ def _ler_json(caminho: Path) -> Any:
 
 
 def consolidar(diretorio: Path) -> dict[str, Any]:
-    """Lê `tools/defs/` e devolve o defs consolidado, no shape do monólito.
+    """Lê `data/defs/` e devolve o defs consolidado, no shape do monólito.
 
     Levanta `DefsInvalidos` com relatório acionável quando a estrutura fere as
     regras do schema v2 (fragmento fora do manifesto, ordem divergente, música

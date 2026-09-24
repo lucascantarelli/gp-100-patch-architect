@@ -1,8 +1,8 @@
 """gp100-patch-architect — núcleo da biblioteca de patches da Valeton GP-100.
 
 O import name é `gp100_architect` (e não `gp100`) porque o script legado
-`tools/gp100.py`, ainda documentado, sombreia qualquer pacote chamado `gp100`
-sempre que `tools/` entra no `sys.path` — ver ADR-0001. Quando o legado sair em
+`tools/gp100.py` (shim removido na issue #33) sombreava qualquer pacote chamado `gp100`
+sempre que `tools/` entrasse no `sys.path` — ver ADR-0001. Sem o legado em
 PKG-008, o nome pode ser revisto sem impacto em quem consome a CLI (`gp100`).
 
 Arquitetura em camadas pragmáticas (ADR-0002):

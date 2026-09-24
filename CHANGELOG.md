@@ -3,9 +3,9 @@
 Todas as mudanças relevantes deste projeto, por versão.
 Formato: [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/) · versionamento: [SemVer](https://semver.org/lang/pt-BR/).
 
-> Gerado por `tools/gen_changelog.py` a partir dos commits (Conventional
+> Gerado pelo comando `gp100 changelog` a partir dos commits (Conventional
 > Commits) — **não edite à mão**. Quem publica roda
-> `python tools/gen_changelog.py --version X.Y.Z --write` antes de subir o
+> `uv run gp100 changelog --version X.Y.Z --write` antes de subir o
 > `VERSION`; o workflow `Release` só valida e publica.
 >
 > A v1.0.0 é a **baseline escrita à mão**: a história anterior a esta

@@ -7,7 +7,7 @@ no meio do build.
 O defs é a fonte única do projeto (patch, doc e índice saem dele), então esta
 validação roda em toda porta de entrada: build, CLI, índices e release
 (documentado no review do doc 21, achado M2). Desde o schema v2 (issue #8) o
-defs vive em fragmentos por álbum sob `tools/defs/` — esta função recebe o
+defs vive em fragmentos por álbum sob `data/defs/` — esta função recebe o
 CONSOLIDADO (o loader `infrastructure.defs` junta os fragmentos antes de
 chamar), então os caminhos JSON dos erros continuam os mesmos de sempre.
 """
@@ -92,7 +92,7 @@ class Erros:
         """Relatório legível — usado pela CLI e pelo build."""
         return (
             f'\n❌ {len(self.itens)} problema(s) no defs (fonte única em '
-            f'tools/defs/ — corrija no fragmento, nunca no arquivo gerado):\n\n'
+            f'data/defs/ — corrija no fragmento, nunca no arquivo gerado):\n\n'
             + '\n'.join(self.itens)
             + '\n'
         )

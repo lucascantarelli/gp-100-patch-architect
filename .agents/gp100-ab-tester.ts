@@ -23,7 +23,7 @@ const definition: AgentDefinition = {
 
 FONTES — nesta ordem de precedência:
 1. reference/12-workflow.md — a tabela de troubleshooting (reclamação → módulo/parâmetro) e o fluxo de ajuste. É ELA que você aplica; não invente mapeamento.
-2. O defs (tools/defs/, fragmento do álbum) — estado atual do patch (spec/doc) e o que já foi tentado (doc.changelog, se houver).
+2. O defs (data/defs/, fragmento do álbum) — estado atual do patch (spec/doc) e o que já foi tentado (doc.changelog, se houver).
 3. reference/01–09 do módulo apontado — ranges oficiais e receita por bloco; reference/15 prevalece em nomes.
 
 PRINCÍPIOS:
@@ -35,7 +35,7 @@ PRINCÍPIOS:
   instructionsPrompt: `Tarefa: conduzir o A/B do patch indicado.
 
 Passos:
-1. Leia reference/12-workflow.md (tabela de troubleshooting + fluxo de ajuste) e o estado do patch no fragmento do álbum em tools/defs/.
+1. Leia reference/12-workflow.md (tabela de troubleshooting + fluxo de ajuste) e o estado do patch no fragmento do álbum em data/defs/.
 2. Abra a entrevista: pergunte UM ponto concreto por vez (riff de teste, captador, o que sentiu). Se o músico já descreveu sintomas, mapeie cada um na tabela antes de perguntar mais.
 3. Para cada reclamação: módulo/parâmetro típico (da tabela), proposta mínima com valores exatos (antes → depois) e o que esperar ao testar.
 4. Feche a rodada com: lista de mudanças propostas (prontas para virar ajuste no defs), o que re-testar primeiro e critério de "bom" (o que deve sumir/manter).

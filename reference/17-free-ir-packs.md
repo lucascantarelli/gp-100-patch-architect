@@ -1,7 +1,7 @@
 # 🌍 Packs de IR gratuitos — links de download para ampliar a biblioteca
 
 > **Mantido por** `gp100-ir-research` · Última varredura: 2026-09-19.
-> **Regra**: baixar em `impulse_responses/<Nome do Pack>/` e reindexar com `python tools/ir_library.py`.
+> **Regra**: baixar em `impulse_responses/<Nome do Pack>/` e reindexar com `uv run gp100 build`.
 > **Formato-alvo GP-100**: wav mono · 24 bits · 44,1 kHz · ≤ 1024 samples (converta se necessário).
 > **Prioridade**: preencher o que a biblioteca atual **não tem** (ver lacunas ao final).
 
@@ -46,6 +46,6 @@
 ## 📥 Fluxo de atualização
 
 1. Baixar o pack → extrair dentro de `impulse_responses/<Nome do Pack>/` (manter a pasta 44.1 kHz como fonte preferida).
-2. `python tools/ir_library.py` → reindexa e atualiza `reference/16-ir-library.md` + `tools/ir-library.json`.
+2. `uv run gp100 build` → reindexa e atualiza `reference/16-ir-library.md` + `data/ir-library.json`.
 3. Se algum WAV vier 48/96 kHz ou estéreo → converter (IR Workshop / Darwin's Cat) para 44,1 kHz/24-bit/mono antes de carregar no device.
 4. Carregar no **User IR 1–20** via GP-100 Edits e anotar o slot no patch que usar.

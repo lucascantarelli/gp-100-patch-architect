@@ -64,7 +64,7 @@ def defs_real() -> dict[str, Any]:
 
 @pytest.fixture(scope='module')
 def ir_index(raiz: Path) -> dict[str, list[str]]:
-    manifesto = carregar_catalogo(raiz / 'tools' / 'ir-library.json')
+    manifesto = carregar_catalogo(raiz / 'data' / 'ir-library.json')
     return indice_por_cab(manifesto) if manifesto else {}
 
 
@@ -203,7 +203,7 @@ def test_ir_local_do_defs_aponta_para_captura_existente(
 ) -> None:
     import json
 
-    manifesto = json.loads((raiz / 'tools' / 'ir-library.json').read_text(encoding='utf-8'))
+    manifesto = json.loads((raiz / 'data' / 'ir-library.json').read_text(encoding='utf-8'))
     cabs = {
         Path(f['file']).parts[-2].replace(' Mics', '')
         for pack in manifesto['packs'].values()

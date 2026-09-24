@@ -21,6 +21,7 @@ from pathlib import Path
 import pytest
 from typer.testing import CliRunner
 
+from gp100_architect.interfaces.cli import main as cli_main
 from gp100_architect.interfaces.cli.main import PIPELINE, app
 
 pytestmark = pytest.mark.contract
@@ -102,11 +103,8 @@ def test_release_versao_invalida_acionavel(tmp_path: Path):
 
 
 def test_pipeline_constante_e_a_ordem_do_guarda():
-    assert PIPELINE == (
-        'tools/ir_library.py',
-        'tools/build_song_patches.py',
-        'tools/gen_indexes.py',
-    )
+    """Os nomes dos passos de `application.pipeline` — a ordem do TestH."""
+    assert PIPELINE == ('ir_library', 'patches', 'indices')
 
 
 @pytest.mark.slow
@@ -121,7 +119,7 @@ def test_build_quiet_no_repo_real(tmp_path: Path, raiz: Path):
     """
     sandbox = tmp_path / 'repo'
     sandbox.mkdir()
-    for nome in ('tools', 'reference', 'impulse_responses', 'src'):
+    for nome in ('data', 'reference', 'impulse_responses', 'src'):
         origem = raiz / nome
         if origem.is_dir():
             shutil.copytree(
@@ -142,6 +140,56 @@ def test_build_quiet_no_repo_real(tmp_path: Path, raiz: Path):
     assert 'build ok' in r.stdout
     # o produto nasceu no sandbox — não no working tree do repositório
     assert (sandbox / 'patches' / 'README.md').is_file()
+
+
+# ── changelog / analyze / manual-page (ferramentas de manutenção, in-process #33) ──
+
+
+def test_changelog_default_mostra_secao_e_bump():
+    r = runner.invoke(app, ['changelog'])
+    assert r.exit_code == 0
+    assert '##' in r.stdout
+    assert 'bump' in r.stdout
+
+
+def test_changelog_versao_invalida_e_acionavel():
+    r = runner.invoke(app, ['changelog', '--version', 'nao-e-semver'])
+    assert r.exit_code == 1
+    assert 'SemVer' in r.output
+
+
+def test_changelog_out_grava_secao_em_arquivo(tmp_path: Path):
+    destino = tmp_path / 'secao.md'
+    r = runner.invoke(app, ['changelog', '--out', str(destino)])
+    assert r.exit_code == 0
+    assert destino.read_text(encoding='utf-8').strip()
+
+
+def test_analyze_disseca_export_e_salva_json(tmp_path: Path):
+    destino = tmp_path / 'importacao'
+    assert runner.invoke(app, ['export', '--album', 'SN', '--destino', str(destino)]).exit_code == 0
+    prst = sorted(destino.glob('*.prst'))[0]
+    dump = tmp_path / 'catalogo.json'
+    r = runner.invoke(app, ['analyze', str(prst), '--json', str(dump)])
+    assert r.exit_code == 0
+    assert 'preset_info' in r.stdout and 'CATALOGO' in r.stdout
+    dados = json.loads(dump.read_text(encoding='utf-8'))
+    assert set(dados) == {'info', 'user_irs', 'patches'}
+
+
+def test_analyze_prst_malformado_e_acionavel(tmp_path: Path):
+    podre = tmp_path / 'podre.prst'
+    podre.write_text('isto não é xml', encoding='utf-8')
+    r = runner.invoke(app, ['analyze', str(podre)])
+    assert r.exit_code == 1
+
+
+def test_manual_page_sem_dependencia_ou_sem_pdf_falha_acionavel(tmp_path: Path, monkeypatch):
+    """Sem pymupdf instalado OU sem manual.pdf, a saída diz o que fazer (exit 1)."""
+    monkeypatch.setattr(cli_main, '_raiz', lambda: tmp_path)
+    r = runner.invoke(app, ['manual-page', '21'])
+    assert r.exit_code == 1
+    assert r.output.strip()
 
 
 @pytest.mark.slow

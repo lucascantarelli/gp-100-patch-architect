@@ -7,7 +7,7 @@ estrutura: fragmento fora do manifesto, manifesto apontando arquivo ausente,
 música fora de ordem e o `idAlbum` do fragmento reprovam AQUI, com o caminho do
 arquivo no relatório.
 
-Todos os testes montam `tools/defs/` em `tmp_path` — nenhum escreve no repo.
+Todos os testes montam `data/defs/` em `tmp_path` — nenhum escreve no repo.
 """
 
 from __future__ import annotations
@@ -86,7 +86,7 @@ def _escrever(diretorio: Path, manifesto: list[str], *frags: dict[str, Any]) -> 
 
 
 def test_defs_padrao_aponta_para_o_diretorio_de_fragmentos(raiz: Path):
-    assert carregador.DEFS_PADRAO == raiz / 'tools' / 'defs'
+    assert carregador.DEFS_PADRAO == raiz / 'data' / 'defs'
     assert carregador.raiz_do_repo() == raiz
 
 

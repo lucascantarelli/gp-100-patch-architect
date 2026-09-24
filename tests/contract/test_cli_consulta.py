@@ -1,6 +1,6 @@
 """Contrato da CLI do pacote — consulta (find/show/diff/export), issue #48.
 
-Substitui os testes do shim `tools/gp100.py` (agora repasse puro ao pacote): a
+Substitui os testes do shim `tools/gp100.py` (removido na #33): a
 CLI oficial é `gp100` (entry point do pacote) e os testes a exercitam via
 CliRunner — o mesmo contrato que automação e agentes consomem. Leitura pura:
 nenhum teste escreve no repositório (regra do projeto; export usa tmp_path).

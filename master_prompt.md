@@ -813,7 +813,7 @@ project/
 │   ├── rules/
 │   └── knowledge.md
 │
-├── tools/
+├── data/
 ├── examples/
 ├── assets/
 ├── pyproject.toml

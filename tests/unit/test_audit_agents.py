@@ -254,7 +254,7 @@ def test_repositorio_real_passa_sem_violacoes() -> None:
         auditor._rastreados(RAIZ),
         registradas=auditor._registradas_no_doc(auditor._rastreados(RAIZ)),
     )
-    assert len(agentes) == 19
+    assert len(agentes) == 20
     assert len(skills) == 11
     assert not falhas, '\n'.join(falhas)
     assert all('sem consumidor' in a for a in avisos)

@@ -205,3 +205,64 @@ def test_nada_e_escrito_no_disco(paginas: dict[str, str], tmp_path) -> None:
     de_novo = site.gerar_site(DEFS)
     assert de_novo == paginas  # puro e determinístico
     assert list(tmp_path.iterdir()) == []  # e nada apareceu no cwd/tmp
+
+
+# ── catálogo JSON (issue #90 fase 1) — shapes são CONTRATO ──────────────────
+
+
+def test_catalogo_gera_os_quatro_artefatos(paginas: dict[str, str]) -> None:
+    assert set(paginas) >= {
+        'catalog/index.json',
+        'catalog/schema.json',
+        'catalog/irs.json',
+        'catalog/patches/ZZX1BA.html'[:-5] + '.json',
+    }
+
+
+def test_catalogo_index_tem_as_contagens_e_relacoes(paginas: dict[str, str]) -> None:
+    idx = json.loads(paginas['catalog/index.json'])
+    assert idx['contagens'] == {'albuns': 2, 'musicas': 2, 'patches': 3}
+    # a ordem do index.json segue o defs (ordem dos slots, estável entre SOs);
+    # a ordenação por ano é apresentação da página HTML, não do dado
+    assert [a['id'] for a in idx['albuns']] == ['ZZ', 'AA']
+    zx = next(m for m in idx['musicas'] if m['id'] == 'ZZX1')
+    assert zx['patches'] == ['ZZX1BA', 'ZZX1SO']
+    assert zx['musica'] == 'Música X'  # título de exibição, não o id
+
+
+def test_catalogo_patch_tem_o_shape_completo(paginas: dict[str, str]) -> None:
+    dados = json.loads(paginas['catalog/patches/ZZX1BA.json'])
+    assert dados['slot'] == 'U01' or dados['slot'].startswith('U')  # slot da biblioteca
+    assert dados['spec']['modules']['DST']['name'] == 'Blues OD'
+    assert dados['parametros'][0]['modulo'] == 'DST'
+    assert dados['momentos'][0]['nome'] == 'Solo'
+    assert dados['musica'] == 'Música X' and dados['banda'] == 'Banda Z'
+
+
+def test_catalogo_schema_fixa_as_chaves_do_contrato(paginas: dict[str, str]) -> None:
+    schema = json.loads(paginas['catalog/schema.json'])
+    assert schema['versao'] == 1
+    patch_shape = schema['shapes']['patches/<NOME>.json']
+    dados = json.loads(paginas['catalog/patches/ZZX1BA.json'])
+    assert set(dados) == set(patch_shape)  # shape e dado nunca divergem
+
+
+def test_catalogo_json_ordenado_por_chave(paginas: dict[str, str]) -> None:
+    """Diff entre deploys só mostra mudança real (sem churn de ordem de chave)."""
+    idx = paginas['catalog/index.json']
+    dados = json.loads(idx)
+    reordenado = json.dumps(dados, ensure_ascii=False, indent=1, sort_keys=True)
+    assert idx == reordenado
+
+
+def test_catalogo_e_dossie_do_show_nao_divergem(paginas: dict[str, str]) -> None:
+    """O JSON do catálogo e o `gp100 show --json` saem da mesma fonte."""
+    import pathlib
+
+    from gp100_architect.application.consulta import dossie
+
+    d = dossie(DEFS, 'ZZX1BA', raiz=pathlib.Path())
+    dados = json.loads(paginas['catalog/patches/ZZX1BA.json'])
+    assert dados['cadeia'] == d.cadeia
+    assert dados['ir'] == d.ir
+    assert dados['slot'] == d.slot

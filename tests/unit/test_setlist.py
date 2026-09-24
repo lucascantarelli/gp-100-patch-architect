@@ -1,8 +1,8 @@
 """Regras puras de setlist: assinatura, distância, otimizador e dif.
 
 Unidade de verdade: patches sintéticos mínimos (não o defs) — cada regra
-testada isolada do dado. A aderência ao defs real é coberta pelo teste de
-regressão final e pela suíte legada do script (tests/test_setlist.py).
+testada isolada do dado. A aderência ao defs real é coberta pela camada
+integration (tests/integration/test_setlist.py, issue #34).
 """
 
 from typing import Any

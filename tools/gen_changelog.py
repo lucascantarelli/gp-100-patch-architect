@@ -5,8 +5,8 @@ A implementação vive em `src/gp100_architect/application/changelog.py`; este
 arquivo fica com a cara de terminal: resolve argv, imprime e traduz erros em
 saída acionável. Os nomes públicos (`COMMIT_RE`, `BREAKING_FOOTER`, `SKIP`,
 `SECOES`, `VISIVEIS`, `coletar`, `bump_sugerido`, `secao`,
-`escrever_no_changelog`) continuam aqui por compatibilidade da suíte legada —
-a remoção é a #33.
+`escrever_no_changelog`) continuam aqui por compatibilidade dos consumidores de
+`tools/` — a remoção é a #33.
 
 Uso:
   python tools/gen_changelog.py                       # prévia + bump sugerido
@@ -29,7 +29,7 @@ from gp100_architect.application import changelog  # noqa: E402
 
 CHANGELOG = ROOT / 'CHANGELOG.md'
 
-# compatibilidade da suíte legada (os nomes moram na biblioteca agora)
+# os nomes moram na biblioteca agora; aqui são reexports de compatibilidade
 COMMIT_RE = changelog.COMMIT_RE
 BREAKING_FOOTER = changelog.BREAKING_FOOTER
 SKIP = changelog.SKIP

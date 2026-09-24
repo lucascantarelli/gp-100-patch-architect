@@ -4,11 +4,16 @@
 tmp_path); `build` e `verify` são subprocesses de verdade — o que a #49
 promete é exatamente o que o CI faz, então o teste os roda como o agente
 vai rodar (e usa `--quiet` para o contrato de agente: exit code + resumo).
+
+Camada `contract`: o `--json` com shape estável é a interface dos agentes
+(issue #91) — mudar o shape aqui é breaking change.
 """
 
 from __future__ import annotations
 
 import json
+import os
+import shutil
 import subprocess
 import sys
 from pathlib import Path
@@ -18,7 +23,7 @@ from typer.testing import CliRunner
 
 from gp100_architect.interfaces.cli.main import PIPELINE, app
 
-pytestmark = pytest.mark.unit
+pytestmark = pytest.mark.contract
 
 runner = CliRunner()
 
@@ -105,21 +110,38 @@ def test_pipeline_constante_e_a_ordem_do_guarda():
 
 
 @pytest.mark.slow
-def test_build_quiet_no_repo_real():
-    """O mesmo subprocess que o agente roda: `gp100 build --quiet`.
+def test_build_quiet_no_repo_real(tmp_path: Path, raiz: Path):
+    """O mesmo subprocess que o agente roda: `gp100 build --quiet` — num sandbox.
 
-    Roda no repositório real (leitura do defs + escrita dos derivados, que é
-    o comportamento do build) — idempotente: regenera os mesmos bytes.
+    Cópia temporária do que o pipeline lê + `PYTHONPATH` apontando para o
+    `src/` da cópia: a CLI resolve a raiz pelo próprio arquivo (`parents[4]`)
+    e o build acontece no sandbox. Era o único teste que escrevia no
+    repositório (regenerava `patches/` e `reference/` no working tree) — agora
+    a regra "nenhum teste escreve no repo" vale para a suíte inteira.
     """
+    sandbox = tmp_path / 'repo'
+    sandbox.mkdir()
+    for nome in ('tools', 'reference', 'impulse_responses', 'src'):
+        origem = raiz / nome
+        if origem.is_dir():
+            shutil.copytree(
+                origem,
+                sandbox / nome,
+                ignore=shutil.ignore_patterns('__pycache__', '*.pyc'),
+            )
+    ambiente = dict(os.environ, PYTHONPATH=str(sandbox / 'src'))
     r = subprocess.run(
         [sys.executable, '-m', 'gp100_architect.interfaces.cli.main', 'build', '--quiet'],
-        cwd=RAIZ,
+        cwd=sandbox,
         capture_output=True,
         encoding='utf-8',
         errors='replace',
+        env=ambiente,
     )
     assert r.returncode == 0, r.stdout[-1500:] + r.stderr[-1500:]
     assert 'build ok' in r.stdout
+    # o produto nasceu no sandbox — não no working tree do repositório
+    assert (sandbox / 'patches' / 'README.md').is_file()
 
 
 @pytest.mark.slow

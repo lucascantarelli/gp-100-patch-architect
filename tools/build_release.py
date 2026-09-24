@@ -35,8 +35,8 @@ DEFS_FILE = ROOT / 'tools' / 'defs'
 def read_version() -> str:
     """Lê VERSION (fonte única) e devolve a versão validada (ReleaseInvalida → SystemExit).
 
-    Lê o global `VERSION_FILE` na chamada (compatibilidade da suíte legada, que
-    o substitui por um caminho falso para testar a rejeição de não-SemVer).
+    Lê o global `VERSION_FILE` na chamada (compatibilidade do shim de `tools/`,
+    que o substitui por um caminho falso para testar a rejeição de não-SemVer).
     """
     if not VERSION_FILE.exists():
         raise SystemExit('VERSION não existe — crie com a versão atual (ex.: 1.0.0).')

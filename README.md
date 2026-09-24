@@ -135,7 +135,7 @@ Cada patch entrega:
 | `tools/gen_indexes.py` | `python tools/gen_indexes.py` | Regenera os `MAPA-DO-ALBUM.md` e o `patches/README.md` — slots U01…Uxx calculados pela ordem dos defs |
 | `tools/ir_library.py` | `python tools/ir_library.py` | Indexa `impulse_responses/` (valida mono/24-bit/44.1 kHz) → `tools/ir-library.json` + `reference/16-ir-library.md` |
 | `tools/analyze_prst.py` | `python tools/analyze_prst.py <arquivo>.prst [--json out.json]` | Disseca qualquer export `.prst` (modelos, ranges empíricos de params, catálogo) — é dele que nasceu o catálogo fw 2.0 |
-| `tests/test_pipeline.py` | `python -m unittest discover -s tests -v` | **Suíte de validação** do pipeline: defs, formato `.prst`, docs, momentos, nomes de parâmetro, drift dos índices e a ordem estável entre sistemas operacionais (é o que o CI roda) |
+| `tests/` | `uv run pytest` | **Suíte em pirâmide** (issue #34): `unit` (regras puras) → `integration` (defs real) → `contract` (formato `.prst` e CLI `gp100`) → `e2e` (derivados e guardas, incluindo a sincronia do pipeline). Fatias: `uv run pytest -m unit`, `-m "not slow"` |
 | `tools/build_release.py` | `python tools/build_release.py [versão]` | **Empacota a Release** — ZIP da biblioteca completa + um por álbum, validando cada `.prst`, e escreve as notas em `dist/`. A versão vem de `VERSION` se você não passar nenhuma |
 | `tools/gen_changelog.py` | `python tools/gen_changelog.py [--version X.Y.Z] [--write]` | **Changelog derivado dos commits** (Conventional Commits): agrupa por tipo, isola breaking changes e sugere o bump SemVer |
 | `.github/scripts/audit_workflows.py` | `python .github/scripts/audit_workflows.py` | **Guarda dos workflows** — reprova permissões ausentes ou ACIMA DO TETO declarado por arquivo, job sem `timeout`, injeção em `run:` e `pull_request_target`; avisa sobre Action não fixada por SHA |
@@ -169,20 +169,21 @@ Todos os jobs têm `timeout` e o resultado da sincronia dos dados é publicado n
 Para rodar igual na sua máquina:
 
 ```bash
-python -m unittest discover -s tests -v
+uv run pytest              # pirâmide completa (unit, integration, contract, e2e)
+uv run pytest -m unit     # só a fatia rápida, quando estiver iterando
 ```
 
 A suíte cobre as invariantes que **já quebraram uma vez** neste projeto:
 
-| Classe | O que reprova |
+| Camada / guarda | O que reprova |
 |---|---|
-| `TestB_FonteUnica_IR` | mapa do álbum e seção 📡 do `patch.md` discordando sobre a IR (bug dos 38 patches do Pulse) |
-| `TestC_Prst` | `.prst` fora do formato **single fw 2.1** (`ppIRInfo`, ordem dos módulos, `x`, 15 params, `ppName` ≠ pasta) |
-| `TestD_Documentacao` | doc sem uma das 9 seções, HTML cru no Markdown ou rótulo placeholder (`(pN)`/`pN` solto em ajustes e tabelas) |
-| `TestE_Momentos` | momento de toggle inválido (módulo inexistente, estado já ativo, ou tentativa de desligar AMP/CAB) |
-| `TestF_ParamNames` | modelo ligado em patch **sem tabela de nomes** fora da allowlist (hoje vazia: o manual oficial do fw V2.0 deu nome a `Saturate`, `Red Haze` e `T-Echo`) ou tabela com placeholder |
-| `TestG_Indices` | índice defasado (esqueceu de rodar `gen_indexes.py`) ou numeração de slots divergente entre os dois scripts |
-| `TestH_DadosEmSincronia` | **guarda de determinismo**: o pipeline rodado numa cópia limpa do repo tem de reproduzir os derivados byte a byte — prova que o defs determina a biblioteca e pega hand-edit em arquivo gerado; `time` do `.prst` ignorado, CRLF≡LF e mudança de parâmetro **não** mascarada |
+| `e2e · fonte única de IR` | mapa do álbum e seção 📡 do `patch.md` discordando sobre a IR (bug dos 38 patches do Pulse) |
+| `e2e · .prst` | `.prst` fora do formato **single fw 2.1** (`ppIRInfo`, ordem dos módulos, `x`, 15 params, `ppName` ≠ pasta) |
+| `e2e · patch.md` | doc sem uma das 9 seções, HTML cru no Markdown ou rótulo placeholder (`(pN)`/`pN` solto em ajustes e tabelas) |
+| `e2e · momentos` | momento de toggle inválido (módulo inexistente, estado já ativo, ou tentativa de desligar AMP/CAB) |
+| `e2e · guardas` | modelo ligado em patch **sem tabela de nomes** (allowlist consciente) ou tabela com placeholder; índice defasado (esqueceu de rodar `gen_indexes.py`); ordem de artefato dependente de SO |
+| `e2e · sincronia (TestH)` | **guarda de determinismo**: o pipeline rodado numa cópia limpa do repo tem de reproduzir os derivados byte a byte — prova que o defs determina a biblioteca e pega hand-edit em arquivo gerado; `time` do `.prst` ignorado, CRLF≡LF e mudança de parâmetro **não** mascarada |
+| `unit` + `integration` | regras puras e casos de uso sobre o defs real — validação com caminho JSON, resolução de pedidos, empacotamento e changelog |
 
 ## 🎯 Regras de ouro
 
@@ -304,7 +305,7 @@ e ele tem uma regra que muda tudo: **`patches/**` é saída de script**.
 
 ```bash
 # Antes de abrir um PR, rode o que o CI roda:
-python -m unittest discover -s tests -v
+uv run pytest
 
 # Se você mexeu em dados, o pipeline (a suíte cuida do guarda de determinismo):
 python tools/ir_library.py && python tools/build_song_patches.py \

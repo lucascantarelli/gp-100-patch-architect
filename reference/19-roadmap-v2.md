@@ -10,7 +10,7 @@
 | Dimensão | Estado |
 |---|---|
 | Biblioteca | **97 patches / 58 músicas / 6 álbuns** — derivado, não memorizado: `python -c "import sys;sys.path.insert(0,'src');from gp100_architect.infrastructure.defs import carregar_e_validar;d=carregar_e_validar();print(len(d['songs']),'músicas',sum(len(s['patches']) for s in d['songs']),'patches')"` (fragmentos em `tools/defs/`, schema v2 — o detalhe por álbum está no [README](../README.md)) |
-| Pipeline | Reprodutível e guardado pela suíte — **335 testes** (`uv run pytest -q`), com pytest desde a v1.2.0, `TestH` de determinismo (derivados fora do git, ADR-0013) · CLI do pacote `gp100` (9 comandos, `--json`; shims de `tools/` delegam — issues #48/#49) |
+| Pipeline | Reprodutível e guardado pela suíte — **315 testes** em pirâmide pytest (`uv run pytest`): unit → integration → contract → e2e, com markers e auditoria de escrita no repo (`--guarda-repo`; issue #34), `TestH` de determinismo (derivados fora do git, ADR-0013) · CLI do pacote `gp100` (9 comandos, `--json`; shims de `tools/` delegam — issues #48/#49) |
 | Em voo | **nada**: `main` + `develop`, zero branch de trabalho — Smooth e Wishkah mergeados, as 10 branches antigas removidas |
 | Concluído | **Smooth (Santana)** (4 patches com stomps, #5) e **Wishkah (Nirvana)** (17 músicas / 31 patches, #6) — na `develop`, com a `1.1.0` e a `1.2.0` entregues e **não publicadas** |
 | Gestão | Taxonomia, milestones, **epics com sub-issues** (ADR-0012) e guardian vivos no GitHub (doc 18) — board com escopo `project` ativo, automação end-to-end (ADR-0011) |
@@ -175,13 +175,15 @@ dossiê do rig real (o fluxo de hoje já cobra isso).
 
 - ~~Matriz Python 3.10–3.13 no CI~~ **Reorientado (decisão do mantenedor): Python 3.14 APENAS** — travado em código: guarda de runtime nos entry points (`tools/defs_schema.py`), suíte inteira recusa outro runtime e verificação `3.14.*` como primeiro passo do job `test-suite` no CI.
 - Testes para os scripts hoje fora da suíte: `analyze_prst`, `build_release`,
-  `gen_changelog` — **entregues** (24 testes em `tests/test_scripts.py`).
+  `gen_changelog` — **entregues** e migrados para o pacote com a pirâmide (issue #34:
+  `tests/integration/test_release.py`).
 - `dependabot` já vigia Actions; manter.
-- **Migração da suíte para pytest na 2.0** (decisão do mantenedor, set/2026): o
-  pytest será a **primeira dependência real** do projeto — a política "stdlib
-  pura" vale até a 1.x; na 2.0 a suíte unittest (103 testes) migra para pytest
-  (fixtures, parametrize, marcadores) e a skill global
-  `python-testing-patterns` passa a valer como convenção de teste.
+- **Migração da suíte para pytest** (decisão do mantenedor, set/2026) — **entregue na
+  pirâmide (issue #34)**: unit → integration → contract → e2e em
+  `tests/{unit,integration,contract,e2e}`, factories em `tests/fixtures/`, markers
+  (`unit · integration · contract · e2e · slow`) e auditoria de escrita no repo
+  (`--guarda-repo`, ativa no CI). A skill global `python-testing-patterns` vale como
+  convenção de teste.
 
 ## 9 · Sequência de releases
 

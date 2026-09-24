@@ -22,8 +22,9 @@ corretas.
 Compatibilidade GP-100 (por WAV): mono, 24 bits, 44.1 kHz → OK direto; qualquer
 desvio → CONVERTER. Limite do device: 1024 samples (~23 ms @ 44.1 kHz).
 
-Reexporta `wav_order`/`wav_info`/`cab_of`/`encolhimento_do_catalogo` para a
-suíte legada até a migração (issue #34).
+Reexporta `wav_order`/`wav_info`/`cab_of`/`encolhimento_do_catalogo` para os
+demais shims de `tools/` — a remoção é a #33 (a suíte já consome o pacote:
+issue #34).
 """
 
 from __future__ import annotations
@@ -46,13 +47,13 @@ IR_DIR = ROOT / 'impulse_responses'
 OUT_JSON = ROOT / 'tools' / 'ir-library.json'
 OUT_MD = ROOT / 'reference' / '16-ir-library.md'
 
-# reexportados para a suíte legada (nomes históricos)
+# reexports de compatibilidade para os consumidores de `tools/` (nomes históricos)
 cab_of = app.cab_of                    # noqa: F401
 encolhimento_do_catalogo = app.encolhimento  # noqa: F401
 
 
 def wav_order(path: Path) -> str:
-    """Compatibilidade da suíte legada (a raiz do banco vem do módulo)."""
+    """Compatibilidade do shim (a raiz do banco vem do módulo)."""
     return app.wav_order(path, IR_DIR)
 
 

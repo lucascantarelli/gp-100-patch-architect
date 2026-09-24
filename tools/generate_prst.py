@@ -37,8 +37,8 @@ from gp100_architect.infrastructure.prst.codec import (  # noqa: E402
     real_param_count,
 )
 
-# compatibilidade da suíte legada (test_pipeline usa GEN.load_templates,
-# GEN.real_param_count e GEN.CHAIN_POS) — a migração da suíte é a issue #34
+# reexports do pacote para consumidores que ainda importam por `tools/` —
+# a remoção é a #33 (a suíte já consome o pacote: issue #34)
 __all__ = ['CHAIN_POS', 'EXPORT_ORDER', 'EXP_DUMMY_CODE', 'FACTORY_IR',
            'gerar_xml', 'is_junk', 'load_templates', 'real_param_count']
 

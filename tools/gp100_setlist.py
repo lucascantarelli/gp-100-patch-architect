@@ -50,7 +50,8 @@ from gp100_architect.domain.setlist import (  # noqa: E402
 from gen_indexes import slot_map  # noqa: E402
 
 # regras vivem no domínio (issue #28); o script é consumidor. O alias `chave`
-# mantém a suíte legada (tests/test_setlist.py) funcionando até o #34 migrá-la.
+# preserva a via argparse até a remoção do shim (#33) — a suíte já consome o
+# pacote (tests/integration/test_setlist.py, issue #34).
 
 
 class Biblioteca:

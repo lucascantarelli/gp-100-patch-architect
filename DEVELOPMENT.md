@@ -24,6 +24,8 @@ funciona logo depois do clone.
 
 ```bash
 uv run gp100 validate              # valida o defs (data/defs/, fonte única)
+uv run gp100 build                 # regenera a biblioteca (IRs → patches → índices)
+uv run gp100 site                  # gera o site estático em dist/site (issue #11)
 uv run pytest -q                   # suíte completa
 uv run pytest tests/unit -q        # só os testes do pacote (milissegundos)
 uv run pytest -q -m unit           # fatia por marcador da pirâmide
@@ -37,10 +39,9 @@ uv run pre-commit install          # hooks locais (uma vez por clone)
 uv run pre-commit run --all-files  # roda os hooks em tudo
 ```
 
-O pipeline de dados (patches → `.prst` → docs) ainda roda pelos scripts de
-do pacote; a forma canônica está no README (seção Ferramentas) e no
-[`CONTRIBUTING.md`](CONTRIBUTING.md) — e o guarda de sincronia reprova se você
-editar o defs e esquecer de regenerar.
+O pipeline de dados (patches → `.prst` → docs) roda pelo pacote
+(`gp100 build`, in-process desde a #33) — e o guarda de sincronia reprova se
+você editar o defs e esquecer de regenerar.
 
 ## Onde mexer
 

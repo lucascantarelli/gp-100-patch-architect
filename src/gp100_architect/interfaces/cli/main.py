@@ -588,5 +588,29 @@ def release(
     console.print('✅ Pacotes em dist/ (não versionar — o CI publica na Release).')
 
 
+@app.command()
+def site(
+    destino: Path = typer.Option(None, '--destino', help='Pasta de saída (default: dist/site).'),
+    base_url: str = typer.Option(
+        None, '--base-url', help='Prefixo de URL do Pages (default: /gp-100-patch-architect/).'
+    ),
+) -> None:
+    """Gera o site estático da biblioteca (busca client-side, sem backend)."""
+    from gp100_architect.application import site as site_app
+    from gp100_architect.infrastructure.escrita import escrever_texto
+
+    raiz = _raiz()
+    destino = destino or (raiz / 'dist' / 'site')
+    paginas = site_app.gerar_site(_defs(), base_url=base_url or site_app.BASE_URL_PADRAO)
+    for relativo, conteudo in sorted(paginas.items()):
+        escrever_texto(destino / relativo, conteudo)
+    json_kb = len(paginas['busca.json'].encode('utf-8')) / 1024
+    console.print(
+        f'🌐 {len(paginas)} arquivo(s) em {destino} '
+        f'({len(paginas) - 3} páginas de patch/álbum) · busca.json: {json_kb:.1f} KB'
+    )
+    console.print('✅ Site gerado (derivado do defs — publicável no Pages).')
+
+
 if __name__ == '__main__':  # python -m gp100_architect.interfaces.cli.main
     app()

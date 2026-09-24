@@ -35,11 +35,11 @@ Duas regras que mantêm isso coerente:
 
 | EPIC | Stream | Objetivo | Tasks |
 |---|---|---|---|
-| [#41](../../issues/41) | **Núcleo, CLI e fim do legado** | o produto sai de `tools/` para `src/gp100_architect` | #25–#27 (entregues), #28–#34, #48, #49 |
+| [#41](../../issues/41) | **Núcleo, CLI e fim do legado** | o produto sai de `tools/` para `src/gp100_architect` | #25–#30 (entregues), ~~#31~~ (obsoleta: seeders aposentados na #8), #32–#34, #48, #49 (entregues, PR #94) |
 | [#42](../../issues/42) | **Formato e dados** | as quebras que justificam o MAJOR: schema v2, stomps/EXP1, `-USERIR` | #8 (→ #50–#53), #9, #10 |
-| [#43](../../issues/43) | **Site e documentação** | biblioteca navegável + doc por público | #11, #60, #61 |
+| [#43](../../issues/43) | **Site e documentação** | biblioteca navegável + doc por público | #11, #60, #61 + **#90 fase 1** (JSON do catálogo, com o site) |
 | [#44](../../issues/44) | **CI, automação e segurança** | o que vigia o repositório | #37 (entregue), #54, #55, #62 |
-| [#45](../../issues/45) | **IA e governança** | agentes com contrato e board como fonte de verdade | #39 (entregue), #56, #57, #63 |
+| [#45](../../issues/45) | **IA e governança** | agentes com contrato e board como fonte de verdade | #39 (entregue), #56, #57, #63, **#91** (agentes consomem a CLI) |
 | [#46](../../issues/46) | **Conteúdo (pilar D)** | primeiro álbum novo e a meta de escala | #12 |
 | [#47](../../issues/47) | **Release 2.0.0** | auditoria de consistência e publicação | #58, #64, #59 |
 
@@ -51,10 +51,10 @@ Duas regras que mantêm isso coerente:
 
 ```
 #41 Núcleo, CLI e fim do legado          ← começa aqui: é o que destrava o resto
-  #28 domínio ──┬── #29 codec .prst ── #30 aplicação ──┬── #48, #49 (CLI)
-                ├── #31 migrações                      │
-                ├── #32 release ──────────────────────┘
-                └── #34 suíte em pirâmide
+  #28 domínio ──┬── #29 codec .prst ── #30 aplicação ──┬── #48, #49 ✅ (CLI, PR #94)
+                ├── #32 release ✅ ────────────────────┘
+                ├── #34 suíte em pirâmide
+                └── #91 agentes consomem a CLI
                                    #33 limpa tools/ (o último de todos)
 
 #42 Formato e dados    ← depois do #30: o gerador precisa estar no pacote, senão
@@ -75,9 +75,11 @@ GitHub** como relação `blocked by`, visível no card e no board. Quem abre a
 issue vê do que ela depende sem consultar este arquivo.
 
 ```
-#29 #31 #32 #34  ← #28        #48 ← #30            #11 #60 #61 ← #30
-#30              ← #29        #49 ← #30, #32       #8  #9 #10 ← #30
-#33              ← #29–#34    #59 ← #64
+#29 #32 ✅ #34   ← #28         #11 #60 #61 ← #30
+#30 ✅           ← #29         #8  #9 #10  ← #30 ✅
+#48 #49 ✅       ← #30, #32    #59 ← #64
+#91              ← #48, #49    #90 (fase 1) ← #11
+#33              ← #29, #32, #34, #91   (o último de todos)
 ```
 
 ## 4 · Fronteira de escopo

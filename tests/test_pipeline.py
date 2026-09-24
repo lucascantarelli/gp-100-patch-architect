@@ -37,7 +37,9 @@ máquina. Cobre as invariantes que **já quebraram uma vez** neste projeto:
 
 Rodar:  python -m unittest discover -s tests -v
 """
+
 import json
+import os
 import re
 import shutil
 import subprocess
@@ -50,10 +52,10 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / 'tools'))
 
-import build_song_patches as BSP          # noqa: E402  (precisa do sys.path acima)
-import generate_prst as GEN                # noqa: E402
-import gen_indexes as GI                   # noqa: E402
-import ir_library as IRL                   # noqa: E402
+import build_song_patches as BSP  # noqa: E402  (precisa do sys.path acima)
+import gen_indexes as GI  # noqa: E402
+import generate_prst as GEN  # noqa: E402
+import ir_library as IRL  # noqa: E402
 
 DEFS = BSP.DEFS
 CHAIN = BSP.CHAIN
@@ -104,16 +106,20 @@ class TestA_Defs(unittest.TestCase):
 
     def test_albuns_declarados(self):
         for song in DEFS['songs']:
-            self.assertIn(song['idAlbum'], DEFS['albums'],
-                          f"{song['id']}: idAlbum {song['idAlbum']} não está em albums")
+            self.assertIn(
+                song['idAlbum'],
+                DEFS['albums'],
+                f'{song["id"]}: idAlbum {song["idAlbum"]} não está em albums',
+            )
 
     def test_albuns_completos(self):
         for key, alb in DEFS['albums'].items():
             for campo in ('banda', 'album', 'ano', 'display', 'pasta'):
-                self.assertTrue(alb.get(campo) not in (None, ''),
-                                f"albums.{key} sem '{campo}'")
-            self.assertTrue((PATCHES_DIR / alb['pasta']).is_dir(),
-                            f"albums.{key}: pasta {alb['pasta']} não existe em patches/")
+                self.assertTrue(alb.get(campo) not in (None, ''), f"albums.{key} sem '{campo}'")
+            self.assertTrue(
+                (PATCHES_DIR / alb['pasta']).is_dir(),
+                f'albums.{key}: pasta {alb["pasta"]} não existe em patches/',
+            )
 
     def test_ids_de_musica_unicos(self):
         ids = [s['id'] for s in DEFS['songs']]
@@ -136,40 +142,53 @@ class TestB_FonteUnica_IR(unittest.TestCase):
     """O mapa e o patch.md têm de dar a MESMA resposta sobre a IR (bug do Pulse)."""
 
     def test_mapa_concorda_com_a_secao_de_ir(self):
-        marcador = re.compile(r'`(?:\S+ )?([A-Z0-9]{4,12})`')   # nome do patch no mapa
+        marcador = re.compile(r'`(?:\S+ )?([A-Z0-9]{4,12})`')  # nome do patch no mapa
         divergencias = []
         for song in DEFS['songs']:
-            linhas = [l for l in ler_mapa(song) if l.startswith('| **')]
-            linha = next((l for l in linhas if GI.song_display(song) in l), None)
-            self.assertIsNotNone(linha, f"{song['id']}: linha da música não está no mapa")
+            linhas = [ln for ln in ler_mapa(song) if ln.startswith('| **')]
+            linha = next((ln for ln in linhas if GI.song_display(song) in ln), None)
+            self.assertIsNotNone(linha, f'{song["id"]}: linha da música não está no mapa')
             cells = [c.strip() for c in linha.strip().strip('|').split('|')]
             patches_col, ir_col = cells[1].split(' · '), cells[3].split(' · ')
-            self.assertEqual(len(patches_col), len(song['patches']),
-                             f"{song['id']}: nº de patches do mapa ≠ defs")
+            self.assertEqual(
+                len(patches_col),
+                len(song['patches']),
+                f'{song["id"]}: nº de patches do mapa ≠ defs',
+            )
             for i, patch in enumerate(song['patches']):
                 nome = marcador.search(patches_col[i])
                 self.assertIsNotNone(nome, f'mapa: não li o nome em {patches_col[i]!r}')
-                self.assertEqual(nome.group(1), patch['nome'], f"{song['id']}: ordem do mapa")
+                self.assertEqual(nome.group(1), patch['nome'], f'{song["id"]}: ordem do mapa')
                 # o patch.md recomenda o banco local?
                 doc = (pasta_do_patch(song, patch) / 'patch.md').read_text(encoding='utf-8')
                 local_no_doc = '### 📁 Melhor opção no nosso banco' in doc
                 local_no_mapa = ir_col[i].startswith('📁')
                 if local_no_doc != local_no_mapa:
                     divergencias.append(
-                        f"{patch['nome']}: patch.md "
-                        f"{'recomenda o banco' if local_no_doc else 'diz fábrica'} x mapa "
-                        f"{'recomenda o banco' if local_no_mapa else 'diz fábrica'}")
-        self.assertEqual(divergencias, [], 'mapa e patch.md discordam sobre a IR:\n  '
-                         + '\n  '.join(divergencias))
+                        f'{patch["nome"]}: patch.md '
+                        f'{"recomenda o banco" if local_no_doc else "diz fábrica"} x mapa '
+                        f'{"recomenda o banco" if local_no_mapa else "diz fábrica"}'
+                    )
+        self.assertEqual(
+            divergencias,
+            [],
+            'mapa e patch.md discordam sobre a IR:\n  ' + '\n  '.join(divergencias),
+        )
 
     def test_ir_local_do_defs_aponta_para_captura_existente(self):
         ir_lib = GI.load_ir_library()
         self.assertIsNotNone(ir_lib, 'tools/ir-library.json não legível')
-        cabs = {Path(f['file']).parts[-2].replace(' Mics', '')
-                for pack in ir_lib['packs'].values() for f in pack['files']}
+        cabs = {
+            Path(f['file']).parts[-2].replace(' Mics', '')
+            for pack in ir_lib['packs'].values()
+            for f in pack['files']
+        }
         for cab, par in DEFS['ir_local'].items():
-            self.assertIn(par['captura'], cabs,
-                          f"ir_local['{cab}'] aponta para captura ausente: {par['captura']}")
+            self.assertIn(
+                par['captura'],
+                cabs,
+                f"ir_local['{cab}'] aponta para captura ausente: {par['captura']}",
+            )
             self.assertRegex(par['slot'], r'^User IR ([1-9]|1[0-9]|20)$')
 
 
@@ -179,30 +198,38 @@ class TestC_Prst(unittest.TestCase):
     def test_formato_single_firmware_2_1(self):
         total = 0
         for song, patch in todas_as_musicas():
-            prst = pasta_do_patch(song, patch) / f"{patch['nome']}.prst"
+            prst = pasta_do_patch(song, patch) / f'{patch["nome"]}.prst'
             self.assertTrue(prst.is_file(), f'{prst} não existe')
             root = ET.parse(prst).getroot()
             self.assertEqual(root.tag, 'GP-100')
             info = root.find('preset_info')
             self.assertEqual(info.get('firmware'), '2.1', f'{prst}: firmware')
             self.assertEqual(info.get('count'), '1', f'{prst}: count (single)')
-            self.assertIsNone(root.find('ppIRInfo'),
-                              f'{prst}: ppIRInfo é do export "all" — o importador recusa')
+            self.assertIsNone(
+                root.find('ppIRInfo'), f'{prst}: ppIRInfo é do export "all" — o importador recusa'
+            )
             presets = root.find('presets')
             self.assertEqual(presets.get('ppName'), patch['nome'], f'{prst}: ppName')
             self.assertIsNotNone(presets.find('ppCtrl'), f'{prst}: falta ppCtrl')
             self.assertIsNotNone(presets.find('ppEXP1'), f'{prst}: falta ppEXP1')
             effects = presets.findall('Effect')
             self.assertEqual(len(effects), len(CHAIN), f'{prst}: módulos')
-            self.assertEqual([e.get('effectModuleName') for e in effects], list(reversed(CHAIN)),
-                             f'{prst}: ordem dos <Effect> no arquivo')
+            self.assertEqual(
+                [e.get('effectModuleName') for e in effects],
+                list(reversed(CHAIN)),
+                f'{prst}: ordem dos <Effect> no arquivo',
+            )
             for e in effects:
-                self.assertEqual(e.get('x'), str(GEN.CHAIN_POS[e.get('effectModuleName')]),
-                                 f'{prst}: {e.get("effectModuleName")} com x errado')
+                self.assertEqual(
+                    e.get('x'),
+                    str(GEN.CHAIN_POS[e.get('effectModuleName')]),
+                    f'{prst}: {e.get("effectModuleName")} com x errado',
+                )
                 self.assertIn(e.get('effectState'), ('0', '1'), f'{prst}: effectState')
                 for i in range(15):
-                    self.assertIsNotNone(e.get(f'params_{i}'),
-                                         f'{prst}: {e.get("effectName")} sem params_{i}')
+                    self.assertIsNotNone(
+                        e.get(f'params_{i}'), f'{prst}: {e.get("effectName")} sem params_{i}'
+                    )
             total += 1
         self.assertEqual(total, sum(len(s['patches']) for s in DEFS['songs']))
 
@@ -210,9 +237,10 @@ class TestC_Prst(unittest.TestCase):
         for song, patch in todas_as_musicas():
             pasta = pasta_do_patch(song, patch)
             # ADR-0013: o spec vai in-memory ao codec; spec.json não existe mais.
-            for arquivo in ('patch.md', f"{patch['nome']}.prst"):
-                self.assertTrue((pasta / arquivo).is_file(),
-                                f'{patch["nome"]}: falta {arquivo} em {pasta}')
+            for arquivo in ('patch.md', f'{patch["nome"]}.prst'):
+                self.assertTrue(
+                    (pasta / arquivo).is_file(), f'{patch["nome"]}: falta {arquivo} em {pasta}'
+                )
 
 
 class TestD_Documentacao(unittest.TestCase):
@@ -222,10 +250,10 @@ class TestD_Documentacao(unittest.TestCase):
         for song, patch in todas_as_musicas():
             doc = (pasta_do_patch(song, patch) / 'patch.md').read_text(encoding='utf-8')
             for secao in SECOES:
-                self.assertIn(secao, doc, f"{patch['nome']}: falta a seção {secao!r}")
+                self.assertIn(secao, doc, f'{patch["nome"]}: falta a seção {secao!r}')
             for tag in ('<div', '<br', '<details', '<summary', '</div'):
-                self.assertNotIn(tag, doc, f"{patch['nome']}: HTML cru {tag} no Markdown")
-            self.assertNotIn('# {', doc, f"{patch['nome']}: f-string não interpolada")
+                self.assertNotIn(tag, doc, f'{patch["nome"]}: HTML cru {tag} no Markdown')
+            self.assertNotIn('# {', doc, f'{patch["nome"]}: f-string não interpolada')
 
     def test_sem_rotulo_placeholder(self):
         """Nem `(pN)` nem `pN` solto: todo slot setado tem nome oficial do manual."""
@@ -234,16 +262,22 @@ class TestD_Documentacao(unittest.TestCase):
             doc = (pasta_do_patch(song, patch) / 'patch.md').read_text(encoding='utf-8')
             achados = re.findall(r'\(p\d+\)|\bp\d+\b', doc)
             if achados:
-                ruins.append(f"{patch['nome']}{achados[:3]}")
+                ruins.append(f'{patch["nome"]}{achados[:3]}')
         self.assertEqual(ruins, [], f'rótulo placeholder nos docs: {ruins}')
 
     def test_guitarra_vem_antes_do_tecnico(self):
         for song, patch in todas_as_musicas():
             doc = (pasta_do_patch(song, patch) / 'patch.md').read_text(encoding='utf-8')
-            self.assertLess(doc.index(SECOES[0]), doc.index(SECOES[6]),
-                            f"{patch['nome']}: dados técnicos antes da guitarra")
-            self.assertLess(doc.index(SECOES[2]), doc.index(SECOES[3]),
-                            f"{patch['nome']}: IR deve vir antes dos modos de atuação")
+            self.assertLess(
+                doc.index(SECOES[0]),
+                doc.index(SECOES[6]),
+                f'{patch["nome"]}: dados técnicos antes da guitarra',
+            )
+            self.assertLess(
+                doc.index(SECOES[2]),
+                doc.index(SECOES[3]),
+                f'{patch["nome"]}: IR deve vir antes dos modos de atuação',
+            )
 
 
 class TestE_Momentos(unittest.TestCase):
@@ -251,18 +285,22 @@ class TestE_Momentos(unittest.TestCase):
 
     def test_momentos_sao_validos(self):
         encontrados = 0
-        for song, patch in todas_as_musicas():
+        for _song, patch in todas_as_musicas():
             mods = patch['spec']['modules']
             for mo in patch['doc'].get('momentos', []):
                 encontrados += 1
-                self.assertTrue(mo['nome'] and mo['quando'], f"{patch['nome']}: momento sem nome/quando")
+                self.assertTrue(
+                    mo['nome'] and mo['quando'], f'{patch["nome"]}: momento sem nome/quando'
+                )
                 for nome_mod, estado in mo['mods']:
-                    self.assertIn(nome_mod, mods, f"{patch['nome']}: {nome_mod} não existe")
-                    self.assertNotIn(nome_mod, ('AMP', 'CAB'),
-                                     f"{patch['nome']}: toggle de AMP/CAB é proibido")
+                    self.assertIn(nome_mod, mods, f'{patch["nome"]}: {nome_mod} não existe')
+                    self.assertNotIn(
+                        nome_mod, ('AMP', 'CAB'), f'{patch["nome"]}: toggle de AMP/CAB é proibido'
+                    )
                     atual = mods[nome_mod].get('on', False)
-                    self.assertNotEqual(atual, estado == 'ON',
-                                        f"{patch['nome']}: {nome_mod} já está {estado}")
+                    self.assertNotEqual(
+                        atual, estado == 'ON', f'{patch["nome"]}: {nome_mod} já está {estado}'
+                    )
         self.assertGreater(encontrados, 0, 'nenhum momento declarado no defs')
 
     def test_momentos_aparecem_no_doc(self):
@@ -273,8 +311,11 @@ class TestE_Momentos(unittest.TestCase):
                 self.assertIn('🎭 Momentos desta música', doc, patch['nome'])
                 for m in mo:
                     for nome_mod, estado in m['mods']:
-                        self.assertIn(f'**{nome_mod} → {estado}**', doc,
-                                      f"{patch['nome']}: momento {nome_mod} {estado} fora do doc")
+                        self.assertIn(
+                            f'**{nome_mod} → {estado}**',
+                            doc,
+                            f'{patch["nome"]}: momento {nome_mod} {estado} fora do doc',
+                        )
             else:
                 self.assertIn('🎭 Momentos desta música', doc, patch['nome'])
 
@@ -283,28 +324,40 @@ class TestF_ParamNames(unittest.TestCase):
     """Cobertura dos nomes de parâmetro (documentação técnica)."""
 
     def test_modelos_sem_nome_estao_na_allowlist(self):
-        em_uso = {(mod, m['name']) for _s, p in todas_as_musicas()
-                  for mod, m in p['spec']['modules'].items() if m.get('on') and m.get('params')}
+        em_uso = {
+            (mod, m['name'])
+            for _s, p in todas_as_musicas()
+            for mod, m in p['spec']['modules'].items()
+            if m.get('on') and m.get('params')
+        }
         sem_nome = em_uso - set(BSP.PARAM_NAMES)
-        self.assertEqual(sem_nome, SEM_NOME_OFICIAL,
-                         'modelos sem tabela de nomes mudaram: acrescente os nomes em '
-                         'PARAM_NAMES (fonte: reference/) ou atualize SEM_NOME_OFICIAL')
+        self.assertEqual(
+            sem_nome,
+            SEM_NOME_OFICIAL,
+            'modelos sem tabela de nomes mudaram: acrescente os nomes em '
+            'PARAM_NAMES (fonte: reference/) ou atualize SEM_NOME_OFICIAL',
+        )
 
     def test_tabelas_sem_placeholder_nem_buraco(self):
         for (mod, nome), labels in BSP.PARAM_NAMES.items():
-            self.assertNotRegex(' '.join(labels), r'\bp\d+\b|\(p', f'{mod} {nome}: rótulo placeholder')
-            self.assertTrue(all(l.strip() for l in labels), f'{mod} {nome}: rótulo vazio')
+            self.assertNotRegex(
+                ' '.join(labels), r'\bp\d+\b|\(p', f'{mod} {nome}: rótulo placeholder'
+            )
+            self.assertTrue(all(ln.strip() for ln in labels), f'{mod} {nome}: rótulo vazio')
             self.assertEqual(len(set(labels)), len(labels), f'{mod} {nome}: rótulo repetido')
 
     def test_tabela_nao_tem_mais_nomes_que_parametros_reais(self):
         templates = GEN.load_templates()
         for (mod, nome), labels in BSP.PARAM_NAMES.items():
             tpl = templates.get((mod, nome))
-            if not tpl:      # modelo fora do catálogo de fábrica: sem base para conferir
+            if not tpl:  # modelo fora do catálogo de fábrica: sem base para conferir
                 continue
             reais = GEN.real_param_count(nome, tpl['params'])
-            self.assertLessEqual(len(labels), reais,
-                                 f'{mod} {nome}: {len(labels)} nomes para {reais} parâmetros reais')
+            self.assertLessEqual(
+                len(labels),
+                reais,
+                f'{mod} {nome}: {len(labels)} nomes para {reais} parâmetros reais',
+            )
 
 
 class TestG_Indices(unittest.TestCase):
@@ -312,12 +365,17 @@ class TestG_Indices(unittest.TestCase):
 
     def test_mapas_e_readme_atualizados(self):
         saidas, _total = GI.build_all(DEFS)
+
         def norm(t):
             return t.replace('\r\n', '\n')
+
         for path, texto in saidas.items():
             self.assertTrue(path.is_file(), f'{path} não existe — rode gen_indexes.py')
-            self.assertEqual(norm(path.read_text(encoding='utf-8')), norm(texto),
-                             f'{path} está defasado — rode: python tools/gen_indexes.py')
+            self.assertEqual(
+                norm(path.read_text(encoding='utf-8')),
+                norm(texto),
+                f'{path} está defasado — rode: python tools/gen_indexes.py',
+            )
 
     def test_slots_continuos_e_alinhados(self):
         slots = GI.slot_map(DEFS)
@@ -338,16 +396,18 @@ class TestG_Indices(unittest.TestCase):
 # `Path(__file__).parent.parent`, então a cópia é autocontida (sem .git, sem
 # tocar no working tree — o `preset_info/@time` é determinístico (GP100_BUILD_TIME)).
 PIPELINE = (
-    'tools/ir_library.py',             # indexa impulse_responses/ (se baixou pack)
-    'tools/build_song_patches.py',     # patch.md + .prst (spec in-memory, ADR-0013)
-    'tools/gen_indexes.py',            # MAPA-DO-ALBUM.md + patches/README.md
+    'tools/ir_library.py',  # indexa impulse_responses/ (se baixou pack)
+    'tools/build_song_patches.py',  # patch.md + .prst (spec in-memory, ADR-0013)
+    'tools/gen_indexes.py',  # MAPA-DO-ALBUM.md + patches/README.md
 )
 # O que o pipeline escreve: patches/** (essas extensões) + os 3 arquivos fixos.
 SUFIXOS_DE_ARTEFATO = {'.prst', '.md', '.json'}
-ARTEFATO_IGNORADO: set[str] = set()    # (antes: spec.json — eliminado no ADR-0013)
+ARTEFATO_IGNORADO: set[str] = set()  # (antes: spec.json — eliminado no ADR-0013)
+SUFIXO_VARIANTE = '-USERIR'  # issue #10: variante experimental, FORA do guarda de
+# determinismo (não é commitada; a prova local dela é test_variantes_userir_sao_deterministicas)
 ARTEFATOS_FIXOS = (
-    'tools/ir-library.json',           # ir_library.py
-    'reference/16-ir-library.md',      # ir_library.py
+    'tools/ir-library.json',  # ir_library.py
+    'reference/16-ir-library.md',  # ir_library.py
 )
 # O sandbox precisa espelhar TUDO que o pipeline lê — e NADA do que ele produz.
 # patches/ fica FORA de propósito (ADR-0013): ela não é mais commitada, e é
@@ -368,22 +428,40 @@ def normaliza(texto):
 def primeira_diferenca(velho, novo):
     """Descrição curta da primeira linha divergente (para o relatório do teste)."""
     va, nb = normaliza(velho).splitlines(), normaliza(novo).splitlines()
-    for i, (a, b) in enumerate(zip(va, nb), start=1):
+    for i, (a, b) in enumerate(zip(va, nb, strict=False), start=1):
         if a != b:
             return f'linha {i}: -{a.strip()[:70]} · +{b.strip()[:70]}'
     return f'{abs(len(va) - len(nb))} linha(s) a mais/menos'
 
 
 def artefatos(raiz: Path):
-    """{caminho posix relativo: texto} de toda a saída do pipeline sob `raiz`."""
+    """{caminho posix relativo: texto} de toda a saída do pipeline sob `raiz`.
+
+    Variantes experimentais `*-USERIR.*` (issue #10) ficam de fora: não são
+    commitadas e só existem em máquinas que rodaram o build com --with-user-ir.
+    """
     textos = {}
     for p in (raiz / 'patches').rglob('*'):
-        if p.is_file() and p.suffix in SUFIXOS_DE_ARTEFATO and p.name not in ARTEFATO_IGNORADO:
+        if (
+            p.is_file()
+            and p.suffix in SUFIXOS_DE_ARTEFATO
+            and p.name not in ARTEFATO_IGNORADO
+            and not p.stem.endswith(SUFIXO_VARIANTE)
+        ):
             textos[p.relative_to(raiz).as_posix()] = p.read_text(encoding='utf-8', errors='replace')
     for rel in ARTEFATOS_FIXOS:
         f = raiz / rel
         if f.is_file():
             textos[rel] = f.read_text(encoding='utf-8', errors='replace')
+    return textos
+
+
+def artefatos_variantes(raiz: Path):
+    """{caminho posix relativo: texto} só das variantes -USERIR (issue #10)."""
+    textos = {}
+    for p in (raiz / 'patches').rglob('*'):
+        if p.is_file() and p.stem.endswith(SUFIXO_VARIANTE) and p.suffix in SUFIXOS_DE_ARTEFATO:
+            textos[p.relative_to(raiz).as_posix()] = p.read_text(encoding='utf-8', errors='replace')
     return textos
 
 
@@ -405,15 +483,19 @@ class TestH_DadosEmSincronia(unittest.TestCase):
         self.assertIn('linha 1', primeira_diferenca(a, b))
 
     def test_artefatos_cobertos_sao_so_saida_de_script(self):
-        gerados = ('patches/README.md',
-                   'tools/ir-library.json',
-                   'reference/16-ir-library.md')
+        gerados = ('patches/README.md', 'tools/ir-library.json', 'reference/16-ir-library.md')
         monitorados = set(artefatos(ROOT))
         for rel in gerados:
             self.assertIn(rel, monitorados, f'{rel} deveria ser monitorado')
-        for rel in ('README.md', 'knowledge.md', 'reference/03-amp.md',
-                    'reference/16-ir-library.md.bak', 'CONTRIBUTING.md',
-                    'tools/build_song_patches.py', 'impulse_responses/README.md'):
+        for rel in (
+            'README.md',
+            'knowledge.md',
+            'reference/03-amp.md',
+            'reference/16-ir-library.md.bak',
+            'CONTRIBUTING.md',
+            'tools/build_song_patches.py',
+            'impulse_responses/README.md',
+        ):
             self.assertNotIn(rel, monitorados, f'{rel} não deveria ser monitorado')
 
     def test_pipeline_declarado_existe_no_disco(self):
@@ -426,7 +508,7 @@ class TestH_DadosEmSincronia(unittest.TestCase):
         for song in DEFS['songs']:
             for patch in song['patches']:
                 pasta = pasta_do_patch(song, patch)
-                for nome in (f"{patch['nome']}.prst", 'patch.md'):
+                for nome in (f'{patch["nome"]}.prst', 'patch.md'):
                     rel = (pasta / nome).relative_to(ROOT).as_posix()
                     self.assertIn(rel, monitorados, f'{rel} fora do guarda de sincronia')
 
@@ -445,14 +527,24 @@ class TestH_DadosEmSincronia(unittest.TestCase):
             for nome in _PASTAS_DO_SANDBOX:
                 origem = ROOT / nome
                 if origem.is_dir():
-                    shutil.copytree(origem, sandbox / nome,
-                                    ignore=shutil.ignore_patterns('__pycache__', '*.pyc'))
+                    shutil.copytree(
+                        origem,
+                        sandbox / nome,
+                        ignore=shutil.ignore_patterns('__pycache__', '*.pyc'),
+                    )
             for script in PIPELINE:
-                r = subprocess.run([sys.executable, str(sandbox / script)], cwd=sandbox,
-                                   capture_output=True, encoding='utf-8', errors='replace')
+                r = subprocess.run(
+                    [sys.executable, str(sandbox / script)],
+                    cwd=sandbox,
+                    capture_output=True,
+                    encoding='utf-8',
+                    errors='replace',
+                )
                 self.assertEqual(
-                    r.returncode, 0,
-                    f'{script} falhou no sandbox:\n{r.stdout[-1500:]}\n{r.stderr[-1500:]}')
+                    r.returncode,
+                    0,
+                    f'{script} falhou no sandbox:\n{r.stdout[-1500:]}\n{r.stderr[-1500:]}',
+                )
             commitado, produzido = artefatos(ROOT), artefatos(sandbox)
 
         problemas = []
@@ -462,12 +554,60 @@ class TestH_DadosEmSincronia(unittest.TestCase):
             elif rel not in commitado:
                 problemas.append(f'[novo     ] {rel}: gerado no sandbox, mas não está commitado')
             elif normaliza(commitado[rel]) != normaliza(produzido[rel]):
-                problemas.append(f'[diferente] {rel}: {primeira_diferenca(commitado[rel], produzido[rel])}')
+                problemas.append(
+                    f'[diferente] {rel}: {primeira_diferenca(commitado[rel], produzido[rel])}'
+                )
         self.assertEqual(
-            problemas, [],
+            problemas,
+            [],
             'artefato(s) gerado(s) fora de sincronia com o commit — rode o pipeline '
-            'inteiro e commite os derivados:\n  ' + '\n  '.join(problemas[:20])
-            + ('\n  … e mais' if len(problemas) > 20 else ''))
+            'inteiro e commite os derivados:\n  '
+            + '\n  '.join(problemas[:20])
+            + ('\n  … e mais' if len(problemas) > 20 else ''),
+        )
+
+    def test_variantes_userir_sao_deterministicas(self):
+        """A variante -USERIR (issue #10) não é commitada, então o guarda de
+        determinismo não a cobre — este teste cobre: o build com --with-user-ir,
+        rodado DUAS vezes no sandbox com GP100_BUILD_TIME fixo, produz bytes
+        idênticos (a variante segue o mesmo contrato do canônico).
+        """
+        with tempfile.TemporaryDirectory() as tmp:
+            sandbox = Path(tmp) / 'repo'
+            sandbox.mkdir()
+            for nome in _PASTAS_DO_SANDBOX:
+                origem = ROOT / nome
+                if origem.is_dir():
+                    shutil.copytree(
+                        origem,
+                        sandbox / nome,
+                        ignore=shutil.ignore_patterns('__pycache__', '*.pyc'),
+                    )
+            ambiente = dict(os.environ, GP100_BUILD_TIME='1688207360000')
+            rodadas = []
+            for _ in range(2):
+                r = subprocess.run(
+                    [
+                        sys.executable,
+                        str(sandbox / 'tools' / 'build_song_patches.py'),
+                        '--with-user-ir',
+                    ],
+                    cwd=sandbox,
+                    capture_output=True,
+                    encoding='utf-8',
+                    errors='replace',
+                    env=ambiente,
+                )
+                self.assertEqual(
+                    r.returncode,
+                    0,
+                    f'build --with-user-ir falhou no sandbox:\n{r.stdout[-1500:]}\n{r.stderr[-1500:]}',
+                )
+                rodadas.append(artefatos_variantes(sandbox))
+        self.assertTrue(rodadas[0], 'nenhuma variante -USERIR gerada no sandbox')
+        self.assertEqual(
+            rodadas[0], rodadas[1], 'variantes -USERIR não determinísticas entre dois builds'
+        )
 
 
 class TestI_OrdemEstavel(unittest.TestCase):
@@ -512,8 +652,11 @@ class TestJ_ConexaoAgenteBiblioteca(unittest.TestCase):
         """Patch em `patches/**` fora do defs é órfão: nem índice, nem teste o vê."""
         definidos = {patch['nome'] for _, patch in todas_as_musicas()}
         no_disco = {d.name for d in (ROOT / 'patches').glob('*/*/*/*') if d.is_dir()}
-        self.assertEqual(sorted(no_disco - definidos), [],
-                         'patch(s) em patches/ que não existem em tools/patches-defs.json')
+        self.assertEqual(
+            sorted(no_disco - definidos),
+            [],
+            'patch(s) em patches/ que não existem em tools/patches-defs.json',
+        )
 
     def test_spawnable_agents_e_reachavel(self):
         """`spawnableAgents` só cita agente que existe, e todo agente é alcançável."""
@@ -522,10 +665,16 @@ class TestJ_ConexaoAgenteBiblioteca(unittest.TestCase):
         fonte = (agents_dir / 'gp100-patch-architect.ts').read_text(encoding='utf-8')
         bloco = fonte.split('spawnableAgents: [', 1)[1].split(']', 1)[0]
         spawnaveis = set(re.findall(r"'([^']+)'", bloco))
-        self.assertEqual(sorted(spawnaveis - arquivos), [],
-                         'o orquestrador pode invocar agente que não existe em .agents/')
-        self.assertEqual(sorted(arquivos - spawnaveis - {'gp100-patch-architect'}), [],
-                         'agente em .agents/ que o orquestrador não consegue invocar')
+        self.assertEqual(
+            sorted(spawnaveis - arquivos),
+            [],
+            'o orquestrador pode invocar agente que não existe em .agents/',
+        )
+        self.assertEqual(
+            sorted(arquivos - spawnaveis - {'gp100-patch-architect'}),
+            [],
+            'agente em .agents/ que o orquestrador não consegue invocar',
+        )
 
 
 if __name__ == '__main__':

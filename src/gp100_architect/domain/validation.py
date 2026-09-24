@@ -14,6 +14,7 @@ chamar), então os caminhos JSON dos erros continuam os mesmos de sempre.
 
 from __future__ import annotations
 
+import re
 from typing import Any
 
 from gp100_architect.domain.chain import (
@@ -22,7 +23,11 @@ from gp100_architect.domain.chain import (
 )
 from gp100_architect.domain.params import PARAM_NAMES, ROTULOS_EM_MS, rotulo
 
-__all__ = ['CAMS', 'EXP_PARAM_MAX', 'EXP_PARAM_MIN', 'Erros', 'validar']
+__all__ = ['CAMS', 'EXP_PARAM_MAX', 'EXP_PARAM_MIN', 'SLOT_IR_LOCAL', 'Erros', 'validar']
+
+# formato literal do slot de User IR em `ir_local` (issue #10): "User IR 1"…
+# "User IR 20" — a variante -USERIR deriva o `ir_cab_user_slot` deste campo.
+SLOT_IR_LOCAL = re.compile(r'User IR ([1-9]|1[0-9]|20)$')
 
 # catálogo de camadas (sufixo do nome do painel). `VOX` é allowance histórica:
 # nenhum patch atual usa, mas nomes antigos de painel seguem válidos.
@@ -477,17 +482,34 @@ def _validar_stomps(stomps: object, spec: dict[str, Any], base: str, er: Erros) 
 
 
 def _validar_ir_local(defs: dict[str, Any], er: Erros) -> None:
-    """Captura de IR órfã: entrada em ir_local que nenhum CAB usa."""
+    """Capturas de IR locais: órfãs e formato do slot (issue #10).
+
+    Duas regras por entrada de `ir_local`:
+
+    * **órfã** — nenhum CAB do defs usa este gabinete: a captura nunca vira
+      doc nem variante -USERIR;
+    * **slot** — `slot` é literalmente `"User IR <N>"`, N de 1 a 20 (faixa do
+      aparelho). É daqui que a variante -USERIR deriva o `ir_cab_user_slot`;
+      um slot escrito de outro jeito quebraria o build da variante com erro
+      de formato em vez de ser pego aqui, no defs.
+    """
     cabs = {
         p['spec'].get('modules', {}).get('CAB', {}).get('name')
         for s in defs.get('songs', [])
         for p in s.get('patches', [])
         if isinstance(p.get('spec'), dict)
     }
-    for cab in defs.get('ir_local', {}):
+    for cab, entrada in defs.get('ir_local', {}).items():
         if cab not in cabs:
             er.add(
                 f'ir_local.{cab}',
                 'nenhum patch usa este CAB',
                 'remova a entrada (ou o CAB saiu do defs e a captura ficou órfã)',
+            )
+        slot = entrada.get('slot') if isinstance(entrada, dict) else None
+        if not isinstance(slot, str) or not SLOT_IR_LOCAL.fullmatch(slot):
+            er.add(
+                f'ir_local.{cab}.slot',
+                f'slot {slot!r} não segue o formato "User IR <N>" (N de 1 a 20)',
+                'escreva o slot exatamente como o GP-100 Edits nomeia (ex.: "User IR 1")',
             )

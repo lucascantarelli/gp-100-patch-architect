@@ -120,8 +120,9 @@
 5. Exporte/importe patches normalmente — o `.prst` fica associado ao slot.
 
 > ⚠️ Regra dos agentes: `.prst` gerado por `tools/generate_prst.py` usa CAB de fábrica
-> (formato single validado). Para patch com User IR, documente o swap manual ou use o
-> arquivo experimental gerado com `ir_cab_user_slot` — teste na pedaleira antes de adotar.
+> (formato single validado). Para patch com User IR, use a variante experimental
+> `<NOME>-USERIR.prst` gerada com `build_song_patches.py --with-user-ir` — a captura
+> e o slot vêm do `ir_local` do defs (issue #10). Teste na pedaleira antes de adotar.
 
 ## 🌍 Packs gratuitos para ampliar a biblioteca
 

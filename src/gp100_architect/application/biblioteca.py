@@ -21,11 +21,11 @@ from __future__ import annotations
 import copy
 import xml.etree.ElementTree as ET
 from collections.abc import Iterator
-from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
-from gp100_architect.application import nomes
+from gp100_architect.application import nomes, variantes
+from gp100_architect.application.artefatos import PatchGerado
 from gp100_architect.application.rendering import patch_md
 from gp100_architect.domain.errors import FormatoPrstInvalido, SpecInvalido
 from gp100_architect.infrastructure.prst.codec import gerar_xml
@@ -34,23 +34,6 @@ __all__ = ['AUTOR', 'LIMITE_NOME', 'PatchGerado', 'gerar', 'slots', 'travessia']
 
 AUTOR = 'GP-100 Patch Architect'
 LIMITE_NOME = 12  # limite do display da GP-100 (nome no painel)
-
-
-@dataclass(frozen=True)
-class PatchGerado:
-    """Um patch pronto para virar arquivo — o que o pipeline produz.
-
-    `pasta` é o diretório do patch (`patches/<Banda>/<Álbum>/<Música>/<NOME>`);
-    `documentacao` é o `patch.md` completo e `prst` são os bytes do `.prst`.
-    """
-
-    nome: str
-    musica: str
-    camada: str
-    slot: str
-    pasta: Path
-    documentacao: str
-    prst: bytes
 
 
 def travessia(defs: dict[str, Any]) -> Iterator[tuple[dict[str, Any], dict[str, Any]]]:
@@ -111,17 +94,25 @@ def gerar(
     ir_index: dict[str, list[str]],
     templates: dict[tuple[str, str], dict[str, Any]],
     build_time: str | None = None,
+    com_variantes: bool = False,
 ) -> list[PatchGerado]:
     """Gera todos os patches do defs **em memória** (sem tocar o disco).
 
     Devolve a lista na ordem da travessia — o mesmo ordem em que os slots foram
     numerados. `ir_index` é o índice do catálogo local de IRs (`{'Gabinete':
     [arquivos]}`); sem ele a documentação indica só o CAB de fábrica.
+
+    `com_variantes=True` (issue #10) acrescenta a variante experimental **-USERIR**
+    de cada patch cujo gabinete tem captura no `ir_local` — os canônicos
+    continuam primeiro, na ordem da travessia; as variantes entram em seguida,
+    também na ordem da travessia. Default desligado: o artefato canônico é
+    inegociável (CI/TestH geram sem a flag).
     """
     albuns = defs['albums']
     ir_local = defs['ir_local']
     mapa_slots = slots(defs)
     gerados: list[PatchGerado] = []
+    variantes_geradas: list[PatchGerado] = []
     for song in defs['songs']:
         for patch in song['patches']:
             slot = mapa_slots[patch['nome']]
@@ -131,15 +122,25 @@ def gerar(
             )
             prst = gerar_xml(spec, templates, build_time=build_time)
             _validar_nome_no_xml(prst, patch['nome'])
-            gerados.append(
-                PatchGerado(
-                    nome=patch['nome'],
-                    musica=song['song'],
-                    camada=patch['camada'],
-                    slot=slot,
-                    pasta=_pasta_do_patch(raiz, defs, song, patch),
-                    documentacao=documentacao,
-                    prst=prst,
-                )
+            base = PatchGerado(
+                nome=patch['nome'],
+                musica=song['song'],
+                camada=patch['camada'],
+                slot=slot,
+                pasta=_pasta_do_patch(raiz, defs, song, patch),
+                documentacao=documentacao,
+                prst=prst,
             )
-    return gerados
+            gerados.append(base)
+            if com_variantes:
+                variante = variantes.gerar_variante(
+                    base,
+                    spec,
+                    ir_local=ir_local,
+                    ir_index=ir_index,
+                    templates=templates,
+                    build_time=build_time,
+                )
+                if variante is not None:
+                    variantes_geradas.append(variante)
+    return gerados + variantes_geradas

@@ -39,4 +39,4 @@ Tudo que os agentes consultam antes de propor um patch. **Fontes na ordem de pre
 
 ---
 
-[`📖 README do projeto`](../README.md) · [`🤖 Agentes`](../.agents/README.md) · [`🎸 patches/`](../patches/README.md)
+[`📖 README do projeto`](../README.md) · [`🤖 Agentes`](../.agents/README.md) · [`🎸 patches/`](https://lucascantarelli.github.io/gp-100-patch-architect/)

@@ -61,4 +61,4 @@ O projeto também versiona **11 skills** em [`skills/`](skills/) (formato pasta 
 
 ---
 
-[`📖 README do projeto`](../README.md) · [`📚 Reference`](../reference/) · [`🎸 patches/`](../patches/README.md)
+[`📖 README do projeto`](../README.md) · [`📚 Reference`](../reference/) · [`🎸 patches/`](https://lucascantarelli.github.io/gp-100-patch-architect/)

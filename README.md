@@ -70,7 +70,7 @@ Contexto: <gravar em casa com fone / ensaio / show>
 IR de terceiros: pesquisar IR; caso não encontre, use uma de fábrica
 ```
 
-> Fluxos prontos em [`prompts/`](prompts/) · Exemplos reais na [biblioteca de patches](patches/README.md): **Pulse** (Pink Floyd — 24 músicas → 38 patches, ordem do álbum em U25–U62), **Wishkah** (Nirvana — 17 músicas → 31 patches, U63–U93), **Abbey Road** (14 músicas → 20 patches), **Uncle Remus** (Zappa), **Piece of My Heart** (Janis Joplin) e **Smooth** (Santana — 4 patches com stomps, U94–U97).
+> Fluxos prontos em [`prompts/`](prompts/) · Exemplos reais navegáveis no [site da biblioteca](https://lucascantarelli.github.io/gp-100-patch-architect/): **Pulse** (Pink Floyd — 24 músicas → 38 patches, ordem do álbum em U25–U62), **Wishkah** (Nirvana — 17 músicas → 31 patches, U63–U93), **Abbey Road** (14 músicas → 20 patches), **Uncle Remus** (Zappa), **Piece of My Heart** (Janis Joplin) e **Smooth** (Santana — 4 patches com stomps, U94–U97).
 
 ## 📦 Entrega de cada patch
 
@@ -228,7 +228,7 @@ ensaio. Só depois disso a diferença é do patch.
 
 **Onde estão os arquivos `.prst`?**
 Em `patches/<Banda>/<Álbum>/<Música>/<PATCH>/`. Para achar rápido pela música, use o
-mapa por álbum (`MAPA-DO-ALBUM.md`) ou a [biblioteca completa](patches/README.md), que
+mapa por álbum (`MAPA-DO-ALBUM.md`) ou a [biblioteca completa no site](https://lucascantarelli.github.io/gp-100-patch-architect/), que
 lista os 97 patches com nome, captador, IR recomendada e slot.
 
 **Os patches servem para outra pedaleira?**
@@ -293,7 +293,7 @@ deles é que manda.
 | [`reference/17-free-ir-packs.md`](reference/17-free-ir-packs.md) | Packs de IR gratuitos para download |
 | [`reference/19-roadmap-v2.md`](reference/19-roadmap-v2.md) | Roadmap da v2.0: schema v2 do defs, CLI unificada, site estático e meta de 100+ patches |
 | [`prompts/`](prompts/) | Fluxos prontos de pedido ao agente |
-| [`patches/README.md`](patches/README.md) | Biblioteca completa + nomenclatura + mapas |
+| [`patches/README.md`](https://lucascantarelli.github.io/gp-100-patch-architect/) | Biblioteca completa + nomenclatura + mapas (derivado — no site) |
 
 ## 🤝 Contribuindo
 
@@ -347,4 +347,4 @@ O detalhamento de cada caso está em [`NOTICE.md`](NOTICE.md).
 
 ---
 
-[`🎸 Biblioteca de patches`](patches/README.md) · [`🤖 Agentes`](.agents/) · [`📚 Reference`](reference/) · [`💜 Criar conta no Freebuff`](https://freebuff.com/?ref=ref-58064aca-e945-42d4-a383-e5f26ce7beaf)
+[`🎸 Biblioteca de patches`](https://lucascantarelli.github.io/gp-100-patch-architect/) · [`🤖 Agentes`](.agents/) · [`📚 Reference`](reference/) · [`💜 Criar conta no Freebuff`](https://freebuff.com/?ref=ref-58064aca-e945-42d4-a383-e5f26ce7beaf)

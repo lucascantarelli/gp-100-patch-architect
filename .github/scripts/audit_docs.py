@@ -389,7 +389,9 @@ def verificar_comandos(cercas: list[str], rodar: bool) -> list[str]:
                 saida = _ajuda(["uv", "run", "gp100", "--help"])
                 if saida and tokens[1] not in saida:
                     falhas.append(f"gp100 {tokens[1]} — comando inexistente no CLI")
-            elif tokens[:3] == ["uv", "run", "gp100"] and len(tokens) > 3:
+            elif tokens[:3] == ["uv", "run", "gp100"] and len(tokens) > 3 and not tokens[3].startswith("-"):
+                # flags (--version, --json…) não são validadas: o help rich
+                # quebra linha conforme a largura e o matching vira frágil
                 saida = _ajuda(["uv", "run", "gp100", "--help"])
                 if saida and tokens[3] not in saida:
                     falhas.append(f"gp100 {tokens[3]} — comando inexistente no CLI")

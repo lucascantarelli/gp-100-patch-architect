@@ -219,6 +219,10 @@ jobs:
       # dito, caminho/link/milestone resolvem, comando de doc roda. A API do
       # GitHub é consultada com o token do checkout (leitura pública basta).
       - name: Linter de consistência de docs
+        # o token habilita as checagens remotas (issue/estado/milestones);
+        # sem ele o linter degrada a aviso e deixa de pegar estado errado
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
         run: python .github/scripts/audit_docs.py
 
   # ── Fase 2 · portão ────────────────────────────────────────────────────────

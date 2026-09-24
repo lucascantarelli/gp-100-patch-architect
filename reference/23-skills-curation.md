@@ -6,6 +6,12 @@
 > `.agents/*.ts`. O diretório global `~/.agents/skills/` mantém apenas as
 > skills genéricas para uso fora do projeto — **sem divergência**: as skills
 > do GP-100 existem só aqui.
+>
+> **Guarda de integridade (issue #63)**: `.github/scripts/audit_agents.py` roda
+> no CI (job de agentes, junto do `tsc`) e reprova: caminho citado por agente
+> inexistente no repositório, contrato ADR-0008 incompleto, skill sem
+> frontmatter ou fora da curadoria deste doc. Skill sem consumidor explícito
+> é **aviso**, não reprova — curadoria é decisão humana.
 
 ## 1 · Skills versionadas no projeto (11)
 
@@ -63,7 +69,9 @@ O mantenedor decidiu (set/2026): **a release 2.0 adota pytest**. Consequências:
    rodapé de precedência apontando a fonte → commitar (é versionada).
 2. **Skill genérica**: instalar no repo direto (curadoria aqui, tabela acima);
    só espelhar para `~/.agents/skills/` se o uso for fora do projeto.
-3. Qualquer mudança de inventário passa por este doc.
+3. Qualquer mudança de inventário passa por este doc — e o guarda
+   `audit_agents.py` reprova skill no disco sem registro aqui (e registrada
+   sem existir no disco).
 
 ---
 [`📖 README do projeto`](../README.md) · [`📚 Reference`](README.md) · [`🤖 Agentes`](../.agents/README.md)

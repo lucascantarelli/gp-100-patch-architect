@@ -35,11 +35,11 @@ Duas regras que mantêm isso coerente:
 
 | EPIC | Stream | Objetivo | Tasks |
 |---|---|---|---|
-| [#41](../../issues/41) | **Núcleo, CLI e fim do legado** | o produto sai de `tools/` para `src/gp100_architect` | #25–#30 (entregues), ~~#31~~ (obsoleta: seeders aposentados na #8), #32–#34, #48, #49 (entregues, PR #94) |
-| [#42](../../issues/42) | **Formato e dados** | as quebras que justificam o MAJOR: schema v2, stomps/EXP1, `-USERIR` | #8 (→ #50–#53), #9, #10 |
+| [#41](../../issues/41) | **Núcleo, CLI e fim do legado** ✅ **encerrado** | o produto sai de `tools/` para `src/gp100_architect` — feito (dados em `data/`, pipeline in-process, CLI `gp100`) | #25–#34, #48, #49 (entregues: PRs #35, #81, #86, #93–#96), ~~#31~~ (obsoleta: seeders aposentados na #8) |
+| [#42](../../issues/42) | **Formato e dados** ✅ **encerrado** | as quebras que justificam o MAJOR: schema v2, stomps/EXP1, `-USERIR` | #8 (com #50–#53; PRs #87, #89), #9, #10 — todas entregues |
 | [#43](../../issues/43) | **Site e documentação** | biblioteca navegável + doc por público | #11, #60, #61 + **#90 fase 1** (JSON do catálogo, com o site) |
 | [#44](../../issues/44) | **CI, automação e segurança** | o que vigia o repositório | #37 (entregue), #54, #55, #62 |
-| [#45](../../issues/45) | **IA e governança** | agentes com contrato e board como fonte de verdade | #39 (entregue), #56, #57, #63, **#91** (agentes consomem a CLI) |
+| [#45](../../issues/45) | **IA e governança** | agentes com contrato e board como fonte de verdade | #39 (entregue), **#91** (PR #97), #56, #57, #63 |
 | [#46](../../issues/46) | **Conteúdo (pilar D)** | primeiro álbum novo e a meta de escala | #12 |
 | [#47](../../issues/47) | **Release 2.0.0** | auditoria de consistência e publicação | #58, #64, #59 |
 
@@ -50,36 +50,37 @@ Duas regras que mantêm isso coerente:
 ## 3 · Ordem de execução
 
 ```
-#41 Núcleo, CLI e fim do legado          ← começa aqui: é o que destrava o resto
+#41 Núcleo, CLI e fim do legado ✅ ENCERRADO (PRs #35, #81, #86, #93–#96)
   #28 domínio ──┬── #29 codec .prst ── #30 aplicação ──┬── #48, #49 ✅ (CLI, PR #94)
-                ├── #32 release ✅ ────────────────────┘
-                ├── #34 suíte em pirâmide
-                └── #91 agentes consomem a CLI
-                                   #33 limpa tools/ ✅ (o último de todos)
+                ├── #32 release ✅ (PR #93) ───────────┘
+                ├── #34 suíte em pirâmide ✅ (PR #95)
+                └── #33 fim do legado ✅ (PR #96, o último de todos)
 
-#42 Formato e dados    ← depois do #30: o gerador precisa estar no pacote, senão
-                          a mudança de formato é feita duas vezes
-#43 Site               ← depois do #30 (consome dado gerado)
-#44 CI e segurança     ← independente (roda em paralelo)
-#45 IA e governança    ← independente
-#46 Conteúdo           ← independente (conteúdo não bloqueia engenharia)
-#47 Release 2.0.0      ← último: auditoria e publicação
+#42 Formato e dados ✅ ENCERRADO (PRs #87 e #89 — schema v2, stomps, -USERIR)
+#43 Site               ← CAMINHO CRÍTICO: #11 (gerador no pacote) → #90 fase 1
+#44 CI e segurança     ← independente (roda em paralelo): #54, #55, #62
+#45 IA e governança    ← independente: #91 (PR #97), #56, #57, #63
+#46 Conteúdo           ← independente (conteúdo não bloqueia engenharia): #12
+#47 Release 2.0.0      ← último: #58 (linter), #64 (auditoria DoD) → #59 (publicar)
 ```
 
-Regra de sequência: **#33 é o último** (o legado só sai quando todo consumidor
-estiver no pacote) e **#42 só começa depois do #30** — as duas decisões existem
-para não fazer o mesmo trabalho em dois lugares.
+Regra de sequência que regia as streams fechadas: **#33 era o último** (o legado
+só saiu quando todo consumidor estava no pacote) e **#42 só começou depois do
+#30** — as duas decisões evitaram fazer o mesmo trabalho em dois lugares. Com
+#41 e #42 encerrados, o caminho crítico restante é o **site (#11 → #90 fase 1)**
+e #59 (publicar a 2.0.0) fica atrás da auditoria de DoD (#64).
 
-O diagrama acima não é a única cópia da ordem: **cada seta está declarada no
-GitHub** como relação `blocked by`, visível no card e no board. Quem abre a
-issue vê do que ela depende sem consultar este arquivo.
+A ordem também vive no GitHub: as dependências de execução são registradas por
+**labels** (`status: blocked` ↔ `status: ready-for-pr`) e sub-issue — a API do
+GitHub não expõe mutação para `blocked-by` (auditoria do grafo, 24/09/2026),
+então este diagrama e a tabela §3 de cada epic são a fonte documentada do grafo.
 
 ```
-#29 #32 ✅ #34   ← #28         #11 #60 #61 ← #30
-#30 ✅           ← #29         #8  #9 #10  ← #30 ✅
-#48 #49 ✅       ← #30, #32    #59 ← #64
-#91              ← #48, #49    #90 (fase 1) ← #11
-#33              ← #29, #32, #34, #91   (o último de todos)
+#29 ✅ #32 ✅ #34 ✅ ← #28      #11 #60 #61 ← #30 ✅
+#30 ✅              ← #29       #8 ✅ #9 ✅ #10 ✅ ← #30 ✅
+#48 #49 ✅          ← #30, #32  #59 ← #64
+#91 (PR #97)        ← #48, #49  #90 (fase 1) ← #11
+#33 ✅              ← #29, #32, #34, #91   (o último de todos)
 ```
 
 ## 4 · Fronteira de escopo
@@ -102,7 +103,7 @@ e o que dá ao MAJOR a razão de existir. Menção a 3.0 no repositório é res�
 | Métrica | Alvo | Onde é verificado |
 |---|---|---|
 | Suíte | 100% verde, em pytest, com pirâmide declarada | CI (`pytest`) |
-| Cobertura do pacote | ≥ 90% (gate do `pyproject.toml`; 91% hoje) | CI (`fail_under`) |
+| Cobertura do pacote | ≥ 90% (gate do `pyproject.toml`; 90,81% hoje) | CI (`fail_under`) |
 | Lint e formatação | zero violação em **todo** o Python do repositório — `src/` e a suíte inteira já estão nos gates; `.github/scripts` e skills de terceiros ficam fora (superfície shell/conteúdo externo) | CI (`ruff`) |
 | Tipos | `mypy --strict` no pacote | CI (`mypy`) |
 | Agentes | `tsc --noEmit` limpo | CI (`typecheck`) |

@@ -1,6 +1,6 @@
 # 🤖 Agentes — configuração do Freebuff
 
-Os 19 agentes deste projeto são carregados automaticamente pelo Freebuff (CLI, Desktop ou Web) ao abrir a pasta — não há chave, registro nem setup além do `npm install -g freebuff`. O modelo padrão é **GLM 5.3 Flash** (`z-ai/glm-5.3-flash`).
+Os 20 agentes deste projeto são carregados automaticamente pelo Freebuff (CLI, Desktop ou Web) ao abrir a pasta — não há chave, registro nem setup além do `npm install -g freebuff`. O modelo padrão é **GLM 5.3 Flash** (`z-ai/glm-5.3-flash`).
 
 ## 🧩 Skills (Agent Skills)
 
@@ -49,6 +49,7 @@ O projeto também versiona **11 skills** em [`skills/`](skills/) (formato pasta 
 | `gp100-patch-validator.ts` | Validação técnica e documental do patch |
 | `gp100-ab-tester.ts` | A/B pós-criação: entrevista guiada pelo protocolo universal (doc 12), mudanças mínimas |
 | `gp100-setlist.ts` | Cola de palco: ordem de slots do repertório via `gp100 setlist` (CLI do pacote) |
+| `gp100-release-proposer.ts` | **Propõe o bump da release** via `gp100 changelog` com evidência por commit — nunca altera VERSION/tag/publica (ADR-0010; issue #56) |
 
 ## ➕ Como criar um agente novo
 

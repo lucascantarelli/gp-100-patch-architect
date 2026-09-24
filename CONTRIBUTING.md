@@ -55,7 +55,7 @@ uv run pytest -q --cov --cov-report=term-missing
 # 2. Gates de qualidade (pacote)
 uv run ruff check . && uv run ruff format --check . && uv run mypy
 
-# 3. Typecheck dos 19 agentes
+# 3. Typecheck dos 20 agentes
 npx -y -p typescript@5.9.2 tsc --noEmit -p tsconfig.json
 ```
 

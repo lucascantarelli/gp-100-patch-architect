@@ -187,7 +187,22 @@ def test_changelog_out_grava_secao_em_arquivo(tmp_path: Path):
     assert destino.read_text(encoding='utf-8').strip()
 
 
-def test_analyze_disseca_export_e_salva_json(tmp_path: Path):
+def test_analyze_disseca_export_e_salva_json(tmp_path: Path, raiz: Path, monkeypatch):
+    """Fluxo real do usuário: build DERIVA `patches/` (ADR-0013 — não vive no
+    git), e o export lê a árvore derivada. O sandbox reproduz a ordem: dados
+    copiados → pipeline → export apontado para o sandbox via `_raiz`.
+    """
+    sandbox = tmp_path / 'repo'
+    sandbox.mkdir()
+    shutil.copytree(
+        raiz / 'data',
+        sandbox / 'data',
+        ignore=shutil.ignore_patterns('__pycache__', '*.pyc'),
+    )
+    from gp100_architect.application import pipeline
+
+    pipeline.executar(sandbox, out=None)
+    monkeypatch.setattr(cli_main, '_raiz', lambda: sandbox)
     destino = tmp_path / 'importacao'
     assert runner.invoke(app, ['export', '--album', 'SN', '--destino', str(destino)]).exit_code == 0
     prst = sorted(destino.glob('*.prst'))[0]

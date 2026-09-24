@@ -11,6 +11,7 @@ dossiês de álbum, workflow de criação de patch) vive em
 | [`../ARCHITECTURE.md`](../ARCHITECTURE.md) | todos | como o sistema está organizado (1 página) |
 | [`../DEVELOPMENT.md`](../DEVELOPMENT.md) | contribuidor | como rodar, testar e onde mexer |
 | [`audit-2.0.md`](audit-2.0.md) | mantenedor | estado atual, achados por severidade, riscos, plano de migração |
+| [`audit-dod-2.0.md`](audit-dod-2.0.md) | mantenedor | auditoria do DoD da 2.0 (#64): métrica a métrica com evidência e o que falta de verdade |
 | [`roadmap-2.0.md`](roadmap-2.0.md) | mantenedor | fases, dependências e Definition of Done da 2.0 |
 | [`decisions/`](decisions/README.md) | todos | as 10 decisões de arquitetura (ADRs) e o formato de ADR novo |
 

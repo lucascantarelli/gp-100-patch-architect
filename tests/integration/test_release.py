@@ -27,8 +27,26 @@ PRST = Path('patches') / 'Santana' / 'Supernatural (1999)' / 'Smooth' / 'SMOO1RI
 
 
 @pytest.fixture(scope='module')
-def parseado(raiz: Path):
-    return parse(raiz / PRST)
+def parseado(raiz: Path, defs_real: dict, tmp_path_factory):
+    """O `.prst` do SMOO1RI — GERADO do defs em tmp (ADR-0013: derivado não vive
+    no git; um clone limpo não tem `patches/`). O CI constrói antes do pytest;
+    a suíte não depende disso: gera o seu, da mesma fonte (`biblioteca.gerar`).
+    """
+    from gp100_architect.application import biblioteca
+    from gp100_architect.infrastructure.ir_catalog import carregar, indice_por_cab
+    from gp100_architect.infrastructure.prst.codec import load_templates
+
+    manifesto = carregar(raiz / 'data' / 'ir-library.json')
+    gerados = biblioteca.gerar(
+        defs_real,
+        raiz=tmp_path_factory.mktemp('derivados'),
+        ir_index=indice_por_cab(manifesto) if manifesto else {},
+        templates=load_templates(raiz / 'data' / 'factory-catalog.json'),
+    )
+    alvo = next(g for g in gerados if g.nome == 'SMOO1RI')
+    arquivo = tmp_path_factory.mktemp('prst') / 'SMOO1RI.prst'
+    arquivo.write_bytes(alvo.prst)
+    return parse(arquivo)
 
 
 # ── reader do .prst sobre o arquivo commitado (ex-analyze_prst) ─────────────

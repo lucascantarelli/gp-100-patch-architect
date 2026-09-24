@@ -42,6 +42,149 @@ def _url_patch(nome: str) -> str:
     return f'patch/{nome}.html'
 
 
+def _json(caminho: str, dados: Any) -> tuple[str, str]:
+    """Arquivo do catálogo: caminho `catalog/…` + JSON estável (sem churn de chave)."""
+    return f'catalog/{caminho}', json.dumps(dados, ensure_ascii=False, indent=1, sort_keys=True)
+
+
+def _patch_json(
+    d: Any, patch: dict[str, Any], song: dict[str, Any], album: dict[str, Any]
+) -> dict[str, Any]:
+    """O dossiê em dados: spec + cadeia + params + momentos + stomps + exp1.
+
+    É a doc prática do patch em formato consumível — o mesmo conteúdo do
+    `gp100 show --json`, acrescido do contexto (slot, música, álbum, IR).
+    """
+    return {
+        'nome': d.nome,
+        'slot': d.slot,
+        'musica': d.musica,
+        'musicaId': song['id'],
+        'banda': d.banda,
+        'ano': d.ano,
+        'album': _titulo_album(album),
+        'albumId': song['idAlbum'],
+        'camada': d.camada,
+        'captador': d.captador,
+        'receita': d.receita,
+        'cadeia': d.cadeia,
+        'parametros': [
+            {'modulo': mod, 'modelo': modelo, 'pares': pares} for mod, modelo, pares in d.parametros
+        ],
+        'spec': patch['spec'],
+        'momentos': d.momentos,
+        'stomps': d.stomps,
+        'exp1': d.exp1,
+        'ir': d.ir,
+    }
+
+
+def _catalogo_json(defs: dict[str, Any], catalogo_patches: list[dict[str, Any]]) -> dict[str, str]:
+    """Catálogo JSON do site (issue #90 fase 1) — o dado por trás das páginas.
+
+    Shapes estáveis são CONTRATO para agentes e integrações (a fase 2 do
+    servidor read-only serve exatamente estes shapes; mudar aqui é breaking).
+    Ordenado por chave para o diff entre deploys só mostrar mudança real.
+    """
+    arquivos: dict[str, str] = {}
+
+    # /catalog/index.json — álbuns, músicas, contagens
+    musicas = [
+        {
+            'id': song['id'],
+            'musica': _titulo_song(song),
+            'albumId': song['idAlbum'],
+            'bpm': song.get('bpm'),
+            'patches': [p['nome'] for p in song['patches']],
+        }
+        for song in defs['songs']
+    ]
+    albums = [
+        {
+            'id': chave,
+            'album': _titulo_album(album),
+            'banda': album['banda'],
+            'ano': album.get('ano'),
+            'musicas': [m['id'] for m in musicas if m['albumId'] == chave],
+        }
+        for chave, album in defs['albums'].items()
+    ]
+    caminho, conteudo = _json(
+        'index.json',
+        {
+            'geradoPor': 'gp100 site (issue #90 fase 1)',
+            'fonte': 'data/defs/',
+            'contagens': {
+                'albuns': len(albums),
+                'musicas': len(musicas),
+                'patches': len(catalogo_patches),
+            },
+            'albuns': albums,
+            'musicas': musicas,
+        },
+    )
+    arquivos[caminho] = conteudo
+
+    # /catalog/patches/<NOME>.json — um arquivo por patch
+    for item in sorted(catalogo_patches, key=lambda p: p['nome']):
+        caminho, conteudo = _json(f'patches/{item["nome"]}.json', item)
+        arquivos[caminho] = conteudo
+
+    # /catalog/irs.json — o manifesto da biblioteca local de IRs (dados crus;
+    # o HTML legível é o reference/16, gerado pelo pipeline)
+    from gp100_architect.infrastructure.defs import raiz_do_repo
+
+    manifesto = raiz_do_repo() / 'data' / 'ir-library.json'
+    if manifesto.is_file():
+        dados = json.loads(manifesto.read_text(encoding='utf-8'))
+        caminho, conteudo = _json(
+            'irs.json',
+            {
+                'geradoPor': 'gp100 site (issue #90 fase 1)',
+                'fonte': 'data/ir-library.json',
+                'packs': dados.get('packs', {}),
+            },
+        )
+        arquivos[caminho] = conteudo
+
+    # /catalog/schema.json — o contrato dos shapes acima (versão do catálogo)
+    caminho, conteudo = _json(
+        'schema.json',
+        {
+            'versao': 1,
+            'issue': 90,
+            'fase': 1,
+            'shapes': {
+                'index.json': ['geradoPor', 'fonte', 'contagens', 'albuns', 'musicas'],
+                'patches/<NOME>.json': [
+                    'nome',
+                    'slot',
+                    'musica',
+                    'musicaId',
+                    'banda',
+                    'ano',
+                    'album',
+                    'albumId',
+                    'camada',
+                    'captador',
+                    'receita',
+                    'cadeia',
+                    'parametros',
+                    'spec',
+                    'momentos',
+                    'stomps',
+                    'exp1',
+                    'ir',
+                ],
+                'irs.json': ['geradoPor', 'fonte', 'packs'],
+            },
+            'estabilidade': 'mudar uma chave aqui é breaking change (fase 2 serve estes shapes)',
+        },
+    )
+    arquivos[caminho] = conteudo
+    return arquivos
+
+
 def _url_album(chave: str) -> str:
     return f'album/{chave}.html'
 
@@ -316,7 +459,9 @@ def gerar_site(defs: dict[str, Any], *, base_url: str = BASE_URL_PADRAO) -> dict
         album = defs['albums'][chave]
         paginas[_url_album(chave)] = _pagina_album(chave, album, musicas)
 
-    # ── página por patch (o dossiê é a fonte — o `show` e o site nunca divergem)
+    # ── página + entrada de catálogo por patch — UMA passada: o dossiê é a
+    # fonte do `show`, do HTML e do JSON (os três nunca divergem)
+    catalogo_patches: list[dict[str, Any]] = []
     for song in defs['songs']:
         album = defs['albums'][song['idAlbum']]
         for patch in song['patches']:
@@ -343,6 +488,12 @@ def gerar_site(defs: dict[str, Any], *, base_url: str = BASE_URL_PADRAO) -> dict
                     'arquivo': d.arquivo,
                 }
             )
+            catalogo_patches.append(_patch_json(d, patch, song, album))
+
+    # ── catálogo JSON (issue #90 fase 1): o dado que alimenta o site, agora
+    # consumível por máquina no mesmo deploy do Pages
+    catalogo = _catalogo_json(defs, catalogo_patches)
+    paginas.update(catalogo)
 
     # base_url entra como comentário no index (documenta onde o site vive)
     paginas['index.html'] = paginas['index.html'].replace(

@@ -26,6 +26,7 @@ reference/             ← BASE DE DADOS OFICIAL (ler antes de criar qualquer pa
 .agents/               ← 17 agentes Freebuff/Codebuff (orchestrador + skills + validador + manual + tone-research/mapper)
 data/                  ← defs/ (_albums.json + um JSON por álbum = FONTE DOS PATCHES, schema v2) · factory-catalog.json (catálogo empírico do firmware) · ir-library.json (manifesto das IRs, gerado)
 src/gp100_architect/   ← o produto: CLI `gp100` (interfaces/cli) e o pipeline `gp100 build` (application/pipeline.py) — gera patches por música, .prst single, índices, catálogo de IRs, release e changelog
+                      · `gp100 site` (application/site.py) deriva o site + catálogo JSON (/catalog/ — shapes estáveis, contrato de agentes; issue #90 fase 1)
 prompts/               ← templates de pedido do usuário (fonte canônica dos fluxos)
 .agents/skills/        ← skills versionadas (4 do GP-100 = versão executável dos fluxos + 7 genéricas)
 patches/               ← biblioteca (SAÍDA DE SCRIPT, nunca editar à mão): BANDA/ÁLBUM/MÚSICA/MUSICA-CAMADA com patch.md + .prst

@@ -129,6 +129,9 @@ ordenação estável). Reaproveita `patches-defs` + catálogos; nada de rede.
 - Regra herdada do projeto: **o site é saída de script** (o guarda de sincronia
   passa a cobrir `site/**` se ele for versionado; alternativa: gerar no workflow
   de release e publicar via Pages sem commitar — decidir na issue).
+- **API do catálogo** (issue #90): os mesmos dados ganham `/catalog/*.json` —
+  JSON estático na 2.0 (fase 1, nasce com o site) e servidor read-only no 2.x
+  (fase 2). Contrato dos shapes é o insumo dos agentes e do site.
 
 ## 6 · Pilar D — Conteúdo: rumo aos 100+ patches
 

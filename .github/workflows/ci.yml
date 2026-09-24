@@ -21,7 +21,9 @@
 #                     tests/) está nos gates desde a pirâmide (issue #34) e o
 #                     legado `tools/` saiu na limpeza (issue #33).
 #     typecheck     — `tsc --noEmit` nos agentes (`.agents/*.ts`), com cache do
-#                     TypeScript baixado via npx.
+#                     TypeScript baixado via npx, e o guarda de integridade da
+#                     camada de IA (`audit_agents.py`, issue #63): caminhos
+#                     citados, contrato ADR-0008 e skills × doc 23.
 #   Fase 2 (portão):
 #     ci-gate       — veredito único do CI: reprova se qualquer job da fase 1
 #                     falhou. É o check para "exigir" nas regras do GitHub.
@@ -179,7 +181,7 @@ jobs:
 
   # ── Fase 1 · agentes ───────────────────────────────────────────────────────
   typecheck:
-    name: 🔍 Agentes — tsc --noEmit
+    name: 🔍 Agentes — tsc + guarda de integridade
     runs-on: ubuntu-24.04
     timeout-minutes: 10
     steps:
@@ -197,6 +199,16 @@ jobs:
 
       - name: tsc --noEmit (tsconfig.json — 19 agentes)
         run: npx -y -p typescript@5.9.2 tsc --noEmit -p tsconfig.json
+
+      # O tsc pega erro de tipo; o guarda pega a integridade que quebra em
+      # silêncio: caminho citado que não existe, contrato ADR-0008 incompleto,
+      # skill fora da curadoria do doc 23 (issue #63).
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.14'
+
+      - name: Guarda de integridade de agentes e skills
+        run: python .github/scripts/audit_agents.py
 
   # ── Fase 2 · portão ────────────────────────────────────────────────────────
   ci-gate:

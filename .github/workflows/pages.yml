@@ -49,11 +49,9 @@ jobs:
       - name: 2/2 · Deriva o site do defs
         run: uv run gp100 site --destino site
 
-      - name: Configurar o Pages
-        uses: actions/configure-pages@v5
-        with:
-          static_site_generator: custom
-
+      # Sem `configure-pages`: o site é HTML estático com links relativos —
+      # nenhuma base URL do Pages é necessária (e o passo exigia leitura da
+      # API do Pages que não existe no build de um site novo).
       - uses: actions/upload-pages-artifact@v3
         with:
           path: site

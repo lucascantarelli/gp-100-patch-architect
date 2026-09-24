@@ -296,3 +296,46 @@ def test_tabela_de_consumo_do_chip_do_patch():
     linhas = [linha for linha in doc.splitlines() if linha.startswith('| ') and ' | ' in linha]
     assert any(linha.startswith('| AMP | Flagman') for linha in linhas)
     assert CHAIN[0] == 'PRE'  # a cadeia vem do domínio
+
+
+# ---- stomps + EXP1 na doc (issue #9) ------------------------------------------
+
+
+def test_doc_renderiza_tabela_de_stomps():
+    doc = _patch()['doc'] | {
+        'stomps': [
+            {
+                'fs': 'A',
+                'mods': [['DST', 'OFF']],
+                'quando': 'No verso, para o riff respirar.',
+                'dica': 'Religue no refrão.',
+            }
+        ]
+    }
+    secao = patch_md.build_momentos_section(_spec(), doc)
+    assert 'FS-A / FS-B deste patch' in secao
+    assert '| **FS-A** |' in secao
+    assert '**DST → OFF**' in secao
+    assert 'No verso, para o riff respirar.' in secao
+    assert '*Dica: Religue no refrão.*' in secao
+
+
+def test_doc_sem_stomps_nao_renderiza_a_subsecao():
+    secao = patch_md.build_momentos_section(_spec(), _patch()['doc'])
+    assert 'FS-A / FS-B deste patch' not in secao
+    assert 'Pedal de expressão' not in secao
+
+
+def test_doc_renderiza_pedal_de_expressao():
+    spec = _spec() | {'exp1': {'módulo': 'DST', 'param': 'Gain', 'min': 10, 'max': 90}}
+    secao = patch_md.build_momentos_section(spec, _patch()['doc'])
+    assert 'Pedal de expressão (EXP1)' in secao
+    assert '**Gain do DST**' in secao
+    assert '10 (calcanhar) → 90 (bico)' in secao
+    assert 'Módulo controlado | **DST**' in secao
+
+
+def test_doc_exp1_sem_modulo_nao_renderiza():
+    spec = _spec() | {'exp1': {'param': 'Gain'}}
+    secao = patch_md.build_momentos_section(spec, _patch()['doc'])
+    assert 'Pedal de expressão' not in secao

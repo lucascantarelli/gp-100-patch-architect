@@ -47,7 +47,7 @@ _(aposentados no schema v2, issue #8: `add_pulse_defs.py`, `add_wishkah_defs.py`
 
 | Arquivo | Papel |
 |---|---|
-| `defs/` | **Fonte única** (schema v2, issue #8): `_albums.json` (chaves EM ORDEM — é dela que sai U01…Uxx) + um `<CHAVE>.json` por álbum com `idAlbum`, `album` (banda/ano/pasta/título/dossiê do rig), `ir_local?` (captura recomendada por CAB), `meta?` (só no 1º) e `songs` (música, `pasta`/`display`, camadas, params, doc de guitarra, ajustes finos, momentos de toggle, notas de IR). O nome do fragmento é a própria chave. Nenhum script guarda tabela própria de músicas/álbuns/cabs. |
+| `defs/` | **Fonte única** (schema v2, issue #8): `_albums.json` (chaves EM ORDEM — é dela que sai U01…Uxx) + um `<CHAVE>.json` por álbum com `idAlbum`, `album` (banda/ano/pasta/título/dossiê do rig), `ir_local?` (captura recomendada por CAB), `meta?` (só no 1º) e `songs` (música, `pasta`/`display`, camadas, params, doc de guitarra, ajustes finos, momentos de toggle, notas de IR). Opcional por patch (issue #9): `doc.stomps` (atribuição FS-A/FS-B — `fs`, `mods` invertendo o estado de fábrica, `quando`) e `spec.exp1` (`{'módulo', 'param', 'min'?, 'max'?}` — o `.prst` nasce com o pedal amarrado). O nome do fragmento é a própria chave. Nenhum script guarda tabela própria de músicas/álbuns/cabs. |
 | `factory-catalog.json` | Catálogo empírico do firmware 2.0/2.1 (extraído do export de fábrica via `analyze_prst.py`) — base dos templates de params |
 | `ir-library.json` | Manifesto do banco local de IRs (gerado — não editar à mão) |
 

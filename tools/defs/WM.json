@@ -740,7 +740,35 @@
                 "dica": ""
               }
             ],
-            "slotSugestao": null
+            "slotSugestao": null,
+            "stomps": [
+              {
+                "fs": "A",
+                "mods": [
+                  [
+                    "DST",
+                    "OFF"
+                  ],
+                  [
+                    "MOD",
+                    "ON"
+                  ]
+                ],
+                "quando": "Verso: arpejo limpo com chorus — o inverso exato deste patch.",
+                "dica": "É o momento \"Verso limpo\" documentado acima, no seu pé."
+              },
+              {
+                "fs": "B",
+                "mods": [
+                  [
+                    "RVB",
+                    "OFF"
+                  ]
+                ],
+                "quando": "Seções secas do refrão: mordida sem a cola da sala.",
+                "dica": "Religue no solo para devolver a profundidade do patch."
+              }
+            ]
           }
         },
         {
@@ -825,6 +853,12 @@
                   "3": 0
                 }
               }
+            },
+            "exp1": {
+              "módulo": "DST",
+              "param": "Gain",
+              "min": 30,
+              "max": 85
             }
           },
           "doc": {

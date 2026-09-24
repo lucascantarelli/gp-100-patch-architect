@@ -341,6 +341,42 @@ def build_momentos_section(spec: dict[str, Any], doc: dict[str, Any]) -> str:
             'música (veja o mapa do álbum).',
             '',
         ]
+    stomps = doc.get('stomps') or []
+    if stomps:
+        linhas += [
+            '### 🦶 FS-A / FS-B deste patch (modo STOMP)',
+            '',
+            'Atribuição pronta dos footswitches — ligue **SYSTEM → Mode → Stomp** e o patch vira uma pedalboard:',
+            '',
+            '| FS | O que faz | Quando pisar |',
+            '|---|---|---|',
+        ]
+        for st in stomps:
+            fs = st.get('fs', '?')
+            mods_txt = ' + '.join(f'**{m} → {e}**' for m, e in st.get('mods', []))
+            linhas.append(f'| **FS-{fs}** | {mods_txt} | {st.get("quando", "—")} |')
+            if st.get('dica'):
+                linhas.append('| — | *Dica: ' + st['dica'] + '* | — |')
+        linhas.append('')
+    exp1 = spec.get('exp1')
+    if isinstance(exp1, dict) and exp1.get('módulo'):
+        mn, mx = exp1.get('min', 0), exp1.get('max', 99)
+        linhas += [
+            '### 🎚️ Pedal de expressão (EXP1)',
+            '',
+            f'O pedal de expressão **já vem amarrado no `.prst`** ao parâmetro **{exp1["param"]} '
+            f'do {exp1["módulo"]}** (curso {mn}→{mx}, calcanhar→bico):',
+            '',
+            '| Controle | Valor |',
+            '|---|---|',
+            f'| Módulo controlado | **{exp1["módulo"]}** |',
+            f'| Parâmetro | **{exp1["param"]}** |',
+            f'| Curso | {mn} (calcanhar) → {mx} (bico) |',
+            '',
+            'Conecte um pedal de expressão na entrada **EXP1/CTRL** da GP-100 e mexa — sem atribuir nada no painel. ',
+            'Para mudar a amarração, edite o spec no defs (`exp1`) e regenere.',
+            '',
+        ]
     linhas += [
         '### 🦶 Ligar/desligar ao vivo (modo STOMP)',
         '',

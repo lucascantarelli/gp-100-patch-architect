@@ -16,10 +16,13 @@ from __future__ import annotations
 
 from typing import Any
 
-from gp100_architect.domain.chain import CHAIN, MODULOS_PROIBIDOS_EM_MOMENTO
-from gp100_architect.domain.params import ROTULOS_EM_MS, rotulo
+from gp100_architect.domain.chain import (
+    CHAIN,
+    MODULOS_PROIBIDOS_EM_MOMENTO,
+)
+from gp100_architect.domain.params import PARAM_NAMES, ROTULOS_EM_MS, rotulo
 
-__all__ = ['CAMS', 'Erros', 'validar']
+__all__ = ['CAMS', 'EXP_PARAM_MAX', 'EXP_PARAM_MIN', 'Erros', 'validar']
 
 # catálogo de camadas (sufixo do nome do painel). `VOX` é allowance histórica:
 # nenhum patch atual usa, mas nomes antigos de painel seguem válidos.
@@ -61,6 +64,10 @@ TIPOS_VALIDOS: frozenset[str] = frozenset(
 )
 
 _CAMPOS_MODULO_AUSENTE = ('guitarra', 'teste', 'irNota')
+
+# Faixa aceita para o curso do EXP1 (o pedal manda no parâmetro inteiro;
+# a curva é do hardware). Espelhada na validação do spec no codec.
+EXP_PARAM_MIN, EXP_PARAM_MAX = 0, 99
 
 
 class Erros:
@@ -215,12 +222,14 @@ def _validar_patch(patch: dict[str, Any], pb: str, nomes: set[str], er: Erros) -
         )
         return
     _validar_spec(spec, f'{pb}.spec', er)
+    _validar_exp1(spec.get('exp1'), spec, f'{pb}.spec.exp1', er)
 
     doc = patch.get('doc')
     if not isinstance(doc, dict):
         er.add(f'{pb}.doc', 'obrigatório', 'guitarra/comoTocar/teste/ajustes/evite/irNota')
         return
     _validar_doc(doc, f'{pb}.doc', er)
+    _validar_stomps(doc.get('stomps'), spec, f'{pb}.doc.stomps', er)
 
 
 def _validar_spec(spec: dict[str, Any], base: str, er: Erros) -> None:
@@ -332,6 +341,138 @@ def _validar_doc(doc: dict[str, Any], base: str, er: Erros) -> None:
                     f'{base}.momentos[{i}].mods',
                     'toggle de AMP/CAB é proibido',
                     'nunca ligue/desligue volume e corpo em tempo real',
+                )
+
+
+def _validar_exp1(exp1: object, spec: dict[str, Any], base: str, er: Erros) -> None:
+    """`spec.exp1` — o pedal de expressão manda em UM parâmetro de um módulo.
+
+    Regras do aparelho: o módulo precisa estar declarado no spec, o parâmetro
+    tem de ter nome oficial (PARAM_NAMES) e o curso [min, max] fica em 0–99
+    (a curva é do hardware). Cada erro aponta o caminho JSON e como corrigir.
+    """
+    if exp1 is None:
+        return
+    if not isinstance(exp1, dict):
+        er.add(base, 'deve ser objeto', "{'módulo', 'param', 'min'?, 'max'?}")
+        return
+    for campo in ('módulo', 'param'):
+        if not exp1.get(campo):
+            er.add(f'{base}.{campo}', 'obrigatório', "ex.: {'módulo': 'DST', 'param': 'Gain'}")
+    if not er.ok():
+        return  # campos faltando: nada mais a checar sem eles
+    modulo, param = exp1['módulo'], exp1['param']
+    if modulo not in CHAIN:
+        er.add(f'{base}.módulo', f'{modulo} fora da cadeia fixa', f'use: {", ".join(CHAIN)}')
+        return
+    modelo = str((spec.get('modules', {}).get(modulo) or {}).get('name', ''))
+    if not modelo:
+        er.add(
+            f'{base}.módulo',
+            f'{modulo} não está no spec.modules',
+            'declare o módulo (name/on) — o EXP1 controla um pedal específico',
+        )
+        return
+    rotulos = PARAM_NAMES.get((modulo, modelo), [])
+    if not rotulos:
+        er.add(
+            f'{base}.param',
+            f"modelo '{modelo}' do {modulo} não tem parâmetros nomeados no catálogo",
+            'cadastre os nomes em domain/params.py (PARAM_NAMES) antes de amarrar o EXP1',
+        )
+    elif param not in rotulos:
+        er.add(
+            f'{base}.param',
+            f"'{param}' não é parâmetro oficial de {modulo} {modelo}",
+            f'use um de: {", ".join(rotulos)} (manual V2.0, reference/15) — nunca (pN)',
+        )
+    for campo in ('min', 'max'):
+        v = exp1.get(campo)
+        if v is None:
+            continue
+        if not isinstance(v, (int, float)) or isinstance(v, bool):
+            er.add(f'{base}.{campo}', 'deve ser número', 'ex.: 0 e 99')
+        elif not EXP_PARAM_MIN <= v <= EXP_PARAM_MAX:
+            er.add(
+                f'{base}.{campo}',
+                f'{v} fora da faixa do pedal',
+                f'use {EXP_PARAM_MIN}–{EXP_PARAM_MAX}',
+            )
+    mn, mx = exp1.get('min', EXP_PARAM_MIN), exp1.get('max', EXP_PARAM_MAX)
+    if isinstance(mn, (int, float)) and isinstance(mx, (int, float)) and mn > mx:
+        er.add(f'{base}.max', f'max ({mx}) < min ({mn})', 'inverta para [min, max]')
+
+
+def _validar_stomps(stomps: object, spec: dict[str, Any], base: str, er: Erros) -> None:
+    """`doc.stomps` — o que o músico liga/desliga com FS-A/FS-B no modo STOMP.
+
+    Herda o espírito do `TestE_Momentos` (e de _validar_doc.momentos): só
+    módulos da cadeia, só pedidos INVERSOS ao estado de fábrica do spec —
+    atribuir um stomp a um módulo já no estado pedido não faz nada em palco —
+    e NUNCA toggle de AMP/CAB. Opcional no schema (patch mono-comportamento
+    não tem stomp); quando presente, cada item é validado com mensagem
+    acionável.
+    """
+    if stomps is None:
+        return
+    if not isinstance(stomps, list):
+        er.add(
+            base, 'deve ser lista', "ex.: [{'fs': 'A', 'mods': [['RVB', 'OFF']], 'quando': '...'}]"
+        )
+        return
+    if not stomps:
+        er.add(base, 'lista vazia', 'omita doc.stomps se o patch não tem footswitch dedicado')
+        return
+    fabrica = {mod: bool((spec.get('modules', {}).get(mod) or {}).get('on')) for mod in CHAIN}
+    for i, st in enumerate(stomps):
+        sb = f'{base}[{i}]'
+        if not isinstance(st, dict):
+            er.add(sb, 'deve ser objeto', "{'fs', 'mods', 'quando', 'dica?'}")
+            continue
+        for campo in ('fs', 'mods', 'quando'):
+            if campo not in st:
+                er.add(
+                    f'{sb}.{campo}',
+                    'obrigatório no stomp',
+                    "{'fs': 'A'|'B'|'A+B', 'mods': [['MOD','ON']], 'quando', 'dica?'}",
+                )
+        fs = st.get('fs')
+        if fs is not None and fs not in ('A', 'B', 'A+B'):
+            er.add(f'{sb}.fs', f"'{fs}' inválido", 'use A, B ou A+B')
+        mods = st.get('mods')
+        if mods is not None and not (
+            isinstance(mods, list)
+            and mods
+            and all(isinstance(par, list) and len(par) == 2 for par in mods)
+        ):
+            er.add(
+                f'{sb}.mods',
+                'deve ser lista de pares [MÓDULO, estado]',
+                "ex.: [['RVB','OFF']]",
+            )
+            continue
+        if not mods:
+            continue
+        for mod, estado in mods:
+            if mod not in CHAIN:
+                er.add(f'{sb}.mods', f'módulo {mod} fora da cadeia', f'use: {", ".join(CHAIN)}')
+                continue
+            if estado not in ('ON', 'OFF'):
+                er.add(f'{sb}.mods', f"estado '{estado}' inválido", 'use ON ou OFF')
+                continue
+            if mod in MODULOS_PROIBIDOS_EM_MOMENTO:
+                er.add(
+                    f'{sb}.mods',
+                    'toggle de AMP/CAB é proibido',
+                    'nunca ligue/desligue volume e corpo em tempo real',
+                )
+                continue
+            if fabrica[mod] == (estado == 'ON'):
+                inverso = 'OFF' if estado == 'ON' else 'ON'
+                er.add(
+                    f'{sb}.mods',
+                    f'{mod} já está {estado} no patch — o stomp não faria nada',
+                    f'o stomp deve INVERTER o estado de fábrica (ex.: [{mod}, {inverso}])',
                 )
 
 

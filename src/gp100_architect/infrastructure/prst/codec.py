@@ -265,6 +265,38 @@ def validar_spec(spec: dict[str, Any], templates: dict[tuple[str, str], dict[str
                 f"modelo '{nome}' do módulo {m} não existe no catálogo do firmware 2.0. "
                 f'Consulte reference/15-firmware2-effects.md'
             )
+    _validar_exp1_spec(spec, modules)
+
+
+def _validar_exp1_spec(spec: dict[str, Any], modules: dict[str, Any]) -> None:
+    """`spec.exp1` (issue #9) — o pedal controla um módulo DECLARADO no spec.
+
+    O domínio valida nomes oficiais e faixa min/max; aqui vale a regra de
+    formato: sem módulo-alvo não há `expCode` para amarrar no `<ppEXP1>`.
+    """
+    exp1 = spec.get('exp1')
+    if exp1 is None:
+        return
+    if not isinstance(exp1, dict) or not exp1.get('módulo'):
+        raise SpecInvalido(
+            "spec.exp1 deve ser {'módulo', 'param', 'min'?, 'max'?} — 'módulo' é obrigatório"
+        )
+    alvo = exp1['módulo']
+    if alvo not in modules:
+        raise SpecInvalido(
+            f"spec.exp1.módulo: '{alvo}' não está em spec.modules — declare o módulo "
+            f'(name/on); o EXP1 controla um pedal específico da cadeia'
+        )
+    for campo in ('min', 'max'):
+        v = exp1.get(campo)
+        if v is None:
+            continue
+        try:
+            int(v)
+        except (TypeError, ValueError) as exc:
+            raise SpecInvalido(
+                f'spec.exp1.{campo}: {v!r} não é número — use o valor do curso do pedal (0–99)'
+            ) from exc
 
 
 def gerar_xml(
@@ -333,7 +365,7 @@ def gerar_xml(
             eff.set('effectName', f'User IR {int(ir_cab_slot) + 1}')
         preset.append(eff)
 
-    _anexar_controle(preset, modules, templates)
+    _anexar_controle(preset, spec, modules, templates)
     return _serializar(root)
 
 
@@ -374,9 +406,20 @@ def _build_effect(
 
 
 def _anexar_controle(
-    preset: ET.Element, modules: dict[str, Any], templates: dict[tuple[str, str], dict[str, Any]]
+    preset: ET.Element,
+    spec: dict[str, Any],
+    modules: dict[str, Any],
+    templates: dict[tuple[str, str], dict[str, Any]],
 ) -> None:
-    """`<ppCtrl>` e `<ppEXP1>` — presentes em TODO preset do formato single."""
+    """`<ppCtrl>` e `<ppEXP1>` — presentes em TODO preset do formato single.
+
+    EXP1 (issue #9): quando `spec.exp1` declara o pedal, o slot 1 do
+    `<ppEXP1>` recebe o `expCode` do módulo-alvo e o curso [expMin, expMax].
+    O slot 0 permanece do comportamento de fábrica do aparelho (auto-PRE,
+    volume do pré) — é a premissa do gerador desde sempre; a confirmação
+    empírica no aparelho segue a agenda da #83. Sem `exp1`, os 3 slots saem
+    dummy exatamente como sempre (biblioteca existente byte-a-byte).
+    """
     ctrl = ET.SubElement(preset, 'ppCtrl')
     ctrl.set('c11', '65535')
     ctrl.set('c12', '1')
@@ -389,6 +432,12 @@ def _anexar_controle(
     exp1.set('expVolume', '0')
     exp1.set('expVolumeMin', '0')
     exp1.set('expVolumeMax', '99')
+    cfg_exp1 = spec.get('exp1') or {}
+    alvo = cfg_exp1.get('módulo') if isinstance(cfg_exp1, dict) else None
+    alvo_code: str | None = None
+    if alvo in modules:
+        nome_alvo = str((modules.get(alvo) or {}).get('name', ''))
+        alvo_code = templates.get((alvo, nome_alvo), {}).get('code')
     pre_name = (modules.get('PRE') or {}).get('name')
     pre_code = templates.get(('PRE', pre_name), {}).get('code') if pre_name else None
     for idx in range(3):
@@ -396,12 +445,18 @@ def _anexar_controle(
         if idx == 0 and pre_code not in (None, '0'):
             ch.set('expMId', '0')
             ch.set('expCode', str(pre_code))
+        elif idx == 1 and alvo_code:
+            ch.set('expMId', '65535')
+            ch.set('expCode', str(alvo_code))
         else:
             ch.set('expMId', '65535')
             ch.set('expCode', EXP_DUMMY_CODE)
         ch.set('expIndex', '0')
         ch.set('expMin', '0')
         ch.set('expMax', '99')
+        if idx == 1 and alvo_code:
+            ch.set('expMin', str(int(cfg_exp1.get('min', 0))))
+            ch.set('expMax', str(int(cfg_exp1.get('max', 99))))
 
 
 def _serializar(root: ET.Element) -> bytes:

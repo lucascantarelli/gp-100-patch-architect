@@ -45,3 +45,14 @@ repos:
         args: [--maxkb=1024, --enforce-all]
       - id: mixed-line-ending
         args: [--fix=no]        # CRLF é intencional no projeto — não "conserta"
+
+  # Linter de consistência de docs (issue #58) — mesmo argumento do auditor
+  # de workflows: pega antes do commit o que só apareceria vermelho no CI.
+  - repo: local
+    hooks:
+      - id: audit-docs
+        name: consistência dos docs (issues, caminhos, links, milestones)
+        entry: python .github/scripts/audit_docs.py
+        language: system
+        pass_filenames: false
+        types: [markdown]

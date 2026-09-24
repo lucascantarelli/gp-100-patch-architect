@@ -38,7 +38,7 @@ arquivos por patch? Isso está correto? Pode ser melhor?"*
 | `.prst` | **Para de ser commitado.** Nasce no CI no corte da release (build a partir do defs) e vai para os ZIPs do GitHub Release. |
 | `patch.md` | **Gerado no build** (ZIPs da release; o site da #43 renderiza navegável a partir do defs). Sai do git no marco da #8/#42, com transição documentada. |
 | `spec.json` | **Eliminado do disco** — o codec (biblioteca pura desde a #29) recebe o spec in-memory do defs. Aplicável imediatamente. |
-| `defs.json` | **Split por álbum** (`defs/pulse.json`, `defs/wishkah.json`, … + índice) na **#8 (schema v2)**: conflitos isolados por álbum, agentes editam arquivos pequenos, seeders da #31 aposentados naturalmente. |
+| `defs.json` | **Split por álbum** (`data/defs/PL.json` — Pulse, `data/defs/WM.json` — From the Muddy Banks of the Wishkah, … + índice `_albums.json`) na **#8 (schema v2)**: conflitos isolados por álbum, agentes editam arquivos pequenos, seeders da #31 aposentados naturalmente. |
 | Import "all" | **Investigar** (issue dedicada): se a GP-100 aceita o formato all, um único arquivo de biblioteca substitui a importação de N `.prst` — muda a experiência do músico em escala. |
 
 **A prova de que o `.prst` não precisa estar no git já existe em código:** o guarda de

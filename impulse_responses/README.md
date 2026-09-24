@@ -67,4 +67,4 @@ Os agentes consultam `data/ir-library.json` e `reference/16-ir-library.md` — s
 
 ---
 
-[`📖 README do projeto`](../README.md) · [`📚 reference/16-ir-library.md`](../reference/16-ir-library.md) · [`🎸 patches/`](../patches/README.md)
+[`📖 README do projeto`](../README.md) · [`📚 reference/16-ir-library.md`](../reference/16-ir-library.md) · [`🎸 patches/`](https://lucascantarelli.github.io/gp-100-patch-architect/)

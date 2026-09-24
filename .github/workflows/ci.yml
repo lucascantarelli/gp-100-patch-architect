@@ -185,7 +185,12 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 10
     steps:
+      # fetch-depth 0: o linter de docs (#58) prova existência HISTÓRICA de
+      # caminho (citar `tools/…` extinto é legítimo) — clone raso não vê o
+      # passado e transformaria citação histórica em violação falsa.
       - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
 
       - uses: actions/setup-node@v7
         with:
@@ -209,6 +214,16 @@ jobs:
 
       - name: Guarda de integridade de agentes e skills
         run: python .github/scripts/audit_agents.py
+
+      # Consistência dos docs (issue #58): issue citada existe e está no estado
+      # dito, caminho/link/milestone resolvem, comando de doc roda. A API do
+      # GitHub é consultada com o token do checkout (leitura pública basta).
+      - name: Linter de consistência de docs
+        # o token habilita as checagens remotas (issue/estado/milestones);
+        # sem ele o linter degrada a aviso e deixa de pegar estado errado
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: python .github/scripts/audit_docs.py
 
   # ── Fase 2 · portão ────────────────────────────────────────────────────────
   ci-gate:

@@ -265,6 +265,13 @@ gh api -X PATCH repos/lucascantarelli/gp-100-patch-architect/milestones/3 -F sta
   O sinal barato de que isso aconteceu: `gh workflow list` mostra o **caminho**
   do arquivo no lugar do `name:` (regra 8 do auditor, com teste em
   `tests/unit/test_audit_workflows.py`).
+- **Consistência dos docs** (issue #58): a pior classe de erro do repo é doc
+  divergindo da realidade (issue citada inexistente, estado dito errado, caminho
+  que nunca existiu, milestone fantasma, comando inválido). O
+  `.github/scripts/audit_docs.py` reprova tudo isso com `arquivo:linha` — no CI
+  (job de agentes) e no pre-commit; exceções conscientes ficam na tabela
+  `EXCETO` do próprio script, cada uma com por quê
+  (testes em `tests/unit/test_audit_docs.py`).
 
 ---
 

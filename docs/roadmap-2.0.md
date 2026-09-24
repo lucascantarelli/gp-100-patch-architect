@@ -39,7 +39,7 @@ Duas regras que mantêm isso coerente:
 | [#42](../../issues/42) | **Formato e dados** ✅ **encerrado** | as quebras que justificam o MAJOR: schema v2, stomps/EXP1, `-USERIR` | #8 (com #50–#53; PRs #87, #89), #9, #10 — todas entregues |
 | [#43](../../issues/43) | **Site e documentação** | biblioteca navegável + doc por público | #11, #60, #61 + **#90 fase 1** (JSON do catálogo, com o site) |
 | [#44](../../issues/44) | **CI, automação e segurança** | o que vigia o repositório | #37 (entregue), #54, #55, #62 |
-| [#45](../../issues/45) | **IA e governança** | agentes com contrato e board como fonte de verdade | #39 (entregue), **#91** (PR #97), #56, #57, #63 |
+| [#45](../../issues/45) | **IA e governança** | agentes com contrato e board como fonte de verdade | #39 (entregue), **#91** ✅ (PR #97), #56, #57, #63 |
 | [#46](../../issues/46) | **Conteúdo (pilar D)** | primeiro álbum novo e a meta de escala | #12 |
 | [#47](../../issues/47) | **Release 2.0.0** | auditoria de consistência e publicação | #58, #64, #59 |
 
@@ -59,7 +59,7 @@ Duas regras que mantêm isso coerente:
 #42 Formato e dados ✅ ENCERRADO (PRs #87 e #89 — schema v2, stomps, -USERIR)
 #43 Site               ← CAMINHO CRÍTICO: #11 (gerador no pacote) → #90 fase 1
 #44 CI e segurança     ← independente (roda em paralelo): #54, #55, #62
-#45 IA e governança    ← independente: #91 (PR #97), #56, #57, #63
+#45 IA e governança    ← independente: #91 ✅ (PR #97), #56, #57, #63
 #46 Conteúdo           ← independente (conteúdo não bloqueia engenharia): #12
 #47 Release 2.0.0      ← último: #58 (linter), #64 (auditoria DoD) → #59 (publicar)
 ```
@@ -79,7 +79,7 @@ então este diagrama e a tabela §3 de cada epic são a fonte documentada do gra
 #29 ✅ #32 ✅ #34 ✅ ← #28      #11 #60 #61 ← #30 ✅
 #30 ✅              ← #29       #8 ✅ #9 ✅ #10 ✅ ← #30 ✅
 #48 #49 ✅          ← #30, #32  #59 ← #64
-#91 (PR #97)        ← #48, #49  #90 (fase 1) ← #11
+#91 ✅ (PR #97)      ← #48, #49  #90 (fase 1) ← #11
 #33 ✅              ← #29, #32, #34, #91   (o último de todos)
 ```
 

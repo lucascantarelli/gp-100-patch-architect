@@ -11,7 +11,7 @@
 |---|---|
 | Biblioteca | **97 patches / 58 músicas / 6 álbuns** — derivado, não memorizado: `gp100 validate` (fragmentos em `data/defs/`, schema v2 — o detalhe por álbum está no [README](../README.md)) |
 | Pipeline | Reprodutível e guardado pela suíte — **321 testes** em pirâmide pytest (`uv run pytest`): unit → integration → contract → e2e, com markers e auditoria de escrita no repo (`--guarda-repo`; issue #34), `TestH` de determinismo (derivados fora do git, ADR-0013) · CLI única do pacote `gp100` (`--json`; pipeline in-process desde a #33) |
-| Em voo | **#91 (PR #97)**: agentes consumindo a CLI `gp100` (`show`/`diff`/`find --json`) — último item do inventário de agentes da 2.0 |
+| Em voo | **nada**: `main` + `develop`, zero branch de trabalho — a #91 fechou (PR #97); próximo do caminho crítico: **#11** (gerador do site no pacote) |
 | Concluído | **Smooth (Santana)** (#5) e **Wishkah (Nirvana)** (17 músicas / 31 patches, #6) · **epic #41 encerrado** (pacote, CLI, pirâmide pytest, `tools/` extinta — PRs #35, #81, #86, #93–#96) e **epic #42 concluído** (schema v2, stomps, `-USERIR`) — `1.1.0`/`1.2.0` entregues e não publicadas (entram na 2.0.0) |
 | Gestão | Taxonomia, milestones, **epics com sub-issues** (ADR-0012) e guardian vivos no GitHub (doc 18) — board com escopo `project` ativo, automação end-to-end (ADR-0011) |
 | Formato | **Schema v2** (fragmentos por álbum em `data/defs/`); `doc.stomps` + `spec.exp1` formais (#9); variante `-USERIR` gerável com `--with-user-ir` (#10) — **epic #42 concluído** |
@@ -219,7 +219,7 @@ na `develop` e não publicadas**: o `VERSION` e a única tag do repositório sã
 regra que nasce daí é: *milestone de release só fecha com a tag publicada*.
 
 **Caminho crítico restante (24/09/2026).** Epics **#41** (núcleo/CLI/fim do
-legado) e **#42** (formato) **encerrados**; **#91** em review (PR #97). Depois:
+legado) e **#42** (formato) **encerrados**; **#91 fechada** (PR #97). Depois:
 site **#11** → **#90** (fase 1, JSON do catálogo), conteúdo **#12**, auditoria
 de DoD **#64** → publicar **#59**.
 

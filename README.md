@@ -127,15 +127,17 @@ Cada patch entrega:
 
 | Comando / caminho | Uso | O que faz |
 |---|---|---|
-| `gp100` | `uv run gp100 <comando>` | **CLI oficial** (Typer + Rich) — consulta: `find` · `show` · `diff` · `export`; produção: `build` · `verify` · `setlist` · `release`; utilidades: `validate` · `analyze` · `manual-page` · `changelog` · `version`. Saídas `--json` estáveis para agentes |
+| `gp100` | `uv run gp100 <comando>` | **CLI oficial** (Typer + Rich) — consulta: `find` · `show` · `diff` · `export`; produção: `build` · `verify` · `setlist` · `release`; utilidades: `validate` · `analyze` · `manual-page` · `changelog` · `site` · `version`. Saídas `--json` estáveis para agentes |
 | `gp100 build` | `uv run gp100 build [--with-user-ir]` | **O pipeline completo** in-process (`application/pipeline.py`) — indexa `impulse_responses/` → `data/ir-library.json` + `reference/16-ir-library.md`, gera `patch.md` + `.prst` via codec in-memory (ADR-0013) e regenera os `MAPA-DO-ALBUM.md` + `patches/README.md`. Com `--with-user-ir` (issue #10), escreve também as variantes experimentais `-USERIR` |
 | `gp100 analyze` | `uv run gp100 analyze <arquivo>.prst [--json out.json]` | Disseca qualquer export `.prst` (modelos, ranges empíricos de params, catálogo) — é dele que nasceu o catálogo fw 2.0 (`data/factory-catalog.json`) |
 | `gp100 manual-page` | `uv run gp100 manual-page 21 [22 …] · --all` | Renderiza páginas do `manual.pdf` **sob demanda** (requer pymupdf; PNG alta + JPG leve em `manual_pages/`, efêmero) — página impressa NN = arquivo NN+2 |
 | `gp100 changelog` | `uv run gp100 changelog [--version X.Y.Z] [--write]` | **Changelog derivado dos commits** (Conventional Commits): agrupa por tipo, isola breaking changes e sugere o bump SemVer |
+| `gp100 site` | `uv run gp100 site [--destino dist/site] [--base-url /gp-100-patch-architect/]` | **Site estático da biblioteca** (issue #11): página por álbum e por patch + busca client-side sobre `busca.json` minúsculo — derivado do defs, sem backend, publicável no GitHub Pages |
 | `tests/` | `uv run pytest` | **Suíte em pirâmide** (issue #34): `unit` (regras puras) → `integration` (defs real) → `contract` (formato `.prst` e CLI `gp100`) → `e2e` (derivados e guardas, incluindo a sincronia do pipeline). Fatias: `uv run pytest -m unit`, `-m "not slow"` |
 | `data/` | — | **Dados versionados do pipeline**: `defs/` (fonte única, schema v2), `factory-catalog.json` (catálogo empírico do firmware) e `ir-library.json` (manifesto do banco local de IRs, gerado) |
 | `scripts/purge_redistributed_assets.sh` | `CONFIRMAR=1 bash scripts/purge_redistributed_assets.sh` | Ferramenta de manutenção: plano/execução de remoção de ativos redistribuíveis (licença) |
 | `.github/scripts/audit_workflows.py` | `python .github/scripts/audit_workflows.py` | **Guarda dos workflows** — reprova permissões ausentes ou ACIMA DO TETO declarado por arquivo, job sem `timeout`, injeção em `run:` e `pull_request_target`; avisa sobre Action não fixada por SHA |
+| `.github/scripts/audit_agents.py` | `python .github/scripts/audit_agents.py` | **Guarda da camada de IA** (issue #63) — reprova caminho citado por agente inexistente no git, contrato ADR-0008 incompleto e skill fora da curadoria (doc 23); avisa sobre skill sem consumidor |
 
 **Cadeia típica ao acrescentar um álbum:** crie `data/defs/<CHAVE>.json` (e declare a chave em `_albums.json`) → `uv run gp100 build` → **rode a suíte de testes** (ela inclui o guarda de determinismo). **Baixou packs de IR?** Extraia em `impulse_responses/<Pack>/` → `uv run gp100 build`. Downloads recomendados: [`reference/17-free-ir-packs.md`](reference/17-free-ir-packs.md).
 
@@ -156,7 +158,7 @@ Cada PR (e cada push em `main` e `develop`) roda o workflow [`CI`](.github/workf
 | Job | O que faz |
 |---|---|
 | **🚦 `ci-gate`** | **Portão do CI** — reprova se qualquer job da fase 1 falhou e publica o resumo dos resultados |
-| **🧪 `test-suite`** | instala o ambiente do lockfile (`uv sync --frozen`), verifica o runtime (**trava Python 3.14.* como primeiro passo**) e executa a suíte (**256 testes**) com pytest e **cobertura do pacote com piso de 90%** (hoje 91%), incluindo o **guarda de determinismo**: o pipeline roda numa cópia temporária e tem de reproduzir exatamente o que o defs determina (em clone limpo, a biblioteca inteira — `patches/**` não é commitado). **Nada é escrito no repositório:** o workflow roda com `contents: read`, então nenhum ator automatizado pode empurrar no `main` e a branch protection não precisa de exceção para o bot |
+| **🧪 `test-suite`** | instala o ambiente do lockfile (`uv sync --frozen`), verifica o runtime (**trava Python 3.14.* como primeiro passo**) e executa a suíte (**337 testes**) com pytest e **cobertura do pacote com piso de 90%** (hoje 90,81%), incluindo o **guarda de determinismo**: o pipeline roda numa cópia temporária e tem de reproduzir exatamente o que o defs determina (em clone limpo, a biblioteca inteira — `patches/**` não é commitado). **Nada é escrito no repositório:** o workflow roda com `contents: read`, então nenhum ator automatizado pode empurrar no `main` e a branch protection não precisa de exceção para o bot |
 | **🧹 `quality`** | `ruff check` + `ruff format --check` + `mypy --strict` — no pacote `src/gp100_architect` e em toda a suíte `tests/` |
 | **🔍 `typecheck`** | `tsc --noEmit` nos 19 agentes, com cache do TypeScript |
 

@@ -142,6 +142,28 @@ def test_build_quiet_no_repo_real(tmp_path: Path, raiz: Path):
     assert (sandbox / 'patches' / 'README.md').is_file()
 
 
+# ── site (deriva o site estático do defs; escrita só em tmp_path) ──────────
+
+
+def test_site_gera_em_destino(tmp_path: Path):
+    destino = tmp_path / 'site'
+    r = runner.invoke(app, ['site', '--destino', str(destino)])
+    assert r.exit_code == 0
+    assert (destino / 'index.html').is_file()
+    assert (destino / 'busca.json').is_file()
+    assert (destino / 'style.css').is_file()
+    paginas_patch = list((destino / 'patch').glob('*.html'))
+    assert len(paginas_patch) >= 90  # 97 patches do defs, um por página
+    assert 'busca.json' in r.stdout and 'KB' in r.stdout
+
+
+def test_site_base_url_aceita_custom(tmp_path: Path):
+    destino = tmp_path / 'site'
+    r = runner.invoke(app, ['site', '--destino', str(destino), '--base-url', '/site/'])
+    assert r.exit_code == 0
+    assert 'base_url: /site/' in (destino / 'index.html').read_text(encoding='utf-8')
+
+
 # ── changelog / analyze / manual-page (ferramentas de manutenção, in-process #33) ──
 
 

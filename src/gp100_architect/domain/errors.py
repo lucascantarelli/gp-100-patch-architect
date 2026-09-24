@@ -9,6 +9,7 @@ from __future__ import annotations
 
 __all__ = [
     'DefsInvalidos',
+    'EntradaInvalida',
     'FormatoPrstInvalido',
     'Gp100Error',
     'ModeloDesconhecido',
@@ -54,6 +55,14 @@ class FormatoPrstInvalido(Gp100Error):
 
     Parse defensivo (issue #29): XML malformado ou sem `<preset_info>`/
     `<presets>` reprova com mensagem acionável em vez de AttributeError.
+    """
+
+
+class EntradaInvalida(Gp100Error):
+    """Entrada de consulta inválida (patch/álbum/pedido inexistente).
+
+    Mensagem acionável: diz o que não existe e o caminho para achar
+    (ex.: "patch 'XX' não encontrado — use: gp100 find xx").
     """
 
 

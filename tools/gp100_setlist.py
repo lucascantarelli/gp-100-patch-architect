@@ -18,8 +18,14 @@ Fontes (nenhuma duplicada aqui):
   tools/gen_indexes.py    — slot_map (numeração U01… contínua, a mesma do
                             MAPA-DO-ALBUM e dos índices; nunca recalcular)
   gp100_architect.domain.setlist — assinatura, distância, otimizador e dif
-                            (issue #28): as REGRAS moram no domínio; este
-                            script é o consumidor (I/O, resolução, relatórios)
+                            (issue #28): as REGRAS moram no domínio
+  gp100_architect.application.setlist — resolução de pedidos, catálogo e
+                            relatórios (issue #49): a camada de aplicação é
+                            o consumidor; a CLI oficial é `gp100 setlist`
+
+Este arquivo vira shim: os comandos da CLI do pacote (gp100 setlist --list,
+--json, --out) fazem o mesmo via `uv run gp100 setlist ...`. Aqui fica a via
+argparse para compatibilidade da suíte legada até a #34; a remoção é a #33.
 """
 import argparse
 import json

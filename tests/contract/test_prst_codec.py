@@ -238,3 +238,51 @@ def test_arquivo_sem_preset_info_reprova(tmp_path: Path) -> None:
 def test_arquivo_ausente_reprova(tmp_path: Path) -> None:
     with pytest.raises(FormatoPrstInvalido, match='não foi possível'):
         parse(tmp_path / 'fantasma.prst')
+
+
+# ---- EXP1: spec.exp1 → wiring do <ppEXP1> (issue #9) --------------------------
+
+
+def _exp_ch(root: ET.Element, idx: int) -> ET.Element:
+    return root.find(f'.//ppEXP1_{idx}')  # type: ignore[return-value]
+
+
+def test_exp1_amarra_o_slot_1_ao_modulo_alvo(templates) -> None:
+    spec = {
+        **SPEC_MINIMO,
+        'modules': {
+            **SPEC_MINIMO['modules'],
+            'DST': {'name': 'La Charger', 'on': True, 'params': {'0': 64}},
+        },
+        'exp1': {'módulo': 'DST', 'param': 'Gain', 'min': 30, 'max': 85},
+    }
+    xml = gerar_xml(spec, templates, build_time=TIME_FIXO)
+    root = ET.fromstring(xml.decode('utf-8'))
+    codigo_dst = templates[('DST', 'La Charger')]['code']
+    slot1 = _exp_ch(root, 1)
+    assert slot1.get('expCode') == str(codigo_dst)
+    assert slot1.get('expMin') == '30'
+    assert slot1.get('expMax') == '85'
+    # slot 0 segue a premissa do gerador (auto-PRE/fábrica) e 2 segue dummy
+    assert _exp_ch(root, 2).get('expCode') == '524295'
+
+
+def test_exp1_ausente_mantem_os_tres_slots_dummy(templates) -> None:
+    xml = gerar_xml(SPEC_MINIMO, templates, build_time=TIME_FIXO)
+    root = ET.fromstring(xml.decode('utf-8'))
+    for idx in range(3):
+        assert _exp_ch(root, idx).get('expCode') == '524295'
+        assert _exp_ch(root, idx).get('expMin') == '0'
+        assert _exp_ch(root, idx).get('expMax') == '99'
+
+
+def test_exp1_modulo_nao_declarado_no_spec_reprova(templates) -> None:
+    spec = {**SPEC_MINIMO, 'exp1': {'módulo': 'MOD', 'param': 'Depth'}}
+    with pytest.raises(SpecInvalido, match=r'não está em spec\.modules'):
+        gerar_xml(spec, templates)
+
+
+def test_exp1_min_max_nao_numerico_reprova_no_codec(templates) -> None:
+    spec = {**SPEC_MINIMO, 'exp1': {'módulo': 'DST', 'param': 'Gain', 'max': 'alto'}}
+    with pytest.raises(SpecInvalido, match='não é número'):
+        gerar_xml(spec, templates)

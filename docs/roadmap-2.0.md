@@ -57,7 +57,7 @@ Duas regras que mantêm isso coerente:
                 └── #33 fim do legado ✅ (PR #96, o último de todos)
 
 #42 Formato e dados ✅ ENCERRADO (PRs #87 e #89 — schema v2, stomps, -USERIR)
-#43 Site               ← CAMINHO CRÍTICO: #11 (gerador no pacote) → #90 fase 1
+#43 Site               ← CAMINHO CRÍTICO: #11 ✅ (PR #99, Pages pendente de ativação) → #90 fase 1
 #44 CI e segurança     ← independente (roda em paralelo): #54, #55, #62
 #45 IA e governança    ← independente: #91 ✅ (PR #97), #56, #57, #63
 #46 Conteúdo           ← independente (conteúdo não bloqueia engenharia): #12
@@ -67,8 +67,9 @@ Duas regras que mantêm isso coerente:
 Regra de sequência que regia as streams fechadas: **#33 era o último** (o legado
 só saiu quando todo consumidor estava no pacote) e **#42 só começou depois do
 #30** — as duas decisões evitaram fazer o mesmo trabalho em dois lugares. Com
-#41 e #42 encerrados, o caminho crítico restante é o **site (#11 → #90 fase 1)**
-e #59 (publicar a 2.0.0) fica atrás da auditoria de DoD (#64).
+#41/#42 encerrados e o **site no pacote (#11, PR #99)**, o caminho crítico
+restante é **#90 fase 1** e #59 (publicar a 2.0.0) fica atrás da auditoria de
+DoD (#64).
 
 A ordem também vive no GitHub: as dependências de execução são registradas por
 **labels** (`status: blocked` ↔ `status: ready-for-pr`) e sub-issue — a API do
@@ -78,6 +79,7 @@ então este diagrama e a tabela §3 de cada epic são a fonte documentada do gra
 ```
 #29 ✅ #32 ✅ #34 ✅ ← #28      #11 #60 #61 ← #30 ✅
 #30 ✅              ← #29       #8 ✅ #9 ✅ #10 ✅ ← #30 ✅
+                                           #11 ✅ (PR #99) ← #30 ✅
 #48 #49 ✅          ← #30, #32  #59 ← #64
 #91 ✅ (PR #97)      ← #48, #49  #90 (fase 1) ← #11
 #33 ✅              ← #29, #32, #34, #91   (o último de todos)

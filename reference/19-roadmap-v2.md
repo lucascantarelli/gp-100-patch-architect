@@ -11,7 +11,7 @@
 |---|---|
 | Biblioteca | **97 patches / 58 músicas / 6 álbuns** — derivado, não memorizado: `gp100 validate` (fragmentos em `data/defs/`, schema v2 — o detalhe por álbum está no [README](../README.md)) |
 | Pipeline | Reprodutível e guardado pela suíte — **321 testes** em pirâmide pytest (`uv run pytest`): unit → integration → contract → e2e, com markers e auditoria de escrita no repo (`--guarda-repo`; issue #34), `TestH` de determinismo (derivados fora do git, ADR-0013) · CLI única do pacote `gp100` (`--json`; pipeline in-process desde a #33) |
-| Em voo | **nada**: `main` + `develop`, zero branch de trabalho — a #91 fechou (PR #97); próximo do caminho crítico: **#11** (gerador do site no pacote) |
+| Em voo | **nada**: `main` + `develop`, zero branch de trabalho — próximo do caminho crítico: **#90 fase 1** (JSON do catálogo) · Pages pendente de ativação (Settings → Source: GitHub Actions) |
 | Concluído | **Smooth (Santana)** (#5) e **Wishkah (Nirvana)** (17 músicas / 31 patches, #6) · **epic #41 encerrado** (pacote, CLI, pirâmide pytest, `tools/` extinta — PRs #35, #81, #86, #93–#96) e **epic #42 concluído** (schema v2, stomps, `-USERIR`) — `1.1.0`/`1.2.0` entregues e não publicadas (entram na 2.0.0) |
 | Gestão | Taxonomia, milestones, **epics com sub-issues** (ADR-0012) e guardian vivos no GitHub (doc 18) — board com escopo `project` ativo, automação end-to-end (ADR-0011) |
 | Formato | **Schema v2** (fragmentos por álbum em `data/defs/`); `doc.stomps` + `spec.exp1` formais (#9); variante `-USERIR` gerável com `--with-user-ir` (#10) — **epic #42 concluído** |
@@ -203,7 +203,7 @@ v2.0.0 — Formato, site e escala (as quebras + a fundação de engenharia)
   □ schema v2: defs por álbum + guarda atualizado — issue #8 ✅ (PR #87)
   □ stomps/EXP1 formais no schema, com validação e seções novas na doc — issue #9 ✅ (PR #89)
   □ variante -USERIR gerável — issue #10 ✅
-  □ gerador do site (Pilar C) + GitHub Pages (busca + página por patch) — issue #11
+  □ gerador do site (Pilar C) + GitHub Pages (busca + página por patch) — issue #11 ✅ (PR #99; `gp100 site` + workflow; Pages pendente de ativação)
   □ ≥ 100 patches / ≥ 10 álbuns (1º álbum: SRV / Hendrix / Mayer) — issue #12
   □ o programa de engenharia que a 2.0 exige (pacote, CLI, docs, CI) — epics #41–#47 — **#41 e #42 encerrados**
 ```
@@ -219,9 +219,10 @@ na `develop` e não publicadas**: o `VERSION` e a única tag do repositório sã
 regra que nasce daí é: *milestone de release só fecha com a tag publicada*.
 
 **Caminho crítico restante (24/09/2026).** Epics **#41** (núcleo/CLI/fim do
-legado) e **#42** (formato) **encerrados**; **#91 fechada** (PR #97). Depois:
-site **#11** → **#90** (fase 1, JSON do catálogo), conteúdo **#12**, auditoria
-de DoD **#64** → publicar **#59**.
+legado) e **#42** (formato) **encerrados**; **#91 fechada** (PR #97); **site
+entregue** — #11 (PR #99), com o Pages pendente de ativação. Depois: **#90**
+(fase 1, JSON do catálogo), conteúdo **#12**, auditoria de DoD **#64** →
+publicar **#59**.
 
 Regras herdadas valem para tudo acima: nenhum job escreve no git; patches/** é
 saída de script; o PR referencia a issue com `Closes #N` (no fluxo para a

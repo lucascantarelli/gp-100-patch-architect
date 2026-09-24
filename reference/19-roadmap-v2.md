@@ -9,12 +9,12 @@
 
 | Dimensão | Estado |
 |---|---|
-| Biblioteca | **97 patches / 58 músicas / 6 álbuns** — derivado, não memorizado: `python -c "import json;d=json.load(open('tools/patches-defs.json'));print(len(d['songs']),'músicas',sum(len(s['patches']) for s in d['songs']),'patches')"` (o detalhe por álbum está no [README](../README.md)) |
-| Pipeline | Reprodutível e guardado pela suíte — **165 testes** (`uv run pytest -q`), com pytest desde a v1.2.0 e o `TestH` de sincronia · CLI unificada `gp100.py` (→ pacote `src/gp100_architect` na 2.0) |
+| Biblioteca | **97 patches / 58 músicas / 6 álbuns** — derivado, não memorizado: `python -c "import sys;sys.path.insert(0,'src');from gp100_architect.infrastructure.defs import carregar_e_validar;d=carregar_e_validar();print(len(d['songs']),'músicas',sum(len(s['patches']) for s in d['songs']),'patches')"` (fragmentos em `tools/defs/`, schema v2 — o detalhe por álbum está no [README](../README.md)) |
+| Pipeline | Reprodutível e guardado pela suíte — **292 testes** (`uv run pytest -q`), com pytest desde a v1.2.0, `TestH` de determinismo (derivados fora do git, ADR-0013) · CLI unificada `gp100.py` (→ pacote `src/gp100_architect` na 2.0) |
 | Em voo | **nada**: `main` + `develop`, zero branch de trabalho — Smooth e Wishkah mergeados, as 10 branches antigas removidas |
 | Concluído | **Smooth (Santana)** (4 patches com stomps, #5) e **Wishkah (Nirvana)** (17 músicas / 31 patches, #6) — na `develop`, com a `1.1.0` e a `1.2.0` entregues e **não publicadas** |
-| Gestão | Taxonomia, milestones, **epics com sub-issues** (ADR-0012) e guardian vivos no GitHub (doc 18) — o board ainda pende o secret `PROJECT_TOKEN` (ADR-0011) |
-| Formato | `patches-defs.json` monolítico (58 músicas); stomps ad-hoc no defs; `<ppEXP1>` ainda não explorado |
+| Gestão | Taxonomia, milestones, **epics com sub-issues** (ADR-0012) e guardian vivos no GitHub (doc 18) — board com escopo `project` ativo, automação end-to-end (ADR-0011) |
+| Formato | **Schema v2** (fragmentos por álbum em `tools/defs/`); `doc.stomps` + `spec.exp1` formais (#9); variante `-USERIR` gerável com `--with-user-ir` (#10) — **epic #42 concluído** |
 
 > **Zero número escrito à mão neste arquivo sem o comando que o deriva** — foi o
 > que apodreceu a versão anterior (66 patches, 43 testes, "Wishkah em voo").
@@ -221,8 +221,8 @@ saída de script; o PR referencia a issue com `Closes #N` (no fluxo para a
 
 ## 10 · Itens para decidir nas issues (não aqui)
 
-- Pilar A1: manter `patches-defs.json` como alias de leitura por um ciclo ou removê-lo no mesmo PR?
-- Pilar A2: `doc.stomps` vazio é válido ou o validador passa a exigir o campo?
+- ~~Pilar A1: manter `patches-defs.json` como alias de leitura por um ciclo ou removê-lo no mesmo PR?~~ → **resolvido no PR #87 (issue #8)**: fragmentos por álbum + loader único, sem alias; o monólito saiu do repositório
+- ~~Pilar A2: `doc.stomps` vazio é válido ou o validador passa a exigir o campo?~~ → **resolvido no PR #89 (issue #9)**: campo opcional — patch mono-comportamento simplesmente omite `doc.stomps`
 - Pilar C: site versionado (com guarda de sincronia) ou gerado no release e publicado sem commitar?
 - Pilar D: ordem dos álbuns e se "álbuns parciais" (2–3 faixas, como ZP/PMH hoje) contam para a meta de 10.
 

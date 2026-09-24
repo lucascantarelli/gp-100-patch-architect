@@ -10,7 +10,7 @@
 | Dimensão | Estado |
 |---|---|
 | Biblioteca | **97 patches / 58 músicas / 6 álbuns** — derivado, não memorizado: `python -c "import sys;sys.path.insert(0,'src');from gp100_architect.infrastructure.defs import carregar_e_validar;d=carregar_e_validar();print(len(d['songs']),'músicas',sum(len(s['patches']) for s in d['songs']),'patches')"` (fragmentos em `tools/defs/`, schema v2 — o detalhe por álbum está no [README](../README.md)) |
-| Pipeline | Reprodutível e guardado pela suíte — **292 testes** (`uv run pytest -q`), com pytest desde a v1.2.0, `TestH` de determinismo (derivados fora do git, ADR-0013) · CLI unificada `gp100.py` (→ pacote `src/gp100_architect` na 2.0) |
+| Pipeline | Reprodutível e guardado pela suíte — **335 testes** (`uv run pytest -q`), com pytest desde a v1.2.0, `TestH` de determinismo (derivados fora do git, ADR-0013) · CLI do pacote `gp100` (9 comandos, `--json`; shims de `tools/` delegam — issues #48/#49) |
 | Em voo | **nada**: `main` + `develop`, zero branch de trabalho — Smooth e Wishkah mergeados, as 10 branches antigas removidas |
 | Concluído | **Smooth (Santana)** (4 patches com stomps, #5) e **Wishkah (Nirvana)** (17 músicas / 31 patches, #6) — na `develop`, com a `1.1.0` e a `1.2.0` entregues e **não publicadas** |
 | Gestão | Taxonomia, milestones, **epics com sub-issues** (ADR-0012) e guardian vivos no GitHub (doc 18) — board com escopo `project` ativo, automação end-to-end (ADR-0011) |
@@ -103,17 +103,20 @@ com confiança de que o canônico não mudou.
 
 ## 4 · Pilar B — CLI unificada
 
-**`python tools/gp100.py`** — um ponto de entrada que compõe os scripts
-existentes (eles continuam funcionando sozinhos):
+**`gp100`** — entry point do pacote (`src/gp100_architect/interfaces/cli`); os
+shims `tools/gp100.py` e `tools/gp100_setlist.py` delegam ao mesmo código até a
+aposentadoria de `tools/` (#33, após #91):
 
 | Comando | O que faz |
 |---|---|
-| `gp100.py find <termo>` | Busca por música/artista/álbum/captador → caminho, slot, IR recomendada |
-| `gp100.py show <NOME>` | Resumo do patch: cadeia em 1 linha, ajustes finos, momentos, stomps |
-| `gp100.py diff <A> <B>` | Diff **legível** de spec (módulo a módulo, nome de parâmetro oficial) — hoje comparar dois `.prst` é ler JSON à mão |
-| `gp100.py export [--album X] [--destino D]` | Copia a seleção de `.prst` para a pasta de importação USB, na ordem dos slots |
-| `gp100.py build` | Encadeia o pipeline inteiro (o mesmo comando do guarda de sincronia) |
-| `gp100.py verify` | Suíte + guarda, resumo curto |
+| `gp100 find <termo>` | Busca por música/artista/álbum/captador → caminho, slot, IR recomendada |
+| `gp100 show <NOME>` | Resumo do patch: cadeia em 1 linha, ajustes finos, momentos, stomps — `--json` para agentes |
+| `gp100 diff <A> <B>` | Diff **legível** de spec (módulo a módulo, nome de parâmetro oficial) |
+| `gp100 export [--album X] [--destino D] [--listar]` | Copia a seleção de `.prst` para a pasta de importação USB, na ordem dos slots |
+| `gp100 build [--with-user-ir]` | Encadeia o pipeline inteiro (o mesmo comando do guarda de sincronia) |
+| `gp100 verify` | Suíte + guarda, resumo curto |
+| `gp100 setlist <música…>` | Cola de palco: ordena por vizinho mais próximo, trocas ao entrar — `--json` para agentes |
+| `gp100 release` | Empacota a release (delega a `application/release`) |
 
 Zero dependências (stdlib), padrão dos scripts existentes (stdout UTF-8,
 ordenação estável). Reaproveita `patches-defs` + catálogos; nada de rede.
@@ -154,8 +157,9 @@ dossiê do rig real (o fluxo de hoje já cobra isso).
 
 1. **Skill `gp100-setlist`**: dado um repertório, monta a ordem de slots
    (minimizando trocas de patch entre músicas consecutivas) e imprime a cola de
-   palco — **entregue**: cálculo em `tools/gp100_setlist.py` (vizinho mais
-   próximo sobre a assinatura PRE→RVB; slots do `slot_map`), agente
+   palco — **entregue**: cálculo em `domain/setlist` + `application/setlist`
+   (vizinho mais próximo sobre a assinatura PRE→RVB; slots de `biblioteca.slots`),
+   exposto via `gp100 setlist` (issue #49); agente
    `gp100-setlist` conduz a conversa e roda a CLI.
 2. **Skill de A/B pós-criação**: automatiza o "protocolo universal" de ajustes
    (está lamacento? → CAB High Cut −5 …) como entrevista guiada em vez de texto

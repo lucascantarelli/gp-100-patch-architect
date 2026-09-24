@@ -10,12 +10,13 @@ Camada: application (regras puras sobre dados já carregados).
 
 from __future__ import annotations
 
+from collections.abc import Mapping
 from typing import Any
 
 __all__ = ['album_pasta', 'song_display', 'song_pasta']
 
 
-def song_pasta(song: dict[str, Any]) -> str:
+def song_pasta(song: Mapping[str, Any]) -> str:
     """Nome da pasta da música (`defs['pasta']`, ou o próprio nome da música)."""
     return str(song.get('pasta') or song['song'])
 

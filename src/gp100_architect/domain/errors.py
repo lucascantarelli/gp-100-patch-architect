@@ -12,6 +12,7 @@ __all__ = [
     'FormatoPrstInvalido',
     'Gp100Error',
     'ModeloDesconhecido',
+    'ReleaseInvalida',
     'SpecInvalido',
 ]
 
@@ -53,4 +54,13 @@ class FormatoPrstInvalido(Gp100Error):
 
     Parse defensivo (issue #29): XML malformado ou sem `<preset_info>`/
     `<presets>` reprova com mensagem acionável em vez de AttributeError.
+    """
+
+
+class ReleaseInvalida(Gp100Error):
+    """A release não pode ser empacotada naqueles termos.
+
+    Versão fora do SemVer, `VERSION` ausente/inválida, nenhum patch na
+    biblioteca ou `.prst` divergente do defs — mensagem diz o que fazer
+    (o empacotamento nunca estoura `SystemExit` cru pela CLI).
     """

@@ -66,7 +66,7 @@ def main() -> None:
             'patches': patches,
         }
         outpath = sys.argv[sys.argv.index('--json') + 1]
-        with open(outpath, 'w', encoding='utf-8') as f:
+        with Path(outpath).open('w', encoding='utf-8') as f:
             json.dump(out, f, ensure_ascii=False, indent=1)
         print(f'\nJSON salvo em {outpath}')
 

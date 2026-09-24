@@ -45,14 +45,14 @@ class ApiFake:
         return self.milestones_lista
 
 
-def _rodar() -> tuple[int, str]:
+def _rodar(cwd: Path | None = None) -> tuple[int, str]:
     r = subprocess.run(
         [sys.executable, str(CAMINHO)],
         capture_output=True,
         encoding='utf-8',
         errors='replace',
         timeout=300,
-        cwd=RAIZ,
+        cwd=cwd or RAIZ,
     )
     return r.returncode, r.stdout + r.stderr
 
@@ -241,6 +241,27 @@ def test_repo_real_esta_verde() -> None:
     codigo, saida = _rodar()
     assert codigo == 0, saida[-1500:]
     assert '78 docs consistentes' in saida or 'docs consistentes' in saida
+
+
+def test_clone_raso_degrada_caminho_para_aviso(tmp_path: Path) -> None:
+    """Regressão do CI real: checkout com fetch-depth 1 não vê o histórico e
+    citar `tools/…` extinto virava violação FALSA. Num clone raso, a
+    verificação de caminhos degrada a aviso (mesma filosofia do offline)."""
+    repo = tmp_path / 'repo'
+    repo.mkdir()
+
+    def _git(*args: str) -> None:
+        subprocess.run(['git', *args], cwd=repo, capture_output=True, check=True)
+
+    _git('init', '-q')
+    (repo / 'HISTORIA.md').write_text('Antes: `tools/legacy.py`.\n', encoding='utf-8')
+    _git('-c', 'user.name=t', '-c', 'user.email=t@t', 'add', '-A')
+    _git('-c', 'user.name=t', '-c', 'user.email=t@t', 'commit', '-qm', 'init')
+    (repo / '.git' / 'shallow').write_text('', encoding='utf-8')  # simula fetch-depth 1
+
+    codigo, saida = _rodar(cwd=repo)
+    assert codigo == 0, saida[-1500:]
+    assert 'clone raso' in saida
 
 
 def test_entrada_no_ci_e_no_pre_commit() -> None:

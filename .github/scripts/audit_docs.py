@@ -472,10 +472,17 @@ def verificar_milestones(doc: Path, prosa: str, api: Api,
 # ── main ─────────────────────────────────────────────────────────────────────
 
 
+def _clone_raso(raiz: Path) -> bool:
+    """Clone sem histórico (CI costuma usar fetch-depth 1): `git log` não vê
+    o passado, e citação de caminho histórico viraria violação falsa."""
+    return _git("-C", str(raiz), "rev-parse", "--is-shallow-repository") == "true"
+
+
 def main() -> int:
     raiz = Path(_git("rev-parse", "--show-toplevel") or ".").resolve()
     api = Api()
     rastreados = set(_git("ls-files").splitlines())
+    raso = _clone_raso(raiz)
     historico: dict[str, bool] = {}
 
     def existiu(caminho: str) -> bool:
@@ -501,8 +508,14 @@ def main() -> int:
         if "milestone" not in exceto:
             verificar_milestones(doc, prosa, api, violas, avisos)
         if "caminho" not in exceto:
-            violas_caminho = verificar_caminhos(doc, raiz, prosa, rastreados, existiu)
-            violas.extend(violas_caminho)
+            if raso:
+                avisos.append(
+                    f"{doc.name} · verificação de caminhos degradada a aviso "
+                    "(clone raso não vê o histórico — configure fetch-depth: 0)"
+                )
+            else:
+                violas_caminho = verificar_caminhos(doc, raiz, prosa, rastreados, existiu)
+                violas.extend(violas_caminho)
         violas_link, avisos_link = verificar_links(doc, raiz, prosa)
         violas.extend(violas_link)
         avisos.extend(avisos_link)

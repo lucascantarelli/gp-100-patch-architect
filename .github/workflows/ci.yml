@@ -185,7 +185,12 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 10
     steps:
+      # fetch-depth 0: o linter de docs (#58) prova existência HISTÓRICA de
+      # caminho (citar `tools/…` extinto é legítimo) — clone raso não vê o
+      # passado e transformaria citação histórica em violação falsa.
       - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
 
       - uses: actions/setup-node@v7
         with:

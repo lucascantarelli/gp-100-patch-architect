@@ -151,6 +151,34 @@ def test_ir_local_orfao(defs_mutavel: dict[str, Any]):
     assert 'remova a entrada' in texto
 
 
+# ── slot de ir_local (issue #10: a variante -USERIR deriva daqui) ───────────
+
+
+def test_ir_local_slot_formato_errado_aponta_o_formato(defs_mutavel: dict[str, Any]):
+    defs_mutavel['ir_local']['DarkTW 2x12']['slot'] = 'user IR 1'
+    texto = relatorio(defs_mutavel)
+    assert 'ir_local.DarkTW 2x12.slot' in texto
+    assert '"User IR <N>"' in texto
+    assert 'exatamente como o GP-100 Edits' in texto
+
+
+def test_ir_local_slot_zero_e_fora_da_faixa_do_aparelho(defs_mutavel: dict[str, Any]):
+    defs_mutavel['ir_local']['DarkTW 2x12']['slot'] = 'User IR 0'
+    assert 'não segue o formato' in relatorio(defs_mutavel)
+
+
+def test_ir_local_slot_21_esta_fora_da_faixa(defs_mutavel: dict[str, Any]):
+    defs_mutavel['ir_local']['DarkTW 2x12']['slot'] = 'User IR 21'
+    assert 'não segue o formato' in relatorio(defs_mutavel)
+
+
+@pytest.mark.parametrize('slot', ['User IR 1', 'User IR 9', 'User IR 20'])
+def test_ir_local_slot_valido_nas_bordas(defs_mutavel: dict[str, Any], slot: str):
+    defs_mutavel['ir_local']['DarkTW 2x12']['slot'] = slot
+    erros = validar(defs_mutavel)
+    assert erros.ok(), erros.relatorio()
+
+
 # ── parâmetros (defs mínimo, mutação cirúrgica) ─────────────────────────────
 
 

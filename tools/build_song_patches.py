@@ -17,14 +17,21 @@ Para cada patch:
   2. gera <...>/<NOME>.prst  via codec (in-memory — ADR-0013: nenhum
      intermediário em disco)
 
+Com `--with-user-ir` (issue #10, default desligado — o CI e o TestH geram só o
+canônico): escreve também a variante experimental `<...>/<NOME>-USERIR.prst`
+e `<...>/<NOME>-USERIR.md` para cada patch cujo gabinete tem captura no
+`ir_local` — o `.prst` já aponta para o slot de User IR (substituta direta do
+canônico; valide no aparelho antes de levar ao palco).
+
 Reexporta a fonte única que a suíte legada consome (`DEFS`, `CHAIN`,
 `PARAM_NAMES`, `build_doc`) até a migração da suíte (issue #34).
 
-Uso: python tools/build_song_patches.py
+Uso: python tools/build_song_patches.py [--with-user-ir]
 """
 
 from __future__ import annotations
 
+import argparse
 import os
 import sys
 from pathlib import Path
@@ -37,6 +44,7 @@ sys.path.insert(0, str(ROOT / 'src'))
 sys.path.insert(0, str(ROOT / 'tools'))     # defs_schema/chain: shims do pacote
 
 from gp100_architect.application import biblioteca  # noqa: E402
+from gp100_architect.application import variantes  # noqa: E402
 from gp100_architect.application.rendering import patch_md  # noqa: E402
 from gp100_architect.domain.chain import CHAIN  # noqa: E402,F401
 from gp100_architect.domain.errors import DefsInvalidos, Gp100Error  # noqa: E402
@@ -63,6 +71,20 @@ def _carregar_defs() -> dict:
         return carregar_e_validar()
     except DefsInvalidos as erro:
         raise SystemExit(erro.relatorio) from erro
+
+
+def _argumentos() -> argparse.Namespace:
+    """Flags da CLI — a única é a da variante -USERIR (default desligada)."""
+    parser = argparse.ArgumentParser(
+        description='Gera os artefatos canônicos (patch.md + .prst) do defs.'
+    )
+    parser.add_argument(
+        '--with-user-ir',
+        action='store_true',
+        help='gera também a variante experimental <NOME>-USERIR.prst dos patches '
+        'com captura no ir_local (o .prst já aponta para o slot de User IR)',
+    )
+    return parser.parse_args()
 
 
 DEFS = _carregar_defs()
@@ -93,20 +115,33 @@ def build_doc(song, patch, spec, slot):
 
 def main() -> None:
     """Gera e grava todos os patches; erro previsto sai acionável, sem traceback."""
+    args = _argumentos()
     templates = load_templates()   # catálogo carregado UMA vez (dados puros)
     build_time = os.environ.get('GP100_BUILD_TIME', BUILD_TIME_PADRAO)
     try:
-        gerados = biblioteca.gerar(DEFS, raiz=ROOT, ir_index=_indice_de_irs(),
-                                   templates=templates, build_time=build_time)
+        gerados = biblioteca.gerar(
+            DEFS,
+            raiz=ROOT,
+            ir_index=_indice_de_irs(),
+            templates=templates,
+            build_time=build_time,
+            com_variantes=args.with_user_ir,
+        )
     except Gp100Error as e:
         print(f'FALHA {e}')
         sys.exit(1)
 
     for patch in gerados:
-        escrever_texto(patch.pasta / 'patch.md', patch.documentacao, crlf=True)
+        if patch.nome.endswith(variantes.SUFIXO):
+            # variante -USERIR (issue #10): doc e .prst ao lado do canônico;
+            # fora do guarda de determinismo (TestH ignora o sufixo)
+            escrever_texto(patch.pasta / f'{patch.nome}.md', patch.documentacao, crlf=True)
+        else:
+            escrever_texto(patch.pasta / 'patch.md', patch.documentacao, crlf=True)
         escrever_bytes(patch.pasta / f'{patch.nome}.prst', patch.prst)
 
-    print(f'✅ {len(gerados)} patches gerados e validados:\n')
+    rotulo = 'patches + variantes -USERIR' if args.with_user_ir else 'patches'
+    print(f'✅ {len(gerados)} {rotulo} gerados e validados:\n')
     for patch in gerados:
         print(f'  {patch.musica:45s} → {patch.nome:9s} ({patch.camada})')
 

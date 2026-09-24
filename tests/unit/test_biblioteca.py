@@ -19,7 +19,7 @@ from typing import Any
 
 import pytest
 
-from gp100_architect.application import biblioteca
+from gp100_architect.application import biblioteca, variantes
 from gp100_architect.application.rendering import patch_md
 from gp100_architect.domain.chain import CHAIN
 from gp100_architect.domain.errors import FormatoPrstInvalido, SpecInvalido
@@ -339,3 +339,129 @@ def test_doc_exp1_sem_modulo_nao_renderiza():
     spec = _spec() | {'exp1': {'param': 'Gain'}}
     secao = patch_md.build_momentos_section(spec, _patch()['doc'])
     assert 'Pedal de expressão' not in secao
+
+
+# ── variante -USERIR (issue #10) ────────────────────────────────────────────
+
+
+def _recorte_com_captura(defs_real, slot: str = 'User IR 3'):
+    """Defs real recortado ao primeiro patch + captura no CAB DELE (dinâmico:
+    o gabinete do primeiro patch pode mudar; o contrato da variante não)."""
+    defs = copy.deepcopy(defs_real)
+    defs['songs'] = defs['songs'][:1]
+    defs['songs'][0]['patches'] = defs['songs'][0]['patches'][:1]
+    cab = defs['songs'][0]['patches'][0]['spec']['modules']['CAB']['name']
+    defs['ir_local'][cab] = {'captura': 'Captura de Teste', 'slot': slot}
+    return defs, cab
+
+
+def test_variante_deriva_do_canonico_com_um_campo_de_diferenca(defs_real, tmp_path: Path):
+    """A variante é o canônico com o CAB trocado pelo slot do ir_local.
+
+    Contrato (prova também o ppName): mesmo painel, mesma cadeia — a única
+    diferença no spec é `ir_cab_user_slot`, derivado de `ir_local`.
+    """
+    defs, _cab = _recorte_com_captura(defs_real, 'User IR 3')
+    nome = defs['songs'][0]['patches'][0]['nome']
+    gerados = biblioteca.gerar(
+        defs, raiz=tmp_path, ir_index={}, templates=load_templates(), com_variantes=True
+    )
+    assert [p.nome for p in gerados] == [nome, f'{nome}-USERIR']  # canônico primeiro
+
+    base, var = gerados
+    assert var.pasta == base.pasta
+    assert var.pasta.name == nome  # mesma pasta do canônico
+    assert var.slot == base.slot
+
+    pa = ET.fromstring(base.prst).find('presets')
+    pb = ET.fromstring(var.prst).find('presets')
+    assert pb.get('ppName') == pa.get('ppName') == nome  # painel NÃO muda
+    # exatamente o CAB diverge — effectCode do CAB com User IR = BASE_IR_NUM + índice
+    from gp100_architect.infrastructure.prst.codec import BASE_IR_NUM
+
+    divergentes = [
+        (ea, eb)
+        for ea, eb in zip(pa.findall('Effect'), pb.findall('Effect'), strict=True)
+        if ea.attrib != eb.attrib
+    ]
+    assert [(ea.get('effectModuleName'), eb.get('effectName')) for ea, eb in divergentes] == [
+        ('CAB', 'User IR 3')
+    ]
+    assert divergentes[0][1].get('effectCode') == str(BASE_IR_NUM + 2)
+
+
+def test_variante_sem_captura_nao_existe_e_nao_avisa(defs_real, tmp_path: Path):
+    """Gabinete sem captura no ir_local → sem variante (política dos 4 passos)."""
+    defs, _cab = _recorte_com_captura(defs_real)
+    defs['ir_local'] = {}
+    gerados = biblioteca.gerar(
+        defs, raiz=tmp_path, ir_index={}, templates=load_templates(), com_variantes=True
+    )
+    assert len(gerados) == 1 and not gerados[0].nome.endswith(variantes.SUFIXO)
+
+
+def test_variante_default_desligada(defs_real, tmp_path: Path):
+    """Sem a flag, nenhum artefato -USERIR: o canônico é inegociável."""
+    defs, _cab = _recorte_com_captura(defs_real)
+    gerados = biblioteca.gerar(defs, raiz=tmp_path, ir_index={}, templates=load_templates())
+    assert len(gerados) == 1 and not gerados[0].nome.endswith(variantes.SUFIXO)
+
+
+def test_variante_deterministica_e_docs_espelhados(defs_real, tmp_path: Path):
+    """Mesmo build_time → mesmos bytes; a doc da variante é o canônico editado."""
+    defs, _cab = _recorte_com_captura(defs_real, 'User IR 2')
+    nome = defs['songs'][0]['patches'][0]['nome']
+    templates = load_templates()
+    a = biblioteca.gerar(
+        defs,
+        raiz=tmp_path,
+        ir_index={},
+        templates=templates,
+        build_time='1700000000000',
+        com_variantes=True,
+    )
+    b = biblioteca.gerar(
+        defs,
+        raiz=tmp_path,
+        ir_index={},
+        templates=templates,
+        build_time='1700000000000',
+        com_variantes=True,
+    )
+    assert a == b
+
+    base, var = a
+    # a variante nasce do doc canônico: tudo fora da seção 📡 é idêntico
+    antes_base, _, depois_base = base.documentacao.partition('## 📡 3.')
+    antes_var, _, depois_var = var.documentacao.partition('## 📡 3.')
+    assert antes_base == antes_var
+    assert depois_base.split('### 🌍', 1)[1] == depois_var.split('### 🌍', 1)[1]
+    assert 'variante experimental' in var.documentacao
+    assert f'{nome}-USERIR.prst' in var.documentacao
+    assert 'User IR 2' in var.documentacao
+
+
+def test_variante_slot_invalido_falha_com_caminho_do_defs(defs_real, tmp_path: Path):
+    """Slot malformado no ir_local vira erro acionável apontando o defs."""
+    defs, cab = _recorte_com_captura(defs_real)
+    defs['ir_local'][cab]['slot'] = 'slot 3'
+    with pytest.raises(SpecInvalido) as e:
+        biblioteca.gerar(
+            defs, raiz=tmp_path, ir_index={}, templates=load_templates(), com_variantes=True
+        )
+    assert f'ir_local.{cab}.slot' in str(e.value)
+    assert 'User IR <N>' in str(e.value)
+
+
+def test_variante_slot_20_na_borda_superior(defs_real, tmp_path: Path):
+    """User IR 20 (último slot do aparelho) → índice 19, válido no formato."""
+    defs, _cab = _recorte_com_captura(defs_real, 'User IR 20')
+    gerados = biblioteca.gerar(
+        defs, raiz=tmp_path, ir_index={}, templates=load_templates(), com_variantes=True
+    )
+    from gp100_architect.infrastructure.prst.codec import BASE_IR_NUM
+
+    presets = ET.fromstring(gerados[1].prst).find('presets')
+    cab = next(e for e in presets.findall('Effect') if e.get('effectModuleName') == 'CAB')
+    assert cab.get('effectName') == 'User IR 20'
+    assert cab.get('effectCode') == str(BASE_IR_NUM + 19)

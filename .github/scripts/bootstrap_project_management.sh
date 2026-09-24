@@ -100,6 +100,7 @@ scope: data|0e8a16|Dados gerados: patches, índices, defs, catálogo de IRs
 scope: ir-library|c5def5|Packs de IR, slots de User IR e política de IR
 scope: agents|bea3dd|Agentes em .agents/ (orquestrador e subagentes)
 scope: docs|0075ca|reference/, README, CONTRIBUTING e documentação de patch
+scope: api|d4c5f9|API do catálogo: JSON estático/servidor para agentes e site
 size: XS|c2e0c6|Troca de uma linha ou ajuste de texto
 size: S|bfe5bf|Um arquivo, um seeder pequeno
 size: M|d4c5f9|Alguns arquivos ou um patch por música completo

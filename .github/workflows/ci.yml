@@ -210,6 +210,12 @@ jobs:
       - name: Guarda de integridade de agentes e skills
         run: python .github/scripts/audit_agents.py
 
+      # Consistência dos docs (issue #58): issue citada existe e está no estado
+      # dito, caminho/link/milestone resolvem, comando de doc roda. A API do
+      # GitHub é consultada com o token do checkout (leitura pública basta).
+      - name: Linter de consistência de docs
+        run: python .github/scripts/audit_docs.py
+
   # ── Fase 2 · portão ────────────────────────────────────────────────────────
   ci-gate:
     name: 🚦 Veredito do CI

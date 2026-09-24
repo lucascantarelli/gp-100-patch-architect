@@ -1,7 +1,7 @@
-"""Testes unitários do pacote `gp100` (camada de domínio + adaptadores).
+"""Testes unitários do pacote — regras puras e funções isoladas (issue #34).
 
-Novos testes nascem aqui, em pytest; os testes históricos de pipeline seguem em
-`tests/` (unittest) até a migração da suíte (PKG-009). Marque o tipo do teste
-com `@pytest.mark.unit|integration|contract|e2e` — o marcador é o que permite
-rodar a pirâmide em fatias no CI.
+Novos testes nascem aqui, em pytest, marcados `unit`: sem disco, sem rede, sem
+defs commitado (quem precisa do dado real está em `tests/integration/`). A
+pirâmide completa: `unit` → `integration` → `contract` (CLI/formato) → `e2e`
+(produto e guardas) — ver `tests/conftest.py` para os markers.
 """

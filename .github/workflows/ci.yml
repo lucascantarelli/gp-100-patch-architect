@@ -2,20 +2,24 @@
 #
 #   Fase 1 (paralela):
 #     test-suite    — instala o ambiente com `uv sync --frozen` (lockfile é o
-#                     contrato: o CI nunca resolve versão nova sozinho) e roda a
-#                     suíte COMPLETA com pytest: formato dos `.prst`, docs,
-#                     momentos, índices, ordem estável entre sistemas operacionais
-#                     e o GUARDA DE SINCRONIA (TestH) — o pipeline roda inteiro
-#                     numa cópia temporária do repositório e o teste compara o
-#                     resultado com o commitado (só o `preset_info/@time` é
-#                     ignorado). Se um derivado estiver defasado, o PR reprova e o
-#                     teste imprime o comando exato de conserto. Nada é escrito
-#                     no repositório. Cobertura do pacote medida com piso em 90%
+#                     contrato: o CI nunca resolve versão nova sozinho), constrói
+#                     os derivados a partir do defs e roda a PIRÂMIDE pytest
+#                     (issue #34): unit → integration → contract → e2e — formato
+#                     dos `.prst`, docs, momentos, índices, ordem estável entre
+#                     sistemas operacionais e o GUARDA DE SINCRONIA (TestH), que
+#                     roda o pipeline inteiro numa cópia temporária do repositório
+#                     e compara o resultado com o commitado (só o
+#                     `preset_info/@time` é ignorado). Se um derivado estiver
+#                     defasado, o PR reprova e o teste imprime o comando exato de
+#                     conserto. Nada é escrito no repositório — a auditoria
+#                     `--guarda-repo` reprova qualquer sujeira de teste no
+#                     working tree. Cobertura do pacote medida com piso em 90%
 #                     (`[tool.coverage.report] fail_under`).
 #     quality       — ruff (lint + formatação) e mypy --strict no pacote.
-#                     `tools/`, `.github/scripts/` e a suíte histórica ficam fora
-#                     da lista enquanto a migração (PKG-003…009) não os traz;
-#                     cada módulo migrado entra nos gates no mesmo PR.
+#                     `tools/` e `.github/scripts/` ficam fora da lista enquanto
+#                     a migração (PKG-003…009) não os traz; cada módulo migrado
+#                     entra nos gates no mesmo PR. A SUÍTE inteira (incluindo
+#                     tests/) já está nos gates desde a pirâmide (issue #34).
 #     typecheck     — `tsc --noEmit` nos agentes (`.agents/*.ts`), com cache do
 #                     TypeScript baixado via npx.
 #   Fase 2 (portão):
@@ -118,15 +122,18 @@ jobs:
 
       # Os scripts de tools/ ainda não estão nos gates de estilo (migração em
       # curso): a compilação continua sendo a rede que pega erro de sintaxe lá.
-      - name: 2/4 · Compilar o legado ainda fora dos gates (tools/ + tests/)
-        run: uv run python -m py_compile tools/*.py tests/*.py
+      # A SUÍTE é pytest e está INTEIRA nos gates de ruff/mypy desde a migração
+      # da pirâmide (issue #34) — `tests/*.py` não precisa mais desta rede.
+      - name: 2/3 · Compilar o legado ainda fora dos gates (tools/)
+        run: uv run python -m py_compile tools/*.py
 
       # ADR-0013 (issue #8): patches/** não é mais commitado — os testes de
-      # produto (A–G: formato do .prst, seções do patch.md, concordância mapa ×
+      # produto e2e (formato do .prst, seções do patch.md, concordância mapa ×
       # doc) precisam dos derivados, então o CI os CONSTRÓI a partir do defs.
-      # O próprio TestH (H) prova em seguida que o build é determinístico num
-      # sandbox sem patches/. GP100_BUILD_TIME fixo ⇒ @time estável entre runs.
-      - name: 3/4 · Construir os derivados da biblioteca (defs → patches/)
+      # O próprio guarda de sincronia (TestH, tests/e2e/test_sincronia.py) prova
+      # em seguida que o build é determinístico num sandbox sem patches/.
+      # GP100_BUILD_TIME fixo ⇒ @time estável entre runs.
+      - name: 3/3 · Construir os derivados da biblioteca (defs → patches/)
         env:
           GP100_BUILD_TIME: '1700000000000'
         run: |
@@ -134,8 +141,12 @@ jobs:
           uv run python tools/build_song_patches.py
           uv run python tools/gen_indexes.py
 
-      - name: 4/4 · pytest — defs, .prst, docs, momentos, índices, determinismo, ordem entre OS
-        run: uv run pytest -q --cov --cov-report=term-missing
+      # A pirâmide (issue #34): unit → integration → contract → e2e. A flag
+      # --guarda-repo ativa a auditoria de escrita no repositório: o fim da
+      # sessão compara o working tree e reprova qualquer sujeira de teste
+      # (critério de aceite da #34 — "nenhum teste com efeito colateral no repo").
+      - name: 4/4 · pytest — pirâmide completa, cobertura com piso 90% e auditoria de repo
+        run: uv run pytest --guarda-repo --cov --cov-report=term-missing
 
   # ── Fase 1 · qualidade ─────────────────────────────────────────────────────
   quality:

@@ -23,8 +23,8 @@ e `<...>/<NOME>-USERIR.md` para cada patch cujo gabinete tem captura no
 `ir_local` — o `.prst` já aponta para o slot de User IR (substituta direta do
 canônico; valide no aparelho antes de levar ao palco).
 
-Reexporta a fonte única que a suíte legada consome (`DEFS`, `CHAIN`,
-`PARAM_NAMES`, `build_doc`) até a migração da suíte (issue #34).
+Reexporta a fonte única que os demais shims consomem (`DEFS`, `CHAIN`,
+`PARAM_NAMES`, `build_doc`) — a remoção é a #33 (suíte já no pacote: #34).
 
 Uso: python tools/build_song_patches.py [--with-user-ir]
 """
@@ -108,7 +108,7 @@ def _indice_de_irs() -> dict[str, list[str]]:
 
 
 def build_doc(song, patch, spec, slot):
-    """Compatibilidade da suíte legada: renderiza com os dados do defs atual."""
+    """Compatibilidade do shim: renderiza com os dados do defs atual."""
     return patch_md.build_doc(song, patch, spec, slot, albums=DEFS['albums'],
                               ir_local=DEFS['ir_local'], ir_index=_indice_de_irs())
 

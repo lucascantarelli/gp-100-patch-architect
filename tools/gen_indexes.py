@@ -17,9 +17,9 @@ aqui E em build_song_patches.py — e divergiram (o mapa recomendava "fábrica"
 onde o patch.md mandava carregar uma IR do banco local, nos 38 patches do
 Pulse).
 
-Reexporta os nomes que a suíte legada consome (`load_defs`, `load_ir_library`,
-`song_pasta`, `song_display`, `slot_map`, `build_all`) até a migração da suíte
-(issue #34).
+Reexporta os nomes que os demais shims consomem (`load_defs`, `load_ir_library`,
+`song_pasta`, `song_display`, `slot_map`, `build_all`) — a remoção é a #33
+(a suíte já consome o pacote: issue #34).
 
 Uso: python tools/gen_indexes.py
 """
@@ -44,7 +44,7 @@ from gp100_architect.infrastructure.escrita import escrever_texto  # noqa: E402
 
 IR_LIBRARY_JSON = ROOT / 'tools' / 'ir-library.json'
 
-song_pasta = nomes.song_pasta       # noqa: F401 — reexportado para a suíte legada
+song_pasta = nomes.song_pasta       # noqa: F401 — reexport de compatibilidade
 song_display = nomes.song_display   # noqa: F401
 
 
@@ -73,7 +73,7 @@ def _indice_de_irs() -> dict[str, list[str]] | None:
 
 
 def build_all(defs=None, ir_index=None):
-    """Compatibilidade da suíte legada: monta os índices sem escrever.
+    """Compatibilidade do shim: monta os índices sem escrever.
 
     `ir_index` aceita o índice `{gabinete: [arquivos]}` já pronto; sem ele, lê
     o catálogo (avisando se não puder).

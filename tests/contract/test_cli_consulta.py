@@ -4,6 +4,9 @@ Substitui os testes do shim `tools/gp100.py` (agora repasse puro ao pacote): a
 CLI oficial é `gp100` (entry point do pacote) e os testes a exercitam via
 CliRunner — o mesmo contrato que automação e agentes consomem. Leitura pura:
 nenhum teste escreve no repositório (regra do projeto; export usa tmp_path).
+
+Camada `contract`: o `--json` com shape estável é a interface dos agentes
+(issue #91) — mudar o shape aqui é breaking change.
 """
 
 from __future__ import annotations
@@ -16,7 +19,7 @@ from typer.testing import CliRunner
 from gp100_architect.application.consulta import rotulo_param
 from gp100_architect.interfaces.cli.main import app
 
-pytestmark = pytest.mark.unit
+pytestmark = pytest.mark.contract
 
 runner = CliRunner()
 

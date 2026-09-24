@@ -74,7 +74,7 @@ FONTE DE NOMES E CÓDIGOS: o catálogo empírico do firmware 2.0/2.1 (data/facto
       · spec: { name, type, bpm, volume, ir_slot, modules: { PRE, DST, AMP, NR, CAB, EQ, MOD, DLY, RVB } } — cada módulo com { name (nome EXATO do fw 2.0), on, params (índice do parâmetro → valor) };
       · doc: { guitarra: { seletor, seletorCurto, volume, tone, receita, tecnicas }, comoTocar: [...], teste: { riff, drum, escutar }, ajustes: [...], evite: [...], irNota, slotSugestao }.
       A ORDEM e o formato das seções do patch.md não se definem aqui — quem renderiza é o build_doc(), documentado no cabeçalho de src/gp100_architect/application/rendering/patch_md.py. Preencha os campos; o texto final sai de graça.
-   b. Rode, na ordem: uv run gp100 build → uv run pytest (o TestH é o GUARDA DE DETERMINISMO: roda o pipeline numa cópia temporária e reprova se os derivados do disco divergirem do que o defs produz — num clone limpo prova que o defs determina a biblioteca inteira, pois patches/** não é commitado).
+   b. Rode, na ordem: uv run gp100 build → uv run gp100 verify (a MESMA suíte que o CI roda; o TestH é o GUARDA DE DETERMINISMO: roda o pipeline numa cópia temporária e reprova se os derivados do disco divergirem do que o defs produz — num clone limpo prova que o defs determina a biblioteca inteira, pois patches/** não é commitado).
    c. Não edite NADA em patches/** à mão: é saída de script, e o CI reprova artefato gerado fora do pipeline.
 9. ENTREGA: resuma em português: cadeia em 1 linha, tabela de parâmetros, captador sugerido, teste recomendado, caminhos dos arquivos (patch.md e .prst, como gerados pelo pipeline).
 

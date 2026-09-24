@@ -33,6 +33,9 @@ jobs:
     name: 🏗 Gera o site (gp100 site)
     runs-on: ubuntu-24.04
     timeout-minutes: 10
+    permissions:
+      contents: read
+      pages: read       # o `configure-pages` lê a API do Pages (GET /pages)
     steps:
       - uses: actions/checkout@v7
 

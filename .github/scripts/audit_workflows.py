@@ -143,6 +143,9 @@ TETO_PERMISSOES: dict[str, dict[str, str]] = {
     # `issues: read`: só o job `milestone`, para o relatório de fechamento.
     'project-automation.yml': {'contents': 'read', 'pull-requests': 'read',
                                'issues': 'read'},
+    # EXCEÇÃO JUSTIFICADA (#11): publicar o site É o trabalho do job `deploy`
+    # (pages: write + id-token: write do OIDC do Pages). O build é leitura.
+    'pages.yml': {'contents': 'read', 'pages': 'write', 'id-token': 'write'},
 }
 
 # Menor major de cada action de primeira parte que já declara `using: node24`

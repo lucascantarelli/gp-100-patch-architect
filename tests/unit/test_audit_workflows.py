@@ -175,4 +175,5 @@ def test_escritas_concedidas_sao_as_justificadas() -> None:
         'security.yml': {'security-events', 'pull-requests'},
         'release.yml': {'contents'},
         'project-automation.yml': set(),
+        'pages.yml': {'pages', 'id-token'},  # #11: publicar É o trabalho do deploy
     }

@@ -170,7 +170,7 @@ Cada PR (e cada push em `main` e `develop`) roda o workflow [`CI`](.github/workf
 | Job | O que faz |
 |---|---|
 | **🚦 `ci-gate`** | **Portão do CI** — reprova se qualquer job da fase 1 falhou e publica o resumo dos resultados |
-| **🧪 `test-suite`** | instala o ambiente do lockfile (`uv sync --frozen`), verifica o runtime (**trava Python 3.14.* como primeiro passo**) e executa a suíte (**337 testes**) com pytest e **cobertura do pacote com piso de 90%** (hoje 90,81%), incluindo o **guarda de determinismo**: o pipeline roda numa cópia temporária e tem de reproduzir exatamente o que o defs determina (em clone limpo, a biblioteca inteira — `patches/**` não é commitado). **Nada é escrito no repositório:** o workflow roda com `contents: read`, então nenhum ator automatizado pode empurrar no `main` e a branch protection não precisa de exceção para o bot |
+| **🧪 `test-suite`** | instala o ambiente do lockfile (`uv sync --frozen`), verifica o runtime (**trava Python 3.14.* como primeiro passo**) e executa a suíte (contagem derivada — badge `testes` e `/stats/`) com pytest e **cobertura do pacote com piso de 90%** (hoje 90,81%), incluindo o **guarda de determinismo**: o pipeline roda numa cópia temporária e tem de reproduzir exatamente o que o defs determina (em clone limpo, a biblioteca inteira — `patches/**` não é commitado). **Nada é escrito no repositório:** o workflow roda com `contents: read`, então nenhum ator automatizado pode empurrar no `main` e a branch protection não precisa de exceção para o bot |
 | **🧹 `quality`** | `ruff check` + `ruff format --check` + `mypy --strict` — no pacote `src/gp100_architect` e em toda a suíte `tests/` |
 | **🔍 `typecheck`** | `tsc --noEmit` nos 21 agentes, com cache do TypeScript |
 

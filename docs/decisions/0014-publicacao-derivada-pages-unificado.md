@@ -54,6 +54,10 @@ real tinha 381 — e depois "393" onde a derivação mostrou 392).
 - ✅ **Agentes e integrações consomem dados**: `/stats/stats.json` com shape
   estável (espírito do `/catalog/` da #90) e `/badges/*.json` em formato
   shields.io endpoint.
+- ✅ **A derivação tem consumidores que a cruzam consigo mesma**: o linter de
+  docs (#58, regra 7) reprova contagem literal divergente da fonte, e o
+  `gp100-release-proposer` cita `/stats/stats.json` (ou `dados_derivados`)
+  em vez de contar à mão — a fonte única fiscaliza a própria prosa.
 - ⚠️ **O deploy ficou mais pesado** (~40–60s): coleção pytest para contar
   testes + build do MkDocs além do `gp100 site`. Aceito: roda só no deploy.
 - ⚠️ **Página nova = deploy novo**: não há preview por PR de site (Pages só

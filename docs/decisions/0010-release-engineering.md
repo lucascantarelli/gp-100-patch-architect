@@ -1,6 +1,8 @@
 # ADR-0010 — Release: `VERSION` como fonte única, changelog gerado, tag assinada
 
-- **Status**: aceito
+- **Status**: aceito — **ritual provado em produção** (auditoria #125): a
+  2.0.0 foi publicada por este fluxo (tag anotada, 8 assets, notas de migração
+  geradas); o "hoje `1.0.0`" do contexto é o estado da época da decisão.
 - **Data**: 2026-09
 - **Decisão relacionada**: issues #27, #32; `reference/18-project-management.md`
 

@@ -361,6 +361,9 @@ UNIDADE_CHAVE = {
 }
 
 
+URL_STATS = "https://lucascantarelli.github.io/gp-100-patch-architect/stats/stats.json"
+
+
 def _contagens_derivadas(raiz: Path) -> dict | None:
     """A fonte única (ADR-0014) — None se o pacote/defs não carregar (degrada).
 
@@ -375,6 +378,25 @@ def _contagens_derivadas(raiz: Path) -> dict | None:
 
         return dados_derivados(carregar_e_validar(), raiz=raiz)
     except Exception:  # noqa: BLE001 — degradar é o contrato (o CI nunca deve falhar aqui)
+        return None
+
+
+def _contagens_do_site() -> dict | None:
+    """Plano B da mesma fonte: a derivação PUBLICADA no Pages (ADR-0014).
+
+    Se a derivação local não carregar (defs corrompido, ambiente quebrado), o
+    `/stats/stats.json` publicado carrega as MESMAS contagens — o último
+    deploy saiu do checkout. Falha de rede/404 → None (degrada a aviso).
+    """
+    chaves = (
+        "versao", "agentes", "skills", "musicas", "albuns",
+        "patches", "python", "pisoCobertura", "testes",
+    )
+    try:
+        with urllib.request.urlopen(URL_STATS, timeout=10) as resposta:
+            dados = json.loads(resposta.read().decode("utf-8"))
+        return {k: dados[k] for k in chaves if k in dados} or None
+    except Exception:  # noqa: BLE001 — offline/404/JSON inválido: degrada
         return None
 
 
@@ -611,8 +633,15 @@ def main() -> int:
     avisos: list[str] = []
     derivacao = _contagens_derivadas(raiz)
     if derivacao is None:
+        derivacao = _contagens_do_site()
+        if derivacao is not None:
+            avisos.append(
+                "contagens: derivação local indisponível — usando a publicada "
+                "no Pages (mesma fonte, último deploy; ADR-0014)"
+            )
+    if derivacao is None:
         avisos.append(
-            "contagens: derivação indisponível (pacote/defs não carregou) — "
+            "contagens: derivação indisponível (local e no Pages) — "
             "verificação de contagens degradada a aviso (ADR-0014)"
         )
     docs = tracked_markdowns(raiz)

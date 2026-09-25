@@ -1,6 +1,9 @@
 # ADR-0001 — Pacote Python em `src/`, ambiente e comandos com uv
 
-- **Status**: aceito
+- **Status**: aceito — **transição concluída** (auditoria #125): os ⚠️ de
+  convivência com o legado (shims em `tools/`, `param_names.py` duplicado)
+  se resolveram — `tools/` extinto na #33. O desenho (src/, uv, entry point
+  único) permanece exatamente como decidido.
 - **Data**: 2026-09
 - **Decisão relacionada**: issues #25, #26; PKG-001/PKG-002
 

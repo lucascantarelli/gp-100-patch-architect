@@ -9,6 +9,7 @@ GitHub — nondeterminística); o CI a executa como gate.
 from __future__ import annotations
 
 import importlib.util
+import json
 import subprocess
 import sys
 from pathlib import Path
@@ -295,6 +296,50 @@ def test_regra_7_degradacao_retorna_none(tmp_path: Path) -> None:
     """`_contagens_derivadas` devolve None quando a derivação falha (raiz sem
     VERSION/pyproject/defs) — o linter degrada a aviso em vez de reprovar."""
     assert audit_docs._contagens_derivadas(tmp_path) is None
+
+
+def test_regra_7_plano_b_stats_do_site(monkeypatch: pytest.MonkeyPatch) -> None:
+    """Plano B da ADR-0014: com a derivação local quebrada, o linter usa o
+    `/stats/stats.json` publicado (mesma fonte, último deploy) — e com rede
+    fora degrada (None → aviso), nunca reprova."""
+    publicado = {
+        'versao': '2.0.0',
+        'agentes': 21,
+        'skills': 11,
+        'musicas': 61,
+        'albuns': 7,
+        'patches': 103,
+        'python': '3.14',
+        'pisoCobertura': 90,
+        'testes': '397',
+    }
+
+    class Resposta:
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *a):
+            return False
+
+        def read(self):
+            return json.dumps(publicado).encode('utf-8')
+
+    chamadas: list[str] = []
+
+    def _urlopen(url, timeout=0):
+        chamadas.append(url)
+        return Resposta()
+
+    monkeypatch.setattr(audit_docs.urllib.request, 'urlopen', _urlopen)
+    obtido = audit_docs._contagens_do_site()
+    assert obtido == publicado
+    assert chamadas == [audit_docs.URL_STATS]
+
+    def _fora(*a, **kw):
+        raise OSError('sem rede')
+
+    monkeypatch.setattr(audit_docs.urllib.request, 'urlopen', _fora)
+    assert audit_docs._contagens_do_site() is None
 
 
 def test_regra_7_repo_real_pega_uma_divergencia_real(tmp_path: Path) -> None:

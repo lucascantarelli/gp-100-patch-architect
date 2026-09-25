@@ -104,6 +104,25 @@ def assert_valid_prst(path: Path, nome: str) -> None:
         )
 
 
+MIGRACAO: dict[str, list[str]] = {
+    # Notas de migração por versão breaking (issue #59). A chave é a versão;
+    # `notas_markdown` inclui a seção quando a versão tem entrada — o texto é
+    # PARTE DO PACOTE (deriva do código), não editado à mão por release.
+    '2.0.0': [
+        '`python tools/*.py` **deixa de existir** — o pipeline inteiro agora é '
+        'o pacote: `uv run gp100 …` (substitua cada script pelo comando equivalente: '
+        '`gp100.py` → `gp100 build`/`show`/`diff`/`export`; `build_release.py` → '
+        '`gp100 release`; `gen_changelog.py` → `gp100 changelog`).',
+        '`patches/patches-defs.json` (v1) **não existe mais** — o defs é '
+        '`data/defs/<ÁLBUM>.json` (schema v2, índice em `_albums.json`).',
+        '`patches/**` **saiu do git** (ADR-0013): os `.prst`/`patch.md` se baixam '
+        'desta Release (ou do site) e/ou nascem com `uv run gp100 build`.',
+        'Firmware **2.1** obrigatório — o formato single fw 2.0 do export antigo '
+        'é rejeitado pelo validador e pela pedaleira.',
+    ],
+}
+
+
 def notas_markdown(version: str, total: int, n_songs: int, albums: dict[str, int]) -> str:
     """RELEASE-NOTES-v<versão>.md — o texto pronto para `gh release create`."""
     linhas = [
@@ -112,6 +131,15 @@ def notas_markdown(version: str, total: int, n_songs: int, albums: dict[str, int
         f'**{total} patches · {n_songs} músicas · {len(albums)} álbuns** — formato single, '
         'firmware 2.1, prontos para importar no aparelho (SYSTEM → USB → Import).',
         '',
+    ]
+    if version in MIGRACAO:
+        linhas += [
+            '## ⚠️ Migração da 1.x — o que quebra e para onde foi',
+            '',
+            *(f'- {item}' for item in MIGRACAO[version]),
+            '',
+        ]
+    linhas += [
         '## 📦 Downloads',
         f'- [`gp100-patches-v{version}.zip`] — biblioteca completa',
     ]

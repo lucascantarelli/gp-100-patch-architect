@@ -16,7 +16,7 @@
 | 2 | **Cobertura** ≥ 90% (gate) | `pytest --cov` → **91,52%**; `fail_under = 90.0` no `pyproject.toml` reprova no CI | ✅ |
 | 3 | **Lint/formatação** zero violação | `ruff check .` → "All checks passed!"; `ruff format --check .` → 103 files formatted. Fora de escopo declarado no próprio DoD: `.github/scripts` e skills de terceiros | ✅ |
 | 4 | **Tipos** `mypy --strict` no pacote | `uv run mypy` → "Success: no issues found in 35 source files" | ✅ |
-| 5 | **Agentes** `tsc --noEmit` limpo | `npx -y -p typescript@5.9.2 tsc --noEmit -p tsconfig.json` → exit 0 (20 agentes) | ✅ |
+| 5 | **Agentes** `tsc --noEmit` limpo | `npx -y -p typescript@5.9.2 tsc --noEmit -p tsconfig.json` → exit 0 (20 agentes na auditoria; 21 hoje) | ✅ |
 | 6 | **Sincronia** guarda verde | `tests/e2e/test_derivados.py` + `test_sincronia.py`: regenera todos os `.prst` com `GP100_BUILD_TIME` fixo e compara **byte a byte**; reforço: clone limpo **sem** `patches/` tem a suíte verde (achado A1) | ✅ |
 | 7 | **CI** ≤ 6 min com cache | Run da `develop` (20:08:53 → veredito 20:09:18): **23 s**, jobs paralelos (Testes/Qualidade/Agentes ~15–17 s cada) | ✅ |
 | 8 | **Segurança** 0 alerta aberto | CodeQL scanning alerts: **0**; Dependabot alerts: **0**; `audit_workflows.py` → 5 workflows dentro das regras (21 avisos de pinagem — política "aceito no major", parte 1) | ✅ |

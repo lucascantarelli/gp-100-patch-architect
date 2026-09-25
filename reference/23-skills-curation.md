@@ -2,7 +2,7 @@
 
 > **Estado atual**: as skills vivem **versionadas no repositório**, em
 > `.agents/skills/` (formato Agent Skills: pasta + `SKILL.md` com frontmatter
-> `name`/`description`). O Freebuff as carrega junto com os 20 agentes de
+> `name`/`description`). O Freebuff as carrega junto com os 21 agentes de
 > `.agents/*.ts`. O diretório global `~/.agents/skills/` mantém apenas as
 > skills genéricas para uso fora do projeto — **sem divergência**: as skills
 > do GP-100 existem só aqui.

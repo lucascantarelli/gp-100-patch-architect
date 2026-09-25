@@ -2,7 +2,7 @@
 
 ### *Agente Freebuff que cria patches Valeton GP-100 a partir do rig real de qualquer música*
 
-![Release](https://img.shields.io/badge/release-1.0-e02d2d?style=flat-square) ![Firmware](https://img.shields.io/badge/firmware-2.1%20(confirmado%20no%20device)-2ea44f?style=flat-square) ![Agentes](https://img.shields.io/badge/agentes-20-2ea44f?style=flat-square) ![Skills](https://img.shields.io/badge/skills-11-e02d2d?style=flat-square) ![Patches](https://img.shields.io/badge/patches-103%20·%207%20álbuns-2ea44f?style=flat-square) ![Formato](https://img.shields.io/badge/.prst-single%20fw%202.1-2ea44f?style=flat-square) ![Python](https://img.shields.io/badge/gerador-Python%203.14-f3a637?style=flat-square) ![Testes](https://img.shields.io/badge/384%20testes%20·%20cobertura%20≥%2090%25-2ea44f?style=flat-square) [![Site](https://img.shields.io/badge/📚%20biblioteca%20online-lucascantarelli.github.io-2f6fdd?style=flat-square)](https://lucascantarelli.github.io/gp-100-patch-architect/) [![CI](https://github.com/lucascantarelli/gp-100-patch-architect/actions/workflows/ci.yml/badge.svg)](https://github.com/lucascantarelli/gp-100-patch-architect/actions/workflows/ci.yml) [![Security](https://github.com/lucascantarelli/gp-100-patch-architect/actions/workflows/security.yml/badge.svg)](https://github.com/lucascantarelli/gp-100-patch-architect/actions/workflows/security.yml) [![CodeQL](https://img.shields.io/badge/CodeQL-Python%20·%20TypeScript-2f6fdd?style=flat-square)](https://github.com/lucascantarelli/gp-100-patch-architect/security/code-scanning) [![License: MIT](https://img.shields.io/badge/license-MIT-2ea44f?style=flat-square)](LICENSE) [![PRs welcome](https://img.shields.io/badge/PRs-welcome-e02d2d?style=flat-square)](CONTRIBUTING.md)
+![Release](https://img.shields.io/badge/release-1.0-e02d2d?style=flat-square) ![Firmware](https://img.shields.io/badge/firmware-2.1%20(confirmado%20no%20device)-2ea44f?style=flat-square) ![Agentes](https://img.shields.io/badge/agentes-21-2ea44f?style=flat-square) ![Skills](https://img.shields.io/badge/skills-11-e02d2d?style=flat-square) ![Patches](https://img.shields.io/badge/patches-103%20·%207%20álbuns-2ea44f?style=flat-square) ![Formato](https://img.shields.io/badge/.prst-single%20fw%202.1-2ea44f?style=flat-square) ![Python](https://img.shields.io/badge/gerador-Python%203.14-f3a637?style=flat-square) ![Testes](https://img.shields.io/badge/384%20testes%20·%20cobertura%20≥%2090%25-2ea44f?style=flat-square) [![Site](https://img.shields.io/badge/📚%20biblioteca%20online-lucascantarelli.github.io-2f6fdd?style=flat-square)](https://lucascantarelli.github.io/gp-100-patch-architect/) [![CI](https://github.com/lucascantarelli/gp-100-patch-architect/actions/workflows/ci.yml/badge.svg)](https://github.com/lucascantarelli/gp-100-patch-architect/actions/workflows/ci.yml) [![Security](https://github.com/lucascantarelli/gp-100-patch-architect/actions/workflows/security.yml/badge.svg)](https://github.com/lucascantarelli/gp-100-patch-architect/actions/workflows/security.yml) [![CodeQL](https://img.shields.io/badge/CodeQL-Python%20·%20TypeScript-2f6fdd?style=flat-square)](https://github.com/lucascantarelli/gp-100-patch-architect/security/code-scanning) [![License: MIT](https://img.shields.io/badge/license-MIT-2ea44f?style=flat-square)](LICENSE) [![PRs welcome](https://img.shields.io/badge/PRs-welcome-e02d2d?style=flat-square)](CONTRIBUTING.md)
 
 ---
 
@@ -92,7 +92,7 @@ Cada patch entrega:
 ```
 ├── src/gp100_architect/ # PACOTE Python (domain · application · infrastructure · interfaces)
 ├── docs/               # ADRs (docs/decisions/) — documentação de engenharia
-├── .agents/            # 20 agentes + 11 skills (agents/skills/) — configuração do Freebuff
+├── .agents/            # 21 agentes + 11 skills (agents/skills/) — configuração do Freebuff
 ├── reference/          # base de conhecimento: manual V1.8 + catálogo fw 2.0/2.1 + catálogos de IR
 ├── prompts/            # fluxos prontos (criar, ajustar, sugerir, pesquisar referência)
 ├── data/               # dados do pipeline: defs/, factory-catalog.json, ir-library.json
@@ -160,7 +160,7 @@ Cada PR (e cada push em `main` e `develop`) roda o workflow [`CI`](.github/workf
 | **🚦 `ci-gate`** | **Portão do CI** — reprova se qualquer job da fase 1 falhou e publica o resumo dos resultados |
 | **🧪 `test-suite`** | instala o ambiente do lockfile (`uv sync --frozen`), verifica o runtime (**trava Python 3.14.* como primeiro passo**) e executa a suíte (**337 testes**) com pytest e **cobertura do pacote com piso de 90%** (hoje 90,81%), incluindo o **guarda de determinismo**: o pipeline roda numa cópia temporária e tem de reproduzir exatamente o que o defs determina (em clone limpo, a biblioteca inteira — `patches/**` não é commitado). **Nada é escrito no repositório:** o workflow roda com `contents: read`, então nenhum ator automatizado pode empurrar no `main` e a branch protection não precisa de exceção para o bot |
 | **🧹 `quality`** | `ruff check` + `ruff format --check` + `mypy --strict` — no pacote `src/gp100_architect` e em toda a suíte `tests/` |
-| **🔍 `typecheck`** | `tsc --noEmit` nos 20 agentes, com cache do TypeScript |
+| **🔍 `typecheck`** | `tsc --noEmit` nos 21 agentes, com cache do TypeScript |
 
 Todos os jobs têm `timeout` e o resultado da sincronia dos dados é publicado no **resumo da execução** (Step Summary) do GitHub.
 
@@ -201,7 +201,7 @@ A suíte cobre as invariantes que **já quebraram uma vez** neste projeto:
 - ✅ **Dossiê de rig de Cheap Thrills** (Big Brother & The Holding Company): duas guitarras em **Gibson SG** (Gurley e Andrew), **Fender Twin Reverb**, Maestro FZ-1 no Gurley — e o achado que fecha o timbre da faixa: **Piece of My Heart sem fuzz** (Gurley limpo, Sam sujo no Twin estourado); o mapa da Janis voltou a ter seção de rig, com fontes.
 - ✅ **CI + suíte de testes** ([`.github/workflows/ci.yml`](.github/workflows/ci.yml)): **321 testes** em pirâmide pytest (`tests/`) validam defs, formato dos 97 `.prst`, docs, momentos, nomes de parâmetro, drift dos índices, a ordem estável entre OS e o **determinismo dos derivados** — o guarda de sincronia (TestH) roda o pipeline completo numa cópia temporária e compara com o que o defs produz (em clone limpo, a biblioteca inteira; só o timestamp `preset_info/@time` é ignorado); **nenhum job escreve no repositório** (auditoria `--guarda-repo`), e o portão **`ci-gate`** concentra o veredito final.
 - ✅ **Pipeline reprodutível entre sistemas**: a ordem dos artefatos derivados não depende do SO — a comparação de `Path` usa `normcase` (minúsculas no Windows, identidade no Linux) e fazia o manifesto de IRs divergir entre a máquina e o CI; a ordenação agora é por string (ordem de code point), com teste travando a regressão (`TestI_OrdemEstavel`).
-- ✅ Typecheck `tsc --noEmit` limpo nos 20 agentes.
+- ✅ Typecheck `tsc --noEmit` limpo nos 21 agentes.
 - ✅ Manual V1.8 transcrito página a página para `reference/` + catálogo empírico extraído do export de fábrica (`data/factory-catalog.json`, 99 presets · 117 modelos).
 - ✅ Banco local de IRs indexado (291 WAVs — Origin Effects IR-Cab Library V3).
 - ✅ Limpeza: export de fábrica, arquivos de exemplo e páginas pré-renderizadas do manual removidos — todo o conhecimento drenado para `reference/` e o pacote; manual renderizável sob demanda.
@@ -288,7 +288,7 @@ deles é que manda.
 | [`CHANGELOG.md`](CHANGELOG.md) | Histórico de versões (gerado dos commits) |
 | [`LICENSE`](LICENSE) | MIT (texto canônico, para detecção automática) |
 | [`NOTICE.md`](NOTICE.md) | Escopo da licença: o que **não** é coberto (marcas, títulos, manual, packs de IR) |
-| [`.agents/README.md`](.agents/README.md) | Arquitetura dos 20 agentes e como criar um novo |
+| [`.agents/README.md`](.agents/README.md) | Arquitetura dos 21 agentes e como criar um novo |
 | [`ARCHITECTURE.md`](ARCHITECTURE.md) | Camadas do pacote e fluxo de dados do pipeline |
 | [`reference/README.md`](reference/README.md) | Índice da base de conhecimento + ordem de precedência das fontes |
 | [`impulse_responses/README.md`](impulse_responses/README.md) | Banco local de IRs: política, formato aceito e fluxo de indexação |

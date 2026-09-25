@@ -43,6 +43,7 @@ const definition: AgentDefinition = {
     'gp100-setlist',
     'gp100-manual-reader',
     'gp100-release-proposer',
+    'gp100-code-reviewer',
     'gp100-tone-research',
     'gp100-tone-mapper',
   ],

@@ -292,7 +292,8 @@ def test_merge_de_release_ve_a_historia_completa(tmp_path: Path) -> None:
     (repo / 'OUTRO.md').write_text('main\n', encoding='utf-8')
     _git(*cfg, 'add', '-A')
     _git(*cfg, 'commit', '-qm', 'chore: main anda sozinha')
-    _git('merge', '-q', '--no-ff', 'develop', '-m', 'merge de release')
+    # identidade no merge também: o runner do CI não tem user.name/email globais
+    _git(*cfg, 'merge', '-q', '--no-ff', 'develop', '-m', 'merge de release')
 
     codigo, saida = _rodar(cwd=repo)
     assert codigo == 0, saida[-1500:]

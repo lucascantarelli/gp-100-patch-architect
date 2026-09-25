@@ -121,6 +121,11 @@ jobs:
         with:
           python-version: '3.14'
 
+      # O uv não vem no runner: sem o setup, `uv sync` morre com "command not
+      # found" (exit 127) — foi o que travou a primeira execução da 2.0.0.
+      - name: Cache do uv
+        uses: astral-sh/setup-uv@37802adc94f370d6bfd71619e3f0bf239e1f3b78  # v7
+
       # O pipeline e a CLI são o pacote (issue #33): o ambiente vem do lockfile,
       # como no CI — `uv run` resolve tudo (install + entry points).
       - name: Ambiente do lockfile (uv sync --frozen)

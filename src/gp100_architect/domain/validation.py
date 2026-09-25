@@ -1,0 +1,515 @@
+"""Validação do defs — regras puras, sem I/O.
+
+Cada erro aponta o **caminho JSON exato** e **como corrigir**: o objetivo é que
+um defs errado falhe aqui, com uma instrução, em vez de estourar um `KeyError`
+no meio do build.
+
+O defs é a fonte única do projeto (patch, doc e índice saem dele), então esta
+validação roda em toda porta de entrada: build, CLI, índices e release
+(documentado no review do doc 21, achado M2). Desde o schema v2 (issue #8) o
+defs vive em fragmentos por álbum sob `data/defs/` — esta função recebe o
+CONSOLIDADO (o loader `infrastructure.defs` junta os fragmentos antes de
+chamar), então os caminhos JSON dos erros continuam os mesmos de sempre.
+"""
+
+from __future__ import annotations
+
+import re
+from typing import Any
+
+from gp100_architect.domain.chain import (
+    CHAIN,
+    MODULOS_PROIBIDOS_EM_MOMENTO,
+)
+from gp100_architect.domain.params import PARAM_NAMES, ROTULOS_EM_MS, rotulo
+
+__all__ = ['CAMS', 'EXP_PARAM_MAX', 'EXP_PARAM_MIN', 'SLOT_IR_LOCAL', 'Erros', 'validar']
+
+# formato literal do slot de User IR em `ir_local` (issue #10): "User IR 1"…
+# "User IR 20" — a variante -USERIR deriva o `ir_cab_user_slot` deste campo.
+SLOT_IR_LOCAL = re.compile(r'User IR ([1-9]|1[0-9]|20)$')
+
+# catálogo de camadas (sufixo do nome do painel). `VOX` é allowance histórica:
+# nenhum patch atual usa, mas nomes antigos de painel seguem válidos.
+CAMS: frozenset[str] = frozenset(
+    {
+        'BA',
+        'SO',
+        'RI',
+        'CL',
+        'FL',
+        'AR',
+        'AC',
+        'VO',
+        'SL',
+        'AM',
+        'EC',
+        'JM',
+        'FZ',
+        'IN',
+        'S2',
+        'VOX',
+    }
+)
+
+TIPOS_VALIDOS: frozenset[str] = frozenset(
+    {
+        'Metal',
+        'World',
+        'Indie',
+        'Country',
+        'Rock',
+        'Funk',
+        'Pop',
+        'Blues',
+        'Jazz',
+        'Bass',
+        'Acoustic',
+    }
+)
+
+_CAMPOS_MODULO_AUSENTE = ('guitarra', 'teste', 'irNota')
+
+# Faixa aceita para o curso do EXP1 (o pedal manda no parâmetro inteiro;
+# a curva é do hardware). Espelhada na validação do spec no codec.
+EXP_PARAM_MIN, EXP_PARAM_MAX = 0, 99
+
+
+class Erros:
+    """Coletor de erros com caminho JSON e correção sugerida."""
+
+    def __init__(self) -> None:
+        self.itens: list[str] = []
+
+    def add(self, caminho: str, problema: str, correcao: str) -> None:
+        self.itens.append(f'  ✗ {caminho}: {problema}\n    → {correcao}')
+
+    def ok(self) -> bool:
+        """Nenhum problema encontrado."""
+        return not self.itens
+
+    def relatorio(self) -> str:
+        """Relatório legível — usado pela CLI e pelo build."""
+        return (
+            f'\n❌ {len(self.itens)} problema(s) no defs (fonte única em '
+            f'data/defs/ — corrija no fragmento, nunca no arquivo gerado):\n\n'
+            + '\n'.join(self.itens)
+            + '\n'
+        )
+
+
+def _e_num(valor: object) -> bool:
+    """Número de verdade — `bool` é `int` em Python e não vale como parâmetro."""
+    return isinstance(valor, (int, float)) and not isinstance(valor, bool)
+
+
+def validar(defs: dict[str, Any]) -> Erros:
+    """Valida o defs inteiro e devolve o coletor de erros (nunca levanta)."""
+    er = Erros()
+    bruto = defs.get('albums')
+    albums: dict[str, Any] | None = bruto if isinstance(bruto, dict) else None
+
+    _validar_topo(defs, albums, er)
+    if albums is not None:
+        _validar_albums(albums, er)
+    _validar_songs(defs, albums, er)
+    _validar_ir_local(defs, er)
+    return er
+
+
+def _validar_topo(defs: dict[str, Any], albums: dict[str, Any] | None, er: Erros) -> None:
+    if not isinstance(albums, dict) or not albums:
+        er.add(
+            'albums',
+            'ausente ou não é objeto',
+            "declare albums: {'AR': {banda, album, ano, display, pasta, rig}}",
+        )
+    songs = defs.get('songs')
+    if not isinstance(songs, list) or not songs:
+        er.add(
+            'songs',
+            'ausente ou não é lista',
+            'declare songs: [{id, song, idAlbum, bpm, resumo, referencias, patches}]',
+        )
+    if not isinstance(defs.get('ir_local'), dict):
+        er.add(
+            'ir_local',
+            'ausente ou não é objeto',
+            "declare ir_local: {'<CAB>': {captura, slot}} — mesmo sem capturas, use {}",
+        )
+
+
+def _validar_albums(albums: dict[str, Any], er: Erros) -> None:
+    for idalb, alb in albums.items():
+        base = f'albums.{idalb}'
+        for campo in ('banda', 'album', 'ano', 'pasta', 'rig'):
+            if campo not in alb:
+                er.add(
+                    f'{base}.{campo}',
+                    'campo obrigatório ausente',
+                    f'acrescente "{campo}" ao álbum (rig = dossiê com fontes)',
+                )
+        ano = alb.get('ano')
+        if ano is not None and not isinstance(ano, int):
+            er.add(
+                f'{base}.ano',
+                f'deve ser int, veio {type(ano).__name__}',
+                'use o ano do lançamento',
+            )
+
+
+def _validar_songs(defs: dict[str, Any], albums: dict[str, Any] | None, er: Erros) -> None:
+    ids_songs: set[str] = set()
+    nomes: set[str] = set()
+    for i, song in enumerate(defs.get('songs', [])):
+        base = f'songs[{i}]'
+        sid = song.get('id')
+        if not sid:
+            er.add(f'{base}.id', 'obrigatório', 'use o padrão AAZZNN (ex.: SMOO1)')
+        elif sid in ids_songs:
+            er.add(f'{base}.id', f"duplicado ('{sid}')", 'ids de música têm de ser únicos')
+        ids_songs.add(sid)
+
+        if song.get('idAlbum') not in (albums or {}):
+            er.add(
+                f'{base}.idAlbum',
+                f"'{song.get('idAlbum')}' não existe em albums",
+                f'ids válidos: {", ".join(albums or {})}',
+            )
+        bpm = song.get('bpm')
+        if not _e_num(bpm) or not 30 <= bpm <= 300:
+            er.add(f'{base}.bpm', f'fora do range 30–300 ({bpm})', 'confira o BPM real da faixa')
+
+        patches = song.get('patches', [])
+        if not patches:
+            er.add(
+                f'{base}.patches',
+                'música sem patch nenhum',
+                'toda música do defs precisa de ao menos 1 patch (ou saia do defs)',
+            )
+        for j, patch in enumerate(patches):
+            _validar_patch(patch, f'{base}.patches[{j}]', nomes, er)
+
+
+def _validar_patch(patch: dict[str, Any], pb: str, nomes: set[str], er: Erros) -> None:
+    nome = patch.get('nome')
+    if not nome:
+        er.add(f'{pb}.nome', 'obrigatório', 'MUSICA(≤4)+NN+CAMADA(2), ex.: SMOO1SO')
+        return
+    if nome in nomes:
+        er.add(f'{pb}.nome', f"duplicado ('{nome}')", 'nomes de painel têm de ser únicos')
+    nomes.add(nome)
+    if len(nome) > 12:
+        er.add(
+            f'{pb}.nome',
+            f"'{nome}' tem {len(nome)} chars",
+            'máx. 12 (limite do painel da GP-100) — renomeie',
+        )
+
+    sufixo = patch.get('sufixo')
+    if sufixo not in CAMS:
+        er.add(
+            f'{pb}.sufixo',
+            f"'{sufixo}' não é uma camada conhecida",
+            f'use um de: {", ".join(sorted(CAMS))}',
+        )
+    if not patch.get('camada'):
+        er.add(
+            f'{pb}.camada',
+            'obrigatória (aparece na doc e nos índices)',
+            'ex.: "Base", "Solo", "Riff"',
+        )
+
+    spec = patch.get('spec')
+    if not isinstance(spec, dict):
+        er.add(
+            f'{pb}.spec', 'obrigatório', 'estrutura documentada no docstring de generate_prst.py'
+        )
+        return
+    _validar_spec(spec, f'{pb}.spec', er)
+    _validar_exp1(spec.get('exp1'), spec, f'{pb}.spec.exp1', er)
+
+    doc = patch.get('doc')
+    if not isinstance(doc, dict):
+        er.add(f'{pb}.doc', 'obrigatório', 'guitarra/comoTocar/teste/ajustes/evite/irNota')
+        return
+    _validar_doc(doc, f'{pb}.doc', er)
+    _validar_stomps(doc.get('stomps'), spec, f'{pb}.doc.stomps', er)
+
+
+def _validar_spec(spec: dict[str, Any], base: str, er: Erros) -> None:
+    if not spec.get('name'):
+        er.add(f'{base}.name', 'obrigatório', 'deve ser igual ao nome do patch')
+    if spec.get('type') not in TIPOS_VALIDOS:
+        er.add(
+            f'{base}.type',
+            f"'{spec.get('type')}' não é gênero válido",
+            f'use um de: {" ".join(sorted(TIPOS_VALIDOS))}',
+        )
+
+    modules = spec.get('modules')
+    if not isinstance(modules, dict):
+        er.add(
+            f'{base}.modules',
+            'obrigatório',
+            'os 9 módulos da cadeia (ou os usados + neutros no gerador)',
+        )
+        return
+    for mod, m in modules.items():
+        if mod not in CHAIN:
+            er.add(
+                f'{base}.modules.{mod}',
+                'módulo fora da cadeia fixa',
+                f'use apenas: {", ".join(CHAIN)}',
+            )
+            continue
+        if not m.get('name'):
+            er.add(
+                f'{base}.modules.{mod}.name',
+                'obrigatório',
+                'nome EXATO do catálogo fw 2.0 (reference/15) — nunca o do manual V1.8',
+            )
+        _validar_params(m, mod, f'{base}.modules.{mod}', er)
+    if 'CAB' not in modules:
+        er.add(
+            f'{base}.modules.CAB',
+            'ausente',
+            'todo patch single fw 2.1 declara CAB (fábrica na política de IR)',
+        )
+
+
+def _validar_params(modulo: dict[str, Any], mod: str, base: str, er: Erros) -> None:
+    """Índice e faixa de cada parâmetro — faixa fina por modelo em reference/15."""
+    bruto = modulo.get('name')
+    modelo = bruto if isinstance(bruto, str) else ''
+    for k, v in (modulo.get('params') or {}).items():
+        if not str(k).isdigit() or not 0 <= int(k) <= 14:
+            er.add(
+                f'{base}.params.{k}',
+                'índice inválido',
+                'params_0..14 — slots internos do firmware não se setam',
+            )
+            continue
+        if not _e_num(v):
+            er.add(
+                f'{base}.params.{k}', f'valor não numérico ({v!r})', 'params do .prst são numéricos'
+            )
+            continue
+        etiqueta = rotulo(mod, modelo, int(k)) or ''
+        if etiqueta in ROTULOS_EM_MS:
+            if not 0 <= v <= 1000:
+                er.add(
+                    f'{base}.params.{k}',
+                    f'{etiqueta}={v} ms fora de 0–1000',
+                    'confira o tempo em ms (export de fábrica usa 160–620)',
+                )
+        elif v < -15 or v > 100:
+            er.add(
+                f'{base}.params.{k}',
+                f'{etiqueta or f"param_{k}"}={v} fora do range esperado',
+                'confira o range oficial do modelo em reference/15',
+            )
+
+
+def _validar_doc(doc: dict[str, Any], base: str, er: Erros) -> None:
+    for campo in _CAMPOS_MODULO_AUSENTE:
+        if not doc.get(campo):
+            er.add(
+                f'{base}.{campo}',
+                'obrigatório',
+                'a doc prática-primeiro exige guitarra, teste e seção de IR',
+            )
+    for k in ('ajustes', 'evite'):
+        if not isinstance(doc.get(k), list):
+            er.add(
+                f'{base}.{k}', 'deve ser lista de strings', 'ex.: ["lamacento → CAB High Cut -5"]'
+            )
+    for i, mom in enumerate(doc.get('momentos', [])):
+        for campo in ('nome', 'mods', 'quando'):
+            if campo not in mom:
+                er.add(
+                    f'{base}.momentos[{i}].{campo}',
+                    'obrigatório no momento de toggle',
+                    "{'nome', 'mods': [['MOD','ON']], 'quando', 'dica?'}",
+                )
+        for mod, estado in mom.get('mods', []):
+            if mod not in CHAIN:
+                er.add(
+                    f'{base}.momentos[{i}].mods',
+                    f'módulo {mod} fora da cadeia',
+                    f'use: {", ".join(CHAIN)}',
+                )
+            if estado not in ('ON', 'OFF'):
+                er.add(f'{base}.momentos[{i}].mods', f"estado '{estado}' inválido", 'use ON ou OFF')
+            if mod in MODULOS_PROIBIDOS_EM_MOMENTO:
+                er.add(
+                    f'{base}.momentos[{i}].mods',
+                    'toggle de AMP/CAB é proibido',
+                    'nunca ligue/desligue volume e corpo em tempo real',
+                )
+
+
+def _validar_exp1(exp1: object, spec: dict[str, Any], base: str, er: Erros) -> None:
+    """`spec.exp1` — o pedal de expressão manda em UM parâmetro de um módulo.
+
+    Regras do aparelho: o módulo precisa estar declarado no spec, o parâmetro
+    tem de ter nome oficial (PARAM_NAMES) e o curso [min, max] fica em 0–99
+    (a curva é do hardware). Cada erro aponta o caminho JSON e como corrigir.
+    """
+    if exp1 is None:
+        return
+    if not isinstance(exp1, dict):
+        er.add(base, 'deve ser objeto', "{'módulo', 'param', 'min'?, 'max'?}")
+        return
+    for campo in ('módulo', 'param'):
+        if not exp1.get(campo):
+            er.add(f'{base}.{campo}', 'obrigatório', "ex.: {'módulo': 'DST', 'param': 'Gain'}")
+    if not er.ok():
+        return  # campos faltando: nada mais a checar sem eles
+    modulo, param = exp1['módulo'], exp1['param']
+    if modulo not in CHAIN:
+        er.add(f'{base}.módulo', f'{modulo} fora da cadeia fixa', f'use: {", ".join(CHAIN)}')
+        return
+    modelo = str((spec.get('modules', {}).get(modulo) or {}).get('name', ''))
+    if not modelo:
+        er.add(
+            f'{base}.módulo',
+            f'{modulo} não está no spec.modules',
+            'declare o módulo (name/on) — o EXP1 controla um pedal específico',
+        )
+        return
+    rotulos = PARAM_NAMES.get((modulo, modelo), [])
+    if not rotulos:
+        er.add(
+            f'{base}.param',
+            f"modelo '{modelo}' do {modulo} não tem parâmetros nomeados no catálogo",
+            'cadastre os nomes em domain/params.py (PARAM_NAMES) antes de amarrar o EXP1',
+        )
+    elif param not in rotulos:
+        er.add(
+            f'{base}.param',
+            f"'{param}' não é parâmetro oficial de {modulo} {modelo}",
+            f'use um de: {", ".join(rotulos)} (manual V2.0, reference/15) — nunca (pN)',
+        )
+    for campo in ('min', 'max'):
+        v = exp1.get(campo)
+        if v is None:
+            continue
+        if not isinstance(v, (int, float)) or isinstance(v, bool):
+            er.add(f'{base}.{campo}', 'deve ser número', 'ex.: 0 e 99')
+        elif not EXP_PARAM_MIN <= v <= EXP_PARAM_MAX:
+            er.add(
+                f'{base}.{campo}',
+                f'{v} fora da faixa do pedal',
+                f'use {EXP_PARAM_MIN}–{EXP_PARAM_MAX}',
+            )
+    mn, mx = exp1.get('min', EXP_PARAM_MIN), exp1.get('max', EXP_PARAM_MAX)
+    if isinstance(mn, (int, float)) and isinstance(mx, (int, float)) and mn > mx:
+        er.add(f'{base}.max', f'max ({mx}) < min ({mn})', 'inverta para [min, max]')
+
+
+def _validar_stomps(stomps: object, spec: dict[str, Any], base: str, er: Erros) -> None:
+    """`doc.stomps` — o que o músico liga/desliga com FS-A/FS-B no modo STOMP.
+
+    Herda o espírito do `TestE_Momentos` (e de _validar_doc.momentos): só
+    módulos da cadeia, só pedidos INVERSOS ao estado de fábrica do spec —
+    atribuir um stomp a um módulo já no estado pedido não faz nada em palco —
+    e NUNCA toggle de AMP/CAB. Opcional no schema (patch mono-comportamento
+    não tem stomp); quando presente, cada item é validado com mensagem
+    acionável.
+    """
+    if stomps is None:
+        return
+    if not isinstance(stomps, list):
+        er.add(
+            base, 'deve ser lista', "ex.: [{'fs': 'A', 'mods': [['RVB', 'OFF']], 'quando': '...'}]"
+        )
+        return
+    if not stomps:
+        er.add(base, 'lista vazia', 'omita doc.stomps se o patch não tem footswitch dedicado')
+        return
+    fabrica = {mod: bool((spec.get('modules', {}).get(mod) or {}).get('on')) for mod in CHAIN}
+    for i, st in enumerate(stomps):
+        sb = f'{base}[{i}]'
+        if not isinstance(st, dict):
+            er.add(sb, 'deve ser objeto', "{'fs', 'mods', 'quando', 'dica?'}")
+            continue
+        for campo in ('fs', 'mods', 'quando'):
+            if campo not in st:
+                er.add(
+                    f'{sb}.{campo}',
+                    'obrigatório no stomp',
+                    "{'fs': 'A'|'B'|'A+B', 'mods': [['MOD','ON']], 'quando', 'dica?'}",
+                )
+        fs = st.get('fs')
+        if fs is not None and fs not in ('A', 'B', 'A+B'):
+            er.add(f'{sb}.fs', f"'{fs}' inválido", 'use A, B ou A+B')
+        mods = st.get('mods')
+        if mods is not None and not (
+            isinstance(mods, list)
+            and mods
+            and all(isinstance(par, list) and len(par) == 2 for par in mods)
+        ):
+            er.add(
+                f'{sb}.mods',
+                'deve ser lista de pares [MÓDULO, estado]',
+                "ex.: [['RVB','OFF']]",
+            )
+            continue
+        if not mods:
+            continue
+        for mod, estado in mods:
+            if mod not in CHAIN:
+                er.add(f'{sb}.mods', f'módulo {mod} fora da cadeia', f'use: {", ".join(CHAIN)}')
+                continue
+            if estado not in ('ON', 'OFF'):
+                er.add(f'{sb}.mods', f"estado '{estado}' inválido", 'use ON ou OFF')
+                continue
+            if mod in MODULOS_PROIBIDOS_EM_MOMENTO:
+                er.add(
+                    f'{sb}.mods',
+                    'toggle de AMP/CAB é proibido',
+                    'nunca ligue/desligue volume e corpo em tempo real',
+                )
+                continue
+            if fabrica[mod] == (estado == 'ON'):
+                inverso = 'OFF' if estado == 'ON' else 'ON'
+                er.add(
+                    f'{sb}.mods',
+                    f'{mod} já está {estado} no patch — o stomp não faria nada',
+                    f'o stomp deve INVERTER o estado de fábrica (ex.: [{mod}, {inverso}])',
+                )
+
+
+def _validar_ir_local(defs: dict[str, Any], er: Erros) -> None:
+    """Capturas de IR locais: órfãs e formato do slot (issue #10).
+
+    Duas regras por entrada de `ir_local`:
+
+    * **órfã** — nenhum CAB do defs usa este gabinete: a captura nunca vira
+      doc nem variante -USERIR;
+    * **slot** — `slot` é literalmente `"User IR <N>"`, N de 1 a 20 (faixa do
+      aparelho). É daqui que a variante -USERIR deriva o `ir_cab_user_slot`;
+      um slot escrito de outro jeito quebraria o build da variante com erro
+      de formato em vez de ser pego aqui, no defs.
+    """
+    cabs = {
+        p['spec'].get('modules', {}).get('CAB', {}).get('name')
+        for s in defs.get('songs', [])
+        for p in s.get('patches', [])
+        if isinstance(p.get('spec'), dict)
+    }
+    for cab, entrada in defs.get('ir_local', {}).items():
+        if cab not in cabs:
+            er.add(
+                f'ir_local.{cab}',
+                'nenhum patch usa este CAB',
+                'remova a entrada (ou o CAB saiu do defs e a captura ficou órfã)',
+            )
+        slot = entrada.get('slot') if isinstance(entrada, dict) else None
+        if not isinstance(slot, str) or not SLOT_IR_LOCAL.fullmatch(slot):
+            er.add(
+                f'ir_local.{cab}.slot',
+                f'slot {slot!r} não segue o formato "User IR <N>" (N de 1 a 20)',
+                'escreva o slot exatamente como o GP-100 Edits nomeia (ex.: "User IR 1")',
+            )

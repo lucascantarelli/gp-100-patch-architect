@@ -1,5 +1,5 @@
 # GP-100 — Catálogo REAL do Firmware 2.0/2.1
-> **FONTE PRIMÁRIA**: catálogo empírico extraído do **export de fábrica** (biblioteca completa do aparelho, software editor 1.2.0, firmware 2.0) via `tools/analyze_prst.py` — dump completo em **`tools/factory-catalog.json`** (99 presets · 891 effects · 117 modelos). O export original foi removido do repositório na limpeza; para regenerar, exporte a biblioteca no GP-100 Edits e rode `python tools/analyze_prst.py <arquivo>.prst --json tools/factory-catalog.json`.
+> **FONTE PRIMÁRIA**: catálogo empírico extraído do **export de fábrica** (biblioteca completa do aparelho, software editor 1.2.0, firmware 2.0) — dump completo em **`data/factory-catalog.json`** (99 presets · 891 effects · 117 modelos). O export original foi removido do repositório na limpeza; para regenerar, exporte a biblioteca no GP-100 Edits e rode `gp100 analyze <arquivo>.prst --json data/factory-catalog.json`.
 > O arquivo .prst é **XML** — os nomes abaixo são os que APARECEM no aparelho/editor do usuário. Onde divergirem do manual V1.8 impresso, **estes nomes vencem**.
 > `code` = effectCode (usado na geração de .prst). `x` = posição na cadeia (fw 2.0 permite reordenar via editor; posições observadas: PRE 0–1, DST 1, AMP 2–3, CAB 4, EQ 2–7, MOD 6–7, DLY 5–7, RVB 8, NR variável).
 
@@ -198,6 +198,6 @@ Extraídos das tabelas *Parameters & Ranges* do **manual oficial da revisão V2.
 
 ## Regra de precedência
 0. **Manual oficial do firmware V2.0** (valeton.net) — nomes/ranges de parâmetro desta seção
-1. **Export de fábrica** (drenado em `tools/factory-catalog.json` + este documento) — nomes/codes/estrutura e a ordem REAL dos slots
+1. **Export de fábrica** (drenado em `data/factory-catalog.json` + este documento) — nomes/codes/estrutura e a ordem REAL dos slots
 2. `manual.pdf` do usuário (transcrito em `reference/01–09`) — descrições, "based on" e receitas por estilo
 3. `reference/01–09` — estratégia e ranges humanos (ajustar nomes para os reais conforme esta tabela)

@@ -1,0 +1,58 @@
+# Hooks locais — a barreira que pega antes do CI (que continua sendo o veredito).
+#
+# Instalação:  uv run pre-commit install
+# Rodar tudo:  uv run pre-commit run --all-files
+#
+# O que NÃO roda aqui, de propósito:
+#   * a suíte completa — o TestH leva ~1 min e roda o pipeline inteiro; um hook
+#     desses é contornado com `--no-verify` e deixa de proteger. Ele vive no CI
+#     (e em `uv run pytest` quando você quiser a resposta completa);
+#   * formatação de `patches/**` e `impulse_responses/**` — o formato do `.prst`
+#     é contrato de CRLF e byte a byte (TestC), e mexer nele por hook de
+#     higiene seria sabotar o único artefato que a pedaleira lê;
+#   * `.github/scripts/**` e as skills de terceiros ficam fora dos gates —
+#     mesma lista do ruff.
+default_language_version:
+  python: python3.14
+
+exclude: |
+  (?x)^(
+    patches/.*|
+    impulse_responses/.*|
+    manual_pages/.*|
+    reference/.*|
+    dist/.*|
+    \.agents/skills/.*
+  )$
+
+repos:
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.16.8
+    hooks:
+      - id: ruff
+        args: [--fix]
+      - id: ruff-format
+
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-toml
+      - id: check-merge-conflict
+      - id: check-added-large-files
+        args: [--maxkb=1024, --enforce-all]
+      - id: mixed-line-ending
+        args: [--fix=no]        # CRLF é intencional no projeto — não "conserta"
+
+  # Linter de consistência de docs (issue #58) — mesmo argumento do auditor
+  # de workflows: pega antes do commit o que só apareceria vermelho no CI.
+  - repo: local
+    hooks:
+      - id: audit-docs
+        name: consistência dos docs (issues, caminhos, links, milestones)
+        entry: python .github/scripts/audit_docs.py
+        language: system
+        pass_filenames: false
+        types: [markdown]

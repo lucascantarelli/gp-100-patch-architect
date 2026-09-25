@@ -7,9 +7,16 @@ node_modules/
 # Segredos
 .env
 
-# Python cache
+# Python cache e artefatos de build
 __pycache__/
 *.pyc
+*.egg-info/
+build/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
 
 # Ambientes virtuais
 .venv/
@@ -33,17 +40,23 @@ impulse_responses/*
 !impulse_responses/README.md
 
 # Manual oficial da Valeton (obra de terceiro) — obtenha no site do fabricante.
-# `tools/render_manual_page.py` lê este arquivo localmente.
+# O comando `gp100 manual-page` lê este arquivo localmente.
 manual.pdf
 
-# ── Intermediário do pipeline: NÃO versionado ──────────────────────────────────
-# `spec.json` é o que o `generate_prst.py` consome para gerar o `.prst`; o
-# pipeline o escreve no disco a cada rodada. Ninguém o consome depois (não vai ao
-# pacote de release) e ele é 100% regenerável do `patches-defs.json` — o que se
-# versiona é a fonte (`patches-defs.json`) e o produto (`.prst` + `patch.md`).
-patches/**/spec.json
-
 # ── Saída de empacotamento de release ─────────────────────────────────────────
-# `tools/build_release.py` escreve os ZIPs aqui; eles vão anexados à Release,
+# O comando `gp100 release` escreve os ZIPs aqui; eles vão anexados à Release,
 # nunca para o histórico do git.
 dist/
+
+# ── Derivados da biblioteca: CONSTRUÍDOS, não armazenados (ADR-0013, issue #8) ─
+# Todo `.prst` e todo `patch.md` de patches/** são deriváveis do defs
+# (`data/defs/`) — o guarda de determinismo (TestH) prova byte a byte, e o job
+# de release constrói os ZIPs (issue #82). Quem precisa dos arquivos: ZIP da
+# Release ou `gp100 build`.
+patches/**
+!patches/**/
+
+# Site de docs (issue #60): gerado no deploy, nunca versionado
+docs/_site/
+site-docs/
+

@@ -38,11 +38,45 @@ Regras que REPROVAM:
                            `NODE24_MINIMO` guarda o major que já declara
                            `using: node24`, verificado no `action.yml` de cada
                            tag — não é chute de calendário.
+  7. Action de TERCEIRO sem SHA fixo — tag móvel é reescrevível por quem
+                           publica a Action (cadeia de suprimentos): a
+                           `astral-sh/setup-uv@v7` entrou assim no PR #35 e o
+                           CodeQL abriu alerta no review — que foi mergeado
+                           sem ser lido. A regra deixa de ser aviso e passa a
+                           reprovar: primeiro fixa-se o commit, depois o
+                           auditor impede a regressão. Como obter o SHA:
+                           `gh api repos/<owner>/<repo>/git/ref/tags/<tag>`
+                           (dereferencie se `type` for `tag`).
+
+  8. `permissions:` — o NOME do escopo e o NÍVEL têm de ser válidos, no bloco do
+                           topo e em cada job. Um nome inexistente invalida o
+                           arquivo INTEIRO: o GitHub cria um "workflow file
+                           issue" a cada push e nenhum job roda (nem os que
+                           não têm nada a ver com o escopo). Foi o que
+                           aconteceu com o `project-automation.yml`, que
+                           declarava `repository-project: write` (sem o "s") e
+                           ficava vermelho em todo push sem ter executado um
+                           único passo desde que foi criado — e o GitHub
+                           exibe o nome do workflow como o próprio caminho
+                           quando isso acontece (é o sinal no `gh workflow
+                           list`). Escopo novo na plataforma? Confira em
+                           docs.github.com → "Workflow syntax for GitHub
+                           Actions" → permissions e acrescente aqui (a lista
+                           é fechada de propósito: é ela que transforma typo
+                           em erro de CI).
 
 Regra que AVISA (não reprova):
-  7. `uses:` sem SHA fixo. O Dependabot (`.github/dependabot.yml`) mantém as
-     Actions atualizadas, então fixar por SHA é viável — mas a migração é
-     gradual, e reprovar hoje deixaria todos os workflows vermelhos.
+  9. Action de PRIMEIRA PARTE (`actions/*`, `github/*`) sem SHA. São mantidas
+     no major de propósito — o Dependabot acompanha e o GitHub é o publicador.
+
+ 10. TETO de permissões por workflow (#62) — "menor privilégio" verificável:
+     cada arquivo declara na tabela TETO_PERMISSOES o MÁXIMO que tem direito a
+     pedir; qualquer `permissions:` (topo ou job) acima do teto reprova, com a
+     mensagem dizendo qual é o teto e por quê. Um workflow de leitura com
+     `contents: write` é superfície de ataque sem motivo. A tabela é FECHADA:
+     workflow novo sem teto declarado reprova no main() (adicionar a entrada É
+     a decisão explícita de poder). A única exceção é onde a escrita É o
+     trabalho: o job de publicar da `release.yml` (`contents: write`).
 """
 import re
 import sys
@@ -73,6 +107,51 @@ MAJOR = re.compile(r'^v(\d+)')
 # do GitHub, não do repositório.
 RUNNER_FLUTUANTE = re.compile(r'^[a-z0-9._-]+-latest$')
 
+# Owners de primeira parte: mantidos no major (Dependabot acompanha). Action de
+# outro owner tem de vir fixada por commit SHA — a tag pode ser reescrita.
+PRIMEIRA_PARTE = {'actions', 'github'}
+
+# Escopos aceitos em `permissions:` (workflow syntax). Fechado de propósito:
+# `repository-project` (singular) invalidava o arquivo inteiro. Note que
+# `repository-projects` cobre Projects *clássicos* do repositório — Project v2
+# de usuário não se acessa por aqui: aquele token vem de secret (PAT).
+ESCOPOS_DE_PERMISSAO = {
+    'actions', 'attestations', 'checks', 'contents', 'deployments',
+    'discussions', 'id-token', 'issues', 'models', 'packages', 'pages',
+    'pull-requests', 'repository-projects', 'security-events', 'statuses',
+}
+NIVEIS_DE_PERMISSAO = {'read', 'write', 'none'}
+
+PERMISSOES = re.compile(r'^(\s*)permissions:\s*(\S*)\s*$')
+ESCOPO = re.compile(r'\s*([A-Za-z0-9_-]+):\s*([^\s#]+)')
+
+# ── Regra 10 · Teto de permissões por workflow (fechado por padrão) ──────────
+# O MÁXIMO que cada arquivo tem direito a declarar (no topo ou em job). Escopo
+# fora da entrada reprova; nível acima do teto reprova. Workflow novo SEM
+# entrada aqui reprova no main() — adicionar a entrada é a decisão explícita
+# de poder, lida em review como qualquer outra mudança de código.
+NIVEL = {'none': 0, 'read': 1, 'write': 2}
+TETO_PERMISSOES: dict[str, dict[str, str]] = {
+    # CI inteiro é leitura — nenhum job escreve no repositório (ver ci.yml).
+    'ci.yml': {'contents': 'read'},
+    # CodeQL publica resultados; revisão de dependências comenta no PR.
+    'security.yml': {'contents': 'read', 'actions': 'read',
+                     'security-events': 'write', 'pull-requests': 'write'},
+    # EXCEÇÃO JUSTIFICADA: publicar é o trabalho do job (tag + Release).
+    'release.yml': {'contents': 'write'},
+    # A escrita no board vem do PAT (secret), nunca do GITHUB_TOKEN (ADR-0006).
+    # `issues: read`: só o job `milestone`, para o relatório de fechamento.
+    'project-automation.yml': {'contents': 'read', 'pull-requests': 'read',
+                               'issues': 'read'},
+    # EXCEÇÃO JUSTIFICADA (#11): publicar o site É o trabalho do job `deploy`
+    # (pages: write + id-token: write do OIDC do Pages). O build é leitura.
+    'pages.yml': {'contents': 'read', 'pages': 'write', 'id-token': 'write'},
+    # Mesma exceção da #11, agora para a DOC de engenharia (#60): o job
+    # `deploy` publica via OIDC (pages: write + id-token: write); o build é
+    # leitura. Fonte copiada do checkout fresco a cada deploy.
+    'docs-pages.yml': {'contents': 'read', 'pages': 'write', 'id-token': 'write'},
+}
+
 # Menor major de cada action de primeira parte que já declara `using: node24`
 # (lido do `action.yml` da tag). Abaixo disso, o runner força a action a rodar
 # em Node 24 e emite aviso de depreciação a cada job. Action fora desta tabela é
@@ -87,10 +166,107 @@ NODE24_MINIMO = {
 }
 
 
+def checar_permissoes(linhas: list[str]) -> list[tuple[int, str]]:
+    """Valida TODO bloco `permissions:` (topo e por job) — nomes e níveis.
+
+    Percorre o arquivo inteiro em vez de olhar só o topo: o `project-automation`
+    tinha o escopo inválido no bloco do topo, mas um job com permissão inválida
+    invalida o arquivo do mesmo jeito.
+    """
+    falhas: list[tuple[int, str]] = []
+    i = 0
+    while i < len(linhas):
+        m = PERMISSOES.match(linhas[i])
+        if not m:
+            i += 1
+            continue
+        indent, inline = len(m.group(1)), m.group(2)
+        if inline:  # forma curta: `permissions: read-all` / `write-all` / `{}`
+            if inline not in ('read-all', 'write-all', '{}'):
+                falhas.append((i + 1, f'`permissions: {inline}` inválido — use '
+                                      f'`read-all`, `write-all` ou um escopo por linha'))
+            i += 1
+            continue
+        i += 1
+        while i < len(linhas) and linhas[i].strip():
+            if len(linhas[i]) - len(linhas[i].lstrip()) <= indent:
+                break  # voltou ao nível do bloco: fim das permissões
+            mc = ESCOPO.match(linhas[i])
+            if mc:
+                escopo, nivel = mc.group(1), mc.group(2).strip('\'"')
+                if escopo not in ESCOPOS_DE_PERMISSAO:
+                    falhas.append((i + 1, f'`{escopo}: {nivel}` — "{escopo}" não é um '
+                                          f'escopo válido: ele invalida o ARQUIVO '
+                                          f'INTEIRO (o workflow nunca roda). Escopos '
+                                          f'aceitos: {", ".join(sorted(ESCOPOS_DE_PERMISSAO))}'))
+                elif nivel not in NIVEIS_DE_PERMISSAO:
+                    falhas.append((i + 1, f'`{escopo}: {nivel}` — nível inválido: use '
+                                          f'{", ".join(sorted(NIVEIS_DE_PERMISSAO))}'))
+            i += 1
+    return falhas
+
+
+def checar_teto(nome_arquivo: str, linhas: list[str]) -> list[tuple[int, str]]:
+    """Regra 10 — nenhum `permissions:` acima do teto declarado para o arquivo.
+
+    O teto vive em TETO_PERMISSOES (fonte única, lida em review); arquivo fora
+    da tabela reprova no main(), não aqui — um arquivo novo tem de ganhar a
+    entrada ANTES de passar no auditor.
+    """
+    teto = TETO_PERMISSOES.get(nome_arquivo)
+    if teto is None:
+        return []  # avaliado no main() — mensagem própria lá
+
+    falhas: list[tuple[int, str]] = []
+    i = 0
+    while i < len(linhas):
+        m = PERMISSOES.match(linhas[i])
+        if not m:
+            i += 1
+            continue
+        indent, inline = len(m.group(1)), m.group(2)
+        contexto = 'no topo' if indent == 0 else 'em job'
+        if inline:  # read-all/write-all concedem TUDO — acima de qualquer teto
+            falhas.append((i + 1, f'`permissions: {inline}` ({contexto}) — concede '
+                                  f'todos os escopos e fere o teto de '
+                                  f'`{nome_arquivo}`: {{' +
+                                  ', '.join(f'{k}: {v}' for k, v in sorted(teto.items())) + '}}'))
+            i += 1
+            continue
+        i += 1
+        while i < len(linhas) and linhas[i].strip():
+            if len(linhas[i]) - len(linhas[i].lstrip()) <= indent:
+                break  # voltou ao nível do bloco: fim das permissões
+            mc = ESCOPO.match(linhas[i])
+            if mc:
+                escopo, nivel = mc.group(1), mc.group(2).strip("'\"")
+                if escopo not in teto:
+                    falhas.append((i + 1, f'`{escopo}: {nivel}` ({contexto}) — fora do teto '
+                                          f'de `{nome_arquivo}`: este workflow não tem '
+                                          f'direito a `{escopo}`. Teto declarado: ' +
+                                          ', '.join(f'{k}: {v}' for k, v in sorted(teto.items())) +
+                                          '. Se o workflow passou a precisar disso de '
+                                          'verdade, eleve o teto na TETO_PERMISSOES com '
+                                          'justificativa no PR'))
+                elif NIVEL.get(nivel, 99) > NIVEL.get(teto[escopo], -1):
+                    falhas.append((i + 1, f'`{escopo}: {nivel}` ({contexto}) — acima do teto '
+                                          f'`{escopo}: {teto[escopo]}` de `{nome_arquivo}`. '
+                                          f'Se a elevação é real, mude o teto na '
+                                          f'TETO_PERMISSOES com justificativa no PR'))
+            i += 1
+    return falhas
+
+
 def audit(path: Path):
     """Audita um workflow e devolve (falhas, avisos) — listas de (linha, texto)."""
     linhas = path.read_text(encoding='utf-8', errors='replace').splitlines()
     falhas, avisos = [], []
+
+    # ── 8. nomes e níveis de permissão (topo e por job) ─────────────────────
+    falhas.extend(checar_permissoes(linhas))
+
+    # ── 10. teto de permissões deste arquivo ─────────────────────────────────
+    falhas.extend(checar_teto(path.name, linhas))
 
     # ── 1. permissions no topo (coluna 0) ────────────────────────────────────
     if not any(re.match(r'^permissions:', l) for l in linhas):
@@ -135,7 +311,7 @@ def audit(path: Path):
                 falhas.append((i, f'contexto não confiável interpolado em `run:` '
                                   f'(script injection): {l.strip()[:60]}'))
 
-    # ── 4 a 7. gatilho proibido, runner, runtime e pinagem ─────────────────
+    # ── 4 a 7 e 9. gatilho proibido, runner, runtime e pinagem ───────────────
     for i, l in enumerate(linhas, start=1):
         if re.match(r'^\s*(pull_request_target|workflow_run):', l):
             falhas.append((i, 'gatilho `pull_request_target`/`workflow_run` — dá '
@@ -167,7 +343,14 @@ def audit(path: Path):
                                   f'use `{repo}@v{minimo}` ou maior'))
 
             if not SHA_PINNED.search(alvo):
-                avisos.append((i, f'`{alvo}` não está fixado por SHA'))
+                owner = repo.split('/')[0].lower()
+                if owner in PRIMEIRA_PARTE:
+                    avisos.append((i, f'`{alvo}` não está fixado por SHA '
+                                      f'(primeira parte: aceito no major)'))
+                else:
+                    falhas.append((i, f'`{alvo}` é Action de TERCEIRO sem SHA — '
+                                      f'fixe o commit e deixe a tag em '
+                                      f'comentário (`{repo}@<sha> # vN`)'))
     return falhas, avisos
 
 
@@ -181,6 +364,12 @@ def main():
     total_falhas = total_avisos = 0
     for path in arquivos:
         falhas, avisos = audit(path)
+        if path.name not in TETO_PERMISSOES:
+            falhas.append((1, f'workflow sem teto declarado na TETO_PERMISSOES — '
+                              f'toda permissão nova nasce sem limite. Declare em '
+                              f'`audit_workflows.py` o máximo que `{path.name}` tem '
+                              f'direito a pedir (com justificativa no PR) e o auditor '
+                              f'passa a vigiar'))
         total_falhas += len(falhas)
         total_avisos += len(avisos)
         estado = '❌' if falhas else '✅'

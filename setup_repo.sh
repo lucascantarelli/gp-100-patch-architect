@@ -9,16 +9,19 @@
 #   DRY_RUN=1 ./setup_repo.sh          # só mostra o que faria (recomendado na 1ª vez)
 #   ./setup_repo.sh --check            # só lê o estado atual e imprime o diagnóstico
 #
+# Gestão de projetos (labels/milestones/Project v2) vive no
+#   .github/scripts/bootstrap_project_management.sh — invocado no passo 7;
+# automação de cards e guardian: .github/workflows/project-automation.yml
+# (guia completo: reference/18-project-management.md).
+#
 # Pré-requisitos: `gh` autenticado com escopo `repo` e permissão de admin no
 # repositório (branch protection e security features exigem admin).
 #
 # ─────────────────────────────────────────────────────────────────────────────
 # O FLUXO (detalhado em CONTRIBUTING.md)
 #
-#   feature/**  →  push direto liberado (é onde se trabalha)
-#        ↓  PR + CI verde
-#   develop     →  integração; protegida, nada de push direto
-#        ↓  PR quando for lançar
+#   develop     →  onde se trabalha: push direto liberado, CI a cada push
+#        ↓  PR de release (quando a release for aprovada)
 #   main        →  publicada; protegida, e o merge aqui dispara a Release
 #
 # POR QUE ESTE SCRIPT EXISTE — E POR QUE ELE É LOCAL
@@ -41,9 +44,11 @@ set -euo pipefail
 # ── Configuração (sobrescreva por variável de ambiente) ──────────────────────
 REPO="${REPO:-lucascantarelli/gp-100-patch-architect}"
 
-# Branches de integração protegidas. `develop` é criada a partir de `main` se
-# ainda não existir. É esta lista que define o fluxo — uma linha só.
+# Branches do fluxo. `develop` é criada a partir de `main` se ainda não existir.
+# Só a `main` recebe proteção (PR de release + ci-gate): a `develop` é onde se
+# trabalha, com push direto liberado.
 BRANCHES=(main develop)
+BRANCHES_PROTEGIDAS=(main)
 BASE_BRANCH="${BASE_BRANCH:-main}"
 
 # Nº de aprovações exigidas nos PRs.
@@ -63,6 +68,9 @@ ENFORCE_ADMINS="${ENFORCE_ADMINS:-true}"
 # O check que vale como veredito. Precisa bater EXATAMENTE com o `name:` do job
 # no ci.yml — confira em Actions → CI → o nome do check na aba de checks.
 CI_CHECK="${CI_CHECK:-🚦 Veredito do CI}"
+# Segundo check exigido: o guardian da gestão (project-automation.yml) — PR sem
+# label ou sem issue vinculada reprova. Só vale para a main (protegida).
+GUARDIAN_CHECK="${GUARDIAN_CHECK:-🛡 Guardian — PR precisa de gestão}"
 
 # Exigir a branch atualizada antes do merge. Fica `false` de propósito: o check
 # do PR já roda sobre o merge ref (base + PR), então exigir rebase antes de
@@ -96,12 +104,24 @@ fazer() {
   fi
 }
 
-# Proteção de uma branch (mesmas regras para main e develop).
+# Proteção da branch de release (`main`): PR obrigatório + ci-gate verde.
 proteger() {
-  local b="$1" code_owners="$2" protecao
-  # Sem `bypass_pull_request_allowances`: ninguém precisa furar nada. O bot não
-  # escreve em branch (ver o cabeçalho) e o mantenedor passa por PR como qualquer
-  # pessoa. Force-push e deleção ficam bloqueados para todos, inclusive admins.
+  local b="$1" code_owners="$2" protecao bypass
+  # Sem exceção de bypass para ninguém. O bot não escreve em branch (ver o
+  # cabeçalho) e o mantenedor passa por PR como qualquer pessoa. Force-push e
+  # deleção ficam bloqueados para todos, inclusive admins.
+  #
+  # `bypass_pull_request_allowances` só existe em repositório de ORGANIZAÇÃO:
+  # em repo de pessoa a API reprova o PUT inteiro (HTTP 422 "Only organization
+  # repositories can have users and team restrictions") — por isso a chave só
+  # entra no payload quando o owner é Organization. (Bug latente: o script
+  # nunca tinha rodado; descoberto ao aplicar a proteção pela primeira vez.)
+  if [ "$(gh api "repos/$REPO" --jq '.owner.type' 2>/dev/null)" = "Organization" ]; then
+    bypass=$',
+    "bypass_pull_request_allowances": { "users": [], "teams": [], "apps": [] }'
+  else
+    bypass=""
+  fi
   #
   # `required_linear_history: false` é obrigatório aqui: o release vai de `develop`
   # para `main` como merge commit (ver o passo 4), e histórico linear proibiria
@@ -110,18 +130,13 @@ proteger() {
 {
   "required_status_checks": {
     "strict": $STRICT_CHECKS,
-    "contexts": ["$CI_CHECK"]
+    "contexts": ["$CI_CHECK", "$GUARDIAN_CHECK"]
   },
   "enforce_admins": $ENFORCE_ADMINS,
   "required_pull_request_reviews": {
     "dismiss_stale_reviews": true,
     "require_code_owner_reviews": $code_owners,
-    "required_approving_review_count": $REQUIRED_APPROVALS,
-    "bypass_pull_request_allowances": {
-      "users": [],
-      "teams": [],
-      "apps": []
-    }
+    "required_approving_review_count": $REQUIRED_APPROVALS$bypass
   },
   "restrictions": null,
   "required_linear_history": false,
@@ -211,7 +226,7 @@ for b in "${BRANCHES[@]}"; do
     ok "$b criada a partir de $BASE_BRANCH (${sha:0:7})"
   fi
 done
-aviso "feature/** não recebe regra nenhuma de propósito: é a única que aceita push direto."
+aviso "develop não recebe regra nenhuma de propósito: é onde se trabalha, com push direto."
 
 # ── 3 · Segurança ────────────────────────────────────────────────────────────
 passo "3 · Recursos de segurança"
@@ -245,8 +260,8 @@ passo "4 · Fluxo de merge"
 # `develop`. Com merge commit a `main` contém a história da `develop`, e a
 # `develop` continua ancestral da `main` (nada de sync para trás).
 #
-# Convenção de uso: `--squash` em `feature/**` → `develop` (1 PR = 1 linha no
-# changelog) e `--merge` em `develop` → `main`.
+# Convenção de uso: `--merge` em `develop` → `main`; squash só em PR externo
+# contra a `develop`, se houver.
 fazer gh api -X PATCH "repos/$REPO" \
   -F allow_squash_merge=true \
   -F allow_merge_commit=true \
@@ -254,12 +269,14 @@ fazer gh api -X PATCH "repos/$REPO" \
   -F delete_branch_on_merge=true \
   -F allow_auto_merge=true \
   -F allow_update_branch=true
-ok "squash para features, merge commit para o release; rebase desligado"
+ok "merge commit para o release; rebase desligado (squash só em PR externo, se houver)"
 
 # ── 5 · Permissões das Actions ───────────────────────────────────────────────
 passo "5 · Permissões das Actions"
+# `-F` (booleano real), não `-f`: a API rejeita a string "true" em `enabled`
+# (HTTP 422 — For 'properties/enabled', "true" is not a boolean).
 fazer gh api -X PUT "repos/$REPO/actions/permissions" \
-  -f enabled=true -f allowed_actions=all
+  -F enabled=true -f allowed_actions=all
 ok "Actions habilitadas"
 
 fazer gh api -X PUT "repos/$REPO/actions/permissions/workflow" \
@@ -268,7 +285,7 @@ fazer gh api -X PUT "repos/$REPO/actions/permissions/workflow" \
 ok "token default dos workflows é SOMENTE LEITURA (cada job eleva o que precisa)"
 
 # ── 6 · Branch protection ────────────────────────────────────────────────────
-passo "6 · Proteção das branches de integração"
+passo "6 · Proteção da branch de release (main)"
 
 if [ "$REQUIRED_APPROVALS" -gt 0 ]; then
   code_owners=true
@@ -285,36 +302,26 @@ else
   aviso "ENFORCE_ADMINS=false — você (admin) fura as regras; só os demais ficam presos"
 fi
 
-for b in "${BRANCHES[@]}"; do
+for b in "${BRANCHES_PROTEGIDAS[@]}"; do
   proteger "$b" "$code_owners"
 done
 
-# ── 7 · Labels ───────────────────────────────────────────────────────────────
-passo "7 · Labels padronizadas"
-# `--force` atualiza descrição/cor de label existente (idempotente).
-while IFS='|' read -r nome cor desc; do
-  [ -z "$nome" ] && continue
-  if [ "$DRY_RUN" = "1" ]; then
-    printf '  %s[dry-run]%s label: %s\n' "$Y" "$Z" "$nome"
-  else
-    gh label create "$nome" --color "$cor" --description "$desc" --force >/dev/null 2>&1 \
-      && ok "$nome" || aviso "não criei $nome"
-  fi
-done <<'LABELS'
-bug|d73a4a|Algo não funciona como documentado
-data|0e8a16|Dados gerados pelo pipeline (patches, índices, catálogo de IRs)
-documentation|0075ca|Melhoria ou correção em documentação
-prst-import|1d76db|Falha ao importar .prst na pedaleira ou no GP-100 Edits
-tone-mismatch|fbca04|O patch importa, mas o som não bate com o patch.md
-pipeline|5319e7|Scripts de tools/, geração de dados e CI
-ir-library|c5def5|Packs de Impulse Response, slots de User IR e política de IR
-security|b60205|Superfície de segurança, dependências e workflows
-release|0e8a16|Preparação de versão (VERSION + CHANGELOG)
-good first issue|7057ff|Bom para quem está começando
-help wanted|008672|Atenção extra é bem-vinda
-needs triage|ededed|Aguardando triagem do mantenedor
-breaking change|d93f0b|Mudança incompatível (força bump MAJOR)
-LABELS
+# ── 7 · Labels (delegado — fonte única no bootstrap) ─────────────────────────
+passo "7 · Labels — delegado ao bootstrap_project_management.sh"
+#
+# A taxonomia de gestão (type:/priority:/status:/scope:/size: + domínio) mora
+# em .github/scripts/bootstrap_project_management.sh — FONTE ÚNICA, junto de
+# milestones e Project v2. Invocar aqui mantém um único comando aplicando tudo,
+# sem copiar tabela (tabela copiada é redundância — o que este projeto elimina).
+BOOTSTRAP="$(dirname "$0")/.github/scripts/bootstrap_project_management.sh"
+if [ "$DRY_RUN" = "1" ]; then
+  printf '  %s[dry-run]%s ONLY=labels %s\n' "$Y" "$Z" "$BOOTSTRAP"
+elif ONLY=labels bash "$BOOTSTRAP"; then
+  ok "taxonomia aplicada (28 labels — ver bootstrap_project_management.sh)"
+else
+  aviso "bootstrap não rodou — execute manualmente:"
+  aviso "  ONLY=labels .github/scripts/bootstrap_project_management.sh"
+fi
 
 # ── 8 · Verificação ──────────────────────────────────────────────────────────
 passo "8 · Verificação final"
@@ -331,27 +338,23 @@ else
 fi
 
 passo "Como fica o dia a dia"
-falar "  Push direto só em feature/*. O resto entra por PR:"
+falar "  Push direto na develop. A main só recebe release aprovada:"
 falar ""
-falar "    git switch $BASE_BRANCH && git pull"
-falar "    git switch -c feature/minha-mudanca"
-falar "    # ... trabalho ..."
-falar "    git push -u origin feature/minha-mudanca"
-falar "    gh pr create --base develop --fill"
-falar "    gh pr merge --squash --delete-branch      # depois do check verde"
-falar ""
-falar "  feature → develop é SQUASH; develop → main é MERGE (sem --delete-branch,"
+falar "    git switch develop && git pull"
+falar "    # ... trabalho: edite os defs, rode o pipeline e a suíte ..."
+falar "    git commit -m 'feat(...)' && git push"
 falar ""
 falar "  Para lançar uma versão (a Release dispara sozinha no merge para a main):"
-falar "    python tools/gen_changelog.py --version X.Y.Z --write"
+falar "    uv run gp100 changelog --version X.Y.Z --write"
 falar "    printf '%s\\n' X.Y.Z > VERSION"
 falar "    git commit -am 'chore(release): vX.Y.Z' && git push"
 falar "    gh pr create --base main --head develop --title 'chore(release): vX.Y.Z'"
 falar "    gh pr merge --merge"
 falar ""
+falar "  develop → main é MERGE COMMIT (sem --delete-branch, que apagaria a develop —"
 falar "  o squash apagaria a história da develop na main e o CHANGELOG sairia vazio)"
 falar ""
-falar "  O CI roda em todo PR e no push para $BASE_BRANCH/develop — não em feature/*:"
+falar "  O CI roda a cada push na $BASE_BRANCH/develop e em todo PR (o de release):"
 falar "    https://github.com/$REPO/actions"
 
 printf '\n%sConcluído.%s\n' "$G" "$Z"

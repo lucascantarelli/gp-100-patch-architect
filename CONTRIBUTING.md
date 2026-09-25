@@ -2,8 +2,8 @@
 
 Obrigado pelo interesse. Este projeto tem uma característica que muda tudo:
 **metade dele é saída de script**. Os arquivos em `patches/**` são *gerados* a
-partir de `tools/patches-defs.json`, e o CI reprova quem editar o gerado à mão.
-Antes de abrir um PR, leia a seção [O pipeline é obrigatório](#-o-pipeline-é-obrigatório).
+partir de `data/defs/` (schema v2: fragmentos por álbum), e o CI reprova quem editar o gerado à mão.
+Antes de commitar na `develop`, leia a seção [O pipeline é obrigatório](#-o-pipeline-é-obrigatório).
 
 Ao participar, você concorda com o [`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md).
 Para vulnerabilidades, **não** abra issue: siga o [`SECURITY.md`](SECURITY.md).
@@ -12,62 +12,69 @@ Para vulnerabilidades, **não** abra issue: siga o [`SECURITY.md`](SECURITY.md).
 
 ## 🧰 Ambiente de desenvolvimento
 
-Tempo de setup: ~2 minutos. Não há dependências para instalar.
+Tempo de setup: ~2 minutos, com um comando (`ADR-0001`).
 
 | Requisito | Versão | Usado por |
 |---|---|---|
-| **Python** | 3.14 (3.11+ funciona) | `tools/`, `tests/` — **só a biblioteca padrão** |
+| **Python** | 3.14 (apenas) | pipeline, pacote `src/gp100_architect`, testes |
+| **uv** | qualquer recente | ambiente, dependências de dev, comandos (`uv run …`) |
 | **Node.js** | 26 (20+ funciona) | typecheck dos agentes em `.agents/` |
 | **Git** | qualquer | — |
 
 ```bash
 git clone https://github.com/lucascantarelli/gp-100-patch-architect.git
 cd gp-100-patch-architect
-
-# Não existe requirements.txt, package.json nem venv obrigatório:
-# os scripts usam a stdlib; o typecheck puxa o TypeScript via npx.
-python --version    # 3.14.x
-node --version      # v26.x
+uv sync             # cria .venv, instala o lockfile e o pacote (editável)
+uv run gp100 --version
+node --version      # v26.x (só para o typecheck dos agentes)
 ```
 
-> **💡 Assinatura dos dados:** `tools/patches-defs.json` é a **fonte única** de
-> músicas, álbuns, patches e IRs recomendadas. Os scripts são renderizadores —
-> nenhum deles tem lista de músicas ou de cabs dentro do código. Acrescentar
+O produto é o **pacote** (`src/gp100_architect`) — CLI `gp100` e pipeline
+in-process; o ambiente uv é o ambiente de desenvolvimento. Detalhes e
+comandos do dia a dia: [`DEVELOPMENT.md`](DEVELOPMENT.md).
+
+> **💡 Assinatura dos dados:** `data/defs/` é a **fonte única** de
+> músicas, álbuns, patches e IRs recomendadas. O pacote é o renderizador —
+> nenhum módulo tem lista de músicas ou de cabs dentro do código. Acrescentar
 > dado é editar o defs, nunca o gerador.
 
 Páginas do manual sob demanda (opcional; requer `pymupdf` e o `manual.pdf`
 local, que não é versionado):
 
 ```bash
-pip install pymupdf
-python tools/render_manual_page.py 21        # página impressa NN = arquivo NN+2
+uv tool install pymupdf
+uv run gp100 manual-page 21                  # página impressa NN = arquivo NN+2
 ```
 
-## ✅ Antes de abrir um PR: rode exatamente o que o CI roda
+## ✅ Antes de commitar na `develop`: rode exatamente o que o CI roda
 
 ```bash
-# 1. Suíte de testes (28 testes, stdlib pura)
-python -m unittest discover -s tests -v
+# 1. Suíte completa (256 testes) com cobertura do pacote
+uv run pytest -q --cov --cov-report=term-missing
 
-# 2. Typecheck dos 17 agentes
+# 2. Gates de qualidade (pacote)
+uv run ruff check . && uv run ruff format --check . && uv run mypy
+
+# 3. Typecheck dos 20 agentes
 npx -y -p typescript@5.9.2 tsc --noEmit -p tsconfig.json
 ```
+
+Opcional, mas recomendado: `uv run pre-commit install` — os hooks rodam lint e
+formatação antes do commit (o veredito continua sendo o CI).
 
 E, **se você mexeu em dados** (música, camada, patch, momento, pack de IR ou
 cab):
 
 ```bash
-# 3. Pipeline completo, na ordem do CI
-python tools/ir_library.py \
-  && python tools/add_pulse_defs.py \
-  && python tools/add_momentos.py \
-  && python tools/build_song_patches.py \
-  && python tools/gen_indexes.py
+# 3. Pipeline completo, na ordem do CI (o defs É a fonte — nada de seeders)
+uv run gp100 build
 ```
 
-O guarda de sincronia vive na suíte (`TestH_DadosEmSincronia`): ela roda o
-pipeline numa cópia temporária do repositório e compara com o commitado — se
-reprovar, o teste lista os arquivos divergentes. Suíte verde = PR coerente.
+O guarda de determinismo vive na suíte (`TestH_DadosEmSincronia`): ela roda o
+pipeline numa cópia temporária do repositório e compara com os derivados que você
+tem — num clone limpo (CI) prova que o defs determina a biblioteca inteira; na
+sua máquina, pega "editei o defs e esqueci de regenerar". Se reprovar, o teste
+lista os arquivos divergentes. Suíte verde = PR coerente.
 
 ## 🔁 O pipeline é obrigatório
 
@@ -76,45 +83,45 @@ no [`README.md`](README.md)), então o CI trata esquecimento como falha de build
 
 | Você mexeu em | Obrigatório rodar |
 |---|---|
-| `tools/patches-defs.json` (álbum, música, patch, momento) | `add_pulse_defs.py` → `add_momentos.py` → `build_song_patches.py` → `gen_indexes.py` |
-| Novos packs de IR em `impulse_responses/` | `ir_library.py` |
-| Scripts em `tools/` | a suíte + o pipeline inteiro (a saída tem de continuar idêntica) |
+| `data/defs/` (álbum, música, patch, momento) | `uv run gp100 build` |
+| Novos packs de IR em `impulse_responses/` | `uv run gp100 build` |
+| Código do pacote (`src/`) | a suíte + o pipeline inteiro (a saída tem de continuar idêntica) |
 
 **Nunca edite à mão** um arquivo gerado: `patches/**/*.prst`, `patches/**/patch.md`,
 `patches/**/MAPA-DO-ALBUM.md`, `patches/README.md`,
-`tools/patches-defs.json`, `tools/ir-library.json`, `reference/16-ir-library.md`.
+`data/ir-library.json`, `reference/16-ir-library.md` (o defs deixou de ser saída de script no schema v2 — ele É a fonte).
 Sua edição será apagada na próxima execução do pipeline e reprovada pelo guarda.
 
-### ⚠️ `spec.json` existe no disco, mas não no git
+### ℹ️ O spec vai direto ao codec — sem intermediário em disco
 
-O pipeline escreve `patches/**/spec.json` a cada rodada: é o que o
-`generate_prst.py` consome para gerar o `.prst`, e é a forma estável de comparar
-parâmetros entre duas versões (o `.prst` muda o `preset_info/@time` a cada build;
-o `spec.json` não). Fora isso **ninguém o consome** — não vai ao pacote de release
-e é 100% regenerável a partir do `patches-defs.json`. Por isso ele está no
-`.gitignore` e o guarda de sincronia o ignora: **não o commite**.
+Desde o ADR-0013, o pipeline passa o spec **in-memory** ao codec
+(`src/gp100_architect/infrastructure/prst/`): o antigo `spec.json` intermediário
+**não existe mais** nem em disco. Para comparar parâmetros entre duas versões,
+leia o defs (`data/defs/`, a fonte) — o `.prst` muda o `preset_info/@time` a
+cada build, o defs não. Nada em `patches/**` é escrito à mão: tudo é derivado do
+`patches/**` e vigiado pelo guarda de determinismo.
 
 ### ⚠️ O catálogo de IRs não é regenerável sem o pack
 
 O **banco** de IRs (`impulse_responses/**`) não é versionado — licença de terceiro.
-O **catálogo** (`tools/ir-library.json` + `reference/16-ir-library.md`) é, porque é
+O **catálogo** (`data/ir-library.json` + `reference/16-ir-library.md`) é, porque é
 insumo da documentação: é dele que sai o caminho exato da captura citado na seção 📡
 no `patch.md` e o marcador 📁 no `MAPA-DO-ALBUM.md` de cada álbum.
 
-Consequência para o seu PR: se você rodar `ir_library.py` **sem** o pack completo
-que gerou o catálogo commitado, 62 docs perderiam a recomendação do banco local.
+Consequência para o seu PR: se você reindexar **sem** o pack completo
+que gerou o catálogo commitado, 97 docs perderiam a recomendação do banco local.
 Como o `patch.md` e o mapa cairiam para "fábrica" juntos, a suíte passaria — então
-o próprio script reprova a rodada
-(`python tools/ir_library.py --force` só quando a remoção for intencional).
+o próprio pipeline reprova a rodada (guarda de encolhimento;
+só a remoção intencional de pack pode encolher o catálogo, com revisão).
 
-Regra prática: **não inclua `tools/ir-library.json` nem `reference/16-ir-library.md`
+Regra prática: **não inclua `data/ir-library.json` nem `reference/16-ir-library.md`
 no PR** a menos que esteja reindexando o banco de propósito, e diga isso na descrição.
 
 ## 🎸 Acrescentando conteúdo (o caminho mais comum)
 
 ### Um patch novo para uma música existente
 
-1. Abra `tools/patches-defs.json` e localize o álbum e a música.
+1. Abra o fragmento do álbum (`data/defs/<CHAVE>.json`) e localize a música.
 2. Acrescente a camada no array de patches da música. O `nome` no painel é
    `MÚSICA+CAMADA` e tem **máximo 12 caracteres** (`STH01BA`, `CT01RIF`).
 3. Preencha o dossiê do rig com **fontes** — o projeto exige lastro pesquisável,
@@ -125,18 +132,17 @@ no PR** a menos que esteja reindexando o banco de propósito, e diga isso na des
 
 > **Pelo agente**, este caminho é o mesmo: `@gp100-patch-architect` entrevista,
 > consulta as skills, valida com o `gp100-patch-validator` e **acrescenta o item no
-> `patches-defs.json`** — ele não escreve em `patches/**` (ver `knowledge.md`,
+> `data/defs/`** — ele não escreve em `patches/**` (ver `knowledge.md`,
 > regra 8). O que você revisa no PR é o **defs** e os derivados que o pipeline gerou.
 
 ### Um álbum inteiro novo
 
-1. Crie o seeder `tools/add_<album>_defs.py` seguindo `add_pulse_defs.py`
-   (o padrão é o seeder encadear `add_momentos`).
-2. Adicione o álbum em `tools/patches-defs.json` com `banda`, `ano`, `pasta`,
-   `titulo`, o dossiê de rig e o `ir_local` de cada cab usado.
-3. Encadeie o novo seeder no `PIPELINE` de `tests/test_pipeline.py` —
-   um seeder fora da lista simplesmente não roda no guarda de sincronia.
-4. Rode o pipeline, revise os `MAPA-DO-ALBUM.md` gerados e a numeração de slots.
+1. Crie o fragmento do álbum `data/defs/<CHAVE>.json` com `idAlbum`, `album`
+   (`banda`, `ano`, `pasta`, `titulo`), o dossiê de rig e o `ir_local` de cada cab
+   usado — e declare a chave em `data/defs/_albums.json` (a ordem do manifesto é
+   a numeração U01…Uxx). Momentos de toggle vivem no próprio fragmento.
+2. Rode o pipeline completo (bloco acima), revise os `MAPA-DO-ALBUM.md` gerados
+   e a numeração de slots.
 
 ## 🚦 Regras de ouro (revisão bloqueia o que violar)
 
@@ -154,8 +160,8 @@ Estas são as invariantes que a suíte testa. Um PR que as quebre não passa:
 - **NR obrigatório com ganho ≥ 55**; **um** efeito espacial dominante por patch.
 - **`.prst` sempre no formato single fw 2.1** com CAB de fábrica. IR de terceiro
   é **documentada**, nunca embutida (ver política abaixo).
-- **`spec.json` não é versionado** — insumo do gerador: não vai ao pacote de
-  release nem ao git (gerado a cada rodada do pipeline).
+- **O spec não vira arquivo** — vai in-memory do defs ao codec (ADR-0013): não
+  existe intermediário em disco, logo nada a versionar ou empacotar.
 
 ## 📡 Política de IR
 
@@ -196,68 +202,62 @@ git commit -m "docs(contributing): detalha o fluxo de commit"
 ```
 
 Breaking change: `feat(prst)!: ...` ou um rodapé `BREAKING CHANGE:` explicando a
-migração. O `tools/gen_changelog.py` lê este padrão para montar o `CHANGELOG.md`
+migração. O `gp100 changelog` lê este padrão para montar o `CHANGELOG.md`
 e sugerir o próximo bump de versão — commit fora do padrão **não aparece** no
 changelog.
 
-## 🌊 Fluxo de trabalho — feature → develop → main
+## 🌊 Fluxo de trabalho — develop → main
 
-Três papéis, e só um deles aceita push direto:
+Duas branches, papéis claros:
 
 | Branch | Papel | Push direto | Protegida |
 |---|---|---|---|
-| `feature/**` | onde o trabalho acontece | ✅ sim | não |
-| `develop` | integração: junta o que já passou por PR | ❌ não | ✅ sim |
-| `main` | o que foi publicado — o merge aqui dispara a Release | ❌ não | ✅ sim |
+| `develop` | onde o trabalho acontece — todo desenvolvimento novo entra aqui | ✅ sim | não |
+| `main` | o que foi publicado — só recebe release aprovada; o merge aqui dispara a Release | ❌ não | ✅ sim |
 
 ```bash
 git switch develop && git pull
-git switch -c feature/solo-time-pulse
 
 # ... edite os defs, rode o pipeline e a suíte ...
 
-git add tools/patches-defs.json patches/ reference/
+git add data/defs/ reference/
 git commit -m "feat(pulse): adiciona camada de solo em Time"
-git push -u origin feature/solo-time-pulse
-gh pr create --base develop --fill
+git push
 ```
 
 | Passo | Exigência |
 |---|---|
-| Base do PR | `develop` — só o PR de release vai contra a `main` |
-| Título do PR | Conventional Commit (vira a linha do `CHANGELOG.md`) |
-| Merge | **squash** — um PR, um commit limpo na história |
-| Branch | apagada automaticamente após o merge |
+| Commits na `develop` | Conventional Commit (é o que alimenta o `CHANGELOG.md` no release) |
+| CI | roda a cada push na `develop` — o `🚦 Veredito do CI` precisa estar verde |
+| `main` | só recebe código pelo PR de release (`develop` → `main`); contribuição externa abre PR contra a `develop` |
 | Checks | `🚦 Veredito do CI` verde é obrigatório — não há merge com CI vermelho |
 
-O CI roda em **todo PR** e no **push para `develop` e `main`** — não em
-`feature/**`, porque o PR já é o gatilho e disparar nos dois daria duas execuções
-para o mesmo commit. O push na `develop` é a segunda checagem, a que pega a
-integração das features entre si.
+O CI roda no **push para `develop` e `main`** e em **todo PR**: o push na
+`develop` é a checagem primeira (quebrou, conserta lá), e o PR de release roda
+de novo sobre o merge ref antes de entrar na `main`.
 
-### Publicando uma versão
+### Publicando uma versão (a `main` só é alimentada por release aprovada)
 
-A `develop` só vai para a `main` quando houver versão a lançar:
+Na `develop`, prepara a versão; quando a release for aprovada, o PR alimenta a `main`:
 
 ```bash
-git switch -c chore/release-1.1.0
-python tools/gen_changelog.py --version 1.1.0 --write   # prepende a seção no CHANGELOG.md
+git switch develop && git pull
+uv run gp100 changelog --version 1.1.0 --write   # prepende a seção no CHANGELOG.md
 printf '%s\n' 1.1.0 > VERSION
 git commit -am "chore(release): v1.1.0"
-git push -u origin chore/release-1.1.0
-gh pr create --base develop --fill && gh pr merge --squash --delete-branch
+git push
 
-# quando estiver pronto para lançar:
+# quando a release for aprovada:
 gh pr create --base main --head develop --title "chore(release): v1.1.0"
 gh pr merge --merge
 ```
 
-Repare na diferença: **`feature/**` → `develop` é squash; `develop` → `main` é merge
-commit** (e sem `--delete-branch`, que apagaria a `develop`). Não é capricho — um
-squash na entrada da `main` juntaria a release inteira num commit e as features
-que alimentam o changelog ficariam só na `develop`. Com merge commit a `main`
-contém a história da `develop`, e a `develop` continua sendo ancestral dela: não
-há nada para sincronizar de volta a cada release.
+Repare: **`develop` → `main` é merge commit** (e sem `--delete-branch`, que
+apagaria a `develop`). Não é capricho — um squash na entrada da `main` juntaria
+a release inteira num commit e as mudanças que alimentam o changelog ficariam só
+na `develop`. Com merge commit a `main` contém a história da `develop`, e a
+`develop` continua sendo ancestral dela: não há nada para sincronizar de volta a
+cada release.
 
 No merge para a `main`, o [`release.yml`](.github/workflows/release.yml) roda
 sozinho: empacota os ZIPs, cria a tag `v1.1.0` e publica a Release. **A versão é
@@ -268,19 +268,83 @@ Deixe o PR em **draft** enquanto o pipeline estiver instável. Ao abrir, ele já
 vem com o [`PULL_REQUEST_TEMPLATE`](.github/PULL_REQUEST_TEMPLATE.md): marque as
 caixas de verdade, são elas que o revisor vai conferir.
 
+### Abrindo o PR — a informação vem no comando
+
+Um PR aberto sem label, sem milestone e sem assignee não é um PR: é um diff à
+procura de dono. O card no Project, o corte por milestone e o "quem puxa" vivem
+desses três campos — então eles entram no **comando** que abre o PR, não na
+memória de quem abriu:
+
+```bash
+gh pr create --base develop --fill \
+  --title "feat(agents): gp100-setlist" \
+  --label "type: feature" --label "scope: agents" --label "size: M" --label "priority: p2-medium" \
+  --milestone "v2.0.0 — Formato, site e escala" \
+  --assignee @me \
+  --body "... Closes #48"
+```
+
+Regra prática dos rótulos: **um** `type:`, **um ou mais** `scope:`/`area:`, **um**
+`size:` (se `size: XL`, provavelmente são dois PRs) e **um** `priority:` quando a
+ordem importa. O guardian cobra em cada push: label ausente **reprova**; sem
+milestone e sem assignee ele **avisa** (o aviso aparece nos checks, não some).
+
+**A branch do PR morre no merge.** O repositório está com *Automatically delete
+head branches* ligado (`delete_branch_on_merge`), então o merge pela interface já
+limpa a branch. Pela CLI, diga isso explicitamente:
+
+```bash
+gh pr merge 38 --merge --delete-branch   # develop: a branch do trabalho morre aqui
+gh pr merge 39 --merge                   # develop → main: NUNCA com --delete-branch
+```
+
+A exceção é o PR de release (`develop` → `main`): ali a branch de origem **é** a
+`develop`, e apagá-la levaria a linha de trabalho inteira. Branch que ficou para
+trás não precisa de arqueologia: `git fetch --prune && git branch --merged
+origin/develop` mostra o que já entrou e pode sair.
+
 ## 👀 Revisão
 
 Um PR é aprovado quando:
 
-1. O `ci-gate` está verde (`test-suite`, `typecheck`).
-2. O diff **não** contém arquivo gerado editado à mão nem lixo de regeneração.
-3. Documentação e `reference/` acompanham a mudança — dado novo sem doc é
+1. O `ci-gate` está verde (`test-suite`, `quality`, `typecheck`).
+2. **O review foi lido** — checks verdes não são aprovação (ver checklist abaixo).
+3. O diff **não** contém arquivo gerado editado à mão nem lixo de regeneração.
+4. Documentação e `reference/` acompanham a mudança — dado novo sem doc é
    revisão incompleta.
-4. As regras de ouro acima valem no PR.
-5. Nada de binário de terceiro no diff (WAV de pack pago, PDF de fabricante).
+5. As regras de ouro acima valem no PR.
+6. Nada de binário de terceiro no diff (WAV de pack pago, PDF de fabricante).
 
 Se você não tiver certeza sobre um ponto, **abra a PR em draft e pergunte** — é
 mais barato que discutir depois do merge.
+
+### ✅ Antes de mergear (quem mergeia)
+
+`gh pr checks` mostra **checks**, não **review**. Aconteceu neste repositório:
+o PR #35 foi mergeado com o `ci-gate` verde e dois comentários de review do
+CodeQL apontando Action de terceiro sem pinagem — alerta que só apareceu dias
+depois, no painel de segurança. O ritual é:
+
+```bash
+# 1. Checks verdes
+gh pr checks <n>
+
+# 2. Review lido — reviews, comentários inline e a conversa toda
+gh api repos/{owner}/{repo}/pulls/<n>/reviews --jq '.[] | "\(.user.login) [\(.state)]\n\(.body)"'
+gh api repos/{owner}/{repo}/pulls/<n>/comments --jq '.[] | "\(.user.login) @ \(.path):\(.line)\n\(.body)"'
+gh pr view <n> --comments
+
+# 3. Alertas de segurança (inclusive os que viraram comentário de review)
+gh api repos/{owner}/{repo}/code-scanning/alerts?state=open
+```
+
+Regra de leitura: **comentário de review aberto é bloqueio**, mesmo com CI
+verde — inclusive quando vem de bot (`github-advanced-security`, CodeQL,
+Dependabot). Se o achado não for resolvido no PR, ele precisa de issue de
+acompanhamento **antes** do merge, citada no corpo.
+
+> **Se o review veio de bot e está vazio** (ex.: cota do Copilot esgotada), isso
+> não é aprovação: revise você mesmo o diff e diga no PR quem revisou.
 
 ## 🔒 Segurança e o escopo de escrita do CI
 

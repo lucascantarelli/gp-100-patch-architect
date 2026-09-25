@@ -1,16 +1,51 @@
 # Dependabot — o que este repositório realmente tem para atualizar.
 #
-# Contexto que explica este arquivo enxuto: o projeto é deliberadamente
-# **sem dependências**. Os scripts em tools/ e tests/ usam só a biblioteca
-# padrão do Python, e não existe package.json nem requirements.txt — o TypeScript
-# dos agentes é baixado sob demanda por `npx -p typescript@5.9.2` no CI.
+# Desde a profissionalização 2.0 o projeto TEM dependências Python: `typer` e
+# `rich` (runtime) e `pytest`, `pytest-cov`, `ruff`, `mypy`, `pre-commit` (dev)
+# vivem em `pyproject.toml`, com o `uv.lock` commitado — o lockfile é o
+# contrato: o CI nunca resolve versão nova sozinho (`uv sync --frozen`).
+# O ecossistema correto para o Dependabot vigiar isso é `uv` (não `pip`: o
+# manifesto é o do uv). PR de dependência que quebre o lockfile reprova no
+# `uv sync --frozen` do CI — é essa a trava.
 #
-# Logo, o único ecossistema real aqui são as **GitHub Actions** dos workflows.
-# Mantê-las atualizadas é justamente o que permite fixá-las por SHA (a
-# recomendação de hardening em SECURITY.md) sem que elas envelheçam sozinhas.
+# O TypeScript dos agentes continua sob demanda (`npx -p typescript@…` no CI,
+# sem package.json): não há manifesto npm para vigiar.
+#
+# GitHub Actions segue o bloco de baixo: mantê-las atualizadas é o que permite
+# fixá-las por SHA (recomendação de hardening em SECURITY.md) sem envelhecerem.
 
 version: 2
 updates:
+  # ── Dependências Python (pyproject.toml + uv.lock) ─────────────────────────
+  - package-ecosystem: "uv"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "America/Sao_Paulo"
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: "chore"
+      include: "scope"
+    labels:
+      - "dependencies"
+      - "python"
+    # Um PR por semana com minor+patch juntas: menos ruído, revisão única.
+    # Bump de major muda contrato (API, flags, gates de lint) — PR separado,
+    # para ser lido com atenção em vez de mergeado no lote semanal.
+    groups:
+      python-minor-patch:
+        patterns:
+          - "*"
+        update-types:
+          - "minor"
+          - "patch"
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
+
+  # ── GitHub Actions dos workflows ────────────────────────────────────────────
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
@@ -38,23 +73,3 @@ updates:
     ignore:
       - dependency-name: "*"
         update-types: ["version-update:semver-major"]
-
-  # ── Habilitar quando houver manifesto de dependências ──────────────────────
-  # O projeto hoje não tem nenhum. Se um dia entrar, descomente o bloco
-  # correspondente para o Dependabot passar a vigiar vulnerabilidades dele.
-  #
-  # - package-ecosystem: "pip"
-  #   directory: "/"
-  #   schedule:
-  #     interval: "weekly"
-  #   commit-message:
-  #     prefix: "chore"
-  #   labels: ["dependencies", "python"]
-  #
-  # - package-ecosystem: "npm"
-  #   directory: "/"
-  #   schedule:
-  #     interval: "weekly"
-  #   commit-message:
-  #     prefix: "chore"
-  #   labels: ["dependencies", "javascript"]

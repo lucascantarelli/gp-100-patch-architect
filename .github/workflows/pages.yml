@@ -1,0 +1,72 @@
+# pages.yml — publica o site estático da biblioteca no GitHub Pages (issue #11).
+#
+# Fonte única: `gp100 site` deriva tudo de `data/defs/` NA HORA do deploy — o
+# site NÃO é versionado (decisão do Pilar C registrada no doc 19 §10: gerar no
+# workflow e publicar sem commitar; nada fica no repositório, então o guarda de
+# sincronia do TestH não precisa cobri-lo). Um push na `develop` = redeploy.
+#
+# Endurecimento (o auditor `audit_workflows.py` cobra):
+#   * `permissions:` no topo com o PISO por job — pages: write só no deploy
+#     (a TETO_PERMISSOES do auditor define o teto deste arquivo);
+#   * runner fixado (`ubuntu-24.04`, nunca `-latest`) e `timeout-minutes` por job;
+#   * Action de terceiro fixada por SHA (`astral-sh/setup-uv`), primeira parte
+#     no major que declara node24;
+#   * nenhum contexto não confiável interpolado em `run:`.
+#
+# Publicação é derivada e idempotente: rodar duas vezes produz o mesmo site.
+name: Pages
+
+on:
+  push:
+    branches: [develop]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pages-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: 🏗 Gera o site (gp100 site)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      pages: read       # o `configure-pages` lê a API do Pages (GET /pages)
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: 1/2 · Ambiente do lockfile (uv sync --frozen)
+        uses: astral-sh/setup-uv@37802adc94f370d6bfd71619e3f0bf239e1f3b78 # v7
+        with:
+          python-version: '3.14'
+
+      - run: uv sync --frozen
+
+      - name: 2/2 · Deriva o site do defs
+        run: uv run gp100 site --destino site
+
+      # Sem `configure-pages`: o site é HTML estático com links relativos —
+      # nenhuma base URL do Pages é necessária (e o passo exigia leitura da
+      # API do Pages que não existe no build de um site novo).
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+  deploy:
+    name: 🚀 Publica no GitHub Pages
+    needs: build
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    permissions:
+      pages: write      # publicar É o trabalho deste job (exceção justificada)
+      id-token: write   # OIDC exigido pelo deploy do Pages
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

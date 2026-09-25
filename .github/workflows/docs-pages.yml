@@ -1,0 +1,89 @@
+# docs-pages.yml — publica a documentação de engenharia no GitHub Pages (issue #60).
+#
+# Fonte única: cada página é COPIADA do repositório na hora do deploy
+# (`scripts/prep_docs.py` monta `docs/_site/` do checkout fresco) — o site
+# NÃO é versionado (mesma decisão da #11: gerar no deploy, publicar sem
+# commitar). Um push na `develop` = redeploy.
+#
+# Link checker: o critério "link quebrado reprova o build" é cumprido pelo
+# `audit_docs.py` (#58), que roda no job de agentes do CI em TODO push — ele
+# varre o repositório inteiro (mais estrito que o link checker do MkDocs, que
+# só vê a árvore de build). Este job roda o prep + build --strict como trava
+# extra: navegação quebrada ou md inválido abortam o deploy.
+#
+# Endurecimento (o auditor `audit_workflows.py` cobra):
+#   * `permissions:` no topo, piso `contents: read`;
+#   * `pages: write` + `id-token: write` SÓ no job de deploy (teto registrado
+#     na tabela do auditor — deploy do Pages É escrita);
+#   * runner fixado (`ubuntu-24.04`) e `timeout-minutes` em todo job;
+#   * zero interpolação de contexto não confiável em `run:`;
+#   * actions de terceiros fixadas por SHA (setup-uv).
+
+name: 📖 Docs — Pages
+
+on:
+  push:
+    branches: [develop]
+    paths:
+      - 'docs/**'
+      - 'reference/**'
+      - 'README.md'
+      - 'ARCHITECTURE.md'
+      - 'DEVELOPMENT.md'
+      - 'CONTRIBUTING.md'
+      - 'SECURITY.md'
+      - 'CODE_OF_CONDUCT.md'
+      - 'NOTICE.md'
+      - 'CHANGELOG.md'
+      - 'knowledge.md'
+      - 'master_prompt.md'
+      - 'mkdocs.yml'
+      - 'scripts/prep_docs.py'
+      - '.github/workflows/docs-pages.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: 🏗 Build do site de docs
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.14'
+
+      - name: Cache do uv
+        uses: astral-sh/setup-uv@37802adc94f370d6bfd71619e3f0bf239e1f3b78  # v7
+
+      - name: Instala MkDocs Material
+        run: uv sync --extra docs --frozen
+
+      - name: Monta a árvore de build (docs/_site)
+        run: uv run python scripts/prep_docs.py
+
+      - name: Build --strict (navegação quebrada reprova)
+        run: uv run mkdocs build --strict --site-dir site-docs
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site-docs
+
+  deploy:
+    name: 🚀 Deploy no Pages
+    needs: build
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    permissions:
+      pages: write      # teto: publicar a doc É o trabalho deste job
+      id-token: write   # OIDC para o deploy-pages
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

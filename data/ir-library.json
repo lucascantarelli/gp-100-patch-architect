@@ -1,0 +1,3197 @@
+{
+ "packs": {
+  "25 Analog Cab IRs": {
+   "wavs": 25,
+   "cabs": [
+    "25 Analog Cab IRs"
+   ],
+   "all_compatible": false,
+   "meta": {},
+   "files": [
+    {
+     "file": "25 Analog Cab IRs/1x12 American.wav",
+     "size_kb": 4,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 21,
+     "compatible": false,
+     "over_1024": false
+    },
+    {
+     "file": "25 Analog Cab IRs/1x12 Boutique_EQ.wav",
+     "size_kb": 4,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 21,
+     "compatible": false,
+     "over_1024": false
+    },
+    {
+     "file": "25 Analog Cab IRs/1x12 British II_EQ.wav",
+     "size_kb": 4,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 21,
+     "compatible": false,
+     "over_1024": false
+    },
+    {
+     "file": "25 Analog Cab IRs/1x12 British_EQ.wav",
+     "size_kb": 4,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 21,
+     "compatible": false,
+     "over_1024": false
+    },
+    {
+     "file": "25 Analog Cab IRs/1x12 Metal British_EQ.wav",
+     "size_kb": 4,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 21,
+     "compatible": false,
+     "over_1024": false
+    },
+    {
+     "file": "25 Analog Cab IRs/1x12 Metal Machine_EQ.wav",
+     "size_kb": 4,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 21,
+     "compatible": false,
+     "over_1024": false
+    },
+    {
+     "file": "25 Analog Cab IRs/2x10 Bass_EQ.wav",
+     "size_kb": 4,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 21,
+     "compatible": false,
+     "over_1024": false
+    },
+    {
+     "file": "25 Analog Cab IRs/2x12 American_EQ.wav",
+     "size_kb": 4,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 21,
+     "compatible": false,
+     "over_1024": false
+    },
+    {
+     "file": "25 Analog Cab IRs/2x12 Blackface_EQ.wav",
+     "size_kb": 4,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 21,
+     "compatible": false,
+     "over_1024": false
+    },
+    {
+     "file": "25 Analog Cab IRs/2x12 Boutique_EQ.wav",
+     "size_kb": 4,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 21,
+     "compatible": false,
+     "over_1024": false
+    },
+    {
+     "file": "25 Analog Cab IRs/2x12 Metal Custom_EQ.wav",
+     "size_kb": 4,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 21,
+     "compatible": false,
+     "over_1024": false
+    },
+    {
+     "file": "25 Analog Cab IRs/2x12 Painapple_EQ.wav",
+     "size_kb": 4,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 21,
+     "compatible": false,
+     "over_1024": false
+    },
+    {
+     "file": "25 Analog Cab IRs/2x12 VC 30_EQ.wav",
+     "size_kb": 4,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 21,
+     "compatible": false,
+     "over_1024": false
+    },
+    {
+     "file": "25 Analog Cab IRs/4x10 American_EQ.wav",
+     "size_kb": 4,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 21,
+     "compatible": false,
+     "over_1024": false
+    },
+    {
+     "file": "25 Analog Cab IRs/4x10 Metal German_EQ.wav",
+     "size_kb": 4,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 21,
+     "compatible": false,
+     "over_1024": false
+    },
+    {
+     "file": "25 Analog Cab IRs/4x12 American_EQ.wav",
+     "size_kb": 4,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 21,
+     "compatible": false,
+     "over_1024": false
+    },
+    {
+     "file": "25 Analog Cab IRs/4x12 Bass British_EQ.wav",
+     "size_kb": 4,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 21,
+     "compatible": false,
+     "over_1024": false
+    },
+    {
+     "file": "25 Analog Cab IRs/4x12 British_EQ.wav",
+     "size_kb": 4,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 21,
+     "compatible": false,
+     "over_1024": false
+    },
+    {
+     "file": "25 Analog Cab IRs/4x12 Gazoline_EQ.wav",
+     "size_kb": 4,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 21,
+     "compatible": false,
+     "over_1024": false
+    },
+    {
+     "file": "25 Analog Cab IRs/4x12 M65_EQ.wav",
+     "size_kb": 4,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 21,
+     "compatible": false,
+     "over_1024": false
+    },
+    {
+     "file": "25 Analog Cab IRs/4x12 MFB_EQ.wav",
+     "size_kb": 4,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 21,
+     "compatible": false,
+     "over_1024": false
+    },
+    {
+     "file": "25 Analog Cab IRs/4x12 Metal American_EQ.wav",
+     "size_kb": 4,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 21,
+     "compatible": false,
+     "over_1024": false
+    },
+    {
+     "file": "25 Analog Cab IRs/4x12 Metal British_EQ.wav",
+     "size_kb": 4,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 21,
+     "compatible": false,
+     "over_1024": false
+    },
+    {
+     "file": "25 Analog Cab IRs/8x10 Bass_EQ.wav",
+     "size_kb": 4,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 21,
+     "compatible": false,
+     "over_1024": false
+    },
+    {
+     "file": "25 Analog Cab IRs/8x10 STV_EQ.wav",
+     "size_kb": 4,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 21,
+     "compatible": false,
+     "over_1024": false
+    }
+   ]
+  },
+  "Origin Effects - IR-Cab Library V3": {
+   "wavs": 291,
+   "cabs": [
+    "American Twin 2x12",
+    "British Alnico 2x12",
+    "British Checkerboard 4x12",
+    "British Straight 4x12",
+    "Brown Deluxe 1x12",
+    "Lux-O-Vibe 2x10",
+    "Magma Vintage 1x12",
+    "Modern Boutique 4x12",
+    "Tweed Combo 1x12"
+   ],
+   "all_compatible": false,
+   "meta": {
+    "source": "https://origineffects.com/product/ir-cab-library/",
+    "license": "Gratuita (cadastro manual no site da Origin Effects) — redistribuição não concedida",
+    "notes": "Capturas profissionais dos cabines reais; mixes Bright/Medium/Dark + mics individuais (87=U87 FET, 160=RCA 160 ribbon, 421=SM421, 57=SM57)."
+   },
+   "files": [
+    {
+     "file": "Origin Effects - IR-Cab Library V3/44.1kHz Origin Effects IR Cab Library/American Twin 2x12/American Twin 2x12 Bright Mix.wav",
+     "size_kb": 66,
+     "rate": 44100,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": true,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/44.1kHz Origin Effects IR Cab Library/American Twin 2x12/American Twin 2x12 Dark Mix.wav",
+     "size_kb": 66,
+     "rate": 44100,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": true,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/44.1kHz Origin Effects IR Cab Library/American Twin 2x12/American Twin 2x12 Medium Mix.wav",
+     "size_kb": 66,
+     "rate": 44100,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": true,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/44.1kHz Origin Effects IR Cab Library/American Twin 2x12/American Twin 2x12 Mics/American Twin 2x12 Bright 160.wav",
+     "size_kb": 66,
+     "rate": 44100,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": true,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/44.1kHz Origin Effects IR Cab Library/American Twin 2x12/American Twin 2x12 Mics/American Twin 2x12 Bright 87.wav",
+     "size_kb": 66,
+     "rate": 44100,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": true,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/44.1kHz Origin Effects IR Cab Library/American Twin 2x12/American Twin 2x12 Mics/American Twin 2x12 Dark 160.wav",
+     "size_kb": 66,
+     "rate": 44100,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": true,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/44.1kHz Origin Effects IR Cab Library/American Twin 2x12/American Twin 2x12 Mics/American Twin 2x12 Dark 87.wav",
+     "size_kb": 66,
+     "rate": 44100,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": true,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/44.1kHz Origin Effects IR Cab Library/American Twin 2x12/American Twin 2x12 Mics/American Twin 2x12 Medium 160.wav",
+     "size_kb": 66,
+     "rate": 44100,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": true,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/44.1kHz Origin Effects IR Cab Library/American Twin 2x12/American Twin 2x12 Mics/American Twin 2x12 Medium 87.wav",
+     "size_kb": 66,
+     "rate": 44100,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": true,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/44.1kHz Origin Effects IR Cab Library/British Alnico 2x12/British Alnico 2x12 Bright Mix.wav",
+     "size_kb": 66,
+     "rate": 44100,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": true,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/44.1kHz Origin Effects IR Cab Library/British Alnico 2x12/British Alnico 2x12 Dark Mix.wav",
+     "size_kb": 66,
+     "rate": 44100,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": true,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/44.1kHz Origin Effects IR Cab Library/British Alnico 2x12/British Alnico 2x12 Medium Mix.wav",
+     "size_kb": 66,
+     "rate": 44100,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": true,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/44.1kHz Origin Effects IR Cab Library/British Alnico 2x12/British Alnico 2x12 Mics/British Alnico 2x12 Bright 160.wav",
+     "size_kb": 66,
+     "rate": 44100,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": true,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/44.1kHz Origin Effects IR Cab Library/British Alnico 2x12/British Alnico 2x12 Mics/British Alnico 2x12 Bright 421.wav",
+     "size_kb": 66,
+     "rate": 44100,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": true,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/44.1kHz Origin Effects IR Cab Library/British Alnico 2x12/British Alnico 2x12 Mics/British Alnico 2x12 Bright 87.wav",
+     "size_kb": 66,
+     "rate": 44100,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": true,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/44.1kHz Origin Effects IR Cab Library/British Alnico 2x12/British Alnico 2x12 Mics/British Alnico 2x12 Dark 160.wav",
+     "size_kb": 66,
+     "rate": 44100,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": true,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/44.1kHz Origin Effects IR Cab Library/British Alnico 2x12/British Alnico 2x12 Mics/British Alnico 2x12 Dark 421.wav",
+     "size_kb": 66,
+     "rate": 44100,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": true,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/44.1kHz Origin Effects IR Cab Library/British Alnico 2x12/British Alnico 2x12 Mics/British Alnico 2x12 Dark 87.wav",
+     "size_kb": 66,
+     "rate": 44100,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": true,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/44.1kHz Origin Effects IR Cab Library/British Alnico 2x12/British Alnico 2x12 Mics/British Alnico 2x12 Medium 160.wav",
+     "size_kb": 66,
+     "rate": 44100,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": true,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/44.1kHz Origin Effects IR Cab Library/British Alnico 2x12/British Alnico 2x12 Mics/British Alnico 2x12 Medium 421.wav",
+     "size_kb": 66,
+     "rate": 44100,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": true,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/44.1kHz Origin Effects IR Cab Library/British Alnico 2x12/British Alnico 2x12 Mics/British Alnico 2x12 Medium 87.wav",
+     "size_kb": 66,
+     "rate": 44100,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": true,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/44.1kHz Origin Effects IR Cab Library/British Checkerboard 4x12/British Checkerboard 4x12 Bright Mix.wav",
+     "size_kb": 72,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/44.1kHz Origin Effects IR Cab Library/British Checkerboard 4x12/British Checkerboard 4x12 Dark Mix.wav",
+     "size_kb": 72,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/44.1kHz Origin Effects IR Cab Library/British Checkerboard 4x12/British Checkerboard 4x12 Medium Mix.wav",
+     "size_kb": 72,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/44.1kHz Origin Effects IR Cab Library/British Checkerboard 4x12/British Checkerboard 4x12 Mics/British Checkerboard 4x12 Bright 160.wav",
+     "size_kb": 72,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/44.1kHz Origin Effects IR Cab Library/British Checkerboard 4x12/British Checkerboard 4x12 Mics/British Checkerboard 4x12 Bright 421.wav",
+     "size_kb": 72,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/44.1kHz Origin Effects IR Cab Library/British Checkerboard 4x12/British Checkerboard 4x12 Mics/British Checkerboard 4x12 Dark 160.wav",
+     "size_kb": 72,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/44.1kHz Origin Effects IR Cab Library/British Checkerboard 4x12/British Checkerboard 4x12 Mics/British Checkerboard 4x12 Dark 421.wav",
+     "size_kb": 72,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/44.1kHz Origin Effects IR Cab Library/British Checkerboard 4x12/British Checkerboard 4x12 Mics/British Checkerboard 4x12 Medium 160.wav",
+     "size_kb": 72,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/44.1kHz Origin Effects IR Cab Library/British Checkerboard 4x12/British Checkerboard 4x12 Mics/British Checkerboard 4x12 Medium 421.wav",
+     "size_kb": 72,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/44.1kHz Origin Effects IR Cab Library/British Straight 4x12/British Straight 4x12 Bright Mix.wav",
+     "size_kb": 66,
+     "rate": 44100,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": true,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/44.1kHz Origin Effects IR Cab Library/British Straight 4x12/British Straight 4x12 Dark Mix.wav",
+     "size_kb": 66,
+     "rate": 44100,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": true,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/44.1kHz Origin Effects IR Cab Library/British Straight 4x12/British Straight 4x12 Medium Mix.wav",
+     "size_kb": 66,
+     "rate": 44100,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": true,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/44.1kHz Origin Effects IR Cab Library/British Straight 4x12/British Straight 4x12 Mics/British Straight 4x12 Bright 160.wav",
+     "size_kb": 66,
+     "rate": 44100,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": true,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/44.1kHz Origin Effects IR Cab Library/British Straight 4x12/British Straight 4x12 Mics/British Straight 4x12 Bright 57.wav",
+     "size_kb": 66,
+     "rate": 44100,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": true,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/44.1kHz Origin Effects IR Cab Library/British Straight 4x12/British Straight 4x12 Mics/British Straight 4x12 Dark 160.wav",
+     "size_kb": 66,
+     "rate": 44100,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": true,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/44.1kHz Origin Effects IR Cab Library/British Straight 4x12/British Straight 4x12 Mics/British Straight 4x12 Dark 421.wav",
+     "size_kb": 66,
+     "rate": 44100,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": true,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/44.1kHz Origin Effects IR Cab Library/British Straight 4x12/British Straight 4x12 Mics/British Straight 4x12 Dark 87.wav",
+     "size_kb": 66,
+     "rate": 44100,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": true,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/44.1kHz Origin Effects IR Cab Library/British Straight 4x12/British Straight 4x12 Mics/British Straight 4x12 Medium 160.wav",
+     "size_kb": 66,
+     "rate": 44100,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": true,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/44.1kHz Origin Effects IR Cab Library/British Straight 4x12/British Straight 4x12 Mics/British Straight 4x12 Medium 421.wav",
+     "size_kb": 66,
+     "rate": 44100,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": true,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/44.1kHz Origin Effects IR Cab Library/Brown Deluxe 1x12/Brown Deluxe 1x12 Bright Mix.wav",
+     "size_kb": 66,
+     "rate": 44100,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": true,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/44.1kHz Origin Effects IR Cab Library/Brown Deluxe 1x12/Brown Deluxe 1x12 Dark Mix.wav",
+     "size_kb": 66,
+     "rate": 44100,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": true,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/44.1kHz Origin Effects IR Cab Library/Brown Deluxe 1x12/Brown Deluxe 1x12 Medium Mix.wav",
+     "size_kb": 66,
+     "rate": 44100,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": true,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/44.1kHz Origin Effects IR Cab Library/Brown Deluxe 1x12/Brown Deluxe 1x12 Mics/Brown Deluxe 1x12 Bright 160.wav",
+     "size_kb": 66,
+     "rate": 44100,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": true,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/44.1kHz Origin Effects IR Cab Library/Brown Deluxe 1x12/Brown Deluxe 1x12 Mics/Brown Deluxe 1x12 Bright 57.wav",
+     "size_kb": 66,
+     "rate": 44100,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": true,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/44.1kHz Origin Effects IR Cab Library/Brown Deluxe 1x12/Brown Deluxe 1x12 Mics/Brown Deluxe 1x12 Bright 87.wav",
+     "size_kb": 66,
+     "rate": 44100,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": true,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/44.1kHz Origin Effects IR Cab Library/Brown Deluxe 1x12/Brown Deluxe 1x12 Mics/Brown Deluxe 1x12 Dark 160.wav",
+     "size_kb": 66,
+     "rate": 44100,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": true,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/44.1kHz Origin Effects IR Cab Library/Brown Deluxe 1x12/Brown Deluxe 1x12 Mics/Brown Deluxe 1x12 Dark 421.wav",
+     "size_kb": 66,
+     "rate": 44100,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": true,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/44.1kHz Origin Effects IR Cab Library/Brown Deluxe 1x12/Brown Deluxe 1x12 Mics/Brown Deluxe 1x12 Dark 57.wav",
+     "size_kb": 66,
+     "rate": 44100,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": true,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/44.1kHz Origin Effects IR Cab Library/Brown Deluxe 1x12/Brown Deluxe 1x12 Mics/Brown Deluxe 1x12 Medium 160.wav",
+     "size_kb": 66,
+     "rate": 44100,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": true,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/44.1kHz Origin Effects IR Cab Library/Brown Deluxe 1x12/Brown Deluxe 1x12 Mics/Brown Deluxe 1x12 Medium 57.wav",
+     "size_kb": 66,
+     "rate": 44100,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": true,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/44.1kHz Origin Effects IR Cab Library/Brown Deluxe 1x12/Brown Deluxe 1x12 Mics/Brown Deluxe 1x12 Medium 87.wav",
+     "size_kb": 66,
+     "rate": 44100,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": true,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/44.1kHz Origin Effects IR Cab Library/Lux-O-Vibe 2x10/Lux-O-Vibe 2x10 Mics/LuxOVibe 2x10 Bright 160.wav",
+     "size_kb": 72,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/44.1kHz Origin Effects IR Cab Library/Lux-O-Vibe 2x10/Lux-O-Vibe 2x10 Mics/LuxOVibe 2x10 Bright 421.wav",
+     "size_kb": 72,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/44.1kHz Origin Effects IR Cab Library/Lux-O-Vibe 2x10/Lux-O-Vibe 2x10 Mics/LuxOVibe 2x10 Dark 160.wav",
+     "size_kb": 72,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/44.1kHz Origin Effects IR Cab Library/Lux-O-Vibe 2x10/Lux-O-Vibe 2x10 Mics/LuxOVibe 2x10 Dark 421.wav",
+     "size_kb": 72,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/44.1kHz Origin Effects IR Cab Library/Lux-O-Vibe 2x10/Lux-O-Vibe 2x10 Mics/LuxOVibe 2x10 Medium 160.wav",
+     "size_kb": 72,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/44.1kHz Origin Effects IR Cab Library/Lux-O-Vibe 2x10/Lux-O-Vibe 2x10 Mics/LuxOVibe 2x10 Medium 421.wav",
+     "size_kb": 72,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/44.1kHz Origin Effects IR Cab Library/Lux-O-Vibe 2x10/LuxOVibe 2x10 Bright Mix.wav",
+     "size_kb": 72,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/44.1kHz Origin Effects IR Cab Library/Lux-O-Vibe 2x10/LuxOVibe 2x10 Dark Mix.wav",
+     "size_kb": 72,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/44.1kHz Origin Effects IR Cab Library/Lux-O-Vibe 2x10/LuxOVibe 2x10 Medium Mix.wav",
+     "size_kb": 72,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/44.1kHz Origin Effects IR Cab Library/Magma Vintage 1x12/Magma Vintage 1x12 Bright Mix.wav",
+     "size_kb": 66,
+     "rate": 44100,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": true,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/44.1kHz Origin Effects IR Cab Library/Magma Vintage 1x12/Magma Vintage 1x12 Dark Mix.wav",
+     "size_kb": 66,
+     "rate": 44100,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": true,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/44.1kHz Origin Effects IR Cab Library/Magma Vintage 1x12/Magma Vintage 1x12 Medium Mix.wav",
+     "size_kb": 66,
+     "rate": 44100,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": true,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/44.1kHz Origin Effects IR Cab Library/Magma Vintage 1x12/Magma Vintage 1x12 Mics/Magma Vintage 1x12 Bright 160.wav",
+     "size_kb": 66,
+     "rate": 44100,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": true,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/44.1kHz Origin Effects IR Cab Library/Magma Vintage 1x12/Magma Vintage 1x12 Mics/Magma Vintage 1x12 Bright 421.wav",
+     "size_kb": 66,
+     "rate": 44100,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": true,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/44.1kHz Origin Effects IR Cab Library/Magma Vintage 1x12/Magma Vintage 1x12 Mics/Magma Vintage 1x12 Bright 87.wav",
+     "size_kb": 66,
+     "rate": 44100,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": true,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/44.1kHz Origin Effects IR Cab Library/Magma Vintage 1x12/Magma Vintage 1x12 Mics/Magma Vintage 1x12 Dark 160.wav",
+     "size_kb": 66,
+     "rate": 44100,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": true,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/44.1kHz Origin Effects IR Cab Library/Magma Vintage 1x12/Magma Vintage 1x12 Mics/Magma Vintage 1x12 Dark 421.wav",
+     "size_kb": 66,
+     "rate": 44100,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": true,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/44.1kHz Origin Effects IR Cab Library/Magma Vintage 1x12/Magma Vintage 1x12 Mics/Magma Vintage 1x12 Dark 87.wav",
+     "size_kb": 66,
+     "rate": 44100,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": true,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/44.1kHz Origin Effects IR Cab Library/Magma Vintage 1x12/Magma Vintage 1x12 Mics/Magma Vintage 1x12 Medium 160.wav",
+     "size_kb": 66,
+     "rate": 44100,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": true,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/44.1kHz Origin Effects IR Cab Library/Magma Vintage 1x12/Magma Vintage 1x12 Mics/Magma Vintage 1x12 Medium 421.wav",
+     "size_kb": 66,
+     "rate": 44100,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": true,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/44.1kHz Origin Effects IR Cab Library/Magma Vintage 1x12/Magma Vintage 1x12 Mics/Magma Vintage 1x12 Medium 87.wav",
+     "size_kb": 66,
+     "rate": 44100,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": true,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/44.1kHz Origin Effects IR Cab Library/Modern Boutique 4x12/Modern Boutique 4x12 Bright Mix.wav",
+     "size_kb": 66,
+     "rate": 44100,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": true,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/44.1kHz Origin Effects IR Cab Library/Modern Boutique 4x12/Modern Boutique 4x12 Dark Mix.wav",
+     "size_kb": 66,
+     "rate": 44100,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": true,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/44.1kHz Origin Effects IR Cab Library/Modern Boutique 4x12/Modern Boutique 4x12 Medium Mix.wav",
+     "size_kb": 66,
+     "rate": 44100,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": true,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/44.1kHz Origin Effects IR Cab Library/Modern Boutique 4x12/Modern Boutique 4x12 Mics/Modern Boutique 4x12 Bright 160.wav",
+     "size_kb": 66,
+     "rate": 44100,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": true,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/44.1kHz Origin Effects IR Cab Library/Modern Boutique 4x12/Modern Boutique 4x12 Mics/Modern Boutique 4x12 Bright 421.wav",
+     "size_kb": 66,
+     "rate": 44100,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": true,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/44.1kHz Origin Effects IR Cab Library/Modern Boutique 4x12/Modern Boutique 4x12 Mics/Modern Boutique 4x12 Bright 57.wav",
+     "size_kb": 66,
+     "rate": 44100,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": true,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/44.1kHz Origin Effects IR Cab Library/Modern Boutique 4x12/Modern Boutique 4x12 Mics/Modern Boutique 4x12 Dark 160.wav",
+     "size_kb": 66,
+     "rate": 44100,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": true,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/44.1kHz Origin Effects IR Cab Library/Modern Boutique 4x12/Modern Boutique 4x12 Mics/Modern Boutique 4x12 Dark 421.wav",
+     "size_kb": 66,
+     "rate": 44100,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": true,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/44.1kHz Origin Effects IR Cab Library/Modern Boutique 4x12/Modern Boutique 4x12 Mics/Modern Boutique 4x12 Dark 57.wav",
+     "size_kb": 66,
+     "rate": 44100,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": true,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/44.1kHz Origin Effects IR Cab Library/Modern Boutique 4x12/Modern Boutique 4x12 Mics/Modern Boutique 4x12 Medium 160.wav",
+     "size_kb": 66,
+     "rate": 44100,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": true,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/44.1kHz Origin Effects IR Cab Library/Modern Boutique 4x12/Modern Boutique 4x12 Mics/Modern Boutique 4x12 Medium 421.wav",
+     "size_kb": 66,
+     "rate": 44100,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": true,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/44.1kHz Origin Effects IR Cab Library/Modern Boutique 4x12/Modern Boutique 4x12 Mics/Modern Boutique 4x12 Medium 57.wav",
+     "size_kb": 66,
+     "rate": 44100,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": true,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/44.1kHz Origin Effects IR Cab Library/Tweed Combo 1x12/Tweed Combo 1x12 Bright Mix.wav",
+     "size_kb": 65,
+     "rate": 44100,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": true,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/44.1kHz Origin Effects IR Cab Library/Tweed Combo 1x12/Tweed Combo 1x12 Dark Mix.wav",
+     "size_kb": 65,
+     "rate": 44100,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": true,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/44.1kHz Origin Effects IR Cab Library/Tweed Combo 1x12/Tweed Combo 1x12 Medium Mix.wav",
+     "size_kb": 65,
+     "rate": 44100,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": true,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/44.1kHz Origin Effects IR Cab Library/Tweed Combo 1x12/Tweed Combo 1x12 Mics/Tweed Combo 1x12 Bright 160.wav",
+     "size_kb": 65,
+     "rate": 44100,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": true,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/44.1kHz Origin Effects IR Cab Library/Tweed Combo 1x12/Tweed Combo 1x12 Mics/Tweed Combo 1x12 Bright 57.wav",
+     "size_kb": 65,
+     "rate": 44100,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": true,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/44.1kHz Origin Effects IR Cab Library/Tweed Combo 1x12/Tweed Combo 1x12 Mics/Tweed Combo 1x12 Bright 87.wav",
+     "size_kb": 65,
+     "rate": 44100,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": true,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/44.1kHz Origin Effects IR Cab Library/Tweed Combo 1x12/Tweed Combo 1x12 Mics/Tweed Combo 1x12 Dark 160.wav",
+     "size_kb": 65,
+     "rate": 44100,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": true,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/44.1kHz Origin Effects IR Cab Library/Tweed Combo 1x12/Tweed Combo 1x12 Mics/Tweed Combo 1x12 Dark 57.wav",
+     "size_kb": 65,
+     "rate": 44100,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": true,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/44.1kHz Origin Effects IR Cab Library/Tweed Combo 1x12/Tweed Combo 1x12 Mics/Tweed Combo 1x12 Dark 87.wav",
+     "size_kb": 65,
+     "rate": 44100,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": true,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/44.1kHz Origin Effects IR Cab Library/Tweed Combo 1x12/Tweed Combo 1x12 Mics/Tweed Combo 1x12 Medium 160.wav",
+     "size_kb": 65,
+     "rate": 44100,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": true,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/44.1kHz Origin Effects IR Cab Library/Tweed Combo 1x12/Tweed Combo 1x12 Mics/Tweed Combo 1x12 Medium 57.wav",
+     "size_kb": 65,
+     "rate": 44100,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": true,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/44.1kHz Origin Effects IR Cab Library/Tweed Combo 1x12/Tweed Combo 1x12 Mics/Tweed Combo 1x12 Medium 87.wav",
+     "size_kb": 65,
+     "rate": 44100,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": true,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/48kHz Origin Effects IR Cab Library/American Twin 2x12/American Twin 2x12 Bright Mix.wav",
+     "size_kb": 71,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/48kHz Origin Effects IR Cab Library/American Twin 2x12/American Twin 2x12 Dark Mix.wav",
+     "size_kb": 71,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/48kHz Origin Effects IR Cab Library/American Twin 2x12/American Twin 2x12 Medium Mix.wav",
+     "size_kb": 71,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/48kHz Origin Effects IR Cab Library/American Twin 2x12/American Twin 2x12 Mics/American Twin 2x12 Bright 160.wav",
+     "size_kb": 71,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/48kHz Origin Effects IR Cab Library/American Twin 2x12/American Twin 2x12 Mics/American Twin 2x12 Bright 87.wav",
+     "size_kb": 71,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/48kHz Origin Effects IR Cab Library/American Twin 2x12/American Twin 2x12 Mics/American Twin 2x12 Dark 160.wav",
+     "size_kb": 71,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/48kHz Origin Effects IR Cab Library/American Twin 2x12/American Twin 2x12 Mics/American Twin 2x12 Dark 87.wav",
+     "size_kb": 71,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/48kHz Origin Effects IR Cab Library/American Twin 2x12/American Twin 2x12 Mics/American Twin 2x12 Medium 160.wav",
+     "size_kb": 71,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/48kHz Origin Effects IR Cab Library/American Twin 2x12/American Twin 2x12 Mics/American Twin 2x12 Medium 87.wav",
+     "size_kb": 71,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/48kHz Origin Effects IR Cab Library/British Alnico 2x12/British Alnico 2x12 Bright Mix.wav",
+     "size_kb": 71,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/48kHz Origin Effects IR Cab Library/British Alnico 2x12/British Alnico 2x12 Dark Mix.wav",
+     "size_kb": 71,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/48kHz Origin Effects IR Cab Library/British Alnico 2x12/British Alnico 2x12 Medium Mix.wav",
+     "size_kb": 71,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/48kHz Origin Effects IR Cab Library/British Alnico 2x12/British Alnico 2x12 Mics/British Alnico 2x12 Bright 160.wav",
+     "size_kb": 71,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/48kHz Origin Effects IR Cab Library/British Alnico 2x12/British Alnico 2x12 Mics/British Alnico 2x12 Bright 421.wav",
+     "size_kb": 71,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/48kHz Origin Effects IR Cab Library/British Alnico 2x12/British Alnico 2x12 Mics/British Alnico 2x12 Bright 87.wav",
+     "size_kb": 71,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/48kHz Origin Effects IR Cab Library/British Alnico 2x12/British Alnico 2x12 Mics/British Alnico 2x12 Dark 160.wav",
+     "size_kb": 71,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/48kHz Origin Effects IR Cab Library/British Alnico 2x12/British Alnico 2x12 Mics/British Alnico 2x12 Dark 421.wav",
+     "size_kb": 71,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/48kHz Origin Effects IR Cab Library/British Alnico 2x12/British Alnico 2x12 Mics/British Alnico 2x12 Dark 87.wav",
+     "size_kb": 71,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/48kHz Origin Effects IR Cab Library/British Alnico 2x12/British Alnico 2x12 Mics/British Alnico 2x12 Medium 160.wav",
+     "size_kb": 71,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/48kHz Origin Effects IR Cab Library/British Alnico 2x12/British Alnico 2x12 Mics/British Alnico 2x12 Medium 421.wav",
+     "size_kb": 71,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/48kHz Origin Effects IR Cab Library/British Alnico 2x12/British Alnico 2x12 Mics/British Alnico 2x12 Medium 87.wav",
+     "size_kb": 71,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/48kHz Origin Effects IR Cab Library/British Checkerboard 4x12/British Checkerboard 4x12 Bright Mix.wav",
+     "size_kb": 72,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/48kHz Origin Effects IR Cab Library/British Checkerboard 4x12/British Checkerboard 4x12 Dark Mix.wav",
+     "size_kb": 72,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/48kHz Origin Effects IR Cab Library/British Checkerboard 4x12/British Checkerboard 4x12 Medium Mix.wav",
+     "size_kb": 72,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/48kHz Origin Effects IR Cab Library/British Checkerboard 4x12/British Checkerboard 4x12 Mics/British Checkerboard 4x12 Bright 160.wav",
+     "size_kb": 72,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/48kHz Origin Effects IR Cab Library/British Checkerboard 4x12/British Checkerboard 4x12 Mics/British Checkerboard 4x12 Bright 421.wav",
+     "size_kb": 72,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/48kHz Origin Effects IR Cab Library/British Checkerboard 4x12/British Checkerboard 4x12 Mics/British Checkerboard 4x12 Dark 160.wav",
+     "size_kb": 72,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/48kHz Origin Effects IR Cab Library/British Checkerboard 4x12/British Checkerboard 4x12 Mics/British Checkerboard 4x12 Dark 421.wav",
+     "size_kb": 72,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/48kHz Origin Effects IR Cab Library/British Checkerboard 4x12/British Checkerboard 4x12 Mics/British Checkerboard 4x12 Medium 160.wav",
+     "size_kb": 72,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/48kHz Origin Effects IR Cab Library/British Checkerboard 4x12/British Checkerboard 4x12 Mics/British Checkerboard 4x12 Medium 421.wav",
+     "size_kb": 72,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/48kHz Origin Effects IR Cab Library/British Straight 4x12/British Straight 4x12 Bright Mix.wav",
+     "size_kb": 71,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/48kHz Origin Effects IR Cab Library/British Straight 4x12/British Straight 4x12 Dark Mix.wav",
+     "size_kb": 71,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/48kHz Origin Effects IR Cab Library/British Straight 4x12/British Straight 4x12 Medium Mix.wav",
+     "size_kb": 71,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/48kHz Origin Effects IR Cab Library/British Straight 4x12/British Straight 4x12 Mics/British Straight 4x12 Bright 160.wav",
+     "size_kb": 71,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/48kHz Origin Effects IR Cab Library/British Straight 4x12/British Straight 4x12 Mics/British Straight 4x12 Bright 57.wav",
+     "size_kb": 71,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/48kHz Origin Effects IR Cab Library/British Straight 4x12/British Straight 4x12 Mics/British Straight 4x12 Dark 160.wav",
+     "size_kb": 71,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/48kHz Origin Effects IR Cab Library/British Straight 4x12/British Straight 4x12 Mics/British Straight 4x12 Dark 421.wav",
+     "size_kb": 71,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/48kHz Origin Effects IR Cab Library/British Straight 4x12/British Straight 4x12 Mics/British Straight 4x12 Dark 87.wav",
+     "size_kb": 71,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/48kHz Origin Effects IR Cab Library/British Straight 4x12/British Straight 4x12 Mics/British Straight 4x12 Medium 160.wav",
+     "size_kb": 71,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/48kHz Origin Effects IR Cab Library/British Straight 4x12/British Straight 4x12 Mics/British Straight 4x12 Medium 421.wav",
+     "size_kb": 71,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/48kHz Origin Effects IR Cab Library/Brown Deluxe 1x12/Brown Deluxe 1x12 Bright Mix.wav",
+     "size_kb": 71,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/48kHz Origin Effects IR Cab Library/Brown Deluxe 1x12/Brown Deluxe 1x12 Dark Mix.wav",
+     "size_kb": 71,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/48kHz Origin Effects IR Cab Library/Brown Deluxe 1x12/Brown Deluxe 1x12 Medium Mix.wav",
+     "size_kb": 71,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/48kHz Origin Effects IR Cab Library/Brown Deluxe 1x12/Brown Deluxe 1x12 Mics/Brown Deluxe 1x12 Bright 160.wav",
+     "size_kb": 71,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/48kHz Origin Effects IR Cab Library/Brown Deluxe 1x12/Brown Deluxe 1x12 Mics/Brown Deluxe 1x12 Bright 57.wav",
+     "size_kb": 71,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/48kHz Origin Effects IR Cab Library/Brown Deluxe 1x12/Brown Deluxe 1x12 Mics/Brown Deluxe 1x12 Bright 87.wav",
+     "size_kb": 71,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/48kHz Origin Effects IR Cab Library/Brown Deluxe 1x12/Brown Deluxe 1x12 Mics/Brown Deluxe 1x12 Dark 160.wav",
+     "size_kb": 71,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/48kHz Origin Effects IR Cab Library/Brown Deluxe 1x12/Brown Deluxe 1x12 Mics/Brown Deluxe 1x12 Dark 421.wav",
+     "size_kb": 71,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/48kHz Origin Effects IR Cab Library/Brown Deluxe 1x12/Brown Deluxe 1x12 Mics/Brown Deluxe 1x12 Dark 57.wav",
+     "size_kb": 71,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/48kHz Origin Effects IR Cab Library/Brown Deluxe 1x12/Brown Deluxe 1x12 Mics/Brown Deluxe 1x12 Medium 160.wav",
+     "size_kb": 71,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/48kHz Origin Effects IR Cab Library/Brown Deluxe 1x12/Brown Deluxe 1x12 Mics/Brown Deluxe 1x12 Medium 57.wav",
+     "size_kb": 71,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/48kHz Origin Effects IR Cab Library/Brown Deluxe 1x12/Brown Deluxe 1x12 Mics/Brown Deluxe 1x12 Medium 87.wav",
+     "size_kb": 71,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/48kHz Origin Effects IR Cab Library/Lux-O-Vibe 2x10/Lux-O-Vibe 2x10 Mics/LuxOVibe 2x10 Bright 160.wav",
+     "size_kb": 72,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/48kHz Origin Effects IR Cab Library/Lux-O-Vibe 2x10/Lux-O-Vibe 2x10 Mics/LuxOVibe 2x10 Bright 421.wav",
+     "size_kb": 72,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/48kHz Origin Effects IR Cab Library/Lux-O-Vibe 2x10/Lux-O-Vibe 2x10 Mics/LuxOVibe 2x10 Dark 160.wav",
+     "size_kb": 72,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/48kHz Origin Effects IR Cab Library/Lux-O-Vibe 2x10/Lux-O-Vibe 2x10 Mics/LuxOVibe 2x10 Dark 421.wav",
+     "size_kb": 72,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/48kHz Origin Effects IR Cab Library/Lux-O-Vibe 2x10/Lux-O-Vibe 2x10 Mics/LuxOVibe 2x10 Medium 160.wav",
+     "size_kb": 72,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/48kHz Origin Effects IR Cab Library/Lux-O-Vibe 2x10/Lux-O-Vibe 2x10 Mics/LuxOVibe 2x10 Medium 421.wav",
+     "size_kb": 72,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/48kHz Origin Effects IR Cab Library/Lux-O-Vibe 2x10/LuxOVibe 2x10 Bright Mix.wav",
+     "size_kb": 72,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/48kHz Origin Effects IR Cab Library/Lux-O-Vibe 2x10/LuxOVibe 2x10 Dark Mix.wav",
+     "size_kb": 72,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/48kHz Origin Effects IR Cab Library/Lux-O-Vibe 2x10/LuxOVibe 2x10 Medium Mix.wav",
+     "size_kb": 72,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/48kHz Origin Effects IR Cab Library/Magma Vintage 1x12/Magma Vintage 1x12 Bright Mix.wav",
+     "size_kb": 71,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/48kHz Origin Effects IR Cab Library/Magma Vintage 1x12/Magma Vintage 1x12 Dark Mix.wav",
+     "size_kb": 71,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/48kHz Origin Effects IR Cab Library/Magma Vintage 1x12/Magma Vintage 1x12 Medium Mix.wav",
+     "size_kb": 71,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/48kHz Origin Effects IR Cab Library/Magma Vintage 1x12/Magma Vintage 1x12 Mics/Magma Vintage 1x12 Bright 160.wav",
+     "size_kb": 71,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/48kHz Origin Effects IR Cab Library/Magma Vintage 1x12/Magma Vintage 1x12 Mics/Magma Vintage 1x12 Bright 421.wav",
+     "size_kb": 71,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/48kHz Origin Effects IR Cab Library/Magma Vintage 1x12/Magma Vintage 1x12 Mics/Magma Vintage 1x12 Bright 87.wav",
+     "size_kb": 71,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/48kHz Origin Effects IR Cab Library/Magma Vintage 1x12/Magma Vintage 1x12 Mics/Magma Vintage 1x12 Dark 160.wav",
+     "size_kb": 71,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/48kHz Origin Effects IR Cab Library/Magma Vintage 1x12/Magma Vintage 1x12 Mics/Magma Vintage 1x12 Dark 421.wav",
+     "size_kb": 71,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/48kHz Origin Effects IR Cab Library/Magma Vintage 1x12/Magma Vintage 1x12 Mics/Magma Vintage 1x12 Dark 87.wav",
+     "size_kb": 71,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/48kHz Origin Effects IR Cab Library/Magma Vintage 1x12/Magma Vintage 1x12 Mics/Magma Vintage 1x12 Medium 160.wav",
+     "size_kb": 71,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/48kHz Origin Effects IR Cab Library/Magma Vintage 1x12/Magma Vintage 1x12 Mics/Magma Vintage 1x12 Medium 421.wav",
+     "size_kb": 71,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/48kHz Origin Effects IR Cab Library/Magma Vintage 1x12/Magma Vintage 1x12 Mics/Magma Vintage 1x12 Medium 87.wav",
+     "size_kb": 71,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/48kHz Origin Effects IR Cab Library/Modern Boutique 4x12/Modern Boutique 4x12 Bright Mix.wav",
+     "size_kb": 71,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/48kHz Origin Effects IR Cab Library/Modern Boutique 4x12/Modern Boutique 4x12 Dark Mix.wav",
+     "size_kb": 71,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/48kHz Origin Effects IR Cab Library/Modern Boutique 4x12/Modern Boutique 4x12 Medium Mix.wav",
+     "size_kb": 71,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/48kHz Origin Effects IR Cab Library/Modern Boutique 4x12/Modern Boutique 4x12 Mics/Modern Boutique 4x12 Bright 160.wav",
+     "size_kb": 71,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/48kHz Origin Effects IR Cab Library/Modern Boutique 4x12/Modern Boutique 4x12 Mics/Modern Boutique 4x12 Bright 421.wav",
+     "size_kb": 71,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/48kHz Origin Effects IR Cab Library/Modern Boutique 4x12/Modern Boutique 4x12 Mics/Modern Boutique 4x12 Bright 57.wav",
+     "size_kb": 71,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/48kHz Origin Effects IR Cab Library/Modern Boutique 4x12/Modern Boutique 4x12 Mics/Modern Boutique 4x12 Dark 160.wav",
+     "size_kb": 71,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/48kHz Origin Effects IR Cab Library/Modern Boutique 4x12/Modern Boutique 4x12 Mics/Modern Boutique 4x12 Dark 421.wav",
+     "size_kb": 71,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/48kHz Origin Effects IR Cab Library/Modern Boutique 4x12/Modern Boutique 4x12 Mics/Modern Boutique 4x12 Dark 57.wav",
+     "size_kb": 71,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/48kHz Origin Effects IR Cab Library/Modern Boutique 4x12/Modern Boutique 4x12 Mics/Modern Boutique 4x12 Medium 160.wav",
+     "size_kb": 71,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/48kHz Origin Effects IR Cab Library/Modern Boutique 4x12/Modern Boutique 4x12 Mics/Modern Boutique 4x12 Medium 421.wav",
+     "size_kb": 71,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/48kHz Origin Effects IR Cab Library/Modern Boutique 4x12/Modern Boutique 4x12 Mics/Modern Boutique 4x12 Medium 57.wav",
+     "size_kb": 71,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/48kHz Origin Effects IR Cab Library/Tweed Combo 1x12/Tweed Combo 1x12 Bright Mix.wav",
+     "size_kb": 71,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/48kHz Origin Effects IR Cab Library/Tweed Combo 1x12/Tweed Combo 1x12 Dark Mix.wav",
+     "size_kb": 71,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/48kHz Origin Effects IR Cab Library/Tweed Combo 1x12/Tweed Combo 1x12 Medium Mix.wav",
+     "size_kb": 71,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/48kHz Origin Effects IR Cab Library/Tweed Combo 1x12/Tweed Combo 1x12 Mics/Tweed Combo 1x12 Bright 160.wav",
+     "size_kb": 71,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/48kHz Origin Effects IR Cab Library/Tweed Combo 1x12/Tweed Combo 1x12 Mics/Tweed Combo 1x12 Bright 57.wav",
+     "size_kb": 71,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/48kHz Origin Effects IR Cab Library/Tweed Combo 1x12/Tweed Combo 1x12 Mics/Tweed Combo 1x12 Bright 87.wav",
+     "size_kb": 71,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/48kHz Origin Effects IR Cab Library/Tweed Combo 1x12/Tweed Combo 1x12 Mics/Tweed Combo 1x12 Dark 160.wav",
+     "size_kb": 71,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/48kHz Origin Effects IR Cab Library/Tweed Combo 1x12/Tweed Combo 1x12 Mics/Tweed Combo 1x12 Dark 57.wav",
+     "size_kb": 71,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/48kHz Origin Effects IR Cab Library/Tweed Combo 1x12/Tweed Combo 1x12 Mics/Tweed Combo 1x12 Dark 87.wav",
+     "size_kb": 71,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/48kHz Origin Effects IR Cab Library/Tweed Combo 1x12/Tweed Combo 1x12 Mics/Tweed Combo 1x12 Medium 160.wav",
+     "size_kb": 71,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/48kHz Origin Effects IR Cab Library/Tweed Combo 1x12/Tweed Combo 1x12 Mics/Tweed Combo 1x12 Medium 57.wav",
+     "size_kb": 71,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/48kHz Origin Effects IR Cab Library/Tweed Combo 1x12/Tweed Combo 1x12 Mics/Tweed Combo 1x12 Medium 87.wav",
+     "size_kb": 71,
+     "rate": 48000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/96kHz Origin effects IR Cab Library/American Twin 2x12/American Twin 2x12 Bright Mix.wav",
+     "size_kb": 142,
+     "rate": 96000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/96kHz Origin effects IR Cab Library/American Twin 2x12/American Twin 2x12 Dark Mix.wav",
+     "size_kb": 142,
+     "rate": 96000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/96kHz Origin effects IR Cab Library/American Twin 2x12/American Twin 2x12 Medium Mix.wav",
+     "size_kb": 142,
+     "rate": 96000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/96kHz Origin effects IR Cab Library/American Twin 2x12/American Twin 2x12 Mics/American Twin 2x12 Bright 160.wav",
+     "size_kb": 142,
+     "rate": 96000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/96kHz Origin effects IR Cab Library/American Twin 2x12/American Twin 2x12 Mics/American Twin 2x12 Bright 87.wav",
+     "size_kb": 142,
+     "rate": 96000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/96kHz Origin effects IR Cab Library/American Twin 2x12/American Twin 2x12 Mics/American Twin 2x12 Dark 160.wav",
+     "size_kb": 142,
+     "rate": 96000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/96kHz Origin effects IR Cab Library/American Twin 2x12/American Twin 2x12 Mics/American Twin 2x12 Dark 87.wav",
+     "size_kb": 142,
+     "rate": 96000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/96kHz Origin effects IR Cab Library/American Twin 2x12/American Twin 2x12 Mics/American Twin 2x12 Medium 160.wav",
+     "size_kb": 142,
+     "rate": 96000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/96kHz Origin effects IR Cab Library/American Twin 2x12/American Twin 2x12 Mics/American Twin 2x12 Medium 87.wav",
+     "size_kb": 142,
+     "rate": 96000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/96kHz Origin effects IR Cab Library/British Alnico 2x12/British Alnico 2x12 Bright Mix.wav",
+     "size_kb": 142,
+     "rate": 96000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/96kHz Origin effects IR Cab Library/British Alnico 2x12/British Alnico 2x12 Dark Mix.wav",
+     "size_kb": 142,
+     "rate": 96000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/96kHz Origin effects IR Cab Library/British Alnico 2x12/British Alnico 2x12 Medium Mix.wav",
+     "size_kb": 142,
+     "rate": 96000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/96kHz Origin effects IR Cab Library/British Alnico 2x12/British Alnico 2x12 Mics/British Alnico 2x12 Bright 160.wav",
+     "size_kb": 142,
+     "rate": 96000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/96kHz Origin effects IR Cab Library/British Alnico 2x12/British Alnico 2x12 Mics/British Alnico 2x12 Bright 421.wav",
+     "size_kb": 142,
+     "rate": 96000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/96kHz Origin effects IR Cab Library/British Alnico 2x12/British Alnico 2x12 Mics/British Alnico 2x12 Bright 87.wav",
+     "size_kb": 142,
+     "rate": 96000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/96kHz Origin effects IR Cab Library/British Alnico 2x12/British Alnico 2x12 Mics/British Alnico 2x12 Dark 160.wav",
+     "size_kb": 142,
+     "rate": 96000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/96kHz Origin effects IR Cab Library/British Alnico 2x12/British Alnico 2x12 Mics/British Alnico 2x12 Dark 421.wav",
+     "size_kb": 142,
+     "rate": 96000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/96kHz Origin effects IR Cab Library/British Alnico 2x12/British Alnico 2x12 Mics/British Alnico 2x12 Dark 87.wav",
+     "size_kb": 142,
+     "rate": 96000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/96kHz Origin effects IR Cab Library/British Alnico 2x12/British Alnico 2x12 Mics/British Alnico 2x12 Medium 160.wav",
+     "size_kb": 142,
+     "rate": 96000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/96kHz Origin effects IR Cab Library/British Alnico 2x12/British Alnico 2x12 Mics/British Alnico 2x12 Medium 421.wav",
+     "size_kb": 142,
+     "rate": 96000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/96kHz Origin effects IR Cab Library/British Alnico 2x12/British Alnico 2x12 Mics/British Alnico 2x12 Medium 87.wav",
+     "size_kb": 142,
+     "rate": 96000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/96kHz Origin effects IR Cab Library/British Checkerboard 4x12/British Checkerboard 4x12 Bright Mix.wav",
+     "size_kb": 142,
+     "rate": 96000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/96kHz Origin effects IR Cab Library/British Checkerboard 4x12/British Checkerboard 4x12 Dark Mix.wav",
+     "size_kb": 142,
+     "rate": 96000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/96kHz Origin effects IR Cab Library/British Checkerboard 4x12/British Checkerboard 4x12 Medium Mix.wav",
+     "size_kb": 142,
+     "rate": 96000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/96kHz Origin effects IR Cab Library/British Checkerboard 4x12/British Checkerboard 4x12 Mics/British Checkerboard 4x12 Bright 160.wav",
+     "size_kb": 142,
+     "rate": 96000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/96kHz Origin effects IR Cab Library/British Checkerboard 4x12/British Checkerboard 4x12 Mics/British Checkerboard 4x12 Bright 421.wav",
+     "size_kb": 142,
+     "rate": 96000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/96kHz Origin effects IR Cab Library/British Checkerboard 4x12/British Checkerboard 4x12 Mics/British Checkerboard 4x12 Dark 160.wav",
+     "size_kb": 142,
+     "rate": 96000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/96kHz Origin effects IR Cab Library/British Checkerboard 4x12/British Checkerboard 4x12 Mics/British Checkerboard 4x12 Dark 421.wav",
+     "size_kb": 142,
+     "rate": 96000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/96kHz Origin effects IR Cab Library/British Checkerboard 4x12/British Checkerboard 4x12 Mics/British Checkerboard 4x12 Medium 160.wav",
+     "size_kb": 142,
+     "rate": 96000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/96kHz Origin effects IR Cab Library/British Checkerboard 4x12/British Checkerboard 4x12 Mics/British Checkerboard 4x12 Medium 421.wav",
+     "size_kb": 142,
+     "rate": 96000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/96kHz Origin effects IR Cab Library/British Straight 4x12/British Straight 4x12 Bright Mix.wav",
+     "size_kb": 142,
+     "rate": 96000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/96kHz Origin effects IR Cab Library/British Straight 4x12/British Straight 4x12 Dark Mix.wav",
+     "size_kb": 142,
+     "rate": 96000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/96kHz Origin effects IR Cab Library/British Straight 4x12/British Straight 4x12 Medium Mix.wav",
+     "size_kb": 142,
+     "rate": 96000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/96kHz Origin effects IR Cab Library/British Straight 4x12/British Straight 4x12 Mics/British Straight 4x12 Bright 160.wav",
+     "size_kb": 142,
+     "rate": 96000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/96kHz Origin effects IR Cab Library/British Straight 4x12/British Straight 4x12 Mics/British Straight 4x12 Bright 57.wav",
+     "size_kb": 142,
+     "rate": 96000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/96kHz Origin effects IR Cab Library/British Straight 4x12/British Straight 4x12 Mics/British Straight 4x12 Dark 160.wav",
+     "size_kb": 142,
+     "rate": 96000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/96kHz Origin effects IR Cab Library/British Straight 4x12/British Straight 4x12 Mics/British Straight 4x12 Dark 421.wav",
+     "size_kb": 142,
+     "rate": 96000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/96kHz Origin effects IR Cab Library/British Straight 4x12/British Straight 4x12 Mics/British Straight 4x12 Dark 87.wav",
+     "size_kb": 142,
+     "rate": 96000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/96kHz Origin effects IR Cab Library/British Straight 4x12/British Straight 4x12 Mics/British Straight 4x12 Medium 160.wav",
+     "size_kb": 142,
+     "rate": 96000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/96kHz Origin effects IR Cab Library/British Straight 4x12/British Straight 4x12 Mics/British Straight 4x12 Medium 421.wav",
+     "size_kb": 142,
+     "rate": 96000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/96kHz Origin effects IR Cab Library/Brown Deluxe 1x12/Brown Deluxe 1x12 Bright Mix.wav",
+     "size_kb": 142,
+     "rate": 96000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/96kHz Origin effects IR Cab Library/Brown Deluxe 1x12/Brown Deluxe 1x12 Dark Mix.wav",
+     "size_kb": 142,
+     "rate": 96000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/96kHz Origin effects IR Cab Library/Brown Deluxe 1x12/Brown Deluxe 1x12 Medium Mix.wav",
+     "size_kb": 142,
+     "rate": 96000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/96kHz Origin effects IR Cab Library/Brown Deluxe 1x12/Brown Deluxe 1x12 Mics/Brown Deluxe 1x12 Bright 160.wav",
+     "size_kb": 142,
+     "rate": 96000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/96kHz Origin effects IR Cab Library/Brown Deluxe 1x12/Brown Deluxe 1x12 Mics/Brown Deluxe 1x12 Bright 57.wav",
+     "size_kb": 142,
+     "rate": 96000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/96kHz Origin effects IR Cab Library/Brown Deluxe 1x12/Brown Deluxe 1x12 Mics/Brown Deluxe 1x12 Bright 87.wav",
+     "size_kb": 142,
+     "rate": 96000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/96kHz Origin effects IR Cab Library/Brown Deluxe 1x12/Brown Deluxe 1x12 Mics/Brown Deluxe 1x12 Dark 160.wav",
+     "size_kb": 142,
+     "rate": 96000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/96kHz Origin effects IR Cab Library/Brown Deluxe 1x12/Brown Deluxe 1x12 Mics/Brown Deluxe 1x12 Dark 421.wav",
+     "size_kb": 142,
+     "rate": 96000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/96kHz Origin effects IR Cab Library/Brown Deluxe 1x12/Brown Deluxe 1x12 Mics/Brown Deluxe 1x12 Dark 57.wav",
+     "size_kb": 142,
+     "rate": 96000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/96kHz Origin effects IR Cab Library/Brown Deluxe 1x12/Brown Deluxe 1x12 Mics/Brown Deluxe 1x12 Medium 160.wav",
+     "size_kb": 142,
+     "rate": 96000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/96kHz Origin effects IR Cab Library/Brown Deluxe 1x12/Brown Deluxe 1x12 Mics/Brown Deluxe 1x12 Medium 57.wav",
+     "size_kb": 142,
+     "rate": 96000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/96kHz Origin effects IR Cab Library/Brown Deluxe 1x12/Brown Deluxe 1x12 Mics/Brown Deluxe 1x12 Medium 87.wav",
+     "size_kb": 142,
+     "rate": 96000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/96kHz Origin effects IR Cab Library/Lux-O-Vibe 2x10/Lux-O-Vibe 2x10 Mics/LuxOVibe 2x10 Bright 160.wav",
+     "size_kb": 142,
+     "rate": 96000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/96kHz Origin effects IR Cab Library/Lux-O-Vibe 2x10/Lux-O-Vibe 2x10 Mics/LuxOVibe 2x10 Bright 421.wav",
+     "size_kb": 142,
+     "rate": 96000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/96kHz Origin effects IR Cab Library/Lux-O-Vibe 2x10/Lux-O-Vibe 2x10 Mics/LuxOVibe 2x10 Dark 160.wav",
+     "size_kb": 142,
+     "rate": 96000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/96kHz Origin effects IR Cab Library/Lux-O-Vibe 2x10/Lux-O-Vibe 2x10 Mics/LuxOVibe 2x10 Dark 421.wav",
+     "size_kb": 142,
+     "rate": 96000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/96kHz Origin effects IR Cab Library/Lux-O-Vibe 2x10/Lux-O-Vibe 2x10 Mics/LuxOVibe 2x10 Medium 160.wav",
+     "size_kb": 142,
+     "rate": 96000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/96kHz Origin effects IR Cab Library/Lux-O-Vibe 2x10/Lux-O-Vibe 2x10 Mics/LuxOVibe 2x10 Medium 421.wav",
+     "size_kb": 142,
+     "rate": 96000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/96kHz Origin effects IR Cab Library/Lux-O-Vibe 2x10/LuxOVibe 2x10 Bright Mix.wav",
+     "size_kb": 142,
+     "rate": 96000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/96kHz Origin effects IR Cab Library/Lux-O-Vibe 2x10/LuxOVibe 2x10 Dark Mix.wav",
+     "size_kb": 142,
+     "rate": 96000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/96kHz Origin effects IR Cab Library/Lux-O-Vibe 2x10/LuxOVibe 2x10 Medium Mix.wav",
+     "size_kb": 142,
+     "rate": 96000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/96kHz Origin effects IR Cab Library/Magma Vintage 1x12/Magma Vintage 1x12 Bright Mix.wav",
+     "size_kb": 142,
+     "rate": 96000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/96kHz Origin effects IR Cab Library/Magma Vintage 1x12/Magma Vintage 1x12 Dark Mix.wav",
+     "size_kb": 142,
+     "rate": 96000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/96kHz Origin effects IR Cab Library/Magma Vintage 1x12/Magma Vintage 1x12 Medium Mix.wav",
+     "size_kb": 142,
+     "rate": 96000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/96kHz Origin effects IR Cab Library/Magma Vintage 1x12/Magma Vintage 1x12 Mics/Magma Vintage 1x12 Bright 160.wav",
+     "size_kb": 142,
+     "rate": 96000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/96kHz Origin effects IR Cab Library/Magma Vintage 1x12/Magma Vintage 1x12 Mics/Magma Vintage 1x12 Bright 421.wav",
+     "size_kb": 142,
+     "rate": 96000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/96kHz Origin effects IR Cab Library/Magma Vintage 1x12/Magma Vintage 1x12 Mics/Magma Vintage 1x12 Bright 87.wav",
+     "size_kb": 142,
+     "rate": 96000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/96kHz Origin effects IR Cab Library/Magma Vintage 1x12/Magma Vintage 1x12 Mics/Magma Vintage 1x12 Dark 160.wav",
+     "size_kb": 142,
+     "rate": 96000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/96kHz Origin effects IR Cab Library/Magma Vintage 1x12/Magma Vintage 1x12 Mics/Magma Vintage 1x12 Dark 421.wav",
+     "size_kb": 142,
+     "rate": 96000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/96kHz Origin effects IR Cab Library/Magma Vintage 1x12/Magma Vintage 1x12 Mics/Magma Vintage 1x12 Dark 87.wav",
+     "size_kb": 142,
+     "rate": 96000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/96kHz Origin effects IR Cab Library/Magma Vintage 1x12/Magma Vintage 1x12 Mics/Magma Vintage 1x12 Medium 160.wav",
+     "size_kb": 142,
+     "rate": 96000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/96kHz Origin effects IR Cab Library/Magma Vintage 1x12/Magma Vintage 1x12 Mics/Magma Vintage 1x12 Medium 421.wav",
+     "size_kb": 142,
+     "rate": 96000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/96kHz Origin effects IR Cab Library/Magma Vintage 1x12/Magma Vintage 1x12 Mics/Magma Vintage 1x12 Medium 87.wav",
+     "size_kb": 142,
+     "rate": 96000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/96kHz Origin effects IR Cab Library/Modern Boutique 4x12/Modern Boutique 4x12 Bright Mix.wav",
+     "size_kb": 142,
+     "rate": 96000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/96kHz Origin effects IR Cab Library/Modern Boutique 4x12/Modern Boutique 4x12 Dark Mix.wav",
+     "size_kb": 142,
+     "rate": 96000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/96kHz Origin effects IR Cab Library/Modern Boutique 4x12/Modern Boutique 4x12 Medium Mix.wav",
+     "size_kb": 142,
+     "rate": 96000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/96kHz Origin effects IR Cab Library/Modern Boutique 4x12/Modern Boutique 4x12 Mics/Modern Boutique 4x12 Bright 160.wav",
+     "size_kb": 142,
+     "rate": 96000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/96kHz Origin effects IR Cab Library/Modern Boutique 4x12/Modern Boutique 4x12 Mics/Modern Boutique 4x12 Bright 421.wav",
+     "size_kb": 142,
+     "rate": 96000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/96kHz Origin effects IR Cab Library/Modern Boutique 4x12/Modern Boutique 4x12 Mics/Modern Boutique 4x12 Bright 57.wav",
+     "size_kb": 142,
+     "rate": 96000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/96kHz Origin effects IR Cab Library/Modern Boutique 4x12/Modern Boutique 4x12 Mics/Modern Boutique 4x12 Dark 160.wav",
+     "size_kb": 142,
+     "rate": 96000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/96kHz Origin effects IR Cab Library/Modern Boutique 4x12/Modern Boutique 4x12 Mics/Modern Boutique 4x12 Dark 421.wav",
+     "size_kb": 142,
+     "rate": 96000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/96kHz Origin effects IR Cab Library/Modern Boutique 4x12/Modern Boutique 4x12 Mics/Modern Boutique 4x12 Dark 57.wav",
+     "size_kb": 142,
+     "rate": 96000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/96kHz Origin effects IR Cab Library/Modern Boutique 4x12/Modern Boutique 4x12 Mics/Modern Boutique 4x12 Medium 160.wav",
+     "size_kb": 142,
+     "rate": 96000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/96kHz Origin effects IR Cab Library/Modern Boutique 4x12/Modern Boutique 4x12 Mics/Modern Boutique 4x12 Medium 421.wav",
+     "size_kb": 142,
+     "rate": 96000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/96kHz Origin effects IR Cab Library/Modern Boutique 4x12/Modern Boutique 4x12 Mics/Modern Boutique 4x12 Medium 57.wav",
+     "size_kb": 142,
+     "rate": 96000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/96kHz Origin effects IR Cab Library/Tweed Combo 1x12/Tweed Combo 1x12 Bright Mix.wav",
+     "size_kb": 142,
+     "rate": 96000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/96kHz Origin effects IR Cab Library/Tweed Combo 1x12/Tweed Combo 1x12 Dark Mix.wav",
+     "size_kb": 142,
+     "rate": 96000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/96kHz Origin effects IR Cab Library/Tweed Combo 1x12/Tweed Combo 1x12 Medium Mix.wav",
+     "size_kb": 142,
+     "rate": 96000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/96kHz Origin effects IR Cab Library/Tweed Combo 1x12/Tweed Combo 1x12 Mics/Tweed Combo 1x12 Bright 160.wav",
+     "size_kb": 142,
+     "rate": 96000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/96kHz Origin effects IR Cab Library/Tweed Combo 1x12/Tweed Combo 1x12 Mics/Tweed Combo 1x12 Bright 57.wav",
+     "size_kb": 142,
+     "rate": 96000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/96kHz Origin effects IR Cab Library/Tweed Combo 1x12/Tweed Combo 1x12 Mics/Tweed Combo 1x12 Bright 87.wav",
+     "size_kb": 142,
+     "rate": 96000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/96kHz Origin effects IR Cab Library/Tweed Combo 1x12/Tweed Combo 1x12 Mics/Tweed Combo 1x12 Dark 160.wav",
+     "size_kb": 142,
+     "rate": 96000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/96kHz Origin effects IR Cab Library/Tweed Combo 1x12/Tweed Combo 1x12 Mics/Tweed Combo 1x12 Dark 57.wav",
+     "size_kb": 142,
+     "rate": 96000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/96kHz Origin effects IR Cab Library/Tweed Combo 1x12/Tweed Combo 1x12 Mics/Tweed Combo 1x12 Dark 87.wav",
+     "size_kb": 142,
+     "rate": 96000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/96kHz Origin effects IR Cab Library/Tweed Combo 1x12/Tweed Combo 1x12 Mics/Tweed Combo 1x12 Medium 160.wav",
+     "size_kb": 142,
+     "rate": 96000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/96kHz Origin effects IR Cab Library/Tweed Combo 1x12/Tweed Combo 1x12 Mics/Tweed Combo 1x12 Medium 57.wav",
+     "size_kb": 142,
+     "rate": 96000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    },
+    {
+     "file": "Origin Effects - IR-Cab Library V3/96kHz Origin effects IR Cab Library/Tweed Combo 1x12/Tweed Combo 1x12 Mics/Tweed Combo 1x12 Medium 87.wav",
+     "size_kb": 142,
+     "rate": 96000,
+     "channels": 1,
+     "bits": 24,
+     "duration_ms": 500,
+     "compatible": false,
+     "over_1024": true
+    }
+   ]
+  }
+ },
+ "generated_by": "gp100 build (ir_library)"
+}

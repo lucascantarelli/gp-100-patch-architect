@@ -1,0 +1,146 @@
+# pyproject.toml — metadados do pacote, entry points e configuração das ferramentas.
+#
+# Fonte única da versão: o arquivo `VERSION` (lido dinamicamente). O release.yml
+# e o comando `gp100 changelog` continuam sendo os donos do fluxo de publicação —
+# aqui só não criamos um segundo lugar para a versão divergir.
+
+[build-system]
+requires = ["setuptools>=75"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "gp100-patch-architect"
+dynamic = ["version"]
+description = "Biblioteca de patches e pipeline reprodutível para a pedaleira Valeton GP-100"
+readme = "README.md"
+requires-python = ">=3.14,<3.15"          # política do projeto: Python 3.14 apenas
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "Lucas Cantarelli" }]
+keywords = ["gp-100", "valeton", "guitar", "preset", "patch", "impulse-response", "multi-effects"]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Environment :: Console",
+  "Intended Audience :: End Users/Desktop",
+  "Programming Language :: Python :: 3.14",
+  "Topic :: Multimedia :: Sound/Audio",
+  "Typing :: Typed",
+]
+
+# Dependências de runtime — deliberadamente mínimas (ADR-0003/ADR-0005).
+dependencies = [
+  "typer>=0.15",
+  "rich>=13.9",
+]
+
+[project.optional-dependencies]
+docs = ["mkdocs-material>=9.5"]
+
+# Ferramental de desenvolvimento e qualidade (uv installs these by default).
+[dependency-groups]
+dev = [
+  "pytest>=8.3",
+  "pytest-cov>=6.0",
+  "ruff>=0.9",
+  "mypy>=1.14",
+  "pre-commit>=4.0",
+]
+
+[project.scripts]
+# A CLI única do projeto (issues #48/#49/#33 — ADR-0001 detalha a decisão).
+# O import name é `gp100_architect`, o comando é `gp100`.
+gp100 = "gp100_architect.interfaces.cli.main:app"
+
+[project.urls]
+Homepage = "https://github.com/lucascantarelli/gp-100-patch-architect"
+Repository = "https://github.com/lucascantarelli/gp-100-patch-architect"
+Issues = "https://github.com/lucascantarelli/gp-100-patch-architect/issues"
+Changelog = "https://github.com/lucascantarelli/gp-100-patch-architect/blob/main/CHANGELOG.md"
+
+[tool.setuptools.dynamic]
+version = { file = ["VERSION"] }
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+gp100_architect = ["py.typed"]
+
+[tool.uv]
+default-groups = ["dev"]
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Qualidade — configuração única (PKG-002). Nada de black/isort/flake8: o ruff
+# cobre lint e formatação (ADR-0005).
+# ─────────────────────────────────────────────────────────────────────────────
+[tool.ruff]
+line-length = 100
+target-version = "py314"
+src = ["src", "tests"]
+
+# Os dados-fonte do pipeline moram em `data/` (defs/, ir-library.json,
+# factory-catalog.json — movidos da extinta `tools/` na #33) e a superfície
+# shell em `scripts/` e `.github/scripts/`: os gates de estilo cobrem src/ e
+# tests/ (a SUÍTE inteira, desde a pirâmide da issue #34).
+extend-exclude = [
+  ".github/scripts",
+  "patches",
+  "impulse_responses",
+  "dist",
+  "reference",
+  # Skills de terceiros (curadas no doc 23) são conteúdo externo versionado como
+  # recebido: o ruff format 0.14+ reescreve blocos Python dentro dos SKILL.md.
+  ".agents/skills",
+]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP", "B", "C4", "SIM", "PTH", "RUF"]
+# Mensagens ao usuário são em português e usam travessão/en-dash de propósito
+# ("fora do range 30–300"); RUF001/2/3 marcariam cada uma delas como ambígua.
+ignore = ["RUF001", "RUF002", "RUF003"]
+
+[tool.ruff.lint.per-file-ignores]
+# asserts são o ponto dos testes; SIM300 ("Yoda condition") acusa comparações
+# contra constantes em maiúsculas, que é exatamente a forma natural do assert
+# de contrato (`CHAIN == (...)`).
+"tests/**" = ["S101", "SIM300"]
+# Typer exige `typer.Argument(...)`/`typer.Option(...)` como default do parâmetro:
+# é a API, não uma chamada cara por chamada de função (falso positivo do B008).
+"src/gp100_architect/interfaces/cli/**" = ["B008"]
+# Módulos de template editorial (issue #30): a linha longa É o conteúdo —
+# markdown entregue ao músico e tabelas de dados do catálogo de IRs. Quebrá-la
+# mudaria o artefato byte a byte que o TestH congela; a lógica continua no
+# limite normal.
+"src/gp100_architect/application/rendering/**" = ["E501"]
+"src/gp100_architect/application/indices.py" = ["E501"]
+"src/gp100_architect/application/ir_library.py" = ["E501"]
+
+[tool.ruff.format]
+quote-style = "single"
+
+[tool.mypy]
+python_version = "3.14"
+files = ["src/gp100_architect"]
+strict = true
+warn_unreachable = true
+disallow_untyped_decorators = false      # decoradores de app Typer não declaram tipos
+
+[tool.pytest.ini_options]
+minversion = "8.0"
+testpaths = ["tests"]
+pythonpath = ["src", "."]
+addopts = "-q --strict-markers"
+# A FONTE dos markers é o conftest (pytest_configure) — aqui só o comportamento.
+# Fatias da pirâmide (issue #34): `uv run pytest -m unit`, `-m "not slow"`, etc.
+
+[tool.coverage.run]
+source = ["gp100_architect"]
+branch = true
+
+[tool.coverage.report]
+# Portão de cobertura do núcleo (Fase 22 do roadmap 2.0): medido só no pacote
+# (src/gp100_architect), não no legado. 91% hoje (set/2026); o piso fica em 90
+# para o gate reprovar regressão real sem travar refatoração.
+fail_under = 90
+show_missing = true
+exclude_lines = ["if TYPE_CHECKING:", "raise NotImplementedError", "\\.\\.\\."]

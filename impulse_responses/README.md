@@ -10,14 +10,14 @@ O que **é** versionado, e é insumo da documentação:
 
 | Arquivo | Papel |
 |---|---|
-| `tools/ir-library.json` | Manifesto estruturado que os agentes e os geradores consultam |
+| `data/ir-library.json` | Manifesto estruturado que os agentes e os geradores consultam |
 | `reference/16-ir-library.md` | Catálogo legível, gerado a partir do manifesto |
 
-Esses dois são a **última indexação conhecida**: `build_song_patches.py` os usa para citar o arquivo exato na seção 📡 de cada `patch.md`, e `gen_indexes.py` para marcar 📁 no mapa do álbum. É por isso que o banco sair do git **não** torna `tools/ir_library.py` dispensável — ao contrário, é ele que mantém as 62 docs corretas.
+Esses dois são a **última indexação conhecida**: o `gp100 build` os usa para citar o arquivo exato na seção 📡 de cada `patch.md`, e o índice para marcar 📁 no mapa do álbum. É por isso que o banco sair do git **não** dispensa o pipeline — ao contrário, é ele que mantém as 62 docs corretas.
 
 **Consequências práticas de clonar o repositório sem o banco:**
 
-- `python tools/ir_library.py` **avisa e sai com 0**, sem zerar os catálogos commitados. O CI fica verde em um clone limpo.
+- `uv run gp100 build` **avisa e segue**, sem zerar os catálogos commitados. O CI fica verde em um clone limpo.
 - Os patches continuam documentando a captura recomendada, com o caminho exato do arquivo — você só precisa baixar o pack e extrair em `impulse_responses/` para usá-la.
 - O `.prst` nunca depende disso: ele sai com **CAB de fábrica** e funciona ao importar.
 
@@ -28,10 +28,10 @@ Esses dois são a **última indexação conhecida**: `build_song_patches.py` os 
 #    impulse_responses/<Nome do Pack>/<gabinetes>/<arquivos>.wav
 
 # 2. Reindexe (valida cada WAV e regenera os catálogos):
-python tools/ir_library.py
+uv run gp100 build
 ```
 
-Os agentes consultam `tools/ir-library.json` e `reference/16-ir-library.md` — se a captura já existe aqui, **não pesquisam na internet**.
+Os agentes consultam `data/ir-library.json` e `reference/16-ir-library.md` — se a captura já existe aqui, **não pesquisam na internet**.
 
 ## ✅ Formato aceito pela GP-100
 
@@ -55,7 +55,7 @@ Os agentes consultam `tools/ir-library.json` e `reference/16-ir-library.md` — 
 >    Nada foi escrito. Se a remoção do pack é intencional, repita com --force.
 > ```
 >
-> Remover um pack de propósito é legítimo — só não pode ser acidente: `python tools/ir_library.py --force`.
+> Remover um pack de propósito é legítimo — só não pode ser acidente: reindexe confirmando o encolhimento (o guarda reprova e mostra o plano).
 
 **Quer mais?** Packs gratuitos recomendados por lacuna (metal, V30 mix-ready, baixo…): [`reference/17-free-ir-packs.md`](../reference/17-free-ir-packs.md).
 
@@ -67,4 +67,4 @@ Os agentes consultam `tools/ir-library.json` e `reference/16-ir-library.md` — 
 
 ---
 
-[`📖 README do projeto`](../README.md) · [`📚 reference/16-ir-library.md`](../reference/16-ir-library.md) · [`🎸 patches/`](../patches/README.md)
+[`📖 README do projeto`](../README.md) · [`📚 reference/16-ir-library.md`](../reference/16-ir-library.md) · [`🎸 patches/`](https://lucascantarelli.github.io/gp-100-patch-architect/)

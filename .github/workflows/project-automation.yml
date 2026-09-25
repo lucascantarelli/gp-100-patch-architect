@@ -1,0 +1,411 @@
+name: Gestão de projetos
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Automação do Project v2 "GP-100 Pipeline" + guardian do fluxo PR-driven.
+#
+# O que faz (e o que NÃO faz — igual ao resto do CI, nada aqui escreve no git):
+#
+#   1. add-to-project — toda issue e todo PR entra no Project v2 no momento em
+#      que é aberto. Issue nova ganha `status: needs-triage`.
+#   2. status — move o card conforme o evento:
+#        PR aberto (draft)  → In Progress   · PR ready_for_review → In Review
+#        PR fechado/merged  → Done          · issue fechada → Done
+#        issue aberta/reaberta → Backlog   (fim dos cards zumbis de issue fechada)
+#      Os estados intermediários (Ready → In Progress) são arraste manual:
+#      código não adivinha intenção humana.
+#   3. guardian — reprova o PR sem label, sem issue vinculada e sem milestone
+#      (o milestone em falta é aviso). Isenta o PR de release (develop → main).
+#      Roda em opened/synchronize/labeled/edited: revalida a cada push e a cada
+#      label aplicada — o erro diz qual regra falta, não só que falhou. Sem
+#      assignee também avisa: PR sem dono é PR que ninguém puxa.
+#   4. milestone — relatório de fechamento: quantos itens ficaram abertos e o
+#      lembrete de migrá-los para o próximo marco.
+#   5. diagnostico (workflow_dispatch) — confere token, Project, campo Kanban e
+#      contagem de itens sem depender de um evento real: é o `--check` do board.
+#
+# ── Sobre o TOKEN (leia antes de mexer) ──────────────────────────────────────
+# O `GITHUB_TOKEN` NÃO acessa Project v2 de **usuário**: a permissão de workflow
+# `repository-projects` vale para Projects clássicos do repositório, e este board
+# pertence ao owner (pessoa). Por isso os jobs que mexem no board usam o secret
+# `PROJECT_TOKEN`: um PAT fine-grained com Projects: read/write (owner = você) e
+# Issues: read/write (só neste repositório) — sem `contents: write`, ou seja, o
+# token da gestão continua incapaz de empurrar em branch nenhuma (ADR-0006).
+#
+#   gh secret set PROJECT_TOKEN
+#
+# Sem o secret o workflow NÃO fica vermelho: avisa com o comando exato e segue.
+# Um fork (que não recebe segredos) ou um clone novo não pode reprovar PR por
+# falta de configuração local — mas também não finge que a automação rodou.
+#
+# Histórico — por que este cabeçalho é explícito: a versão anterior declarava
+# `repository-project: write`, escopo que não existe. O arquivo inteiro era
+# inválido e o GitHub falhava a cada push com "workflow file issue" **sem rodar
+# um único job**: nenhuma automação de gestão jamais funcionou neste repositório,
+# e nenhum push ficava verde. O `.github/scripts/audit_workflows.py` ganhou a
+# regra 8 (nomes/valores de permissão válidos) para essa classe de erro não
+# voltar em silêncio.
+#
+# O Project precisa existir antes (número + campo "Kanban" com as opções):
+#   .github/scripts/bootstrap_project_management.sh ONLY=project
+# ─────────────────────────────────────────────────────────────────────────────
+
+on:
+  issues:
+    types: [opened, labeled, reopened, closed]
+  pull_request:
+    # synchronize/labeled/edited estão aqui porque o guardian os cita no `if`:
+    # sem o gatilho ele nunca revalidava o PR a cada push ou label nova.
+    types:
+      [opened, reopened, ready_for_review, converted_to_draft, closed,
+       synchronize, labeled, edited]
+  milestone:
+    types: [closed]
+  workflow_dispatch: # roda só o job `diagnostico` (os demais não casam evento)
+
+# Piso do GITHUB_TOKEN: leitura. A escrita no board vem do PAT (secrets), nunca
+# daqui — é a mesma decisão de todos os outros workflows (ADR-0006).
+permissions:
+  contents: read
+
+env:
+  PROJECT_OWNER: lucascantarelli # owner do Project (usuário, não o repo)
+  PROJECT_NUMBER: "7" # número do Project v2 "GP-100 Pipeline" (gh project list)
+  PROJECT_ID: PVT_kwHOAPGrkM4BkXGa # node id do Project — as mutações GraphQL usam id, não número
+  REPO: ${{ github.repository }} # "dono/repo" para gh --repo
+
+jobs:
+  add-to-project:
+    name: 📥 Entra no Project
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    env:
+      GH_TOKEN: ${{ secrets.PROJECT_TOKEN }}
+    # `closed` fica de fora: item fechado já está (ou deveria estar) no board,
+    # e o job `status` re-adiciona idempotentemente antes de mover para Done.
+    if: >-
+      (github.event_name == 'issues' && github.event.action != 'closed') ||
+      (github.event_name == 'pull_request' &&
+        (github.event.action == 'opened' || github.event.action == 'reopened'))
+    steps:
+      # Falha-soft de propósito: sem o secret, avisa e não reprova (ver cabeçalho).
+      - name: Pré-requisito — token com acesso ao Project
+        id: token
+        env:
+          TOKEN: ${{ secrets.PROJECT_TOKEN }}
+          FORK: ${{ github.event.pull_request.head.repo.fork }}
+        run: |
+          set -euo pipefail
+          if [ -n "$TOKEN" ]; then
+            echo "pronto=1" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          echo "pronto=0" >> "$GITHUB_OUTPUT"
+          aviso="secrets.PROJECT_TOKEN ausente: o GITHUB_TOKEN não acessa Project v2 de usuário."
+          instrucao="crie um PAT fine-grained (Projects: read/write + Issues: read/write) e rode: gh secret set PROJECT_TOKEN"
+          if [ "${FORK:-false}" = "true" ]; then
+            echo "::notice::$aviso PR de fork não recebe segredos — esperado. $instrucao"
+          else
+            echo "::warning::$aviso $instrucao"
+          fi
+
+      - name: Adiciona issue/PR ao Project
+        if: steps.token.outputs.pronto == '1'
+        env:
+          URL: ${{ github.event.issue.html_url || github.event.pull_request.html_url }}
+        run: |
+          # GraphQL puro (cli/cli#8885): o `gh project item-add` rejeita PAT
+          # VÁLIDO com "unknown owner type" — provado neste repo em 23/09 (PAT ok
+          # na API e no teste local; item-add do runner rejeitado com o mesmo
+          # valor). As mutações GraphQL funcionam com o mesmo token.
+          set -euo pipefail
+          conteudo="$(gh api graphql -f query='
+          query($url: URI!) {
+            resource(url: $url) { ... on Issue { id } ... on PullRequest { id } }
+          }' -f url="$URL" --jq '.data.resource.id // empty')"
+          [ -n "$conteudo" ] || { echo "::error::não resolve o conteúdo de $URL"; exit 1; }
+          # addProjectV2ItemById é idempotente: item já existente volta sem duplicar.
+          gh api graphql -f query='
+          mutation($p: ID!, $c: ID!) {
+            addProjectV2ItemById(input: { projectId: $p, contentId: $c }) { item { id } }
+          }' -f p="$PROJECT_ID" -f c="$conteudo" >/dev/null \
+            && echo "no Project #$PROJECT_NUMBER: $URL"
+
+      # Issue nova recebe needs-triage: ninguém deve pegar tarefa não triada.
+      - name: Marca issue nova como needs-triage
+        if: >-
+          steps.token.outputs.pronto == '1' &&
+          github.event_name == 'issues' && github.event.action == 'opened'
+        env:
+          NUMERO: ${{ github.event.issue.number }}
+        run: |
+          set -euo pipefail
+          # `--ignore-if-missing` não existe no gh (era a versão anterior): a
+          # label ausente reprova com o comando do bootstrap, não em silêncio.
+          gh issue edit "$NUMERO" --repo "$REPO" --add-label "status: needs-triage" \
+            || {
+              echo "::error::não apliquei 'status: needs-triage' — a label existe neste repo? Rode: .github/scripts/bootstrap_project_management.sh ONLY=labels"
+              exit 1
+            }
+          echo "needs-triage aplicada em #$NUMERO"
+
+  status:
+    name: 📊 Move o card no board
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    needs: add-to-project
+    env:
+      GH_TOKEN: ${{ secrets.PROJECT_TOKEN }}
+    # `!= 'failure'` e não `== 'success'`: no evento `closed` o add-to-project é
+    # pulado (o item já está no Project) — com `== 'success'` o Done nunca rodaria.
+    # Se o add falhar de verdade, o status fica preso (conservador: sem card
+    # garantido, melhor não mover).
+    if: >-
+      always() && needs.add-to-project.result != 'failure' &&
+      (github.event_name == 'issues' || github.event_name == 'pull_request')
+    steps:
+      - name: Pré-requisito — token com acesso ao Project
+        id: token
+        env:
+          TOKEN: ${{ secrets.PROJECT_TOKEN }}
+          FORK: ${{ github.event.pull_request.head.repo.fork }}
+        run: |
+          set -euo pipefail
+          if [ -n "$TOKEN" ]; then
+            echo "pronto=1" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          echo "pronto=0" >> "$GITHUB_OUTPUT"
+          aviso="secrets.PROJECT_TOKEN ausente: o GITHUB_TOKEN não acessa Project v2 de usuário."
+          instrucao="crie um PAT fine-grained (Projects: read/write + Issues: read/write) e rode: gh secret set PROJECT_TOKEN"
+          if [ "${FORK:-false}" = "true" ]; then
+            echo "::notice::$aviso PR de fork não recebe segredos — esperado. $instrucao"
+          else
+            echo "::warning::$aviso $instrucao"
+          fi
+
+      - name: Define o estado pelo evento
+        id: estado
+        env:
+          EVENT: ${{ github.event_name }}
+          ACTION: ${{ github.event.action }}
+          IS_DRAFT: ${{ github.event.pull_request.draft }}
+        run: |
+          set -euo pipefail
+          valor=""
+          case "$EVENT/$ACTION" in
+            pull_request/opened|pull_request/reopened|pull_request/ready_for_review)
+              if [ "$IS_DRAFT" = "true" ]; then valor="In Progress"; else valor="In Review"; fi ;;
+            pull_request/converted_to_draft) valor="In Progress" ;;
+            pull_request/closed)             valor="Done" ;;
+            issues/closed)                   valor="Done" ;;
+            # Reaberta volta para Backlog (volto a triar); fechada sai da fila —
+            # `Done` cobre completed E not_planned: no board, "Done" é fim de fila.
+            issues/opened|issues/reopened)   valor="Backlog" ;;
+            *) echo "evento sem transição de card: $EVENT/$ACTION — nada a fazer" ;;
+          esac
+          echo "valor=$valor" >> "$GITHUB_OUTPUT"
+
+      - name: Aplica o estado no campo Kanban
+        if: steps.token.outputs.pronto == '1' && steps.estado.outputs.valor != ''
+        env:
+          URL: ${{ github.event.issue.html_url || github.event.pull_request.html_url }}
+          VALOR: ${{ steps.estado.outputs.valor }}
+        run: |
+          set -euo pipefail
+
+          # Tudo por GraphQL puro (cli/cli#8885): o `gh project` mascara falha de
+          # auth como "unknown owner type" MESMO COM PAT VÁLIDO — provado neste
+          # repo em 23/09 (PAT ok na API e no teste local; `gh project` do runner
+          # rejeitado com o mesmo valor; mutações GraphQL funcionam). O add é
+          # idempotente e já devolve o id do item — 3 chamadas, zero gh project.
+
+          # 1 · Campo Kanban (opções com id) + conteúdo do evento, numa query.
+          leitura="$(gh api graphql -f query='
+          query($id: ID!, $url: URI!) {
+            project: node(id: $id) {
+              ... on ProjectV2 {
+                field(name: "Kanban") { ... on ProjectV2SingleSelectField { id options { id name } } }
+              }
+            }
+            resource(url: $url) { ... on Issue { id } ... on PullRequest { id } }
+          }' -f id="$PROJECT_ID" -f url="$URL")"
+
+          campo="$(printf '%s' "$leitura" | jq -r '.data.project.field.id // empty')"
+          opcao="$(printf '%s' "$leitura" | jq -r --arg v "$VALOR" '.data.project.field.options[]? | select(.name == $v) | .id')"
+          conteudo="$(printf '%s' "$leitura" | jq -r '.data.resource.id // empty')"
+
+          [ -n "$campo" ]    || { echo "::error::campo 'Kanban' não existe no Project #$PROJECT_NUMBER — rode: .github/scripts/bootstrap_project_management.sh ONLY=project"; exit 1; }
+          [ -n "$opcao" ]    || { echo "::error::opção '$VALOR' não existe no campo Kanban — rode: .github/scripts/bootstrap_project_management.sh ONLY=project"; exit 1; }
+          [ -n "$conteudo" ] || { echo "::error::não resolve o conteúdo de $URL"; exit 1; }
+
+          # 2 · Garante o item no board e recebe o id (idempotente).
+          item="$(gh api graphql -f query='
+          mutation($p: ID!, $c: ID!) {
+            addProjectV2ItemById(input: { projectId: $p, contentId: $c }) { item { id } }
+          }' -f p="$PROJECT_ID" -f c="$conteudo" --jq '.data.addProjectV2ItemById.item.id')"
+          [ -n "$item" ] || { echo "::error::addProjectV2ItemById não devolveu item para $URL"; exit 1; }
+
+          # 3 · Aplica o estado no campo. Nota: singleSelectOptionId é String! no
+          # schema (não ID!) — declarar ID! reprova com "Type mismatch ... (ID! / String)".
+          gh api graphql -f query='
+          mutation($p: ID!, $i: ID!, $f: ID!, $o: String!) {
+            updateProjectV2ItemFieldValue(input: {
+              projectId: $p, itemId: $i, fieldId: $f,
+              value: { singleSelectOptionId: $o }
+            }) { projectV2Item { id } }
+          }' -f p="$PROJECT_ID" -f i="$item" -f f="$campo" -f o="$opcao" >/dev/null
+          echo "$URL → $VALOR"
+
+  guardian:
+    name: 🛡 Guardian — PR precisa de gestão
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    permissions:
+      contents: read # piso: este job não checa o PR out nem lista arquivos
+      pull-requests: read # gh pr view --json labels,body,milestone
+    env:
+      GH_TOKEN: ${{ github.token }} # leitura de PR: GITHUB_TOKEN basta
+    if: >-
+      github.event_name == 'pull_request' &&
+      (github.event.action == 'opened' || github.event.action == 'synchronize' ||
+       github.event.action == 'reopened' || github.event.action == 'labeled' ||
+       github.event.action == 'edited')
+    steps:
+      - name: Valida label, assignee, issue vinculada e milestone
+        env:
+          PR: ${{ github.event.number }}
+          BASE: ${{ github.event.pull_request.base.ref }}
+        run: |
+          set -euo pipefail
+          falha=0
+
+          # 1 · Label — a taxonomia vive no bootstrap (fonte única), o CI só cobra.
+          n="$(gh pr view "$PR" --repo "$REPO" --json labels --jq '.labels | length')"
+          n="${n:-0}"
+          if [ "$n" -eq 0 ]; then
+            echo "::error::PR sem label — aplique type:, size: e scope: (taxonomia em .github/scripts/bootstrap_project_management.sh)"
+            falha=1
+          fi
+
+          # 2 · Assignee — sem dono, o card do board não tem responsável e o PR
+          #     fica sem quem o puxe. Aviso, não reprova (o mantenedor é único
+          #     hoje: `@me` resolve em um comando).
+          donos="$(gh pr view "$PR" --repo "$REPO" --json assignees --jq '.assignees | length')"
+          if [ "${donos:-0}" -eq 0 ]; then
+            echo "::warning::PR sem assignee — aplique o responsável: gh pr edit $PR --add-assignee @me"
+          fi
+
+          if [ "$BASE" = "main" ]; then
+            # 3 · PR de release (develop → main): a gestão é o CHANGELOG + milestone.
+            echo "PR de release para a main — isento de issue vinculada."
+            ms="$(gh pr view "$PR" --repo "$REPO" --json milestone --jq '.milestone.title // ""')"
+            if [ -z "$ms" ]; then
+              echo "::warning::release sem milestone — associe a versão: gh pr edit $PR --milestone \"vX.Y.Z\""
+            fi
+          else
+            # 4 · Issue vinculada — a regra de ouro: nada entra sem issue. O
+            #     `Closes #N` é o vínculo visível no diff; quem FECHA a issue num
+            #     PR para a develop é o mantenedor (a keyword só age na branch
+            #     padrão — ver reference/18, seção 5).
+            corpo="$(gh pr view "$PR" --repo "$REPO" --json body --jq '.body // ""')"
+            ms="$(gh pr view "$PR" --repo "$REPO" --json milestone --jq '.milestone.title // ""')"
+            if ! printf '%s' "$corpo" | grep -Eq '([Cc]loses|[Ff]ixes|[Rr]esolves|[Cc]loses:|[Ff]ixes:|[Rr]efs?) ?#[0-9]+'; then
+              if [ -n "$ms" ]; then
+                echo "::notice::sem 'Closes #N', mas o PR está no milestone '$ms' (aceito para trabalhos de épico)"
+              else
+                echo "::error::sem issue vinculada — abra a issue primeiro e referencie no corpo com 'Closes #N'"
+                falha=1
+              fi
+            fi
+
+            # 5 · Milestone — aviso, não reprova (decision: mantenedor único).
+            if [ -z "$ms" ]; then
+              echo "::warning::sem milestone — associe no review: gh pr edit $PR --milestone \"v1.1.0\""
+            fi
+          fi
+
+          exit "$falha"
+
+  milestone:
+    name: 🏁 Milestone fechado — relatório
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    permissions:
+      contents: read
+      issues: read # gh api repos/.../issues?milestone=N
+    env:
+      GH_TOKEN: ${{ github.token }}
+    if: github.event_name == 'milestone' && github.event.action == 'closed'
+    steps:
+      - name: Relatório de fechamento do milestone
+        env:
+          MS: ${{ github.event.milestone.number }}
+          TITULO: ${{ github.event.milestone.title }}
+        run: |
+          set -euo pipefail
+          echo "### 🏁 $TITULO — fechamento" >> "$GITHUB_STEP_SUMMARY"
+          gh api "repos/$REPO/issues?milestone=$MS&state=all&per_page=100" \
+            --jq 'group_by(.state) | map("\(length) \(.[0].state)") | join(" · ")' \
+            | tee -a "$GITHUB_STEP_SUMMARY"
+          abertos="$(gh api "repos/$REPO/issues?milestone=$MS&state=open&per_page=100" --jq 'length')"
+          if [ "$abertos" -gt 0 ]; then
+            echo "::warning::$abertos item(ns) ainda aberto(s) no milestone $TITULO — migre para o próximo marco"
+          fi
+
+  # ── Diagnóstico manual ──────────────────────────────────────────────────────
+  # Actions → este workflow → Run workflow. Responde "o board está ligado?" sem
+  # depender de abrir issue/PR de teste. Aqui o token ausente REPROVA de
+  # propósito: execução manual existe para diagnosticar, não para passar.
+  diagnostico:
+    name: 🩺 Diagnóstico do board (manual)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    if: github.event_name == 'workflow_dispatch'
+    env:
+      GH_TOKEN: ${{ secrets.PROJECT_TOKEN }}
+    steps:
+      - name: Confere token, Project e campo Kanban
+        env:
+          TOKEN: ${{ secrets.PROJECT_TOKEN }}
+        run: |
+          set -euo pipefail
+          if [ -z "$TOKEN" ]; then
+            echo "::error::secrets.PROJECT_TOKEN ausente — crie um PAT fine-grained (Projects: read/write + Issues: read/write) e rode: gh secret set PROJECT_TOKEN"
+            exit 1
+          fi
+
+          # GraphQL puro também aqui: o cli/cli#8885 vale para o dispatch —
+          # `gh project` mascararia PAT válido como "unknown owner type".
+          if ! leitura="$(gh api graphql -f query='
+          query($id: ID!) {
+            node(id: $id) {
+              ... on ProjectV2 {
+                title
+                field(name: "Kanban") { ... on ProjectV2SingleSelectField { options { name } } }
+                items(first: 5) { totalCount nodes { content { ... on Issue { title } ... on PullRequest { title } } } }
+              }
+            }
+          }' -f id="$PROJECT_ID" 2>&1)"; then
+            echo "::error::o token não leu o Project #$PROJECT_NUMBER: $leitura"
+            exit 1
+          fi
+
+          kanban="$(printf '%s' "$leitura" | jq -r '.data.node.field.options | map(.name) | join(" → ") // empty')"
+          total="$(printf '%s' "$leitura" | jq -r '.data.node.items.totalCount // empty')"
+          amostra="$(printf '%s' "$leitura" \
+            | jq -r '[.data.node.items.nodes[].content.title // "(sem título)"] | join(" · ")')"
+
+          {
+            echo "### 🩺 Diagnóstico da gestão de projetos"
+            echo ""
+            echo "- Project: #$PROJECT_NUMBER (owner \`$PROJECT_OWNER\`)"
+            echo "- Campo Kanban: ${kanban:-(AUSENTE — rode o bootstrap, ONLY=project)}"
+            echo "- Itens no board: $total"
+            echo "- Primeiros itens: ${amostra:-(vazio)}"
+          } | tee -a "$GITHUB_STEP_SUMMARY"
+
+          if [ -z "$kanban" ]; then
+            echo "::error::o campo 'Kanban' não existe no Project #$PROJECT_NUMBER — rode: .github/scripts/bootstrap_project_management.sh ONLY=project"
+            exit 1
+          fi
+          echo "::notice::views Kanban/Sprint/Roadmap: o bootstrap cria (createProjectV2View) — só agrupamento/ordenação é manual (1 clique por view)."

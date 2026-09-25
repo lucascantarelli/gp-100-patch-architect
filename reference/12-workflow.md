@@ -15,7 +15,7 @@ Criar patches para a **Valeton GP-100** sob demanda: o usuário pede um estilo/m
 3. **Encaixe**: montar a cadeia final PRE→DST→AMP→NR→CAB→EQ→MOD→DLY→RVB com valores; respeitar regras de ouro (00-signal-chain).
 4. **IR** (se aplicável): acionar `gp100-ir-research` para achar IR gratuita + `gp100-ir-fit` para cortes/Level.
 5. **Validação**: passar o patch inteiro pelo `gp100-patch-validator` (nomes, ranges, coerência).
-6. **Persistência**: acrescentar o patch a `tools/patches-defs.json` e rodar o pipeline (`build_song_patches.py` → `gen_indexes.py`) e a suíte (guarda de sincronia). O `patch.md` e o `.prst` são **gerados** pelo pipeline, não escritos à mão.
+6. **Persistência**: acrescentar o patch ao fragmento do álbum (`data/defs/<CHAVE>.json`) e rodar o pipeline (`build_song_patches.py` → `gen_indexes.py`) e a suíte (guarda de determinismo). O `patch.md` e o `.prst` são **gerados** pelo pipeline, não escritos à mão.
 7. **Entrega**: resumir o patch na conversa + apontar os arquivos gerados.
 
 ## Nomenclatura de patches (vigente)
@@ -28,11 +28,11 @@ Criar patches para a **Valeton GP-100** sob demanda: o usuário pede um estilo/m
 ```
 patches/<Banda>/<Álbum>/<Música>/<NOME>/
 ├── patch.md              # documento completo — renderizado pelo build_doc()
-├── spec.json             # parâmetros estruturados (não versionado: insumo do gerador)
 └── <NOME>.prst           # single fw 2.1, CAB de fábrica
 ```
-Nenhum desses três é escrito à mão: o `tools/build_song_patches.py` os gera a partir de
-`tools/patches-defs.json`. IRs de terceiros **não** entram na biblioteca — elas vivem em
+Nenhum desses é escrito à mão: o pipeline do pacote (`gp100 build`) os gera a partir de
+`data/defs/` — o spec vai **in-memory** ao codec (ADR-0013: nenhum
+intermediário em disco; o antigo `spec.json` foi eliminado). IRs de terceiros **não** entram na biblioteca — elas vivem em
 `impulse_responses/<Pack>/`, fora do git (política em knowledge.md, regra 10).
 
 ```
@@ -50,8 +50,8 @@ Nenhum desses três é escrito à mão: o `tools/build_song_patches.py` os gera 
 - [ ] Instruções de digitação na ordem real dos menus da pedaleira (incluindo os SOBRESSALENTES citados nos momentos).
 - [ ] Sugestão de captador (posição na Strat) para o timbre.
 - [ ] Teste sugerido (riff + o que escutar).
-- [ ] **Pipeline rodado e commitado**: `python tools/build_song_patches.py` → `python tools/gen_indexes.py` (e `python tools/ir_library.py` se baixou pack) — o guarda de sincronia da suíte reprova artefato gerado fora do commit.
-- [ ] **Suíte verde**: `python -m unittest discover -s tests -v` — `TestB_FonteUnica_IR` reprova mapa e `patch.md` divergindo sobre IR; `TestG_Indices` reprova índice defasado; `TestH_DadosEmSincronia` É o guarda de sincronia (pipeline numa cópia × commitado).
+- [ ] **Pipeline rodado**: `gp100 build` (e de novo após baixar pack de IR) — o guarda de determinismo da suíte reprova derivado divergente do que o defs produz (`patches/**` não é commitado).
+- [ ] **Suíte verde**: `uv run pytest` — `TestB_FonteUnica_IR` reprova mapa e `patch.md` divergindo sobre IR; `TestG_Indices` reprova índice defasado; `TestH_DadosEmSincronia` é o guarda de determinismo (pipeline numa cópia × derivados).
 
 ## Fluxo de ajuste (iteração com o músico)
 1. Músico testa e volta com descrição ("muito agudo", "cauda engolida", "riff some na banda").
@@ -72,24 +72,20 @@ Nenhum desses três é escrito à mão: o `tools/build_song_patches.py` os gera 
 | "Volume salta ao ligar efeito" | Level do efeito ≈ bypass (igualar) |
 | "Solo não corta" | EQ Mid +3 / Level +15, patch de solo separado |
 
-## Pipeline de dados (é o que o guarda de sincronia da suíte roda)
-Qualquer elemento novo (música, camada, patch, modelo de efeito, momento de toggle, pack de IR) exige o pipeline inteiro, na ordem, e o commit dos derivados:
+## Pipeline de dados (é o que o guarda de determinismo da suíte roda)
+Qualquer elemento novo (música, camada, patch, modelo de efeito, momento de toggle, pack de IR) exige rodar o pipeline, na ordem — `patches/**` é construído, não armazenado (ADR-0013):
 
 ```bash
-python tools/ir_library.py          # 1. biblioteca de IRs → tools/ir-library.json + reference/16
-python tools/add_pulse_defs.py      # 2. seeders de álbum (já encadeia add_momentos.py)
-python tools/add_momentos.py        # 3. momentos de toggle (estado inverso; nunca AMP/CAB)
-python tools/build_song_patches.py  # 4. patch.md + .prst de todos os patches (+ spec.json local)
-python tools/gen_indexes.py         # 5. MAPA-DO-ALBUM.md + patches/README.md
-python -m unittest discover -s tests -v  # 6. guarda de sincronia: pipeline numa cópia × commitado
+uv run gp100 build    # 1–3. IRs → patches → índices (data/ir-library.json + reference/16)
+uv run pytest         # 4. guarda de determinismo: pipeline numa cópia × derivados
 ```
 
-**Isso é literalmente o que o `TestH_DadosEmSincronia` roda**, a cada `unittest` — local e no CI. **Nenhum job escreve no repositório**: se algum derivado estiver defasado, o teste reprova e imprime o comando exato de conserto, para o autor rodar e commitar.
+**Isso é literalmente o que o `TestH_DadosEmSincronia` roda**, a cada `pytest` — local e no CI. **Nenhum job escreve no repositório**: se algum derivado estiver defasado, o teste reprova e imprime o comando exato de conserto, para o autor rodar e commitar.
 
-O passo 6 é o que separa "rodei o pipeline" de "commitei o resultado": sem ele, um PR pode mergear com artefato defasado. A fonte única continua sendo `tools/patches-defs.json` — nenhum script mantém tabela própria de músicas, álbuns ou cabs.
+O último passo é o que separa "rodei o pipeline" de "biblioteca coerente": sem ele, um PR pode mergear com artefato defasado. A fonte única é o defs (`data/defs/`, schema v2) — nenhum script mantém tabela própria de músicas, álbuns ou cabs, e **nada do que o pipeline produz é commitado**: em clone limpo o build recria tudo a partir do defs.
 
 ## Limites declarados do projeto
 - A GP-100 não tem reorder de cadeia; não criar expectativa de "trocar ordem dos efeitos".
 - Não há bloco de IR separado do CAB — IR substitui o CAB.
-- O `.prst` **é gerado** (`generate_prst.py`, formato single fw 2.1 validado no aparelho) e a entrega inclui `.prst` + `patch.md` + receita de digitação (o `spec.json` intermediário não é entregue nem versionado); IR de terceiros entra **documentada** (não embutida).
+- O `.prst` **é gerado** (codec `infrastructure/prst`, formato single fw 2.1 validado no aparelho) e a entrega inclui `.prst` + `patch.md` + receita de digitação; IR de terceiros entra **documentada** (não embutida).
 - Teste sonoro final é humano (músico + fones); o agente otimiza a probabilidade de acerto.

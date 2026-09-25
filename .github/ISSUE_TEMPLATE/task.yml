@@ -1,0 +1,42 @@
+name: "📋 Tarefa (task)"
+description: "Trabalho rastreado — feature, refactor, docs ou chore. Todo PR nasce daqui."
+labels: ["status: needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **Fluxo PR-driven:** esta issue é a unidade de trabalho — o PR que a
+        implementa fecha automaticamente com `Closes #N`. A triagem aplica
+        `type:`, `scope:` e `size:`; prioridade e status vivem no
+        [Project v2](https://github.com/users/lucascantarelli/projects/1/views/1).
+  - type: textarea
+    id: objetivo
+    attributes:
+      label: Objetivo
+      description: "O que precisa existir ao final? Qual o ganho para quem usa a biblioteca?"
+    validations:
+      required: true
+  - type: textarea
+    id: contexto
+    attributes:
+      label: Contexto / referências
+      description: "Álbuns, patches, scripts ou docs envolvidos. Links de rigs e fontes, se houver."
+  - type: dropdown
+    id: tipo
+    attributes:
+      label: Tipo sugerido
+      options:
+        - "type: feature"
+        - "type: refactor"
+        - "type: docs"
+        - "type: chore"
+    validations:
+      required: true
+  - type: checkboxes
+    id: pronto
+    attributes:
+      label: Definição de pronto
+      options:
+        - label: "Pipeline rodado e derivados commitados (se tocou em dados)"
+        - label: "Suíte `python -m unittest discover -s tests -v` verde"
+        - label: "Docs atualizados quando o comportamento mudou"

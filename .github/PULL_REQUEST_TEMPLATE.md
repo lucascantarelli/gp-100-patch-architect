@@ -11,6 +11,16 @@ Base: `develop` — só o PR de release (develop -> main) vai contra a `main`.
 
 <!-- Duas ou três frases. O que o usuário final ganha com isso? -->
 
+## 🗂 Gestão (o guardian valida)
+
+- [ ] Issue vinculada abaixo com **`Closes #N`** — o fechamento é automático pelo
+      merge; nenhuma issue é fechada à mão
+- [ ] **Milestone** associado ao PR (`gh pr edit --milestone "vX.Y.Z"` ou na sidebar)
+- [ ] **Labels** aplicadas: `type: …` · `scope: …` · `size: XS–XL` (uma de cada;
+      prioridade e status ficam no board)
+- [ ] Card no **[Project v2](https://github.com/users/lucascantarelli/projects/1/views/1)**
+      — ao abrir, a automação move para `In Progress`/`In Review`; no merge, para `Done`
+
 Closes #
 
 ## Tipo de mudança
@@ -29,16 +39,15 @@ Closes #
 
 ### Pipeline e testes
 
-- [ ] Rodei o pipeline completo e commitei a saída:
-      `ir_library.py` → `add_pulse_defs.py` → `add_momentos.py` → `build_song_patches.py` → `gen_indexes.py`
+- [ ] Rodei o pipeline completo:
+      `ir_library.py` → `build_song_patches.py` → `gen_indexes.py`
 - [ ] `python -m unittest discover -s tests -v` passa — a suíte inclui o guarda de
-      sincronia (pipeline numa cópia temporária × commitado)
+      determinismo (pipeline numa cópia temporária × derivados)
 - [ ] `npx -y -p typescript@5.9.2 tsc --noEmit -p tsconfig.json` passa (se toquei em `.agents/`)
 - [ ] **Não editei à mão** arquivo gerado: `patches/**/*.prst`, `patch.md`,
-      `MAPA-DO-ALBUM.md`, `patches/README.md`, `tools/patches-defs.json`,
-      `tools/ir-library.json`, `reference/16-ir-library.md`
-- [ ] Se acrescentei um seeder, encadeei em `PIPELINE` (`tests/test_pipeline.py`) —
-      seeder fora da lista não roda no guarda de sincronia
+      `MAPA-DO-ALBUM.md`, `patches/README.md`,
+      `data/ir-library.json`, `reference/16-ir-library.md` — e não comitei
+      derivado de `patches/**` (só o `defs/` e os índices são fonte)
 
 ### Invariantes do projeto
 
@@ -64,8 +73,8 @@ Closes #
 ### Revisão
 
 - [ ] Descrevi como **verifiquei** que funciona (o que você ouviu/rodou, não só "deve funcionar")
-- [ ] Sei que o CI **não escreve no repositório**: se o teste de sincronia reprovar
-      por dado defasado, sou eu que rodo o pipeline e commito os derivados
+- [ ] Sei que o CI **não escreve no repositório**: se o guarda de determinismo
+      reprovar, sou eu que rodo o pipeline e regenero os derivados
 
 ---
 

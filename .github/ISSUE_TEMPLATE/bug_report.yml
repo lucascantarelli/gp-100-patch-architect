@@ -1,7 +1,7 @@
 name: 🐛 Relatar um problema
 description: Um patch não importa, o timbre não bate, uma doc está errada ou o pipeline falhou.
 title: "[Bug]: "
-labels: ["bug", "needs triage"]
+labels: ["bug", "status: needs-triage"]
 body:
   - type: markdown
     attributes:
@@ -22,7 +22,7 @@ body:
         - O arquivo .prst não importa na pedaleira ou no GP-100 Edits
         - O patch importa, mas o som não corresponde à seção 🔊 do patch.md
         - A documentação do patch (patch.md) tem informação errada
-        - Um script do pipeline (tools/) falha ou produz saída inesperada
+        - Um comando do pipeline (`gp100 build`/`verify`) falha ou produz saída inesperada
         - O CI ficou vermelho e não entendi o motivo
         - Erro no README, em reference/ ou em outro texto
         - Outro (descreva abaixo)

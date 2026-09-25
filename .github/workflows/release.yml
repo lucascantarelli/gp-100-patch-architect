@@ -6,10 +6,10 @@
 # publica a Release.
 #
 # Fluxo de quem publica (detalhado em CONTRIBUTING.md):
-#   1. no PR que prepara a release, para `develop`:
-#        python tools/gen_changelog.py --version X.Y.Z --write
+#   1. na `develop`:
+#        uv run gp100 changelog --version X.Y.Z --write
 #        printf '%s\n' X.Y.Z > VERSION
-#   2. mergeie `develop` → `main` com MERGE COMMIT (não squash);
+#   2. quando a release for aprovada, PR `develop` → `main` com MERGE COMMIT (não squash);
 #   3. este workflow roda sozinho — empacota, tagueia e publica.
 #
 # O merge commit no passo 2 é o que faz o changelog abaixo funcionar: num squash,
@@ -121,22 +121,30 @@ jobs:
         with:
           python-version: '3.14'
 
+      # O pipeline e a CLI são o pacote (issue #33): o ambiente vem do lockfile,
+      # como no CI — `uv run` resolve tudo (install + entry points).
+      - name: Ambiente do lockfile (uv sync --frozen)
+        run: uv sync --frozen
+
       # Nada sai daqui sem passar no que o CI exige — e a suíte já inclui o
       # guarda de sincronia (TestH: pipeline numa cópia temporária × commitado).
-      - name: 1/4 · Suíte de testes (a mesma do CI, com o guarda de sincronia)
-        run: |
-          python -m py_compile tools/*.py tests/*.py
-          python -m unittest discover -s tests -v
+      - name: 1/5 · Construir os derivados (patches/** não é mais commitado — #8)
+        env:
+          GP100_BUILD_TIME: '1700000000000'
+        run: uv run gp100 build --quiet
 
-      - name: 2/4 · Empacotar ZIPs + notas (dist/)
-        run: python tools/build_release.py "$VERSAO"
+      - name: 2/5 · Suíte de testes (a mesma do CI, com o guarda de determinismo)
+        run: uv run pytest --guarda-repo
 
-      - name: 3/4 · Seção do CHANGELOG desta versão
+      - name: 3/5 · Empacotar ZIPs + notas (dist/)
+        run: uv run gp100 release "$VERSAO" --destino dist
+
+      - name: 4/5 · Seção do CHANGELOG desta versão
         run: |
-          python tools/gen_changelog.py --version "$VERSAO" --out dist/changelog-section.md
+          uv run gp100 changelog --version "$VERSAO" --out dist/changelog-section.md
           cat dist/changelog-section.md
 
-      - name: 4/4 · Publicar (tagueia se preciso)
+      - name: 5/5 · Publicar (tagueia se preciso)
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |

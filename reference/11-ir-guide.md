@@ -40,7 +40,7 @@ Receita de encaixe:
 
 ## Onde as IRs moram
 - Packs baixados ficam em `impulse_responses/<Pack>/` — **fora do git** (licença de terceiro) e
-  **nunca** dentro de `patches/`, que é saída de script. Depois de baixar: `python tools/ir_library.py`.
+  **nunca** dentro de `patches/`, que é saída de script. Depois de baixar: `gp100 build` (indexa as IRs e regenera os derivados).
 - Não renomeie os arquivos do pack: o índice é gerado a partir do que existe na pasta e o
   `patch.md` recomenda o arquivo pelo caminho real.
 - O que se anota é na seção 📡 da doc (campo `doc` do defs): o **slot de User IR (1–20)**, os cortes

@@ -1,6 +1,10 @@
 # 🤖 Agentes — configuração do Freebuff
 
-Os 17 agentes deste projeto são carregados automaticamente pelo Freebuff (CLI, Desktop ou Web) ao abrir a pasta — não há chave, registro nem setup além do `npm install -g freebuff`. O modelo padrão é **GLM 5.3 Flash** (`z-ai/glm-5.3-flash`).
+Os 20 agentes deste projeto são carregados automaticamente pelo Freebuff (CLI, Desktop ou Web) ao abrir a pasta — não há chave, registro nem setup além do `npm install -g freebuff`. O modelo padrão é **GLM 5.3 Flash** (`z-ai/glm-5.3-flash`).
+
+## 🧩 Skills (Agent Skills)
+
+O projeto também versiona **11 skills** em [`skills/`](skills/) (formato pasta + `SKILL.md`): 4 do GP-100 (`gp100-criar-patch`, `gp100-por-referencia`, `gp100-ajustar-patch`, `gp100-sugerir-timbres` — a forma executável dos fluxos de `prompts/`) e 7 genéricas curadas (brainstorming, writing-plans, finishing-a-development-branch, github-actions-docs, python-testing-patterns, documentation-writer, frontend-design). Inventário, vereditos e precedência: [`reference/23-skills-curation.md`](../reference/23-skills-curation.md).
 
 ## 🏗️ Arquitetura
 
@@ -16,9 +20,9 @@ Os 17 agentes deste projeto são carregados automaticamente pelo Freebuff (CLI, 
 └──────┴──────┴──────┴──────┴──────┴──────┴──────┴──────┴──────┘
                  ↓ apoio (invocadas conforme o fluxo)
 ┌────────────────┬────────────────┬────────────────┬───────────────────┐
-│ tone-research  │  tone-mapper   │ ir-research/   │ patch-validator   │
-│ (rig real,     │  (rig → GP-100)│ ir-fit +       │ (conformidade     │
-│ fontes, época) │                │ globals        │  e doc)           │
+│ tone-research  │  tone-mapper   │ ir-research/   │ patch-validator + │
+│ (rig real,     │  (rig → GP-100)│ ir-fit +       │ ab-tester +       │
+│ fontes, época) │                │ globals        │ setlist           │
 └────────────────┴────────────────┴────────────────┴───────────────────┘
 ```
 
@@ -43,6 +47,9 @@ Os 17 agentes deste projeto são carregados automaticamente pelo Freebuff (CLI, 
 | `gp100-ir-fit.ts` | Ajuste fino de IR (Low/High Cut, Level) |
 | `gp100-manual-reader.ts` | Consulta ao manual V1.8 e ao catálogo fw 2.0 |
 | `gp100-patch-validator.ts` | Validação técnica e documental do patch |
+| `gp100-ab-tester.ts` | A/B pós-criação: entrevista guiada pelo protocolo universal (doc 12), mudanças mínimas |
+| `gp100-setlist.ts` | Cola de palco: ordem de slots do repertório via `gp100 setlist` (CLI do pacote) |
+| `gp100-release-proposer.ts` | **Propõe o bump da release** via `gp100 changelog` com evidência por commit — nunca altera VERSION/tag/publica (ADR-0010; issue #56) |
 
 ## ➕ Como criar um agente novo
 
@@ -54,4 +61,4 @@ Os 17 agentes deste projeto são carregados automaticamente pelo Freebuff (CLI, 
 
 ---
 
-[`📖 README do projeto`](../README.md) · [`📚 Reference`](../reference/) · [`🎸 patches/`](../patches/README.md)
+[`📖 README do projeto`](../README.md) · [`📚 Reference`](../reference/) · [`🎸 patches/`](https://lucascantarelli.github.io/gp-100-patch-architect/)

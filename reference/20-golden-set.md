@@ -1,9 +1,10 @@
 # 20 · Golden set — avaliação dos agentes de pesquisa
 
-> **O que é**: 20 músicas canônicas da biblioteca com a **cadeia esperada** (a
-> que o pipeline produziu e a suíte valida). Serve para medir a *qualidade* dos
-> agentes `gp100-tone-research` e `gp100-tone-mapper` — hoje os testes cobrem o
-> pipeline de dados, não o julgamento musical dos agentes.
+> **O que é**: o recorte canônico da biblioteca (uma seleção de músicas por
+> álbum) com a **cadeia esperada** (a que o pipeline produziu e a suíte
+> valida). Serve para medir a *qualidade* dos agentes `gp100-tone-research` e
+> `gp100-tone-mapper` — hoje os testes cobrem o pipeline de dados, não o
+> julgamento musical dos agentes.
 >
 > **Fonte única**: as cadeias vêm de `data/defs/` (campo
 > `spec.modules`, estado `on`). Se o defs mudar, regenere a tabela — este doc
@@ -29,7 +30,10 @@
 4. **Registre** o placar na issue/PR da avaliação — o golden set não é teste
    automático: é régua de regressão *musical* para mudanças nos prompts.
 
-## As 20 músicas · 43 patches
+## O recorte · 7 álbuns representados
+
+> Contagens exatas por álbum são derivadas do defs (`gp100 validate`); o
+> recorte abaixo seleciona as músicas de avaliação, não a biblioteca inteira.
 
 ### The Beatles — Abbey Road (1969)
 
@@ -42,14 +46,14 @@
 | `OHB01BA` | PRE:COMP- DST:Green OD+ AMP:Foxy 30TB+ NR:Gate 1+ CAB:Foxy 1x12+ EQ:EQ 1+ MOD:A-Chorus- DLY:Slapbk+ RVB:Room+ |
 | `OHB01SO` | PRE:Boost+ DST:Green OD+ AMP:Foxy 30TB+ NR:Gate 1+ CAB:Foxy 1x12+ EQ:EQ 1+ MOD:A-Chorus- DLY:Slapbk+ RVB:Room+ |
 
-### Frank Zappa — One Size Fits All (1975)
+### Frank Zappa — Apostrophe (') (1974)
 
 | Patch | Cadeia esperada |
 |---|---|
 | `URM01SL` | PRE:COMP4+ DST:Blues OD+ AMP:Dark Twin+ NR:Gate 1+ CAB:DarkTW 2x12+ EQ:EQ 1+ MOD:A-Chorus- DLY:Sweet- RVB:Plate+ |
 | `URM01SO` | PRE:COMP- DST:Super OD+ AMP:UK 45+ NR:Gate 1+ CAB:UK-GN 2x12+ EQ:EQ 1+ MOD:A-Chorus- DLY:Sweet- RVB:Room+ |
 
-### Janis Joplin — Pearl (1971)
+### Janis Joplin (Big Brother & The Holding Company) — Cheap Thrills (1968)
 
 | Patch | Cadeia esperada |
 |---|---|
@@ -105,19 +109,35 @@
 | `SMOO1SO` | PRE:COMP+ DST:Yellow OD+ AMP:Solo100 LD+ NR:Gate 1+ CAB:Mess-D 4x12+ EQ:EQ 1+ MOD:A-Chorus- DLY:Sweet+ RVB:Plate+ |
 | `SMOO1FL` | PRE:COMP+ DST:Blues OD- AMP:L-Star CL+ NR:Gate 1+ CAB:L-Star 2x12+ EQ:EQ 1- MOD:A-Chorus- DLY:Sweet+ RVB:Room+ |
 
+### The Jimi Hendrix Experience — Are You Experienced (1967)
+
+| Patch | Cadeia esperada |
+|---|---|
+| `FOXY01BA` | PRE:Boost+ DST:Red Haze- AMP:UK 45+ NR:Gate 1+ CAB:UK-LD 4x12+ EQ:EQ 1+ MOD:Vibe- DLY:M-Echo- RVB:Plate+ |
+| `FOXY01SO` | PRE:Boost+ DST:Red Haze+ AMP:UK 45+ NR:Gate 1+ CAB:UK-LD 4x12+ EQ:EQ 1+ MOD:Vibe- DLY:M-Echo- RVB:Plate+ |
+| `PURP01BA` | PRE:COMP- DST:Red Haze+ AMP:UK 45+ NR:Gate 1+ CAB:UK-LD 4x12+ EQ:EQ 1+ MOD:Vibe- DLY:M-Echo- RVB:Plate- |
+| `PURP01SO` | PRE:Saturate+ DST:Red Haze+ AMP:UK 45+ NR:Gate 1+ CAB:UK-LD 4x12+ EQ:EQ 1+ MOD:Vibe+ DLY:M-Echo- RVB:Plate- |
+| `WIND01BA` | PRE:COMP+ DST:Red Haze- AMP:UK 45+ NR:Gate 1+ CAB:UK-LD 4x12+ EQ:EQ 1+ MOD:Vibe+ DLY:M-Echo- RVB:Spring+ |
+| `WIND01SO` | PRE:COMP+ DST:Red Haze+ AMP:UK 45+ NR:Gate 1+ CAB:UK-LD 4x12+ EQ:EQ 1+ MOD:Vibe- DLY:T-Echo+ RVB:Spring+ |
+
 ## Cobertura intencional do set
 
 - **Escolas inteiras**: Beatles (groove/vox), Floyd (espaço/ambiência), Nirvana
   (punk limpo↔pesado na mesma cadeia), Santana (latin blues), Janis (blues
-  rock), Zappa (híbrido experimental).
+  rock), Zappa (híbrido experimental), Hendrix (fuzz psicodélico + octávio).
 - **Dilemas clássicos de mapeamento**: Twin limpo × Crunch (STH01), mesmo amp
   com drive diferente (DRY01 AR/RI), chorus ligado só no limpo (SLT01CL),
   seções que só trocam estado de bloco (CT01 RI/VOX).
 - **Armadilhas**: `POL01CL` é o único clean com MOD **desligado**; `SOF01EC`
-  desliga NR (ambiente de estúdio); `URM01SL` usa COMP4 (não COMP).
+  desliga NR (ambiente de estúdio); `URM01SL` usa COMP4 (não COMP);
+  `PURP01BA` deixa o RVB **desligado** (a secura do disco); `WIND01SO`
+  troca M-Echo por **T-Echo** (tape, não digital); `Red Haze` é o fuzz
+  específico do Hendrix no catálogo fw 2.0 — não confundir com fuzz genérico.
 
 > Manutenção: regenere as tabelas a partir do defs quando um patch mudar —
-> a suíte não cobre este doc (é régua de avaliação, não artefato do pipeline).
+> a suíte não cobre este doc (é régua de avaliação, não artefato do pipeline);
+> o linter de docs (#58, regra 7) cruz contagens literais com a derivação do
+> ADR-0014 (`/stats/`, badges) — aqui elas são do recorte, não da biblioteca.
 
 ---
 

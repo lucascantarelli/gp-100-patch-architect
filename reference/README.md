@@ -30,7 +30,7 @@ Tudo que os agentes consultam antes de propor um patch. **Fontes na ordem de pre
 | 17 | `17-free-ir-packs.md` | Packs de IR gratuitos na internet, por lacuna da biblioteca |
 | 18 | `18-project-management.md` | 🗂 Gestão de projetos: Project v2, milestones, taxonomia de labels e fluxo PR-driven (issue → PR → release) |
 | 19 | `19-roadmap-v2.md` | 🗺 Roadmap da v2.0: schema v2 do defs, CLI unificada, site estático e meta de 100+ patches |
-| 20 | `20-golden-set.md` | 🥇 Golden set: 20 músicas/43 patches canônicos como régua de avaliação dos agentes de pesquisa |
+| 20 | `20-golden-set.md` | 🥇 Golden set: recorte canônico cobrindo as 7 álbuns, como régua de avaliação dos agentes de pesquisa |
 | 21 | `21-code-review.md` | 🔍 Code review do código Python: forças, achados (M/B) e proposta do agente gp100-code-reviewer |
 | 22 | `22-dead-code-analysis.md` | 🧹 Análise de código obsoleto/morto: método, achados corrigidos e prevenção |
 | 23 | `23-skills-curation.md` | 🧩 Curadoria das skills globais: vereditos, precedência e decisão pytest da 2.0 |

@@ -166,7 +166,7 @@ dossiê do rig real (o fluxo de hoje já cobra isso).
 3. **Golden set para tone-research/tone-mapper**: ~20 músicas canônicas com
    cadeia esperada, para avaliar a *qualidade* dos agentes de pesquisa — hoje os
    testes só cobrem o pipeline — **entregue**: `reference/20-golden-set.md`
-   (20 músicas / 43 patches extraídos do defs, ponderação por bloco e critério
+   (recorte por álbum extraído do defs — hoje as 7 álbuns; ponderação por bloco e critério
    de aprovação).
 
 ## 8 · Pilar F — Qualidade e CI (aditivo, entra em 1.x)

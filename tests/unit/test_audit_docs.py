@@ -229,7 +229,7 @@ def test_caminho_dentro_de_cerca_nao_e_promessa(tmp_path: Path, raiz: Path) -> N
 
 
 def test_excecao_historica_e_consciente() -> None:
-    assert audit_docs.EXCETO['docs/audit-2.0.md'] == {'estado', 'issue'}
+    assert audit_docs.EXCETO['docs/audit-2.0.md'] == {'estado', 'issue', 'contagens'}
     assert audit_docs.EXCETO['reference/22-dead-code-analysis.md'] == {'caminho'}
 
 
@@ -240,7 +240,75 @@ def test_repo_real_esta_verde() -> None:
     """O critério de aceite da #58: zero falso positivo na develop."""
     codigo, saida = _rodar()
     assert codigo == 0, saida[-1500:]
-    assert '78 docs consistentes' in saida or 'docs consistentes' in saida
+    assert 'docs consistentes' in saida
+
+
+# ── regra 7 · contagens literais × derivação (ADR-0014) ─────────────────────
+
+
+def test_regra_7_verificacao_importavel(tmp_path: Path) -> None:
+    """A função pega a divergência real — e cita a fonte (ADR-0014)."""
+    doc = tmp_path / 'DOC.md'
+    doc.write_text('A biblioteca tem 97 patches hoje.\n', encoding='utf-8')
+    violas = audit_docs.verificar_contagens(doc, doc.read_text(encoding='utf-8'), {'patches': 103})
+    assert any('97 patches' in v and 'patches=103' in v and 'ADR-0014' in v for v in violas)
+
+
+def test_regra_7_unidades_e_bate_com_derivacao(tmp_path: Path) -> None:
+    doc = tmp_path / 'DOC.md'
+    doc.write_text(
+        'Hoje são 21 agentes, 11 skills, 103 patches, 61 músicas, 7 álbuns, '
+        '392 testes e 103 .prst gerados.\n',
+        encoding='utf-8',
+    )
+    derivacao = {
+        'agentes': 21,
+        'skills': 11,
+        'patches': 103,
+        'musicas': 61,
+        'albuns': 7,
+        'testes': '392',
+    }
+    assert audit_docs.verificar_contagens(doc, doc.read_text(encoding='utf-8'), derivacao) == []
+
+
+def test_regra_7_subconjunto_e_historico_passam(tmp_path: Path) -> None:
+    """Linha com sinal de subconjunto (golden set, por álbum) ou registro
+    histórico (época da migração) NÃO reivindica o total — e passa."""
+    doc = tmp_path / 'DOC.md'
+    doc.write_text(
+        'O golden set: 20 músicas / 43 patches.\n'
+        'Pulse: 24 músicas / 38 patches.\n'
+        'Na época da migração, 41 músicas e ~100 patches no horizonte.\n'
+        'Meta declarada: ≥ 100 patches.\n'
+        '`analyze_prst.py:40` fala em "62 patches".\n'
+        '— 1 patch com `<ppIRInfo>`:\n',
+        encoding='utf-8',
+    )
+    violas = audit_docs.verificar_contagens(
+        doc, doc.read_text(encoding='utf-8'), {'patches': 103, 'musicas': 61}
+    )
+    assert violas == []
+
+
+def test_regra_7_degradacao_retorna_none(tmp_path: Path) -> None:
+    """`_contagens_derivadas` devolve None quando a derivação falha (raiz sem
+    VERSION/pyproject/defs) — o linter degrada a aviso em vez de reprovar."""
+    assert audit_docs._contagens_derivadas(tmp_path) is None
+
+
+def test_regra_7_repo_real_pega_uma_divergencia_real(tmp_path: Path) -> None:
+    """Prova de verdade no repo real: inserir '97 patches' num doc e ver o
+    linter (rodado em subprocess, sem tocar os docs commitados) reprovar."""
+    doc = RAIZ / 'knowledge.md'
+    original = doc.read_text(encoding='utf-8')
+    doc.write_text(original + '\nTotais atuais: 97 patches e 58 músicas.\n', encoding='utf-8')
+    try:
+        codigo, saida = _rodar()
+        assert codigo == 1, saida[-1500:]
+        assert '97 patches' in saida and 'patches=103' in saida
+    finally:
+        doc.write_text(original, encoding='utf-8')
 
 
 def test_clone_raso_degrada_caminho_para_aviso(tmp_path: Path) -> None:

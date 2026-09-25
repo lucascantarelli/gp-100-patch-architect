@@ -26,6 +26,11 @@ O que REPROVA:
   6. Comando de `gh`/`gp100` em bloco de doc com caminho de subcomando
      INVÁLIDO — validado com `--help` (o `gh project item-list` sem `--limit`
      teria sido pego aqui; `--help` é local, sem rede).
+  7. **Contagem literal** ("N agentes/skills/patches/músicas/álbuns/testes/
+     .prst") que diverge da **derivação** (`badges.dados_derivados`, ADR-0014)
+     — a mesma fonte dos badges e do `/stats/`. Linha com sinal de subconjunto
+     ou registro histórico (golden set, "na auditoria", "da época", versão
+     antiga) não reivindica o total e passa.
 
 O que AVISA (não reprova):
   * Âncora de link (`doc.md#seção`) que não casa com um título do alvo —
@@ -113,11 +118,27 @@ EXCETO: dict[str, set[str]] = {
     # Registro histórico de 2026-09: cita de propósito os erros da época
     # ("#29" onde era #30, issues "abertas" na fase errada). Reler o passado
     # com o veredito de hoje seria reescrever a auditoria.
-    "docs/audit-2.0.md": {"estado", "issue"},
+    "docs/audit-2.0.md": {"estado", "issue", "contagens"},
+    # Auditoria do DoD datada: as métricas congelam a época da verificação.
+    "docs/audit-dod-2.0.md": {"contagens"},
     # Análise de 2026-09 sobre o legado (tools/): a proposta de prevenção
     # (`tests/test_dead_code.py`) foi SUPERADA — o código morto virou teste
     # da pirâmide e o scanner AST não sobreviveu à extinção do legado.
     "reference/22-dead-code-analysis.md": {"caminho"},
+    # ADR datado: o contexto descreve a biblioteca DA ÉPOCA ("97 patches") —
+    # reler com a derivação de hoje reescreveria o registro da decisão.
+    "docs/decisions/0013-modelo-de-artefatos-em-escala.md": {"contagens"},
+    # Demais ADRs: contexto histórico datado ("hoje a CLI é…", "no momento…")
+    # — a decisão vive no tempo em que foi tomada.
+    "docs/decisions/0002-camadas-pragmaticas.md": {"contagens"},
+    "docs/decisions/0003-cli-typer-rich.md": {"contagens"},
+    "docs/decisions/0004-ui-via-api-na-2-1.md": {"contagens"},
+    "docs/decisions/0005-qualidade-ruff-mypy-pytest.md": {"contagens"},
+    "docs/decisions/0008-agents-e-contrato.md": {"contagens"},
+    # Golden set é POR DEFINIÇÃO um subconjunto (20 músicas / 43 patches).
+    "reference/20-golden-set.md": {"contagens"},
+    # Histórico de releases: cada seção congela as contagens da sua época.
+    "CHANGELOG.md": {"contagens"},
 }
 
 
@@ -297,6 +318,92 @@ def verificar_caminhos(
                 f"{doc.name}:{linha} · caminho `{token}` nunca existiu no repo "
                 "(nem presente, nem histórico) — typo ou doc de arquitetura inexistente"
             )
+    return achados
+
+
+# ── 7 · contagens literais × derivação (ADR-0014) ────────────────────────────
+
+RE_CONTAGEM = re.compile(
+    r"\b(?P<num>\d{1,4})\s+"
+    r"(?P<unidade>agentes|skills|patches|m[uú]sicas|[aá]lbuns|testes)\b",
+    re.IGNORECASE,
+)
+RE_CONTAGEM_PRST = re.compile(r"\b(?P<num>\d{1,4})\s+(?:`?\.)?prst`?", re.IGNORECASE)
+
+# Linha com estes sinais NÃO reivindica o total atual: fala de subconjunto
+# (golden set, "skills de efeito"), de registro histórico (auditoria antiga,
+# época da migração) ou cita a divergência para corrigi-la.
+CONTEXTO_NAO_TOTAL = re.compile(
+    r"can[oô]nic|golden|de efeito|na auditoria|desatualizada|v\d\.\d"
+    r"|conclu[ií]|encerrad|entregue|[éd]poca|extint"
+    # metas e horizontes (futuro, não presente): "≥ 100 patches", "meta de 10"
+    r"|meta|horizonte|≥|extra[íi]d"
+    # citação de artefato antigo: "analyze_prst.py fala em '62 patches'"
+    r"|fala em"
+    # tag XML inline (protocolo técnico, não total): "1 patch… com <ppIRInfo>"
+    r"|<[a-z]+"
+    # contagens POR ÁLBUM (subconjunto): "Pulse (24 músicas / 38 patches)"
+    r"|pulse|wishkah|supernatural|abbey|apostrophe|experienced|cheap thrills"
+    r"|smooth|santana",
+    re.IGNORECASE,
+)
+
+UNIDADE_CHAVE = {
+    "agentes": "agentes",
+    "skills": "skills",
+    "patches": "patches",
+    "prst": "patches",
+    "músicas": "musicas",
+    "musicas": "musicas",
+    "álbuns": "albuns",
+    "albuns": "albuns",
+    "testes": "testes",
+}
+
+
+def _contagens_derivadas(raiz: Path) -> dict | None:
+    """A fonte única (ADR-0014) — None se o pacote/defs não carregar (degrada).
+
+    `badges.py` é 100% stdlib e a cadeia do loader também: o checkout entra no
+    `sys.path` e a derivação roda no python do linter, sem instalar nada —
+    mesmo runtime do CI (job Agentes) e da máquina local.
+    """
+    try:
+        sys.path.insert(0, str(raiz / "src"))
+        from gp100_architect.application.badges import dados_derivados
+        from gp100_architect.infrastructure.defs import carregar_e_validar
+
+        return dados_derivados(carregar_e_validar(), raiz=raiz)
+    except Exception:  # noqa: BLE001 — degradar é o contrato (o CI nunca deve falhar aqui)
+        return None
+
+
+def verificar_contagens(doc: Path, prosa: str, derivacao: dict) -> list[str]:
+    """Contagem literal citada tem de bater com a derivação (ADR-0014).
+
+    Dispara só em dígitos + unidade conhecida, na linha SEM sinal de
+    subconjunto/registro histórico (o golden set pode dizer "43 patches" —
+    fala do recorte, não da biblioteca). O valor verdadeiro é o derivado;
+    prosa divergente é erro nosso, não da fonte.
+    """
+    achados: list[str] = []
+    for numero_linha, linha in enumerate(prosa.splitlines(), 1):
+        if CONTEXTO_NAO_TOTAL.search(linha):
+            continue
+        for padrao in (RE_CONTAGEM, RE_CONTAGEM_PRST):
+            for m in padrao.finditer(linha):
+                unidade = (
+                    m.group("unidade") if "unidade" in (m.groupdict().keys()) else "prst"
+                )
+                chave = UNIDADE_CHAVE.get(unidade.lower())
+                esperado = derivacao.get(chave) if chave else None
+                if esperado is None or str(m.group("num")) == str(esperado):
+                    continue
+                achados.append(
+                    f'{doc.name}:{numero_linha} · "{m.group("num")} {unidade}" '
+                    f"diverge da derivação ({chave}={esperado}) — rode o pipeline ou "
+                    "corrija a prosa; contagem pública é derivada (ADR-0014)"
+                )
     return achados
 
 
@@ -502,6 +609,12 @@ def main() -> int:
 
     violas: list[str] = []
     avisos: list[str] = []
+    derivacao = _contagens_derivadas(raiz)
+    if derivacao is None:
+        avisos.append(
+            "contagens: derivação indisponível (pacote/defs não carregou) — "
+            "verificação de contagens degradada a aviso (ADR-0014)"
+        )
     docs = tracked_markdowns(raiz)
     for doc in docs:
         rel = str(doc.relative_to(raiz)).replace("\\", "/")
@@ -515,6 +628,8 @@ def main() -> int:
             verificar_issues(doc, prosa, api, violas, avisos)
         if "milestone" not in exceto:
             verificar_milestones(doc, prosa, api, violas, avisos)
+        if "contagens" not in exceto and derivacao is not None:
+            violas.extend(verificar_contagens(doc, prosa, derivacao))
         if "caminho" not in exceto:
             if raso:
                 avisos.append(
@@ -539,7 +654,7 @@ def main() -> int:
         return 1
     print(
         f"✅ {len(docs)} docs consistentes — issues, caminhos, links, "
-        f"milestones e comandos conferem"
+        f"milestones, contagens e comandos conferem"
         + (f" ({len(avisos)} aviso(s))" if avisos else "")
     )
     return 0

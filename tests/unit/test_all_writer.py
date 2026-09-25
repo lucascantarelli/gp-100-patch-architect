@@ -145,3 +145,23 @@ def test_reader_le_o_all_como_le_o_export_de_fabrica(tmp_path: Path, templates) 
     assert [p['name'] for p in patches] == ['SMOO1RI', 'MONEY1CL']
     pre = next(e for e in patches[0]['effects'] if e['module'] == 'PRE')
     assert pre['params'][0] == '25'
+
+
+def test_determinismo_byte_a_byte(templates) -> None:
+    """Dois builds com o mesmo tempo = mesmos bytes (contrato do projeto)."""
+    a = gerar_xml_all([SPEC_A, SPEC_B], templates, build_time=TEMPO)
+    b = gerar_xml_all([SPEC_A, SPEC_B], templates, build_time=TEMPO)
+    assert a == b
+
+
+def test_all_e_distinto_da_soma_dos_singles(templates) -> None:
+    """O candidato é um formato PRÓPRIO: header único (count=N) + blocos —
+    não a concatenação dos arquivos single."""
+    singles = [
+        gerar_xml(SPEC_A, templates, build_time=TEMPO),
+        gerar_xml(SPEC_B, templates, build_time=TEMPO),
+    ]
+    all_bytes = gerar_xml_all([SPEC_A, SPEC_B], templates, build_time=TEMPO)
+    assert b''.join(singles) != all_bytes
+    assert all_bytes.count(b'<presets') == 2
+    assert b'count="2"' in all_bytes

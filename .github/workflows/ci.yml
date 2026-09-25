@@ -202,7 +202,7 @@ jobs:
           path: ~/.npm
           key: npm-typescript-5.9.2-${{ runner.os }}
 
-      - name: tsc --noEmit (tsconfig.json — 19 agentes)
+      - name: tsc --noEmit (tsconfig.json — 21 agentes)
         run: npx -y -p typescript@5.9.2 tsc --noEmit -p tsconfig.json
 
       # O tsc pega erro de tipo; o guarda pega a integridade que quebra em

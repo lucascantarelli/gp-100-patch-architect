@@ -4,7 +4,7 @@ Por que este teste existe: a classe de erro que o guarda caça (caminho citado
 que não existe, contrato ADR-0008 incompleto, skill fora da curadoria do doc 23)
 quebrava em silêncio — o `tsc` não a vê e o CI só falhava quando o agente já
 estava em produção com o usuário. O teste fixa cada regra com um caso sintético
-em `tmp_path` e a realidade commitada (19 agentes, 11 skills).
+em `tmp_path` e a realidade commitada (21 agentes, 11 skills).
 
 Mesmo padrão do `test_audit_workflows.py`: nenhum teste escreve no repositório;
 os casos sintéticos vivem em `tmp_path` e a realidade é lida, nunca alterada.
@@ -241,7 +241,7 @@ def test_skill_orfa_avisa_mas_nao_reprova(tmp_path: Path) -> None:
 
 
 def test_repositorio_real_passa_sem_violacoes() -> None:
-    """19 agentes + 11 skills do repo: zero falha; avisos não reprovam."""
+    """21 agentes + 11 skills do repo: zero falha; avisos não reprovam."""
     agentes = auditor._agentes()
     skills = {
         p.name: p
@@ -254,7 +254,7 @@ def test_repositorio_real_passa_sem_violacoes() -> None:
         auditor._rastreados(RAIZ),
         registradas=auditor._registradas_no_doc(auditor._rastreados(RAIZ)),
     )
-    assert len(agentes) == 20
+    assert len(agentes) == 21
     assert len(skills) == 11
     assert not falhas, '\n'.join(falhas)
     assert all('sem consumidor' in a for a in avisos)

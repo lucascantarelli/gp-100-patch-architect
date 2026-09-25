@@ -234,7 +234,7 @@ saída de script; o PR referencia a issue com `Closes #N` (no fluxo para a
 - ~~Pilar A1: manter `patches-defs.json` como alias de leitura por um ciclo ou removê-lo no mesmo PR?~~ → **resolvido no PR #87 (issue #8)**: fragmentos por álbum + loader único, sem alias; o monólito saiu do repositório
 - ~~Pilar A2: `doc.stomps` vazio é válido ou o validador passa a exigir o campo?~~ → **resolvido no PR #89 (issue #9)**: campo opcional — patch mono-comportamento simplesmente omite `doc.stomps`
 - ~~Pilar C: site versionado (com guarda de sincronia) ou gerado no release e publicado sem commitar?~~ → **resolvido na #11 (PR do site)**: gerado no deploy (`gp100 site` deriva tudo do `data/defs/` no workflow `pages.yml`) e publicado no Pages **sem commitar** — nada de derivado no git, o guarda de sincronia do TestH não precisa cobrir mais nada. Um push na `develop` = redeploy
-- Pilar D: ordem dos álbuns e se "álbuns parciais" (2–3 faixas, como ZP/PMH hoje) contam para a meta de 10.
+- ~~Pilar D: ordem dos álbuns e se "álbuns parciais" (2–3 faixas, como ZP/PMH hoje) contam para a meta de 10.~~ → **resolvido no epic #46 (fechamento da #12)**: álbums parciais **contam** — o que vale é o patch documentado com dossiê, não a integralidade do disco; a meta ≥ 100 patches / ≥ 10 álbuns segue como trajetória pública da 2.x (estado: 103/61/7)
 
 ---
 

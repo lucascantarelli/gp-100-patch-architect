@@ -609,5 +609,24 @@ def site(
     console.print('✅ Site gerado (derivado do defs — publicável no Pages).')
 
 
+@app.command()
+def badges(
+    destino: Path = typer.Option(None, '--destino', help='Pasta de saída (default: <raiz>/site).'),
+) -> None:
+    """Gera os badges derivados do repo (badges/*.json, formato endpoint do shields.io)."""
+    from gp100_architect.application import badges as badges_app
+    from gp100_architect.infrastructure.escrita import escrever_texto
+
+    destino = destino or (_raiz() / 'site')
+    arquivos = badges_app.gerar_badges(_defs())
+    for relativo, conteudo in sorted(arquivos.items()):
+        escrever_texto(destino / relativo, conteudo)
+    console.print(
+        f'🏷️ {len(arquivos)} badge(s) derivados em {destino / "badges"} '
+        '(release, agentes, skills, patches, python, cobertura, testes).'
+    )
+    console.print('✅ Badges gerados (dado derivado não se edita; se regenera).')
+
+
 if __name__ == '__main__':  # python -m gp100_architect.interfaces.cli.main
     app()

@@ -10,8 +10,8 @@
 | Dimensão | Estado |
 |---|---|
 | Biblioteca | **103 patches / 61 músicas / 7 álbuns** — derivado, não memorizado: `gp100 validate` (fragmentos em `data/defs/`, schema v2 — o detalhe por álbum está no [README](../README.md)) |
-| Pipeline | Reprodutível e guardado pela suíte — **321 testes** em pirâmide pytest (`uv run pytest`): unit → integration → contract → e2e, com markers e auditoria de escrita no repo (`--guarda-repo`; issue #34), `TestH` de determinismo (derivados fora do git, ADR-0013) · CLI única do pacote `gp100` (`--json`; pipeline in-process desde a #33) |
-| Em voo | **nada**: `main` + `develop`, zero branch de trabalho — próximo do caminho crítico: **#90 fase 1** (JSON do catálogo) · Pages pendente de ativação (Settings → Source: GitHub Actions) |
+| Pipeline | Reprodutível e guardado pela suíte — **382 testes** em pirâmide pytest (`uv run pytest`): unit → integration → contract → e2e, com markers e auditoria de escrita no repo (`--guarda-repo`; issue #34), `TestH` de determinismo (derivados fora do git, ADR-0013) · CLI única do pacote `gp100` (`--json`; pipeline in-process desde a #33) |
+| Em voo | **nada**: `main` + `develop`, zero branch de trabalho — 2.0.0 publicada; pós-release: auditorias de legado (#110, #113) e Pages unificado (biblioteca na raiz + docs em `/docs/`, um deploy só) |
 | Concluído | **Smooth (Santana)** (#5) e **Wishkah (Nirvana)** (17 músicas / 31 patches, #6) · **epic #41 encerrado** (pacote, CLI, pirâmide pytest, `tools/` extinta — PRs #35, #81, #86, #93–#96) e **epic #42 concluído** (schema v2, stomps, `-USERIR`) — `1.1.0`/`1.2.0` entregues e não publicadas (entram na 2.0.0) |
 | Gestão | Taxonomia, milestones, **epics com sub-issues** (ADR-0012) e guardian vivos no GitHub (doc 18) — board com escopo `project` ativo, automação end-to-end (ADR-0011) |
 | Formato | **Schema v2** (fragmentos por álbum em `data/defs/`); `doc.stomps` + `spec.exp1` formais (#9); variante `-USERIR` gerável com `--with-user-ir` (#10) — **epic #42 concluído** |

@@ -12,7 +12,10 @@
 
 site_name: GP-100 Patch Architect
 site_description: Biblioteca de patches da Valeton GP-100 — consulta, produção e release com verificação em cada etapa
-site_url: https://lucascantarelli.github.io/gp-100-patch-architect/
+# O Pages do projeto tem UM deploy: biblioteca na raiz, docs de engenharia em
+# /docs/ (unificação pré-2.0.1 — o deploy-pages@v4 não tem subcaminho e dois
+# workflows eram last-writer-wins; decisão registrada no encerramento da #60).
+site_url: https://lucascantarelli.github.io/gp-100-patch-architect/docs/
 repo_url: https://github.com/lucascantarelli/gp-100-patch-architect
 repo_name: gp-100-patch-architect
 

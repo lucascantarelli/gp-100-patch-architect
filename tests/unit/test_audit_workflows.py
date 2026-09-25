@@ -175,6 +175,6 @@ def test_escritas_concedidas_sao_as_justificadas() -> None:
         'security.yml': {'security-events', 'pull-requests'},
         'release.yml': {'contents'},
         'project-automation.yml': set(),
-        'pages.yml': {'pages', 'id-token'},  # #11: publicar É o trabalho do deploy
-        'docs-pages.yml': {'pages', 'id-token'},  # #60: mesma exceção, para a doc
+        'pages.yml': {'pages', 'id-token'},  # #11+#60: biblioteca + docs, um deploy
+        # docs-pages.yml foi removido na unificação pré-2.0.1 (colisão de Pages)
     }

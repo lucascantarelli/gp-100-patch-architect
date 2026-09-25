@@ -29,7 +29,7 @@ import sys
 from pathlib import Path
 from typing import Any
 
-from gp100_architect.application import biblioteca, indices, ir_library, variantes
+from gp100_architect.application import biblioteca, golden_set, indices, ir_library, variantes
 from gp100_architect.infrastructure.escrita import escrever_bytes, escrever_texto
 from gp100_architect.infrastructure.ir_catalog import carregar as carregar_catalogo
 from gp100_architect.infrastructure.ir_catalog import indice_por_cab
@@ -39,7 +39,7 @@ from gp100_architect.infrastructure.wav import inspecionar as wav_info
 __all__ = ['PIPELINE_PASSOS', 'executar']
 
 # Ordem canônica, citada pelo nome nos relatórios e no guarda de sincronia.
-PIPELINE_PASSOS = ('ir_library', 'patches', 'indices')
+PIPELINE_PASSOS = ('ir_library', 'patches', 'indices', 'golden_set')
 
 
 def _indice_de_irs(raiz: Path) -> dict[str, list[str]]:
@@ -174,10 +174,45 @@ def _passo_indices(raiz: Path, out: Any, _com_variante: bool) -> int:
     return 0
 
 
+# ── passo 4 · golden_set ──────────────────────────────────────────────────
+
+
+def _passo_golden_set(raiz: Path, out: Any, _com_variante: bool) -> int:
+    """Regenera a região marcada das tabelas do golden set (doc 20) do defs.
+
+    A seleção (quais músicas formam a régua) é dado editorial versionado em
+    `data/golden-set.json`; as cadeias são derivadas do `spec.modules`. Só o
+    trecho entre as marcas é tocado — prosa (regras, placar, fontes) é
+    intocada. Doc sem as marcas = erro acionável.
+    """
+    from gp100_architect.infrastructure.defs import carregar_e_validar
+
+    defs = carregar_e_validar()
+    doc_caminho = raiz / golden_set.DOC_ALVO
+    if not doc_caminho.exists():
+        out.write(f'❌ {golden_set.DOC_ALVO} não existe — nada a regenerar.\n')
+        return 1
+    try:
+        selecao = golden_set.selecao_carregar(raiz)
+        regiao = golden_set.regiao_derivada(defs, selecao)
+        novo_doc = golden_set.aplicar_no_doc(doc_caminho.read_text(encoding='utf-8'), regiao)
+    except golden_set.Gp100GoldenSetError as erro:
+        out.write(f'❌ {erro}\n')
+        return 1
+    escrever_texto(doc_caminho, novo_doc, crlf=True)
+    n_patches = regiao.count('\n| `')
+    out.write(
+        f'✅ golden set regenerado: {len(selecao["musicas"])} músicas · '
+        f'{n_patches} patches em {golden_set.DOC_ALVO}\n'
+    )
+    return 0
+
+
 _PASSOS = {
     'ir_library': _passo_ir_library,
     'patches': _passo_patches,
     'indices': _passo_indices,
+    'golden_set': _passo_golden_set,
 }
 
 

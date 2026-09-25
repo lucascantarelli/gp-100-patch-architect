@@ -298,12 +298,14 @@ def export(
 # ── produção (#49; pipeline in-process desde a #33) ─────────────────────────
 
 # Ordem do guarda de determinismo (TestH): indexa IRs → gera os derivados →
-# índices. Os nomes são os passos de `application.pipeline` (pipeline in-process
-# desde a #33 — não há mais caminho de script).
+# índices → golden set (#131). Os nomes são os passos de
+# `application.pipeline` (pipeline in-process desde a #33 — não há mais
+# caminho de script).
 PIPELINE = (
     'ir_library',
     'patches',
     'indices',
+    'golden_set',
 )
 
 

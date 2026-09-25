@@ -37,7 +37,7 @@ impulse_responses/     ← BIBLIOTECA LOCAL DE IRs (1 pasta por pack; os agentes
 0. **Firmware 2.0**: os nomes reais dos efeitos estão em `reference/15-firmware2-effects.md` (catálogo empírico extraído do export de fábrica do próprio aparelho; dados brutos em `data/factory-catalog.json`). Nomes do manual V1.8 que divergem (ex.: manual `T-S OD` → real `Green OD`; manual `Dark Twin` cab → real `DarkTW 2x12`) NÃO devem ser usados na saída final.
 1. **Nomes**: só use os nomes exatos da GP-100 (ver `reference/14-glossario.md` para traduzir pedidos; a saída final usa os nomes do catálogo fw 2.0).
 2. **Ranges**: todo valor deve estar dentro do range oficial do parâmetro (ver tabelas em `reference/`).
-3. **Cadeia fixa**: PRE→DST→AMP→NR→CAB→EQ→MOD→DLY→RVB — não reordenar (a GP-100 não permite). Modelos PRE válidos: catálogo fw 2.0 (reference/15) — incluindo **`Saturate`** (o equivalente do Tube Driver do Gilmour; template cadastrado em `generate_prst.py` pois não há exemplo no export de fábrica). NUNCA use `Tube Clipper` no PRE (é modelo DST).
+3. **Cadeia fixa**: PRE→DST→AMP→NR→CAB→EQ→MOD→DLY→RVB — não reordenar (a GP-100 não permite). Modelos PRE válidos: catálogo fw 2.0 (reference/15) — incluindo **`Saturate`** (o equivalente do Tube Driver do Gilmour; template cadastrado no pacote, `src/gp100_architect/infrastructure/prst/codec.py`, pois não há exemplo no export de fábrica). NUNCA use `Tube Clipper` no PRE (é modelo DST).
 4. **Perfis por captador**: bridge = baixar Gain ~5; neck = subir Treble ~5, baixar Bass ~5.
 5. **Hi-gain**: NR sempre ON (Thr -38, Rel 50 como startpoint).
 6. **Volume equilibrado**: Level de efeitos ≈ bypass; jamais compensar patch com MASTER VOLUME.

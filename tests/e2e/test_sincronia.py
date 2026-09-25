@@ -46,6 +46,7 @@ SUFIXO_VARIANTE = '-USERIR'  # issue #10: variante experimental, FORA do guarda
 ARTEFATOS_FIXOS = (
     'data/ir-library.json',  # pipeline · passo ir_library
     'reference/16-ir-library.md',  # pipeline · passo ir_library
+    'reference/20-golden-set.md',  # pipeline · passo golden_set (#131)
 )
 # O sandbox precisa espelhar TUDO que o pipeline lê — e NADA do que ele produz.
 # patches/ fica FORA de propósito (ADR-0013): ela não é mais commitada, e é
@@ -148,7 +149,7 @@ def test_passos_do_pipeline_sao_a_ordem_do_guarda() -> None:
     """A constante simbólica da CLI bate com a execução in-process (issue #33)."""
     from gp100_architect.interfaces.cli.main import PIPELINE
 
-    assert pipeline.PIPELINE_PASSOS == ('ir_library', 'patches', 'indices')
+    assert pipeline.PIPELINE_PASSOS == ('ir_library', 'patches', 'indices', 'golden_set')
     assert PIPELINE == pipeline.PIPELINE_PASSOS
 
 
@@ -157,7 +158,12 @@ def test_passos_do_pipeline_sao_a_ordem_do_guarda() -> None:
 
 @pytest.mark.e2e
 def test_artefatos_cobertos_sao_so_saida_de_script(raiz: Path) -> None:
-    gerados = ('patches/README.md', 'data/ir-library.json', 'reference/16-ir-library.md')
+    gerados = (
+        'patches/README.md',
+        'data/ir-library.json',
+        'reference/16-ir-library.md',
+        'reference/20-golden-set.md',
+    )
     monitorados = set(artefatos(raiz))
     for rel in gerados:
         assert rel in monitorados, f'{rel} deveria ser monitorado'

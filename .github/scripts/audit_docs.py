@@ -489,8 +489,14 @@ def main() -> int:
 
     def existiu(caminho: str) -> bool:
         if caminho not in historico:
+            # --full-history: SEM ele, o git simplifica a travessia pelo
+            # primeiro parent — no merge de release (a develop inteira
+            # entrando na main de uma vez), commits da develop que
+            # adicionaram/removeram um caminho ficam INVISÍVEIS e a citação
+            # histórica legítima vira violação falsa (foi o que travou o
+            # PR de release #107).
             historico[caminho] = bool(
-                _git("log", "--oneline", "-1", "--", caminho)
+                _git("log", "--oneline", "-1", "--full-history", "--", caminho)
             )
         return historico[caminho]
 

@@ -264,6 +264,41 @@ def test_clone_raso_degrada_caminho_para_aviso(tmp_path: Path) -> None:
     assert 'clone raso' in saida
 
 
+def test_merge_de_release_ve_a_historia_completa(tmp_path: Path) -> None:
+    """Regressão do PR de release (#107): num merge develop→main, o `git log
+    -- <caminho>` SEM --full-history simplifica pelo primeiro parent e os
+    commits da develop que criaram o caminho ficam invisíveis — citação
+    histórica legítima virava violação falsa."""
+    repo = tmp_path / 'repo'
+    repo.mkdir()
+
+    def _git(*args: str) -> None:
+        subprocess.run(['git', *args], cwd=repo, capture_output=True, check=True)
+
+    cfg = ['-c', 'user.name=t', '-c', 'user.email=t@t']
+    _git('init', '-q', '-b', 'main')
+    (repo / 'ANTES.md').write_text('início\n', encoding='utf-8')
+    _git(*cfg, 'add', '-A')
+    _git(*cfg, 'commit', '-qm', 'base')
+
+    _git('checkout', '-qb', 'develop')
+    (repo / 'tools').mkdir()
+    (repo / 'tools' / 'legado.py').write_text('x\n', encoding='utf-8')
+    (repo / 'DOC.md').write_text('citando `tools/legado.py`\n', encoding='utf-8')
+    _git(*cfg, 'add', '-A')
+    _git(*cfg, 'commit', '-qm', 'feat: cria tools/legado.py e cita no DOC')
+
+    _git('checkout', '-q', 'main')
+    (repo / 'OUTRO.md').write_text('main\n', encoding='utf-8')
+    _git(*cfg, 'add', '-A')
+    _git(*cfg, 'commit', '-qm', 'chore: main anda sozinha')
+    _git('merge', '-q', '--no-ff', 'develop', '-m', 'merge de release')
+
+    codigo, saida = _rodar(cwd=repo)
+    assert codigo == 0, saida[-1500:]
+    assert 'tools/legado.py' not in saida
+
+
 def test_entrada_no_ci_e_no_pre_commit() -> None:
     ci = (RAIZ / '.github' / 'workflows' / 'ci.yml').read_text(encoding='utf-8')
     assert 'audit_docs.py' in ci

@@ -13,7 +13,7 @@ dossiês de álbum, workflow de criação de patch) vive em
 | [`audit-2.0.md`](audit-2.0.md) | mantenedor | estado atual, achados por severidade, riscos, plano de migração |
 | [`audit-dod-2.0.md`](audit-dod-2.0.md) | mantenedor | auditoria do DoD da 2.0 (#64): métrica a métrica com evidência e o que falta de verdade |
 | [`roadmap-2.0.md`](roadmap-2.0.md) | mantenedor | fases, dependências e Definition of Done da 2.0 |
-| [`decisions/`](decisions/README.md) | todos | as 13 decisões de arquitetura (ADRs) e o formato de ADR novo |
+| [`decisions/`](decisions/README.md) | todos | as 14 decisões de arquitetura (ADRs) e o formato de ADR novo |
 | [`guia-usuario.md`](guia-usuario.md) · [`faq.md`](faq.md) · [`exemplos.md`](exemplos.md) | usuário final | como usar a biblioteca e a CLI, dúvidas comuns e exemplos completos |
 | [`guia-contribuidor.md`](guia-contribuidor.md) · [`guia-mantenedor.md`](guia-mantenedor.md) | contribuidor / mantenedor | fluxo de PR, gates locais, rotina de release e governança |
 

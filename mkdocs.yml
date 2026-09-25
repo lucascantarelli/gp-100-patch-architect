@@ -83,6 +83,7 @@ nav:
       - ADR-0011 · Project com PAT: docs/decisions/0011-gestao-de-project-com-pat.md
       - ADR-0012 · Epics com sub-issues: docs/decisions/0012-epics-com-sub-issues.md
       - ADR-0013 · Artefatos em escala: docs/decisions/0013-modelo-de-artefatos-em-escala.md
+      - ADR-0014 · Publicação derivada: docs/decisions/0014-publicacao-derivada-pages-unificado.md
   - Catálogo de domínio (reference/):
       - Índice: reference/README.md
       - 00 · Cadeia de sinal: reference/00-signal-chain.md

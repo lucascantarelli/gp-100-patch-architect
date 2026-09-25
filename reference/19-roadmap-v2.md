@@ -9,7 +9,7 @@
 
 | Dimensão | Estado |
 |---|---|
-| Biblioteca | **97 patches / 58 músicas / 6 álbuns** — derivado, não memorizado: `gp100 validate` (fragmentos em `data/defs/`, schema v2 — o detalhe por álbum está no [README](../README.md)) |
+| Biblioteca | **103 patches / 61 músicas / 7 álbuns** — derivado, não memorizado: `gp100 validate` (fragmentos em `data/defs/`, schema v2 — o detalhe por álbum está no [README](../README.md)) |
 | Pipeline | Reprodutível e guardado pela suíte — **321 testes** em pirâmide pytest (`uv run pytest`): unit → integration → contract → e2e, com markers e auditoria de escrita no repo (`--guarda-repo`; issue #34), `TestH` de determinismo (derivados fora do git, ADR-0013) · CLI única do pacote `gp100` (`--json`; pipeline in-process desde a #33) |
 | Em voo | **nada**: `main` + `develop`, zero branch de trabalho — próximo do caminho crítico: **#90 fase 1** (JSON do catálogo) · Pages pendente de ativação (Settings → Source: GitHub Actions) |
 | Concluído | **Smooth (Santana)** (#5) e **Wishkah (Nirvana)** (17 músicas / 31 patches, #6) · **epic #41 encerrado** (pacote, CLI, pirâmide pytest, `tools/` extinta — PRs #35, #81, #86, #93–#96) e **epic #42 concluído** (schema v2, stomps, `-USERIR`) — `1.1.0`/`1.2.0` entregues e não publicadas (entram na 2.0.0) |
@@ -204,7 +204,7 @@ v2.0.0 — Formato, site e escala (as quebras + a fundação de engenharia)
   □ stomps/EXP1 formais no schema, com validação e seções novas na doc — issue #9 ✅ (PR #89)
   □ variante -USERIR gerável — issue #10 ✅
   □ gerador do site (Pilar C) + GitHub Pages (busca + página por patch) — issue #11 ✅ (PR #99; `gp100 site` + workflow; Pages pendente de ativação)
-  □ ≥ 100 patches / ≥ 10 álbuns (1º álbum: SRV / Hendrix / Mayer) — issue #12
+  □ ≥ 100 patches / ≥ 10 álbuns (1º álbum: ✅ **Hendrix — Are You Experienced**, PR da #12 — 103 patches/7 álbuns; seguem SRV e Mayer) — issue #12
   □ o programa de engenharia que a 2.0 exige (pacote, CLI, docs, CI) — epics #41–#47 — **#41 e #42 encerrados**
 ```
 

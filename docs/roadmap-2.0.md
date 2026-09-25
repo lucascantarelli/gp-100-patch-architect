@@ -40,8 +40,8 @@ Duas regras que mantêm isso coerente:
 | [#43](../../issues/43) | **Site e documentação** | biblioteca navegável + doc por público | #11, #60, #61 + **#90 fase 1** (JSON do catálogo, com o site) |
 | [#44](../../issues/44) | **CI, automação e segurança** | o que vigia o repositório | #37 (entregue), #54, #55, #62 |
 | [#45](../../issues/45) | **IA e governança** | agentes com contrato e board como fonte de verdade | #39 (entregue), **#91** ✅ (PR #97), **#63** ✅ (PR #98), #56, #57 |
-| [#46](../../issues/46) | **Conteúdo (pilar D)** | primeiro álbum novo e a meta de escala | #12 |
-| [#47](../../issues/47) | **Release 2.0.0** | auditoria de consistência e publicação | #58, #64, #59 |
+| [#46](../../issues/46) | **Conteúdo (pilar D)** | primeiro álbum novo e a meta de escala | #12 (entregue: Hendrix, PR do álbum) |
+| [#47](../../issues/47) | **Release 2.0.0** | auditoria de consistência e publicação | #58 ✅ (PR #103), #64 ✅ (PR #102), #59 |
 
 > **Cada linha desta tabela é a mesma coisa que a barra de progresso do epic no
 > GitHub**: a tabela é o resumo legível, o epic é o dado. Divergência é bug —
@@ -57,11 +57,11 @@ Duas regras que mantêm isso coerente:
                 └── #33 fim do legado ✅ (PR #96, o último de todos)
 
 #42 Formato e dados ✅ ENCERRADO (PRs #87 e #89 — schema v2, stomps, -USERIR)
-#43 Site               ← CAMINHO CRÍTICO: #11 ✅ (PR #99, Pages pendente de ativação) → #90 fase 1
+#43 Site               ← CAMINHO CRÍTICO: #11 ✅ (PR #99) → #90 fase 1 ✅ (PR #100)
 #44 CI e segurança     ← independente (roda em paralelo): #54, #55, #62
-#45 IA e governança    ← independente: #91 ✅ (PR #97), #63 ✅ (PR #98), #56, #57
-#46 Conteúdo           ← independente (conteúdo não bloqueia engenharia): #12
-#47 Release 2.0.0      ← último: #58 (linter), #64 (auditoria DoD) → #59 (publicar)
+#45 IA e governança    ← ENCERRADO: #91 ✅, #63 ✅, #56 ✅, #57 ↪️ v2.x
+#46 Conteúdo           ← independente: #12 ✅ (Hendrix — Are You Experienced)
+#47 Release 2.0.0      ← último: #58 ✅ (PR #103), #64 ✅ (PR #102) → #59 (publicar)
 ```
 
 Regra de sequência que regia as streams fechadas: **#33 era o último** (o legado

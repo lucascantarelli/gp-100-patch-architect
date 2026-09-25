@@ -104,7 +104,7 @@ def test_release_versao_invalida_acionavel(tmp_path: Path):
 
 def test_pipeline_constante_e_a_ordem_do_guarda():
     """Os nomes dos passos de `application.pipeline` — a ordem do TestH."""
-    assert PIPELINE == ('ir_library', 'patches', 'indices')
+    assert PIPELINE == ('ir_library', 'patches', 'indices', 'golden_set')
 
 
 @pytest.mark.slow

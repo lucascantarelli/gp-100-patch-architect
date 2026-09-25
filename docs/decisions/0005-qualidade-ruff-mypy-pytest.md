@@ -1,6 +1,11 @@
 # ADR-0005 — Qualidade: ruff + mypy --strict + pytest, com piso de cobertura
 
-- **Status**: aceito
+- **Status**: aceito — **parcialmente revogado na 2.0** (auditoria #125): a
+  migração planejada para o pytest foi CONCLUÍDA (issue #23; decisão registrada
+  no doc 23 §3) e o escopo do gate citado abaixo mudou — `tools/` foi extinto
+  na #33. O que permanece: ruff + mypy --strict + pytest com piso de cobertura.
+  O resto desta página é o registro da decisão na época ("103 testes,
+  unittest").
 - **Data**: 2026-09
 - **Decisão relacionada**: issues #26, #29, #23
 

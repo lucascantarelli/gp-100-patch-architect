@@ -1,6 +1,10 @@
 # ADR-0013 — Modelo de artefatos em escala: o defs é a única fonte versionada
 
-- **Status**: aceito
+- **Status**: aceito — **implementado** (auditoria #125): schema v2 (#8),
+  split por álbum, `.prst`/`patch.md` fora do git gerados no corte (#82) e o
+  guard de determinismo provando byte a byte; o import "all" foi investigado
+  na #83 (parte de software completa, receita em `reference/24`; veredito
+  físico pendente do mantenedor).
 - **Data**: 2026-09
 - **Decisão relacionada**: pausa planejada das issues #31/#32; implementa-se via #8
   (schema v2), issue nova de build de artefatos no CI e issue de investigação do

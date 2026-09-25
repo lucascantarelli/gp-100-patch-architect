@@ -29,6 +29,28 @@ ADR — é convenção de código (nesse caso, `CONTRIBUTING.md` ou o próprio d
 | [0013](0013-modelo-de-artefatos-em-escala.md) | Modelo de artefatos em escala: o defs é a única fonte versionada; derivados são construídos, não armazenados | aceito |
 | [0014](0014-publicacao-derivada-pages-unificado.md) | Publicação 100% derivada: um deploy para todo o Pages, contagens sem edição manual | aceito |
 
+## Auditoria 2026-09 (pós-2.0.0, issue #125)
+
+Revisão completa dos ADRs 0001–0014 contra a realidade da `develop` — veredito
+por ADR, com a marcação feita no `Status` de cada arquivo:
+
+| ADR | Veredito | Observação |
+|---|---|---|
+| 0001 | ✅ vigente — transição concluída | as ⚠️ de convivência com `tools/` (shims, `param_names.py`) se resolveram: extinto na #33 |
+| 0002 | ✅ vigente | contagens do contexto são da época (o linter não as cobra — EXCETO) |
+| 0003 | ✅ vigente | |
+| 0004 | ✅ vigente | UI/API continua futura (2.1); #90 fase 2 reavaliou o gatilho (doc 19 §7) |
+| 0005 | ⚠️ **parcialmente revogado** | pytest adotado na 2.0 (issue #23) e o escopo `tools/` do gate extinto — ver Status do arquivo |
+| 0006 | ✅ vigente — desenho futuro realizado | release/security/pages/project-automation rodando exatamente como desenhado |
+| 0007 | ✅ vigente | |
+| 0008 | ✅ vigente | |
+| 0009 | ✅ vigente — parcialmente revogado desde o ADR-0012 | já marcado no Status |
+| 0010 | ✅ vigente — nota de época | "hoje `1.0.0`" era o estado da decisão; 2.0.0 publicada pelo mesmo ritual |
+| 0011 | ✅ vigente | |
+| 0012 | ✅ vigente | |
+| 0013 | ✅ vigente — implementado | schema v2 (#8), split, `.prst` fora do git no corte (#82); import "all" investigado na #83 (parte física pendente do mantenedor) |
+| 0014 | ✅ vigente | já nasce com consumidores (linter regra 7; release-proposer) |
+
 ## Formato
 
 Um ADR é curto e datado. Sem "contexto histórico detalhado", sem código

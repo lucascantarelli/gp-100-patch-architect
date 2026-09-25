@@ -42,8 +42,7 @@ __all__ = [
 ARQUIVO_SELECAO = Path('data') / 'golden-set.json'
 DOC_ALVO = Path('reference') / '20-golden-set.md'
 MARCA_INICIO = (
-    '<!-- gerado:inicio (gp100 build — não editar; '
-    'fonte: data/golden-set.json + data/defs) -->'
+    '<!-- gerado:inicio (gp100 build — não editar; fonte: data/golden-set.json + data/defs) -->'
 )
 MARCA_FIM = '<!-- gerado:fim -->'
 
@@ -113,9 +112,7 @@ def regiao_derivada(defs: dict[str, Any], selecao: dict[str, Any]) -> str:
         )
     unknown_albuns = [a for a in selecao['porAlbum'] if a not in defs['albums']]
     if unknown_albuns:
-        raise Gp100GoldenSetError(
-            'porAlbum fora do defs: ' + ', '.join(unknown_albuns)
-        )
+        raise Gp100GoldenSetError('porAlbum fora do defs: ' + ', '.join(unknown_albuns))
 
     secoes: list[str] = []
     total = 0
@@ -127,14 +124,10 @@ def regiao_derivada(defs: dict[str, Any], selecao: dict[str, Any]) -> str:
         linhas: list[str] = []
         for song in songs:
             for patch in song['patches']:
-                linhas.append(
-                    f'| `{patch["nome"]}` | {cadeia_esperada(patch["spec"])} |'
-                )
+                linhas.append(f'| `{patch["nome"]}` | {cadeia_esperada(patch["spec"])} |')
                 total += 1
         heading = f'### {album["banda"]} — {album["display"]}'
-        secoes.append(
-            heading + '\n\n| Patch | Cadeia esperada |\n|---|---|\n' + '\n'.join(linhas)
-        )
+        secoes.append(heading + '\n\n| Patch | Cadeia esperada |\n|---|---|\n' + '\n'.join(linhas))
     if not secoes:
         raise Gp100GoldenSetError(
             'nenhuma música da seleção pertence aos álbuns de porAlbum — '
@@ -142,8 +135,7 @@ def regiao_derivada(defs: dict[str, Any], selecao: dict[str, Any]) -> str:
         )
     return (
         f'> {len(selecao["musicas"])} músicas · {total} patches · '
-        f'{len(secoes)} álbum(ns) — derivado do defs pelo `gp100 build`.\n\n'
-        + '\n\n'.join(secoes)
+        f'{len(secoes)} álbum(ns) — derivado do defs pelo `gp100 build`.\n\n' + '\n\n'.join(secoes)
     )
 
 

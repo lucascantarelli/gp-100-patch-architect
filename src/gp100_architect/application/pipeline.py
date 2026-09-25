@@ -195,9 +195,7 @@ def _passo_golden_set(raiz: Path, out: Any, _com_variante: bool) -> int:
     try:
         selecao = golden_set.selecao_carregar(raiz)
         regiao = golden_set.regiao_derivada(defs, selecao)
-        novo_doc = golden_set.aplicar_no_doc(
-            doc_caminho.read_text(encoding='utf-8'), regiao
-        )
+        novo_doc = golden_set.aplicar_no_doc(doc_caminho.read_text(encoding='utf-8'), regiao)
     except golden_set.Gp100GoldenSetError as erro:
         out.write(f'❌ {erro}\n')
         return 1

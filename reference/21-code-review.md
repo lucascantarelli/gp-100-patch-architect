@@ -89,7 +89,7 @@ construção (o slot está disponível via `slot_map`).
 
 ## 5 · Proposta: agente `gp100-code-reviewer`
 
-O mesmo padrão dos 19 agentes se aplica a revisão de código — com uma
+O mesmo padrão dos demais agentes se aplica a revisão de código — com uma
 fronteira importante: **regra vivendo em arquivo, julgamento no agente**.
 
 | Aspecto | Proposta |

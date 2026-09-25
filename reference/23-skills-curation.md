@@ -72,6 +72,11 @@ O mantenedor decidiu (set/2026): **a release 2.0 adota pytest**. Consequências:
 3. Qualquer mudança de inventário passa por este doc — e o guarda
    `audit_agents.py` reprova skill no disco sem registro aqui (e registrada
    sem existir no disco).
+4. **Par canônico skill ↔ prompt**: cada skill `gp100-*` nasce de um prompt
+   em `prompts/` (§1) e o guarda reprova o par desequilibrado — skill sem o
+   prompt canônico no git, ou prompt órfão sem skill consumidora. Os pares
+   vigentes: `criar-patch`, `pesquisar-referencia`, `ajustar-patch`,
+   `sugerir-timbres`.
 
 ---
 [`📖 README do projeto`](../README.md) · [`📚 Reference`](README.md) · [`🤖 Agentes`](../.agents/README.md)

@@ -23,7 +23,7 @@ reference/             ← BASE DE DADOS OFICIAL (ler antes de criar qualquer pa
   12-workflow.md       ← metodologia, checklist, troubleshooting
   13-preset-list.md    ← presets de fábrica + 100 drum patterns
   14-glossario.md      ← tradução nome-comum → nome-oficial GP-100
-.agents/               ← 17 agentes Freebuff/Codebuff (orchestrador + skills + validador + manual + tone-research/mapper)
+.agents/               ← 21 agentes Freebuff/Codebuff (orquestrador + skills de efeito + validador + manual + tone-research/mapper + setlist + release-proposer + code-reviewer)
 data/                  ← defs/ (_albums.json + um JSON por álbum = FONTE DOS PATCHES, schema v2) · factory-catalog.json (catálogo empírico do firmware) · ir-library.json (manifesto das IRs, gerado)
 src/gp100_architect/   ← o produto: CLI `gp100` (interfaces/cli) e o pipeline `gp100 build` (application/pipeline.py) — gera patches por música, .prst single, índices, catálogo de IRs, release e changelog
                       · `gp100 site` (application/site.py) deriva o site + catálogo JSON (/catalog/ — shapes estáveis, contrato de agentes; issue #90 fase 1)

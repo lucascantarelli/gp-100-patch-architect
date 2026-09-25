@@ -26,6 +26,9 @@ Regras que REPROVAM:
      pasta (o gatilho da skill resolve pelo `name`).
   5. Divergência entre o disco e o doc 23 (a curadoria passa por ele, §4.3):
      skill no disco sem registro lá, ou registrada sem existir no disco.
+  6. Skill `gp100-*` sem o prompt canônico `prompts/<fluxo>.md` no git (ou
+     prompt órfão, sem skill consumidora) — o corpo da skill É o conteúdo do
+     prompt; o par tem de existir junto (doc 23, §4).
 
 Regra que AVISA (não reprova):
   6. Skill sem consumidor explícito — nenhum agente/skill/prompt a cita. O
@@ -74,6 +77,15 @@ PADRAO_CAMINHO = re.compile(
 )
 
 NUM_DOC = re.compile(r'^reference/(\d{2})$')
+
+# Mapa canônico skill do GP-100 → prompt no repo (doc 23, §1/§4). O corpo do
+# SKILL.md é o conteúdo do prompt; um sem o outro é divergência de curadoria.
+SKILL_PARA_PROMPT = {
+    'gp100-criar-patch': 'prompts/criar-patch.md',
+    'gp100-por-referencia': 'prompts/pesquisar-referencia.md',
+    'gp100-ajustar-patch': 'prompts/ajustar-patch.md',
+    'gp100-sugerir-timbres': 'prompts/sugerir-timbres.md',
+}
 
 
 def _caminhos_citados(texto: str) -> set[str]:
@@ -270,6 +282,23 @@ def audit(
             avisos.append(
                 f'skills/{nome}: sem consumidor explícito (agente/skill/prompt) — '
                 'pode ser gatilho automático; curadoria confere no doc 23'
+            )
+        prompt = SKILL_PARA_PROMPT.get(nome)
+        if prompt is not None and prompt not in rastreados:
+            falhas.append(
+                f'skills/{nome}: o prompt canônico `{prompt}` não está no git — '
+                'o corpo da skill é o conteúdo dele; restaure o par (doc 23, §4)'
+            )
+    prompts_de_skill = set(SKILL_PARA_PROMPT.values())
+    for caminho in sorted(rastreados):
+        if (
+            caminho.startswith('prompts/')
+            and caminho.endswith('.md')
+            and caminho not in prompts_de_skill
+        ):
+            falhas.append(
+                f'`{caminho}` órfão: nenhum skill `gp100-*` o consome — crie a skill '
+                'ou remova o prompt (doc 23, §4)'
             )
     for nome in sorted(registradas - set(skills)):
         falhas.append(

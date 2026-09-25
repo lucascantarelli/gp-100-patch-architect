@@ -65,8 +65,8 @@ def test_package_produz_zips_e_notas_em_destino(raiz: Path, defs_real_pkg, tmp_p
     # um zip por álbum, notas com a contagem
     assert (tmp_path / 'gp100-patches-v9.9.9-Beatles.zip').exists()
     notas = (tmp_path / 'RELEASE-NOTES-v9.9.9.md').read_text(encoding='utf-8')
-    assert '**97 patches · 58 músicas' in notas
-    assert relatorio['total'] == 97
+    assert '**103 patches · 61 músicas' in notas
+    assert relatorio['total'] == 103
 
 
 def test_package_versao_invalida_nao_escreve_nada(defs_real_pkg, tmp_path: Path):

@@ -1,0 +1,394 @@
+{
+  "idAlbum": "AYE",
+  "album": {
+    "banda": "The Jimi Hendrix Experience",
+    "album": "Are You Experienced",
+    "ano": 1967,
+    "display": "Are You Experienced — Jimi Hendrix (1967)",
+    "pasta": "Jimi Hendrix/Are You Experienced (1967)",
+    "rig": "## 📚 Rig real do álbum (fontes)\n\n- **Guitarra**: **Fender Stratocaster** destro invertida (1966, refinish Olympic White) — os captadores ficam invertidos pela espelhagem: ponte e meio INVERTIDOS (o captador de braço toca na posição de ponte). Resultado: o \"attack\" agudo característico das notas soltas de Foxy Lady e Purple Haze nasce daí — **não é pedal**, é captador invertido. Cordas 010-042 Fender.\n- **Amplificador**: **Marshall Super 100 JTM45** combo custom (1966, 'notorious Marshall combo' citado pelo roadie Gerry Stickells) com falante Celestion de fábrica — estourado no talo nas bases e levado a feedback controlado nos solos. Sopros de tuba e linha vocal passavam pelo MESMO canal do amp (reverb de banheiro de Green Street no vocal de Manic Depression).\n- **Pedais (poucos e decisivos)**: **Roger Mayer Octavia** (octave-up — os solos de Purple Haze são o pedal na frente do Marshall, sem distorção do próprio pedal) e **Dallas-Arbiter Fuzz Face** (1967, entrando no final da turnê do álbum — a textura de 'Bold as Love' já vem dele). **Tremolo de amp** (o único efeito no pedalboard documentado no início de 67) e **tape flips** de estúdio nos overdubs.\n- **Gravação**: nov/1966–abr/1967 em Londres (De Lane Lea, Olympic, CBS); produção de Chas Chandler. Clima de espontaneidade: guitarra gravada em um ou dois takes, com a banda tocando junto.\n- 📖 Fontes: Guitar World — 'Jimi Hendrix's Are You Experienced: the gear behind the album' (2017) · Equipboard — Jimi Hendrix (Stratocaster 1966, JTM45 combo, Fuzz Face, Octavia) · Guitar Player (1987) — entrevista de Roger Mayer sobre o Octavia e o setup do Experience · Rhoney Stanley/University of the Streets (arquivo) — cronologia dos pedals de 66–67."
+  },
+  "songs": [
+    {
+      "id": "FOXY01",
+      "song": "Foxy Lady",
+      "idAlbum": "AYE",
+      "banda": "The Jimi Hendrix Experience",
+      "album": "Are You Experienced",
+      "ano": 1967,
+      "bpm": 116,
+      "resumo": "Riff agressivo com clamor de intervalo (o captador invertido na ponte) sobre Marshall estourado; solo com feedback e uso pionero do octave-up. O timbre é AMP — as notas de 6ª corda gritam sozinhas.",
+      "referencias": [
+        {"role": "Strat destro invertida, captador invertido na ponte", "conf": "alta", "ev": "Guitar World 2017: 'a upside-down 1966 Stratocaster… pickup reversal gives the bridge position extra bite'", "src": "Guitar World (2017)"},
+        {"role": "Marshall Super 100 JTM45 combo no talo", "conf": "alta", "ev": "roadie Gerry Stickells: 'a Marshall Super 100 combo… cranked'", "src": "Guitar World (2017)"},
+        {"role": "Tremolo de amp como único efeito do início de 67", "conf": "media", "ev": "documentação do pedalboard inicial do Experience", "src": "Equipboard"}
+      ],
+      "patches": [
+        {
+          "camada": "Base",
+          "sufixo": "BA",
+          "nome": "FOXY01BA",
+          "emoji": "🦊",
+          "timbre": "Marshall JTM45 estourado (UK 45 no talo) com mordida de EQ agudo — o riff grita sem pedal; cab 4x12 britânico via IR local",
+          "spec": {
+            "name": "FOXY01BA",
+            "type": "Rock",
+            "bpm": 116,
+            "volume": 55,
+            "ir_slot": 4,
+            "modules": {
+              "PRE": {"name": "Boost", "on": true, "params": {"0": 30, "1": 1}},
+              "DST": {"name": "Red Haze", "on": false},
+              "AMP": {"name": "UK 45", "on": true, "params": {"0": 82, "1": 58, "2": 48, "3": 62, "4": 66, "5": 55}},
+              "NR": {"name": "Gate 1", "on": true, "params": {"0": 30}},
+              "CAB": {"name": "UK-LD 4x12", "on": true, "params": {"0": 76, "1": 58}},
+              "EQ": {"name": "EQ 1", "on": true, "params": {"0": -1, "1": 3, "2": -1, "5": 56}},
+              "MOD": {"name": "Vibe", "on": false},
+              "DLY": {"name": "M-Echo", "on": false},
+              "RVB": {"name": "Plate", "on": true, "params": {"0": 25, "1": 38, "2": 50, "3": 1}}
+            }
+          },
+          "doc": {
+            "guitarra": {
+              "seletor": "Posição 1 (bridge — o captador INVERTIDO, o grito do disco)",
+              "seletorCurto": "bridge",
+              "volume": "7–8",
+              "tone": "10",
+              "receita": "SELETOR 1 (bridge invertido) · Volume 7–8 · Tone 10 · feche a 4 para limpar",
+              "tecnicas": ["Palm mute curto no Lick B", "Abra a palhetada no Lick C"]
+            },
+            "comoTocar": [
+              "Riff com clamor: o agregado B-C#-D tem de soar tenso — deixo as três notas soarem juntas",
+              "Palm mute curto no Lick B; abro a palhetada no Lick C",
+              "Volume da guitarra 7-8: fechar a 4 limpa a base"
+            ],
+            "teste": {"riff": "riff completo (Licks A/B/C)", "drum": "Funk-rock 110-120 BPM", "escutar": ["mordida aguda sem virar farpa", "feedback não se autoalimenta tocando leve"]},
+            "ajustes": [
+              "muito sujo na palhetada dupla → UK 45 (0) −4",
+              "riff sem o grito → EQ 1 (1) +2"
+            ],
+            "evite": ["Fuzz no riff — o grito é do amp + captador invertido; fuzz empapa o clamor"],
+            "irNota": "Recomendada: British Straight 4x12 Medium Mix (User IR 4) — o 4x12 britânico por trás do combo Marshall de 66 (Low Cut 4 · High Cut 8500 · Level 0).",
+            "momentos": [
+              {
+                "nome": "Solo (octave-up na frente)",
+                "mods": [["DST", "ON"]],
+                "quando": "No solo: ligo o Red Haze bem leve — o Fuzz Face entrou na mesma função na turnê do álbum.",
+                "dica": "Com o DST ligado, feche o volume da guitarra a 6 no final das frases: o sustain mantém."
+              }
+            ],
+            "slotSugestao": null,
+            "stomps": [
+              {
+                "fs": "A",
+                "mods": [["DST", "ON"]],
+                "quando": "Solo: entra a textura de fuzz por cima do Marshall estourado.",
+                "dica": "É o momento \"Solo\" acima, no pé — religue no fim do solo."
+              }
+            ]
+          }
+        },
+        {
+          "camada": "Solo",
+          "sufixo": "SO",
+          "nome": "FOXY01SO",
+          "emoji": "🔥",
+          "timbre": "Fuzz Face (Red Haze) na frente do Marshall aberto — o solo em posição de ponte invertida grita e sustenta com feedback",
+          "spec": {
+            "name": "FOXY01SO",
+            "type": "Rock",
+            "bpm": 116,
+            "volume": 60,
+            "ir_slot": 4,
+            "modules": {
+              "PRE": {"name": "Boost", "on": true, "params": {"0": 38, "1": 1}},
+              "DST": {"name": "Red Haze", "on": true, "params": {"0": 58, "1": 48}},
+              "AMP": {"name": "UK 45", "on": true, "params": {"0": 84, "1": 60, "2": 46, "3": 60, "4": 68, "5": 58}},
+              "NR": {"name": "Gate 1", "on": true, "params": {"0": 24}},
+              "CAB": {"name": "UK-LD 4x12", "on": true, "params": {"0": 76, "1": 60}},
+              "EQ": {"name": "EQ 1", "on": true, "params": {"0": -1, "1": 4, "2": -1, "5": 58}},
+              "MOD": {"name": "Vibe", "on": false},
+              "DLY": {"name": "M-Echo", "on": false},
+              "RVB": {"name": "Plate", "on": true, "params": {"0": 25, "1": 38, "2": 50, "3": 1}}
+            },
+            "exp1": {"módulo": "DST", "param": "Fuzz", "min": 35, "max": 70}
+          },
+          "doc": {
+            "guitarra": {
+              "seletor": "Posição 1 (bridge invertido) — o solo grita aqui",
+              "seletorCurto": "bridge",
+              "volume": "10",
+              "tone": "10",
+              "receita": "SELETOR 1 (bridge invertido) · Volume 10 · Tone 10 · recue para limpar",
+              "tecnicas": ["Feedback sustentado com o corpo virado ao amp", "Cordas soltas intercaladas: a wah manual do captador invertido"]
+            },
+            "comoTocar": [
+              "Solo na posição de ponte com bends de 1 tom e meio e feedback sustentado",
+              "Toque ABERTO — Fuzz Face pede palhetada confiante; recue o volume para limpar",
+              "Intercale as cordas soltas (a 'wah manual' do captador invertido)"
+            ],
+            "teste": {"riff": "solo completo com feedback final", "drum": "Funk-rock 116 BPM", "escutar": ["sustain que sobrevive às pausas", "fuzz sem virar serra elétrica"]},
+            "ajustes": [
+              "feedback difícil → Volume do patch +2 e recue o Gate",
+              "fuzz embolando → Red Haze (0) −4"
+            ],
+            "evite": ["Palhetada tímida — o fuzz apaga fraca"],
+            "irNota": "Recomendada: British Straight 4x12 Medium Mix (User IR 4).",
+            "momentos": [],
+            "slotSugestao": null
+          }
+        }
+      ]
+    },
+    {
+      "id": "PURP01",
+      "song": "Purple Haze",
+      "idAlbum": "AYE",
+      "banda": "The Jimi Hendrix Experience",
+      "album": "Are You Experienced",
+      "ano": 1967,
+      "bpm": 112,
+      "resumo": "O riff de tritono com Fuzz Face e o solo de Octavia — Hendrix tocava o solo na Les Paul do estúdio, e a camada SO recria a oitava acima com o Red Haze no limite. Base é fuzz + Marshall curto e seco.",
+      "referencias": [
+        {"role": "Dallas-Arbiter Fuzz Face no riff", "conf": "alta", "ev": "equipamento documentado da era Experienced; som do riff é o fuzz clássico", "src": "Guitar World (2017)"},
+        {"role": "Solo gravado com Roger Mayer Octavia (e Les Paul de estúdio)", "conf": "media", "ev": "Roger Mayer: 'Purple Haze solo — Octavia com a Les Paul'", "src": "Guitar Player (1987)"},
+        {"role": "Marshall JTM45 combo por trás de tudo", "conf": "alta", "ev": "setup do Experience 1967", "src": "Equipboard"}
+      ],
+      "patches": [
+        {
+          "camada": "Base",
+          "sufixo": "BA",
+          "nome": "PURP01BA",
+          "emoji": "💜",
+          "timbre": "Fuzz Face no límite do limpo-sujo (Red Haze sensível ao volume da guitarra) + Marshall curto — o tritono respira",
+          "spec": {
+            "name": "PURP01BA",
+            "type": "Rock",
+            "bpm": 112,
+            "volume": 52,
+            "ir_slot": 4,
+            "modules": {
+              "PRE": {"name": "COMP", "on": false},
+              "DST": {"name": "Red Haze", "on": true, "params": {"0": 62, "1": 45}},
+              "AMP": {"name": "UK 45", "on": true, "params": {"0": 76, "1": 54, "2": 50, "3": 58, "4": 64, "5": 60}},
+              "NR": {"name": "Gate 1", "on": true, "params": {"0": 26}},
+              "CAB": {"name": "UK-LD 4x12", "on": true, "params": {"0": 76, "1": 58}},
+              "EQ": {"name": "EQ 1", "on": true, "params": {"0": -1, "1": 3, "2": -1, "5": 56}},
+              "MOD": {"name": "Vibe", "on": false},
+              "DLY": {"name": "M-Echo", "on": false},
+              "RVB": {"name": "Plate", "on": false}
+            }
+          },
+          "doc": {
+            "guitarra": {
+              "seletor": "Posição 1 (bridge invertido)",
+              "seletorCurto": "bridge",
+              "volume": "6–7 (limpa o break)",
+              "tone": "10",
+              "receita": "SELETOR 1 (bridge invertido) · Volume 6–7 · Tone 10 · abre a 10 no riff",
+              "tecnicas": ["Intro com a nota grave sustentada", "Verso: acordes curtos, fuzz faz o resto"]
+            },
+            "comoTocar": [
+              "Intro: só a nota grave (D#) com o triol do tritono — o volume no 10",
+              "Verso: acordes curtos, deixe o fuzz dizer o que sobra",
+              "Volume da guitarra 6-7 limpa o suficiente para o break de salão"
+            ],
+            "teste": {"riff": "intro + verso completos", "drum": "Rock 112 BPM", "escutar": ["tritono inteligível mesmo com fuzz", "break de volume funcionando"]},
+            "ajustes": [
+              "fuzz tapando o tritono → Red Haze (0) −5 e EQ 1 (1) −2",
+              "fuzz sem corpo → Volume da guitarra +1 (fuzz ama sinal forte)"
+            ],
+            "evite": ["Reverb no riff — o disco é seco; a cola é o fuzz"],
+            "irNota": "Recomendada: British Straight 4x12 Medium Mix (User IR 4).",
+            "momentos": [
+              {
+                "nome": "Break (sem fuzz)",
+                "mods": [["DST", "OFF"]],
+                "quando": "No break 'excuse me while I kiss the sky': desligue o fuzz e toque limpo — volta no riff.",
+                "dica": "Religue o FS-A e o riff volta intacto (desligar não apaga params)."
+              }
+            ],
+            "slotSugestao": null,
+            "stomps": [
+              {
+                "fs": "A",
+                "mods": [["DST", "OFF"]],
+                "quando": "Break do refrão: o único trecho do disco com guitarra quase limpa.",
+                "dica": "É o momento \"Break\" acima, no pé."
+              }
+            ]
+          }
+        },
+        {
+          "camada": "Solo",
+          "sufixo": "SO",
+          "nome": "PURP01SO",
+          "emoji": "🌈",
+          "timbre": "Octavia-style: Red Haze no limite + EQ agressivo + Vibe — a oitava-up psicodélica do disco",
+          "spec": {
+            "name": "PURP01SO",
+            "type": "Rock",
+            "bpm": 112,
+            "volume": 58,
+            "ir_slot": 4,
+            "modules": {
+              "PRE": {"name": "Saturate", "on": true, "params": {"0": 50, "1": 60, "2": 62}},
+              "DST": {"name": "Red Haze", "on": true, "params": {"0": 70, "1": 50}},
+              "AMP": {"name": "UK 45", "on": true, "params": {"0": 80, "1": 56, "2": 48, "3": 58, "4": 66, "5": 60}},
+              "NR": {"name": "Gate 1", "on": true, "params": {"0": 22}},
+              "CAB": {"name": "UK-LD 4x12", "on": true, "params": {"0": 76, "1": 62}},
+              "EQ": {"name": "EQ 1", "on": true, "params": {"0": -1, "1": 5, "2": -1, "5": 60}},
+              "MOD": {"name": "Vibe", "on": true, "params": {"0": 45, "1": 0.5, "2": 0}},
+              "DLY": {"name": "M-Echo", "on": false},
+              "RVB": {"name": "Plate", "on": false}
+            },
+            "exp1": {"módulo": "MOD", "param": "Velocidade", "min": 0, "max": 70}
+          },
+          "doc": {
+            "guitarra": {
+              "seletor": "Posição 1 (bridge invertido) + região aguda",
+              "seletorCurto": "bridge",
+              "volume": "10",
+              "tone": "10",
+              "receita": "SELETOR 1 (bridge invertido) · Volume 10 · Tone 10 · toque acima da 12ª casa",
+              "tecnicas": ["Bends longos com vibrato de dedo", "Exp1 no pé controla o Rate do Vibe"]
+            },
+            "comoTocar": [
+              "Toque na região aguda a partir da 12ª casa — o 'octave' nasce da posição + o EQ agudo",
+              "Bends longos com vibrato de dedo; deixe o Vibe respirar no sustento",
+              "Exp1 no pé: abra o Rate no fim das frases para o tourbillon final"
+            ],
+            "teste": {"riff": "solo completo com as duas oitavas", "drum": "Rock 112 BPM", "escutar": ["solo gritando uma oitava acima sem mister", "vibe sem embolar o sustento"]},
+            "ajustes": [
+              "oitava não aparece → toque mais agudo e EQ 1 (1) +1",
+              "vibe enjoadando → Rate (exp1) feche no meio da frase"
+            ],
+            "evite": ["Tocar grave — o efeito Octavia é de posição aguda, não de pedal"],
+            "irNota": "Recomendada: British Straight 4x12 Medium Mix (User IR 4).",
+            "momentos": [],
+            "slotSugestao": null
+          }
+        }
+      ]
+    },
+    {
+      "id": "WIND01",
+      "song": "The Wind Cries Mary",
+      "idAlbum": "AYE",
+      "banda": "The Jimi Hendrix Experience",
+      "album": "Are You Experienced",
+      "ano": 1967,
+      "bpm": 72,
+      "resumo": "A balada do disco: limpo com tremolo sussurrado e solo com delay — a prova de que o rig do Hendrix também sabia chorar. Aqui o Vibe entra devagar como 'wah de sonho' e o eco faz a janela do solo.",
+      "referencias": [
+        {"role": "Tremolo de amp suave no clean do disco", "conf": "media", "ev": "textura do corte com pulso de volume; 'the only effect he had on his pedalboard was a tremolo' (início de 67)", "src": "Guitar World (2017)"},
+        {"role": "Fuzz Face como boost de volume (não distorção) no solo", "conf": "media", "ev": "tradição do rig: fuzz com volume baixo = limpo com punch", "src": "Guitar World (2017)"},
+        {"role": "Marshall limpo com headroom no estúdio", "conf": "alta", "ev": "setup do álbum; a base limpa é do próprio combo", "src": "Equipboard"}
+      ],
+      "patches": [
+        {
+          "camada": "Base",
+          "sufixo": "BA",
+          "nome": "WIND01BA",
+          "emoji": "🍃",
+          "timbre": "Marshall limpo com headroom + Vibe como 'wah de sonho' + spring curto — a balada dentro do rig de 67",
+          "spec": {
+            "name": "WIND01BA",
+            "type": "Blues",
+            "bpm": 72,
+            "volume": 48,
+            "ir_slot": 4,
+            "modules": {
+              "PRE": {"name": "COMP", "on": true, "params": {"0": 25, "1": 40, "2": 50}},
+              "DST": {"name": "Red Haze", "on": false},
+              "AMP": {"name": "UK 45", "on": true, "params": {"0": 58, "1": 48, "2": 54, "3": 52, "4": 60, "5": 62}},
+              "NR": {"name": "Gate 1", "on": true, "params": {"0": 20}},
+              "CAB": {"name": "UK-LD 4x12", "on": true, "params": {"0": 74, "1": 55}},
+              "EQ": {"name": "EQ 1", "on": true, "params": {"0": -1, "1": 2, "2": -1, "5": 54}},
+              "MOD": {"name": "Vibe", "on": true, "params": {"0": 38, "1": 0.4, "2": 0}},
+              "DLY": {"name": "M-Echo", "on": false},
+              "RVB": {"name": "Spring", "on": true, "params": {"0": 32, "1": 90}}
+            }
+          },
+          "doc": {
+            "guitarra": {
+              "seletor": "Posição 3 (middle+bridge, o meio da Strat invertida)",
+              "seletorCurto": "posição 3",
+              "volume": "7",
+              "tone": "8–9",
+              "receita": "SELETOR 3 · Volume 7 · Tone 8–9 · pulso de volume com a mão direita",
+              "tecnicas": ["Dobradinhos (duas cordas em uníssono)", "Pulso de volume imita o tremolo de amp do disco"]
+            },
+            "comoTocar": [
+              "Figuração com dobradinhos (duas cordas em uníssono) — deixe o Vibe respirar",
+              "Dinâmica: dê o pulso de volume com a mão direita, como o tremolo de amp do disco",
+              "Volume da guitarra 7: abrir a 10 no entrada do vocal"
+            ],
+            "teste": {"riff": "intro + 1ª estrofe", "drum": "Balada 68-76 BPM", "escutar": ["clean com ar, sem embolar", "vibe como cor, não como efeito"]},
+            "ajustes": [
+              "vibe forte demais → (0) −6",
+              "spring invadindo os dobradinhos → (0) −5"
+            ],
+            "evite": ["Distorsão aqui — a balada é o contraste do disco"],
+            "irNota": "Recomendada: British Straight 4x12 Medium Mix (User IR 4) — sim, a balada também saiu do combo britânico.",
+            "momentos": [],
+            "slotSugestao": null
+          }
+        },
+        {
+          "camada": "Solo",
+          "sufixo": "SO",
+          "nome": "WIND01SO",
+          "emoji": "🪟",
+          "timbre": "Fuzz no volume baixo (o 'boost' do rig real) + tape echo curto — o solo chora com a janela de delay",
+          "spec": {
+            "name": "WIND01SO",
+            "type": "Blues",
+            "bpm": 72,
+            "volume": 52,
+            "ir_slot": 4,
+            "modules": {
+              "PRE": {"name": "COMP", "on": true, "params": {"0": 25, "1": 40, "2": 50}},
+              "DST": {"name": "Red Haze", "on": true, "params": {"0": 40, "1": 60}},
+              "AMP": {"name": "UK 45", "on": true, "params": {"0": 64, "1": 52, "2": 52, "3": 52, "4": 62, "5": 60}},
+              "NR": {"name": "Gate 1", "on": true, "params": {"0": 18}},
+              "CAB": {"name": "UK-LD 4x12", "on": true, "params": {"0": 74, "1": 55}},
+              "EQ": {"name": "EQ 1", "on": true, "params": {"0": -1, "1": 2, "2": -1, "5": 54}},
+              "MOD": {"name": "Vibe", "on": false},
+              "DLY": {"name": "T-Echo", "on": true, "params": {"0": 48, "1": 35, "2": 0}},
+              "RVB": {"name": "Spring", "on": true, "params": {"0": 32, "1": 90}}
+            },
+            "exp1": {"módulo": "DLY", "param": "Mix", "min": 20, "max": 60}
+          },
+          "doc": {
+            "guitarra": {
+              "seletor": "Posição 3 (middle+bridge)",
+              "seletorCurto": "posição 3",
+              "volume": "6–7 (fuzz raspa sem sujar)",
+              "tone": "8",
+              "receita": "SELETOR 3 · Volume 6–7 · Tone 8 · frases longas com o Exp1 no pé",
+              "tecnicas": ["Frases cantadas sobre o delay", "Fuzz como boost de mordida (o truque do rig real)"]
+            },
+            "comoTocar": [
+              "Frases longas e cantadas — o delay de 3/16 seguida a meia força",
+              "Fuzz no volume 6 da guitarra: raspa sem sujar (o truque do rig real)",
+              "Exp1: abra o Mix nas frases finais e feche para o desfecho"
+            ],
+            "teste": {"riff": "solo completo", "drum": "Balada 72 BPM", "escutar": ["notas cantando sobre o eco", "fuzz como mordida, não como parede"]},
+            "ajustes": [
+              "eco à frente das notas → T-Echo (1) −5",
+              "fuzz sujando → Volume da guitarra −1"
+            ],
+            "evite": ["Bends rápidos e corridos — o solo respira"],
+            "irNota": "Recomendada: British Straight 4x12 Medium Mix (User IR 4).",
+            "momentos": [],
+            "slotSugestao": null
+          }
+        }
+      ]
+    }
+  ],
+  "ir_local": {
+    "UK-LD 4x12": {"captura": "British Straight 4x12", "slot": "User IR 4"}
+  }
+}

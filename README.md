@@ -195,7 +195,7 @@ A suíte cobre as invariantes que **já quebraram uma vez** neste projeto:
 ## 🧪 Histórico de validação
 
 - ✅ `.prst` comparados estruturalmente com o export **single** que importou com sucesso no aparelho (7 checks), formato firmware 2.1 — o formato está registrado no gerador.
-- ✅ 97 patches em biblioteca (Abbey Road, Apostrophe ('), Cheap Thrills, Pulse, From the Muddy Banks of the Wishkah e Supernatural — 58 músicas), XMLs validados, 0 HTML cru e slots U01–U97 mapeados; pipeline **idempotente e reprodutível** (regenerar não muda nada — o timestamp `preset_info/@time` é determinístico).
+- ✅ 103 patches em biblioteca (Abbey Road, Apostrophe ('), Are You Experienced, Cheap Thrills, Pulse, From the Muddy Banks of the Wishkah e Supernatural — 61 músicas), XMLs validados, 0 HTML cru e slots U01–U103 mapeados; pipeline **idempotente e reprodutível** (regenerar não muda nada — o timestamp `preset_info/@time` é determinístico).
 - ✅ Seções obrigatórias presentes nos 97 docs (guitarra → ajustes finos → IR → modos de atuação → objetivo → dossiê → parâmetros → carga → evite) e 67 momentos de toggle validados contra o spec.
 - ✅ **Zero rótulo `pN` nos 97 docs**: os 40 `patch.md` do Pulse e as 28 menções em textos de ajustes/evite passaram a usar os nomes do manual V2.0 (rótulos acima); os slots **internos** do firmware (que o editor não expõe) não são setados nem rotulados — ficam no default de fábrica.
 - ✅ **Dossiê de rig de Cheap Thrills** (Big Brother & The Holding Company): duas guitarras em **Gibson SG** (Gurley e Andrew), **Fender Twin Reverb**, Maestro FZ-1 no Gurley — e o achado que fecha o timbre da faixa: **Piece of My Heart sem fuzz** (Gurley limpo, Sam sujo no Twin estourado); o mapa da Janis voltou a ter seção de rig, com fontes.
@@ -229,7 +229,7 @@ ensaio. Só depois disso a diferença é do patch.
 **Onde estão os arquivos `.prst`?**
 Em `patches/<Banda>/<Álbum>/<Música>/<PATCH>/`. Para achar rápido pela música, use o
 mapa por álbum (`MAPA-DO-ALBUM.md`) ou a [biblioteca completa no site](https://lucascantarelli.github.io/gp-100-patch-architect/), que
-lista os 97 patches com nome, captador, IR recomendada e slot.
+lista os 103 patches com nome, captador, IR recomendada e slot.
 
 **Os patches servem para outra pedaleira?**
 Não. O formato é o XML single da GP-100, com os modelos e ranges do firmware **2.0/2.1**.

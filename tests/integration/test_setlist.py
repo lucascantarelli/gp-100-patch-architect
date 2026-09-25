@@ -68,7 +68,7 @@ def test_secao_inexistente_sugere_as_disponiveis(lib: setlist_app.BibliotecaSetl
 
 
 def test_catalogo_cobre_a_biblioteca(lib: setlist_app.BibliotecaSetlist) -> None:
-    assert len(lib.catalogo()) == 58
+    assert len(lib.catalogo()) == 61  # 58 + as 3 de Are You Experienced (#12)
 
 
 # ── ordem de palco sobre patches reais ──────────────────────────────────────

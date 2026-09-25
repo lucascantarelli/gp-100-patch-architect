@@ -116,7 +116,10 @@ def test_travessia_e_slots_contemplam_todo_o_defs(defs_real: dict[str, Any]):
 
     mapa = biblioteca.slots(defs)
     assert len(mapa) == esperado
-    assert sorted(mapa.values()) == [f'U{i:02d}' for i in range(1, esperado + 1)]
+    # sort numérico: com 100+ patches, 'U100' < 'U11' lexicograficamente
+    assert sorted(mapa.values(), key=lambda s: int(s[1:])) == [
+        f'U{i:02d}' for i in range(1, esperado + 1)
+    ]
     # a primeira música manda no U01: a numeração segue a ordem do defs
     assert mapa[defs['songs'][0]['patches'][0]['nome']] == 'U01'
 

@@ -105,7 +105,11 @@ def test_slots_continuos_e_alinhados(defs_real: dict[str, Any]) -> None:
             n += 1
             esperado[patch['nome']] = f'U{n:02d}'
     assert slots_gerados == esperado, 'biblioteca e índices numeram diferente'
-    assert sorted(slots_gerados.values()) == [f'U{i:02d}' for i in range(1, len(slots_gerados) + 1)]
+    # sort NUMÉRICO pelo sufixo: com 100+ patches, o lexicográfico coloca
+    # 'U100' antes de 'U11' (o mundo do formato assumia dois dígitos)
+    assert sorted(slots_gerados.values(), key=lambda s: int(s[1:])) == [
+        f'U{i:02d}' for i in range(1, len(slots_gerados) + 1)
+    ]
 
 
 # ── I. ordem estável entre sistemas operacionais ────────────────────────────

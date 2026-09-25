@@ -27,15 +27,17 @@
 | Eternity / Lovepedal | `LO OD` |
 | MXR Distortion+ | `MX Dist` |
 | Dist+ / distorção suave | `Dist+` |
-| RAT / ProCo | `RIP` |
-| DS-1 / distorção clássica | `D-Zero` |
-| Metal Zone / MT-2 | `Metal` |
-| Fuzz Face / fuzz clássico | `Fat Fuzz` |
+| RAT / ProCo | `La Charger` |
+| DS-1 / distorção clássica | `SM Dist` |
+| Metal Zone / MT-2 | `Darktale` |
+| Fuzz Face / fuzz clássico | `Red Haze` |
 | Big Muff triangle | `TRI Fuzz` |
 | Big Muff ram's head | `BIG Fuzz` |
 | Octavia | `OCT Fuzz` |
 | Timmy | `Clari OD` |
 | Prince of Tone | `PRINC OD` |
+
+> **Fonte dos nomes (DST)**: o catálogo empírico do fw 2.0 (`15-firmware2-effects.md`, extraído do export de fábrica — `data/factory-catalog.json`) é a fonte primária e **vence o manual V1.8** onde divergem. Nomes como `RIP`, `Fat Fuzz`, `D-Zero` e `Metal` existem no manual impresso, mas **não existem no firmware 2.0** (sem `effectCode` — não graváveis em `.prst`); a tabela usa os equivalentes reais do catálogo. Reconciliação completa do legado V1.8 nesta página: #139.
 
 ### Amplificadores (AMP)
 | O usuário pede | Nome oficial GP-100 |

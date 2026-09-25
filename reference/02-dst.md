@@ -1,5 +1,6 @@
 # GP-100 — Módulo DST (Overdrive / Distorção / Fuzz)
 > Página 21 do manual. Um patch usa **um** modelo DST por vez (ou DST OFF). Baseado em pedais clássicos — use os nomes EXATOS da coluna FX Title.
+> **Fonte dos nomes**: onde o catálogo empírico do fw 2.0 (`15-firmware2-effects.md`, extraído do export de fábrica) divergir destes nomes do manual V1.8, o catálogo **vence** — ex.: o fw 2.0 não tem `RIP`/`Fat Fuzz`/`D-Zero`/`Metal`; os equivalentes reais são `La Charger`/`Red Haze`/`SM Dist`/`Darktale`. Detalhes em `14-glossario.md` e #139.
 
 ## Modelos e parâmetros oficiais
 

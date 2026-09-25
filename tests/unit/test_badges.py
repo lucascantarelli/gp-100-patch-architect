@@ -52,7 +52,11 @@ def test_sintetico_deriva_cada_badge_da_sua_fonte(tmp_path: Path, monkeypatch: p
         ],
     )
     monkeypatch.setattr(badges, '_contagem_testes', lambda _raiz: '42')
-    defs = {'songs': [{'id': 'A'}, {'id': 'B'}], 'albums': {'X': {}, 'Y': {}, 'Z': {}}}
+    # schema fiel ao defs real: toda música tem `patches` (dados_derivados soma)
+    defs = {
+        'songs': [{'id': 'A', 'patches': [{'nome': 'A1BA'}]}, {'id': 'B', 'patches': []}],
+        'albums': {'X': {}, 'Y': {}, 'Z': {}},
+    }
 
     rotulos = _mensagens(badges.gerar_badges(defs, raiz=tmp_path))
 

@@ -58,9 +58,9 @@ jobs:
       # mkdocs build --strict: navegação quebrada ou md inválido abortam o
       # deploy (trava extra da #60; o checker de links de verdade é o
       # `audit_docs.py`, que roda no CI em todo push).
-      - name: 2/3 · Deriva biblioteca, doc e badges do checkout fresco
+      - name: 2/3 · Deriva biblioteca, stats, badges e doc do checkout fresco
         run: |
-          uv run gp100 site --destino site
+          uv run gp100 site --destino site --stats
           uv run gp100 badges --destino site
           uv run python scripts/prep_docs.py
           uv run mkdocs build --strict --site-dir site-docs

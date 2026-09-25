@@ -591,6 +591,11 @@ def site(
     base_url: str = typer.Option(
         None, '--base-url', help='Prefixo de URL do Pages (default: /gp-100-patch-architect/).'
     ),
+    stats: bool = typer.Option(
+        False,
+        '--stats',
+        help='Gera também /stats/ (contagens derivadas — a mesma fonte dos badges).',
+    ),
 ) -> None:
     """Gera o site estático da biblioteca (busca client-side, sem backend)."""
     from gp100_architect.application import site as site_app
@@ -599,6 +604,8 @@ def site(
     raiz = _raiz()
     destino = destino or (raiz / 'dist' / 'site')
     paginas = site_app.gerar_site(_defs(), base_url=base_url or site_app.BASE_URL_PADRAO)
+    if stats:
+        paginas.update(site_app.gerar_stats(_defs(), raiz=raiz))
     for relativo, conteudo in sorted(paginas.items()):
         escrever_texto(destino / relativo, conteudo)
     json_kb = len(paginas['busca.json'].encode('utf-8')) / 1024

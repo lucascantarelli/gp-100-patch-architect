@@ -32,9 +32,10 @@ from gp100_architect.application.consulta import rotulo_param
 from gp100_architect.application.nomes import album_pasta, song_display
 from gp100_architect.domain.chain import CHAIN
 
-__all__ = ['gerar_site']
+__all__ = ['gerar_site', 'gerar_stats']
 
 BASE_URL_PADRAO = '/gp-100-patch-architect/'
+RAIZ_SITE = Path(__file__).resolve().parents[3]
 
 
 def _url_patch(nome: str) -> str:
@@ -500,3 +501,48 @@ def gerar_site(defs: dict[str, Any], *, base_url: str = BASE_URL_PADRAO) -> dict
         '<nav>', f'<!-- base_url: {escape(base_url)} -->\n<nav>', 1
     )
     return paginas
+
+
+def gerar_stats(defs: dict[str, Any], *, raiz: Path | None = None) -> dict[str, str]:
+    """Página /stats/ — as MESMAS contagens dos badges, legíveis e consumíveis (#119).
+
+    Dado derivado da fonte única (`badges.dados_derivados`) — a página HTML e
+    o JSON nunca divergem entre si nem dos badges, porque são a MESMA
+    derivação. JSON com shape estável (contrato para agentes, no espírito do
+    /catalog/ da #90); HTML legível para humanos. Opt-in: o `gerar_site`
+    básico não muda (os testes e o custo ficam onde estão) — o deploy do
+    Pages roda `gp100 site --stats`.
+    """
+    from gp100_architect.application.badges import dados_derivados
+
+    d = dados_derivados(defs, raiz=raiz or RAIZ_SITE)
+    contagens = (
+        ('Release (VERSION)', d['versao']),
+        ('Agentes (.agents/*.ts)', d['agentes']),
+        ('Skills (SKILL.md)', d['skills']),
+        ('Patches (defs)', d['patches']),
+        ('Músicas (defs)', d['musicas']),
+        ('Álbuns (defs)', d['albuns']),
+        ('Testes (coleção pytest)', d['testes']),
+        ('Piso de cobertura (pyproject)', f'>= {d["pisoCobertura"]}%'),
+        ('Python do gerador', d['python']),
+    )
+    linhas = ''.join(
+        f'<tr><td>{escape(rotulo)}</td><td><strong>{escape(str(valor))}</strong></td></tr>'
+        for rotulo, valor in contagens
+    )
+    corpo = (
+        '<h1>Estatísticas derivadas</h1>'
+        '<p>Todas as contagens são <strong>derivadas das fontes únicas</strong> no momento '
+        'do deploy — nunca editadas à mão (issue #117/#119). O JSON abaixo é o mesmo '
+        'dado, consumível por máquina.</p>'
+        '<table><thead><tr><th>O quê</th><th>Valor</th></tr></thead>'
+        f'<tbody>{linhas}</tbody></table>'
+        '<h2>JSON</h2>'
+        '<p>Consumo por agente/integração: <code>stats/stats.json</code> — shape estável, '
+        'mesmo espírito do <code>/catalog/</code>.</p>'
+    )
+    return {
+        'stats/index.html': _pagina('Estatísticas', corpo, [('Início', '../index.html')]),
+        'stats/stats.json': json.dumps(d, ensure_ascii=False, indent=1, sort_keys=True) + '\n',
+    }

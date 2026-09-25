@@ -25,7 +25,7 @@ import tomllib
 from pathlib import Path
 from typing import Any
 
-__all__ = ['gerar_badges', 'url_endpoint']
+__all__ = ['dados_derivados', 'gerar_badges', 'url_endpoint']
 
 URL_BASE = 'https://img.shields.io/endpoint?url='
 PAGES_BASE = 'https://lucascantarelli.github.io/gp-100-patch-architect/'
@@ -93,6 +93,32 @@ def url_endpoint(nome: str) -> str:
     return URL_BASE + quote(PAGES_BASE + 'badges/' + nome + '.json', safe=':/?&=')
 
 
+def dados_derivados(defs: dict[str, Any], *, raiz: Path = RAIZ_PADRAO) -> dict[str, Any]:
+    """As contagens de fonte única, em dados — o que os badges e o /stats/ consomem.
+
+    A FONTE única de verdade (o badge renderiza isto; a página /stats/ do site
+    publica isto): agents/skills do `git ls-files`, patches do defs, versão do
+    `VERSION`, políticas do pyproject e testes da coleção pytest. Total de
+    patches = soma dos patches por música do defs (o mesmo que o catálogo
+    publica em `/catalog/index.json` → `contagens.patches`).
+    """
+    rastreados = _rastreados(raiz)
+    politicas = tomllib.loads((raiz / 'pyproject.toml').read_text(encoding='utf-8'))
+    py = re.search(r'\d+\.\d+', politicas['project']['requires-python'])
+    return {
+        'geradoPor': 'gp100 badges (issue #117) — contagens derivadas, nunca editadas',
+        'versao': (raiz / 'VERSION').read_text(encoding='utf-8').strip(),
+        'agentes': _contagem_agentes(rastreados),
+        'skills': _contagem_skills(rastreados),
+        'musicas': len(defs['songs']),
+        'albuns': len(defs['albums']),
+        'patches': sum(len(s['patches']) for s in defs['songs']),
+        'python': py.group(0) if py else '',
+        'pisoCobertura': _piso_cobertura(raiz),
+        'testes': _contagem_testes(raiz),
+    }
+
+
 def _contagem_agentes(rastreados: list[str]) -> int:
     """Agentes = `.agents/*.ts` de topo rastreados (types/agent-definition.ts não é agente)."""
     return sum(
@@ -109,21 +135,18 @@ def _contagem_skills(rastreados: list[str]) -> int:
 
 def gerar_badges(defs: dict[str, Any], *, raiz: Path = RAIZ_PADRAO) -> dict[str, str]:
     """Badges derivados: `{badges/<nome>.json: conteúdo}` — a CLI grava no destino."""
-    rastreados = _rastreados(raiz)
-    versao = (raiz / 'VERSION').read_text(encoding='utf-8').strip()
-    politicas = tomllib.loads((raiz / 'pyproject.toml').read_text(encoding='utf-8'))
-    py = re.search(r'\d+\.\d+', politicas['project']['requires-python'])
+    d = dados_derivados(defs, raiz=raiz)
     badges = {
-        'release': _badge('release', versao, _VERDE),
-        'agentes': _badge('agentes', str(_contagem_agentes(rastreados)), _VERDE),
-        'skills': _badge('skills', str(_contagem_skills(rastreados)), _VERDE),
+        'release': _badge('release', d['versao'], _VERDE),
+        'agentes': _badge('agentes', str(d['agentes']), _VERDE),
+        'skills': _badge('skills', str(d['skills']), _VERDE),
         'patches': _badge(
             'patches',
-            f'{len(defs["songs"])} músicas · {len(defs["albums"])} álbuns',
+            f'{d["musicas"]} músicas · {d["albuns"]} álbuns',
             _VERDE,
         ),
-        'python': _badge('gerador', f'Python {py.group(0)}' if py else '—', _AMBAR),
-        'cobertura': _badge('cobertura', f'piso ≥ {_piso_cobertura(raiz)}%', _VERDE),
-        'testes': _badge('testes', _contagem_testes(raiz), _VERDE),
+        'python': _badge('gerador', f'Python {d["python"]}' if d['python'] else '—', _AMBAR),
+        'cobertura': _badge('cobertura', f'piso ≥ {d["pisoCobertura"]}%', _VERDE),
+        'testes': _badge('testes', d['testes'], _VERDE),
     }
     return {f'badges/{nome}.json': conteudo for nome, conteudo in badges.items()}

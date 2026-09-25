@@ -56,3 +56,7 @@ dist/
 patches/**
 !patches/**/
 
+# Site de docs (issue #60): gerado no deploy, nunca versionado
+docs/_site/
+site-docs/
+

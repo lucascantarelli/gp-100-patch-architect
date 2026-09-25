@@ -146,6 +146,10 @@ TETO_PERMISSOES: dict[str, dict[str, str]] = {
     # EXCEÇÃO JUSTIFICADA (#11): publicar o site É o trabalho do job `deploy`
     # (pages: write + id-token: write do OIDC do Pages). O build é leitura.
     'pages.yml': {'contents': 'read', 'pages': 'write', 'id-token': 'write'},
+    # Mesma exceção da #11, agora para a DOC de engenharia (#60): o job
+    # `deploy` publica via OIDC (pages: write + id-token: write); o build é
+    # leitura. Fonte copiada do checkout fresco a cada deploy.
+    'docs-pages.yml': {'contents': 'read', 'pages': 'write', 'id-token': 'write'},
 }
 
 # Menor major de cada action de primeira parte que já declara `using: node24`

@@ -1,0 +1,115 @@
+# Documentação de engenharia do GP-100 Patch Architect (issue #60) — MkDocs Material.
+
+# O site é GERADO do repositório (nunca escrito à mão). Decisão de
+# versionamento: GERADO NO DEPLOY e publicado sem commitar (mesma resposta da
+# #11) — `docs/_site/` e `site-docs/` são derivados gitignored; o guarda de
+# sincronia não precisa cobrir mais nada.
+#
+# O MkDocs exige `docs_dir` fora da raiz, mas a doc CRUZA pastas (reference/ ↔
+# docs/ ↔ md de topo). `scripts/prep_docs.py` monta `docs/_site/` com JUNÇÕES
+# (reference/, decisions/) e links dos md de topo — zero cópia de conteúdo
+# (duplicação diverge; é o erro que a #58 caça). No CI: prep → build → deploy.
+
+site_name: GP-100 Patch Architect
+site_description: Biblioteca de patches da Valeton GP-100 — consulta, produção e release com verificação em cada etapa
+site_url: https://lucascantarelli.github.io/gp-100-patch-architect/
+repo_url: https://github.com/lucascantarelli/gp-100-patch-architect
+repo_name: gp-100-patch-architect
+
+docs_dir: docs/_site
+site_dir: site-docs
+exclude_docs: |
+  _site/
+
+# Links de doc para INFRA do repositório (.github/, .agents/, src/, scripts/,
+# impulse_responses/) resolvem no GitHub — no site não viram página de
+# propósito (infra não é doc). O checker que REPROVA link quebrado é o
+# `audit_docs.py` (repo inteiro, mais estrito), não o build do site —
+# critério de aceite da #60 cumprido por onde importa.
+validation:
+  links:
+    absolute_links: ignore
+    unrecognized_links: ignore
+    not_found: ignore
+
+theme:
+  name: material
+  language: pt-BR
+  palette:
+    # dark scheme é a identidade do projeto (site da biblioteca usa o mesmo)
+    - scheme: slate
+      primary: deep purple
+      accent: amber
+  features:
+    - navigation.sections
+    - navigation.expand
+    - content.code.copy
+    - search.highlight
+
+nav:
+  - Início: README.md
+  - Começar por aqui:
+      - Arquitetura em 1 página: ARCHITECTURE.md
+      - Desenvolvimento: DEVELOPMENT.md
+      - Contribuição: CONTRIBUTING.md
+  - Contrato dos agentes:
+      - knowledge.md: knowledge.md
+      - Prompt mestre: master_prompt.md
+  - Roadmap e auditorias:
+      - Roadmap 2.0: docs/roadmap-2.0.md
+      - Auditoria técnica: docs/audit-2.0.md
+      - Auditoria do DoD: docs/audit-dod-2.0.md
+  - Decisões (ADRs):
+      - Índice: docs/decisions/README.md
+      - ADR-0001 · Pacote Python com uv: docs/decisions/0001-pacote-python-com-uv.md
+      - ADR-0002 · Camadas pragmáticas: docs/decisions/0002-camadas-pragmaticas.md
+      - ADR-0003 · CLI com Typer e Rich: docs/decisions/0003-cli-typer-rich.md
+      - ADR-0004 · UI via API (2.1): docs/decisions/0004-ui-via-api-na-2-1.md
+      - ADR-0005 · Qualidade (ruff/mypy/pytest): docs/decisions/0005-qualidade-ruff-mypy-pytest.md
+      - ADR-0006 · CI/CD sem escrita no repo: docs/decisions/0006-ci-cd-sem-escrita.md
+      - ADR-0007 · Documentação em duas camadas: docs/decisions/0007-documentacao-em-duas-camadas.md
+      - ADR-0008 · Agentes e contrato: docs/decisions/0008-agents-e-contrato.md
+      - ADR-0009 · Governança open source: docs/decisions/0009-governanca-open-source.md
+      - ADR-0010 · Release engineering: docs/decisions/0010-release-engineering.md
+      - ADR-0011 · Project com PAT: docs/decisions/0011-gestao-de-project-com-pat.md
+      - ADR-0012 · Epics com sub-issues: docs/decisions/0012-epics-com-sub-issues.md
+      - ADR-0013 · Artefatos em escala: docs/decisions/0013-modelo-de-artefatos-em-escala.md
+  - Catálogo de domínio (reference/):
+      - Índice: reference/README.md
+      - 00 · Cadeia de sinal: reference/00-signal-chain.md
+      - 01 · PRE: reference/01-pre.md
+      - 02 · DST: reference/02-dst.md
+      - 03 · AMP: reference/03-amp.md
+      - 04 · CAB/IR: reference/04-cab-ir.md
+      - 05 · EQ: reference/05-eq.md
+      - 06 · MOD: reference/06-mod.md
+      - 07 · NR: reference/07-nr.md
+      - 08 · DLY: reference/08-dly.md
+      - 09 · RVB: reference/09-rvb.md
+      - 10 · Globais: reference/10-globals.md
+      - 11 · Guia de IR: reference/11-ir-guide.md
+      - 12 · Workflow: reference/12-workflow.md
+      - 13 · Lista de presets: reference/13-preset-list.md
+      - 14 · Glossário: reference/14-glossario.md
+      - 15 · Firmware 2 e efeitos: reference/15-firmware2-effects.md
+      - 16 · Biblioteca de IRs: reference/16-ir-library.md
+      - 17 · Packs livres: reference/17-free-ir-packs.md
+      - 18 · Gestão do projeto: reference/18-project-management.md
+      - 19 · Roadmap v2: reference/19-roadmap-v2.md
+      - 20 · Golden set: reference/20-golden-set.md
+      - 21 · Code review: reference/21-code-review.md
+      - 22 · Código morto: reference/22-dead-code-analysis.md
+      - 23 · Skills: reference/23-skills-curation.md
+      - 24 · Import "all": reference/24-import-all.md
+  - Governança:
+      - Segurança: SECURITY.md
+      - Código de conduta: CODE_OF_CONDUCT.md
+      - Licença e avisos (NOTICE): NOTICE.md
+      - Changelog: CHANGELOG.md
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/lucascantarelli/gp-100-patch-architect
+    - icon: fontawesome/solid/guitar
+      link: https://lucascantarelli.github.io/gp-100-patch-architect/

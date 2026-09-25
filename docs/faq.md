@@ -36,8 +36,8 @@ Não deveria mais — era o achado A1 da auditoria do DoD (testes lendo
 derivado do disco); consertado no PR #102. Se reproduzir, é bug novo: abra issue.
 
 **O que o erro "fragmento FORA do manifesto" significa?**
-Criei um `data/defs/FOO.json` e não o declarei em `data/defs/_albums.json`
-(o índice dos fragmentos — o validador cobra).
+Criei um fragmento novo (ex.: `data/defs/AYE.json`) e não o declarei em
+`data/defs/_albums.json` (o índice dos fragmentos — o validador cobra).
 
 **Posso editar um `.prst` direto?**
 Não. É derivado e o formato é byte a byte (CRLF, ordem de atributos). Edite o

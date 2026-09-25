@@ -27,6 +27,7 @@ ADR — é convenção de código (nesse caso, `CONTRIBUTING.md` ou o próprio d
 | [0011](0011-gestao-de-project-com-pat.md) | Gestão de Project v2 com PAT em secret, e permissões verificadas pelo auditor | aceito |
 | [0012](0012-epics-com-sub-issues.md) | Milestone é a release; a fase é um epic com sub-issues e `blocked by` nativo | aceito |
 | [0013](0013-modelo-de-artefatos-em-escala.md) | Modelo de artefatos em escala: o defs é a única fonte versionada; derivados são construídos, não armazenados | aceito |
+| [0014](0014-publicacao-derivada-pages-unificado.md) | Publicação 100% derivada: um deploy para todo o Pages, contagens sem edição manual | aceito |
 
 ## Formato
 

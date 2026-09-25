@@ -338,7 +338,7 @@ O que o repositório roda sozinho, a cada push, PR e semanalmente:
 
 | Workflow | O que garante |
 |---|---|
-| [`ci.yml`](.github/workflows/ci.yml) | Dados em sincronia + 256 testes + typecheck dos agentes (Python 3.14 fixado e travado no job) |
+| [`ci.yml`](.github/workflows/ci.yml) | Dados em sincronia + 378 testes + typecheck dos agentes (Python 3.14 fixado e travado no job) |
 | [`security.yml`](.github/workflows/security.yml) | CodeQL (Python e TypeScript), revisão de dependências em PR e auditoria de permissões dos próprios workflows |
 | [`release.yml`](.github/workflows/release.yml) | Release **automática no merge para a `main`**: tag SemVer a partir do `VERSION` e ZIPs publicados |
 

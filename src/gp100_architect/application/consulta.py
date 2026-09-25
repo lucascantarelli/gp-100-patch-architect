@@ -308,7 +308,7 @@ def planejar_exportacao(
     destino: Path | None = None,
     listar: bool = False,
 ) -> PlanoExportacao:
-    """A lista de cópias em ordem de slot — a execução é da CLI/shim.
+    """A lista de cópias em ordem de slot — a execução é da CLI.
 
     Seleção: álbum inteiro (`--album`), nomes explícitos ou a biblioteca toda.
     """

@@ -42,6 +42,7 @@ from gp100_architect import __version__
 from gp100_architect.application import consulta
 from gp100_architect.application import release as release_app
 from gp100_architect.application import setlist as setlist_app
+from gp100_architect.application.setlist import trocas_totais
 from gp100_architect.domain.chain import CHAIN
 from gp100_architect.domain.errors import Gp100Error
 from gp100_architect.infrastructure.defs import DEFS_PADRAO, carregar_e_validar
@@ -297,8 +298,8 @@ def export(
 # ── produção (#49; pipeline in-process desde a #33) ─────────────────────────
 
 # Ordem do guarda de determinismo (TestH): indexa IRs → gera os derivados →
-# índices. Os nomes são os passos de `application.pipeline` (não caminhos de
-# script — os shims de `tools/` foram removidos na #33).
+# índices. Os nomes são os passos de `application.pipeline` (pipeline in-process
+# desde a #33 — não há mais caminho de script).
 PIPELINE = (
     'ir_library',
     'patches',
@@ -365,7 +366,7 @@ def analyze(
     from gp100_architect.domain.errors import FormatoPrstInvalido
     from gp100_architect.infrastructure.prst.reader import analyze, fmt_stat, parse
 
-    ORDEM_CADEIA = list(CHAIN)  # seções na ordem da cadeia (PRE → RVB), como no shim
+    ORDEM_CADEIA = list(CHAIN)  # seções na ordem da cadeia (PRE → RVB)
     try:
         info, irs, patches = parse(str(arquivo))
     except FormatoPrstInvalido as erro:
@@ -413,15 +414,11 @@ def manual_page(
     """Renderiza páginas do manual.pdf sob demanda (requer pymupdf)."""
     try:
         import pymupdf  # type: ignore[import-not-found]
-    except ImportError:
-        try:
-            import fitz as pymupdf  # type: ignore[import-not-found]
-        except ImportError as exc:
-            err_console.print(
-                'pymupdf não instalado — rode: uv tool install pymupdf (ou '
-                'pip install --user pymupdf).'
-            )
-            raise typer.Exit(code=1) from exc
+    except ImportError as exc:
+        err_console.print(
+            'pymupdf não instalado — rode: uv tool install pymupdf (ou pip install --user pymupdf).'
+        )
+        raise typer.Exit(code=1) from exc
     raiz = _raiz()
     pdf = raiz / 'manual.pdf'
     if not pdf.exists():
@@ -510,7 +507,7 @@ def setlist(
         plano = setlist_app.resolver_repertorio(lib, list(musicas), list(patch or []), keep_order)
     except Gp100Error as erro:
         _erro(erro)
-    total = setlist_app.total_de_trocas(plano)
+    total = trocas_totais(plano)
     if saida_json:
         conteudo = json.dumps(
             setlist_app.plano_json(plano, total, lib.slots), ensure_ascii=False, indent=1

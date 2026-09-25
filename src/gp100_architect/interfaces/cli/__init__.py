@@ -1,5 +1,5 @@
-"""CLI oficial do gp100-patch-architect (Typer + Rich — ADR-0003)."""
+"""CLI oficial do gp100-patch-architect (Typer + Rich — ADR-0003).
 
-from gp100_architect.interfaces.cli.main import app
-
-__all__ = ['app']
+O entry point do pacote aponta direto para `gp100_architect.interfaces.cli.main:app`;
+este `__init__` não reexporta símbolos.
+"""

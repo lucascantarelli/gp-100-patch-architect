@@ -11,7 +11,7 @@ literais existiam aqui E em `build_song_patches` — e divergiram (o mapa
 recomendava "fábrica" onde o `patch.md` mandava carregar uma IR do banco
 local, nos 38 patches do Pulse).
 
-Camada: application (devolve `{Path: texto}`; quem escreve é o shim, via
+Camada: application (devolve `{Path: texto}`; quem escreve é a CLI, via
 `infrastructure.escrita`).
 """
 

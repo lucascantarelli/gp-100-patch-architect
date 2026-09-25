@@ -15,14 +15,14 @@ from typing import Any
 import pytest
 
 from gp100_architect.application import setlist as setlist_app
-from gp100_architect.domain.errors import EntradaInvalida
-from gp100_architect.domain.setlist import (
+from gp100_architect.application.setlist import (
     assinatura,
     dif_cadeia,
     distancia,
     otimizar,
     trocas_totais,
 )
+from gp100_architect.domain.errors import EntradaInvalida
 from gp100_architect.infrastructure.defs import carregar_e_validar
 
 pytestmark = pytest.mark.integration

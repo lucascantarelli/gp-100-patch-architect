@@ -109,7 +109,8 @@ def gerar_variante(
 
 def _render_doc(
     base: PatchGerado,
-    *,  # TODO(#90): snake_case já; nomes pt mantidos até o ciclo de revisão
+    # snake_case já; nomes pt mantidos até o ciclo de revisão (ver #90)
+    *,
     cab: str,
     captura: str,
     slot: str,

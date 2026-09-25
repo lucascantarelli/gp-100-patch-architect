@@ -5,8 +5,8 @@ disco, imprime ou importa da infraestrutura — é o que permite testar a docume
 sem gerar arquivo e o que a UI/API futura reaproveita.
 
 * `patch_md` — o `patch.md` de um patch (as 9 seções + receita de digitação).
+* `variante_md` — o `patch.md` da variante -USERIR (seção de IR reescrita).
+
+Convenção de import: direto do submodule (`from gp100_architect.application.rendering
+import patch_md`) — este `__init__` não reexporta.
 """
-
-from gp100_architect.application.rendering import patch_md
-
-__all__ = ['patch_md']

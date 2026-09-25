@@ -132,7 +132,7 @@ def test_carregar_e_validar_no_defs_do_repo(raiz: Path):
     """O defs commitado (fragmentos) passa pela estrutura + validação do domínio."""
     dados = carregador.carregar_e_validar()
     assert dados['songs'] and dados['albums']
-    # blocos contíguos por álbum, na ordem do manifesto (58 músicas / 6 álbuns)
+    # blocos contíguos por álbum, na ordem do manifesto (61 músicas / 7 álbuns)
     vistos = [
         s['idAlbum']
         for i, s in enumerate(dados['songs'])

@@ -55,6 +55,12 @@ nav:
   - Contrato dos agentes:
       - knowledge.md: knowledge.md
       - Prompt mestre: master_prompt.md
+  - Guias por público:
+      - Usuário: docs/guia-usuario.md
+      - Contribuidor: docs/guia-contribuidor.md
+      - Mantenedor: docs/guia-mantenedor.md
+      - FAQ: docs/faq.md
+      - Exemplos de ponta a ponta: docs/exemplos.md
   - Roadmap e auditorias:
       - Roadmap 2.0: docs/roadmap-2.0.md
       - Auditoria técnica: docs/audit-2.0.md

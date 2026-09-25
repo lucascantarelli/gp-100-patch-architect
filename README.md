@@ -2,7 +2,7 @@
 
 ### *Agente Freebuff que cria patches Valeton GP-100 a partir do rig real de qualquer música*
 
-![Release](https://img.shields.io/badge/release-1.0-e02d2d?style=flat-square) ![Firmware](https://img.shields.io/badge/firmware-2.1%20(confirmado%20no%20device)-2ea44f?style=flat-square) ![Agentes](https://img.shields.io/badge/agentes-19-e02d2d?style=flat-square) ![Skills](https://img.shields.io/badge/skills-11-e02d2d?style=flat-square) ![Patches](https://img.shields.io/badge/patches-97%20·%206%20álbuns-e02d2d?style=flat-square) ![Formato](https://img.shields.io/badge/.prst-single%20fw%202.1-2ea44f?style=flat-square) ![Python](https://img.shields.io/badge/gerador-Python%203.14-f3a637?style=flat-square) ![Testes](https://img.shields.io/badge/333%20testes%20·%20cobertura%2090%2C81%25-2ea44f?style=flat-square) [![Site](https://img.shields.io/badge/📚%20biblioteca%20online-lucascantarelli.github.io-2f6fdd?style=flat-square)](https://lucascantarelli.github.io/gp-100-patch-architect/) [![CI](https://github.com/lucascantarelli/gp-100-patch-architect/actions/workflows/ci.yml/badge.svg)](https://github.com/lucascantarelli/gp-100-patch-architect/actions/workflows/ci.yml) [![Security](https://github.com/lucascantarelli/gp-100-patch-architect/actions/workflows/security.yml/badge.svg)](https://github.com/lucascantarelli/gp-100-patch-architect/actions/workflows/security.yml) [![CodeQL](https://img.shields.io/badge/CodeQL-Python%20·%20TypeScript-2f6fdd?style=flat-square)](https://github.com/lucascantarelli/gp-100-patch-architect/security/code-scanning) [![License: MIT](https://img.shields.io/badge/license-MIT-2ea44f?style=flat-square)](LICENSE) [![PRs welcome](https://img.shields.io/badge/PRs-welcome-e02d2d?style=flat-square)](CONTRIBUTING.md)
+![Release](https://img.shields.io/badge/release-1.0-e02d2d?style=flat-square) ![Firmware](https://img.shields.io/badge/firmware-2.1%20(confirmado%20no%20device)-2ea44f?style=flat-square) ![Agentes](https://img.shields.io/badge/agentes-20-2ea44f?style=flat-square) ![Skills](https://img.shields.io/badge/skills-11-e02d2d?style=flat-square) ![Patches](https://img.shields.io/badge/patches-103%20·%207%20álbuns-2ea44f?style=flat-square) ![Formato](https://img.shields.io/badge/.prst-single%20fw%202.1-2ea44f?style=flat-square) ![Python](https://img.shields.io/badge/gerador-Python%203.14-f3a637?style=flat-square) ![Testes](https://img.shields.io/badge/384%20testes%20·%20cobertura%20≥%2090%25-2ea44f?style=flat-square) [![Site](https://img.shields.io/badge/📚%20biblioteca%20online-lucascantarelli.github.io-2f6fdd?style=flat-square)](https://lucascantarelli.github.io/gp-100-patch-architect/) [![CI](https://github.com/lucascantarelli/gp-100-patch-architect/actions/workflows/ci.yml/badge.svg)](https://github.com/lucascantarelli/gp-100-patch-architect/actions/workflows/ci.yml) [![Security](https://github.com/lucascantarelli/gp-100-patch-architect/actions/workflows/security.yml/badge.svg)](https://github.com/lucascantarelli/gp-100-patch-architect/actions/workflows/security.yml) [![CodeQL](https://img.shields.io/badge/CodeQL-Python%20·%20TypeScript-2f6fdd?style=flat-square)](https://github.com/lucascantarelli/gp-100-patch-architect/security/code-scanning) [![License: MIT](https://img.shields.io/badge/license-MIT-2ea44f?style=flat-square)](LICENSE) [![PRs welcome](https://img.shields.io/badge/PRs-welcome-e02d2d?style=flat-square)](CONTRIBUTING.md)
 
 ---
 
@@ -265,6 +265,16 @@ afiliado ou endossado pelos fabricantes. Se você redistribuir os packs de IR, a
 deles é que manda.
 
 ## 📚 Toda a documentação
+
+**Por onde começar — guias por público** (cada um com caminho de leitura e o próximo passo):
+
+| Guia | Leia se você quer… |
+|---|---|
+| [`docs/guia-usuario.md`](docs/guia-usuario.md) | usar a biblioteca: instalar, gravar IRs, subir patch na pedaleira, resolver `tone-mismatch` |
+| [`docs/guia-contribuidor.md`](docs/guia-contribuidor.md) | contribuir: setup em máquina limpa, PR aceitável, como um patch é validado |
+| [`docs/guia-mantenedor.md`](docs/guia-mantenedor.md) | gerir: release (ADR-0010), triagem, review, board |
+| [`docs/faq.md`](docs/faq.md) | a resposta das dúvidas que o histórico do repo já respondeu |
+| [`docs/exemplos.md`](docs/exemplos.md) | ver o fluxo acontecer, comando a comando |
 
 | Documento | Conteúdo |
 |---|---|

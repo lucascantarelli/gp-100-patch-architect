@@ -88,6 +88,10 @@ extend-exclude = [
   "impulse_responses",
   "dist",
   "reference",
+  # Scorer do golden set (doc 20): dados de avaliação musical inline (cadeias
+  # com >100 chars) — mesmo critério dos auditores: ferramenta de superfície,
+  # não código do produto. Os gates de estilo cobrem src/ e tests/.
+  "scripts/placar-golden-set.py",
   # Skills de terceiros (curadas no doc 23) são conteúdo externo versionado como
   # recebido: o ruff format 0.14+ reescreve blocos Python dentro dos SKILL.md.
   ".agents/skills",

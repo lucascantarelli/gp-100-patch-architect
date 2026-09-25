@@ -25,6 +25,13 @@
    | DST, CAB | ×1 | caráter de drive e caixa |
    | PRE, MOD, DLY, RVB, NR, EQ | ×0,5 | acabamento |
 
+   **Casamento do modelo** (quanto do peso o bloco ganha): modelo exato =
+   100% · família com o mesmo "Based on" no catálogo (UK 45↔UK 50JP,
+   Foxy 30TB↔Foxy 30N, Flagman↔Flagman+, DarkTW 2x12↔Dark 1x12…) = 60% ·
+   mesma classe de caráter (overdrive/distorção/fuzz; clean-americano,
+   rock-britânico, caixa-americana…) = 30% · **estado do bloco errado
+   (ligado/desligado) = 0**, qualquer que seja o modelo.
+
    **Aprovação**: ≥ 70% dos pontos ponderados, com AMP correto — below that,
    investigue o research (fontes erradas?) antes do mapper (mapeamento errado?).
 4. **Registre** o placar na issue/PR da avaliação — o golden set não é teste
@@ -139,6 +146,89 @@
 > o linter de docs (#58, regra 7) cruz contagens literais com a derivação do
 > ADR-0014 (`/stats/`, badges) — aqui elas são do recorte, não da biblioteca.
 
----
+## Placar · rodada 2026-09 (baseline)
 
-[`📖 README do projeto`](../README.md) · [`📚 Reference`](README.md) · [`🤖 Agentes`](../.agents/README.md)
+> **Método (honestidade antes de glória)**: sem credencial de spawn no
+> ambiente de avaliação, os dossiês do `gp100-tone-research` foram
+> **protocolados** com o procedimento oficial do agente (2–4 buscas por
+> âncora: rig da era, breakdown da música; fontes registradas abaixo) e o
+> `gp100-tone-mapper` **simulado** bloco a bloco a partir do dossiê, usando
+> só as fontes obrigatórias do agente (doc 15, "Based on" dos docs 02/03,
+> doc 14, doc 04) e as regras de adaptação do sistema (Squier single coils).
+> É **baseline de método e régua**, não avaliação end-to-end do modelo
+> `z-ai/glm-5.3-flash` — a rodada real de spawn segue quando houver
+> credencial (ver "Próxima rodada"). O cálculo é mecanizado: cadeias como
+> dados + regras de casamento em script (`.freebuff/doc20-placar.py`),
+> zero aritmética manual — o mesmo princípio da derivação do ADR-0014.
+
+**Regras aplicadas**: exato 100% · família 60% · classe 30% · estado
+errado = 0; pesos AMP ×2 · DST/CAB ×1 · resto ×0,5; aprovação = ≥70% e AMP
+exato/família.
+
+**Global: 313,8/350 = 89,7% · 48/50 patches aprovados.**
+
+| Bloco | Placar | % | Agente dominante |
+|---|---|---|---|
+| AMP | 99,2/100 | **99,2%** | mapper |
+| EQ | 24,5/25 | 98,0% | mapper |
+| CAB | 48,0/50 | 96,0% | mapper |
+| RVB | 24,0/25 | 96,0% | research+mapper |
+| NR | 23,5/25 | 94,0% | mapper |
+| DLY | 21,0/25 | 84,0% | research+mapper |
+| PRE | 19,0/25 | 76,0% | mapper |
+| MOD | 18,5/25 | 74,0% | mapper |
+| DST | 36,1/50 | **72,2%** | mapper |
+
+| Escola | Placar | % | Aprovados |
+|---|---|---|---|
+| Santana | 28,0/28 | 100,0% | 4/4 |
+| Nirvana | 119,0/126 | 94,4% | 18/18 |
+| Hendrix | 37,5/42 | 89,3% | 6/6 |
+| Floyd | 72,5/84 | 86,3% | 12/12 |
+| Janis | 12,0/14 | 85,7% | 2/2 |
+| Zappa | 11,8/14 | 84,3% | 1/2 |
+| Beatles | 33,0/42 | 78,6% | 5/6 |
+
+**Leitura por agente** (o que cada um teria que melhorar):
+
+- `gp100-tone-mapper` (AMP 99% mas **DST 72% e MOD 74%**): os erros
+  concentram-se onde o catálogo é ambíguo — `La Charger` (doc 14 manda
+  `RIP` para RAT; o próprio prompt do agente manda `La Charger`, que o
+  catálogo fw 2.0 descreve como RAT-style) e fuzz clássico (`Fat Fuzz` do
+  doc 14 × `Red Haze` "based on Fuzz Face" do doc 15). Conflito de fonte
+  documentado — resolver no doc 14 (glossário) é alavanca direta de placar.
+  `M-Echo` × `Slapbk` no espaço de Hendrix: o tape echo real (Binson/EP-3
+  da era) pede `T-Echo`/`M-Echo`, mas a cultura "slapback curto" empurra
+  para `Slapbk` — calibrar no doc 08 (DLY).
+- `gp100-tone-research` (PRE 76% e estados): não distingue compressor de
+  boost nos timbres de estúdio dos anos 60/70 (Twins pré-drive = COMP no
+  defs) e leva o Small Clone do Cobain para camadas onde o defs o mantém
+  desligado. Ambos são melhoráveis com instrução, não com pesquisa: é o
+  tipo de erro que o doc de dossiê deve antecipar ("amp de estúdio limpo →
+  considerar COMP em vez de Boost").
+- Ambos (DLY 84%): slapback como padrão americano vs `Sweet` como padrão
+  da biblioteca — a convenção de defaults do pipeline (doc 08) deveria
+  estar no systemPrompt do mapper.
+
+**Fontes do research** (por âncora): Abbey Road — Recording The Beatles
+(Kehew & Ryan, via tdpri: Fender Twins nos cortes de 1969) × reputação Vox
+AC30/EF86 (boostguitarpedals, equipboard) → confiança média, exatamente o
+caso que o agente deve marcar como divergente. Apostrophe — Equipboard/
+GuitarPlayer (Pignose modificado + Marshall JMP; SG Baby Snakes). Cheap
+Thrills — entrevista Sam Andrew & James Gurley 1978 (FoundSF: "Fenders,
+Twin Reverbs a lot") + Gear Page (SG + Maestro FZ-1 no solo de
+Combination of the Two). DSOTM — gilmourish (settings por faixa),
+guitar.com, faderandknob (Big Muff Pi → Hiwatt DR103, Binson Echorec).
+Muddy Banks — livenirvana.com/equipment (rig ao vivo: Twin/Mesa + power
+amp Crown/Crest), equipboard (DS-1, Small Clone, RAT). Supernatural —
+ToneStakr/boogieforum/ultimatesantana (PRS + Mesa Mark IV, Dumble como
+overdrive moderno; Soldano citado no timbre de lead). AYE — o dossiê do
+próprio defs (Guitar World 2017, Equipboard, Roger Mayer: JTM45 combo,
+Fuzz Face, Octavia, Strat invertida).
+
+**Próxima rodada**: repetir com spawn real (Freebuff com credencial),
+mantendo o cegamento e o scorer — o delta simulado × real mede o efeito
+modelo; e resolver os conflitos doc 14 × prompt do mapper (`RAT`, fuzz)
+antes, para o placar medir o agente e não a contradição das fontes.
+
+---

@@ -153,7 +153,7 @@ def test_site_gera_em_destino(tmp_path: Path):
     assert (destino / 'busca.json').is_file()
     assert (destino / 'style.css').is_file()
     paginas_patch = list((destino / 'patch').glob('*.html'))
-    assert len(paginas_patch) >= 90  # 97 patches do defs, um por página
+    assert len(paginas_patch) >= 103  # 103 patches do defs, um por página
     assert 'busca.json' in r.stdout and 'KB' in r.stdout
 
 

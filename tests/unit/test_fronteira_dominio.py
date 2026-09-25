@@ -87,4 +87,4 @@ def test_dominio_tem_guarda_contra_ele_mesmo():
     """O guarda existe porque o domínio cresce — este teste é a prova de que
     os módulos atuais estão sendo varridos (não um teste vazio)."""
     arquivos = {f.name for f in _modulos_do_dominio()}
-    assert {'__init__.py', 'chain.py', 'params.py', 'setlist.py'} <= arquivos
+    assert {'__init__.py', 'chain.py', 'errors.py', 'params.py', 'validation.py'} <= arquivos

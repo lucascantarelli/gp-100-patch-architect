@@ -155,7 +155,7 @@ dossiê do rig real (o fluxo de hoje já cobra isso).
 
 1. **Skill `gp100-setlist`**: dado um repertório, monta a ordem de slots
    (minimizando trocas de patch entre músicas consecutivas) e imprime a cola de
-   palco — **entregue**: cálculo em `domain/setlist` + `application/setlist`
+   palco — **entregue**: cálculo em `application/setlist`
    (vizinho mais próximo sobre a assinatura PRE→RVB; slots de `biblioteca.slots`),
    exposto via `gp100 setlist` (issue #49); agente
    `gp100-setlist` conduz a conversa e roda a CLI.

@@ -9,11 +9,10 @@ from typing import Any
 
 import pytest
 
-from gp100_architect.domain.setlist import (
+from gp100_architect.application.setlist import (
     assinatura,
     dif_cadeia,
     distancia,
-    modulos_da_assinatura,
     otimizar,
     trocas_totais,
 )
@@ -159,12 +158,6 @@ def test_trocas_totais_soma_o_plano():
         (item('C', patch({'CAB': ('D', True)}))[0], patch({'CAB': ('D', True)})),
     ]
     assert trocas_totais(plano) == 2  # +PRE (A→B) e −PRE (B→C, volta ao vazio)
-
-
-def test_modulos_da_assinatura_rotula_as_posicoes():
-    pares = dict(modulos_da_assinatura(assinatura(p_default())))
-    assert tuple(pares) == ('PRE', 'DST', 'AMP', 'NR', 'CAB', 'EQ', 'MOD', 'DLY', 'RVB')
-    assert pares['CAB'] == ('D', True)
 
 
 # ── regressão contra o defs real (o dado não mente) ─────────────────────────

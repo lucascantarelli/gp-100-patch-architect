@@ -70,7 +70,7 @@ ItemCommit = tuple[str, str, str, str, bool]
 SEMVER_RE = re.compile(r'^\d+\.\d+\.\d+$')
 
 
-# ── I/O de git (o shim não duplica; a biblioteca centraliza) ────────────────
+# ── I/O de git (a biblioteca centraliza; chamador só roda e passa o texto) ──
 
 
 def git(*args: str, raiz: Path) -> str:
@@ -99,7 +99,7 @@ def ultima_tag(raiz: Path) -> str | None:
 def coletar_do_log(bruto: str) -> list[ItemCommit]:
     """Converte a saída `%H%x1f%s%x1f%b%x1e` do git em itens de changelog.
 
-    Pura: recebe o texto bruto do log — quem roda git é o chamador (o shim ou
+    Pura: recebe o texto bruto do log — quem roda git é o chamador (a CLI ou
     `coletar`). Commits fora do padrão Conventional e `[skip ci]` não entram.
     """
     itens: list[ItemCommit] = []

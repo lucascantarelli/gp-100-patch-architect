@@ -106,7 +106,7 @@ def test_resolver_repertorio_patch_orfao_erro(lib):
 
 def test_plano_json_slots_da_biblioteca(lib, defs):
     itens = [lib.resolver(p) for p in ['Smooth', 'Money']]
-    from gp100_architect.domain.setlist import otimizar
+    from gp100_architect.application.setlist import otimizar
 
     plano = otimizar(itens)
     d = setlist_app.plano_json(plano, 7, lib.slots)

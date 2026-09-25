@@ -1,7 +1,7 @@
 """Tipos de produto da camada de aplicação — o que o pipeline entrega.
 
 `PatchGerado` é o contrato entre quem **gera** (`biblioteca`, `variantes`) e
-quem **grava** (shim de CLI, futuro `gp100 build`): um patch pronto para virar
+quem **grava** (o comando `gp100 build`): um patch pronto para virar
 arquivo, em memória. Mora num módulo folha de propósito — variante e canônico
 são o MESMO tipo de produto, e assim nenhuma das duas camadas importa a outra.
 

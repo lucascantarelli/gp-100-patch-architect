@@ -3,7 +3,7 @@
 Migração de `tools/ir_library.py`: as regras puras vêm para a camada de
 aplicação (ordenar arquivos de forma estável entre sistemas, nomear o gabinete,
 montar o manifesto, renderizar o catálogo legível, detectar encolhimento) e a
-varredura/escrita fica com o shim + `infrastructure.wav`/`escrita`.
+varredura/escrita fica com a CLI + `infrastructure.wav`/`escrita`.
 
 Por que a indexação existe mesmo com o banco fora do git: o catálogo gerado é
 INSUMO da documentação — `build_song_patches` cita o arquivo exato do banco na
@@ -73,7 +73,7 @@ def montar_manifesto(registros: list[dict[str, Any]]) -> dict[str, Any]:
     """Agrupa os registros lidos do disco no manifesto por pack.
 
     Cada registro é `{'file': <posix relativo>, 'size_kb': N, **infos do WAV}`
-    (montado pelo shim com `infrastructure.wav.inspecionar`). Arquivos com
+    (montado pela CLI com `infrastructure.wav.inspecionar`). Arquivos com
     `error` entram no pack mas não contam como WAV nem como gabinete — o
     catálogo registra a falha em vez de escondê-la.
     """

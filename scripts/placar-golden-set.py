@@ -46,18 +46,15 @@ FAMILIA: dict[str, tuple[str, ...]] = {
     'Green OD': ('Blues OD',),
     'Super OD': ('Blues OD',),
     'Yellow OD': ('Green OD',),
-    'La Charger': ('RIP', 'SM Dist'),
-    'RIP': ('La Charger',),
-    'Red Haze': ('Fat Fuzz',),
-    'Fat Fuzz': ('Red Haze',),
-    'BIG Fuzz': ('TRI Fuzz',),
-    'TRI Fuzz': ('BIG Fuzz',),
+    # Pós-#136: FAMILIA/CLASSE só citam modelos do catálogo fw 2.0 (doc 15).
+    # RIP/Fat Fuzz/BIG Fuzz/TRI Fuzz não existem no firmware — foram removidos.
+    'La Charger': ('SM Dist',),
+    'Red Haze': ('SM Dist',),
     # PRE/MOD/DLY/RVB: família = a própria (mesmo modelo; família trivial)
 }
 CLASSE: dict[str, str] = {
     # DST: classe de textura
     'La Charger': 'distorcao',
-    'RIP': 'distorcao',
     'SM Dist': 'distorcao',
     'Darktale': 'distorcao',
     'Blues OD': 'overdrive',
@@ -69,10 +66,6 @@ CLASSE: dict[str, str] = {
     'Chief': 'overdrive',
     'Flex OD': 'overdrive',
     'Red Haze': 'fuzz',
-    'Fat Fuzz': 'fuzz',
-    'BIG Fuzz': 'fuzz',
-    'TRI Fuzz': 'fuzz',
-    'OCT Fuzz': 'fuzz',
     # AMP: classe de carater
     'Dark Twin': 'clean-americano',
     'Tweedy': 'clean-americano',

@@ -301,40 +301,20 @@ exato/família.
 
 | Zappa | 11,8/14 | 84,3% | 1/2 |
 
-| Beatles | 33,0/42 | 78,6% | 5/6 |
-
-
-
-**Leitura por agente** (o que cada um teria que melhorar):
-
-
+| Beatles | 33,0/42 | 78,6% | 5/6 |**Leitura por agente** (o que cada um teria que melhorar):
 
 - `gp100-tone-mapper` (AMP 99% mas **DST 72% e MOD 74%**): os erros
-
-  concentram-se onde o catálogo é ambíguo — `La Charger` (doc 14 manda
-
-  `RIP` para RAT; o próprio prompt do agente manda `La Charger`, que o
-
-  catálogo fw 2.0 descreve como RAT-style) e fuzz clássico (`Fat Fuzz` do
-
-  doc 14 × `Red Haze` "based on Fuzz Face" do doc 15). Conflito de fonte
-
-  documentado — resolver no doc 14 (glossário) é alavanca direta de placar.
-
-  `M-Echo` × `Slapbk` no espaço de Hendrix: o tape echo real (Binson/EP-3
-
-  da era) pede `T-Echo`/`M-Echo`, mas a cultura "slapback curto" empurra
-
-  para `Slapbk` — calibrar no doc 08 (DLY).
-
+  concentram-se onde o catálogo é ambíguo — no DST, o glossário mandava
+  `RIP`/`Fat Fuzz` para RAT/fuzz (modelos que **não existem no fw 2.0**;
+  ver #136), enquanto o defs usa `La Charger`/`Red Haze`; alinhado o
+  glossário ao catálogo, essa fonte de erro desaparece. `M-Echo` ×
+  `Slapbk` no espaço de Hendrix: o tape echo real (Binson/EP-3 da era)
+  pede `T-Echo`/`M-Echo`, mas a cultura "slapback curto" empurra para
+  `Slapbk` — calibrar no doc 08 (DLY).
 - `gp100-tone-research` (PRE 76% e estados): não distingue compressor de
-
   boost nos timbres de estúdio dos anos 60/70 (Twins pré-drive = COMP no
-
   defs) e leva o Small Clone do Cobain para camadas onde o defs o mantém
-
   desligado. Ambos são melhoráveis com instrução, não com pesquisa: é o
-
   tipo de erro que o doc de dossiê deve antecipar ("amp de estúdio limpo →
 
   considerar COMP em vez de Boost").
@@ -383,9 +363,13 @@ Fuzz Face, Octavia, Strat invertida).
 
 mantendo o cegamento e o scorer — o delta simulado × real mede o efeito
 
-modelo; e resolver os conflitos doc 14 × prompt do mapper (`RAT`, fuzz)
+modelo (#138). O conflito doc 14 × prompt do mapper (`RAT`, fuzz) foi
 
-antes, para o placar medir o agente e não a contradição das fontes.
+resolvido na #136 (glossário alinhado ao catálogo fw 2.0; scorer sem
+
+nomes-fantasma; re-placar idêntico: 89,7% · 48/50 — a simulação já
+
+seguia o catálogo, o baseline mede método, não o conflito).
 
 
 

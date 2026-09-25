@@ -1,7 +1,7 @@
 import type { AgentDefinition } from './types/agent-definition'
 
 /**
- * GP-100 DST specialist — overdrive/distorção/fuzz (15 modelos).
+ * GP-100 DST specialist — overdrive/distorção/fuzz (13 modelos do catálogo fw 2.0).
  */
 const definition: AgentDefinition = {
   id: 'gp100-dst',
@@ -9,7 +9,7 @@ const definition: AgentDefinition = {
   model: 'z-ai/glm-5.3-flash',
   toolNames: ['read_files', 'code_search', 'end_turn'],
   includeMessageHistory: false,
-  spawnerPrompt: `Especialista no módulo DST da GP-100 (15 drives: T-S OD, BLUES, OD-1, LO OD, MX Dist, Dist+, RIP, D-Zero, Metal, Fat Fuzz, TRI Fuzz, BIG Fuzz, OCT Fuzz, Clari OD, PRINC OD). Spawn para escolher drive e parâmetros oficiais.`,
+  spawnerPrompt: `Especialista no módulo DST da GP-100 (13 drives do catálogo fw 2.0: Green OD, Yellow OD, Super OD, Blues OD, Tube Clipper, Lazaro, Red Haze, SM Dist, Darktale, Chief, La Charger, Flex OD; Bass Dist é de baixo). Os nomes T-S OD, BLUES, OD-1, RIP, D-Zero, Metal, Fat Fuzz, TRI Fuzz, BIG Fuzz e OCT Fuzz existem só no manual V1.8 — não os use. Spawn para escolher drive e parâmetros oficiais.`,
   inputSchema: {
     prompt: { type: 'string', description: 'Estilo, intensidade de saturação, captador e papel do DST no patch' },
   },

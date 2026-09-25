@@ -48,6 +48,10 @@ manual.pdf
 # nunca para o histórico do git.
 dist/
 
+# Site da biblioteca (`gp100 site`): derivado do defs, gerado no deploy do
+# Pages — o `pages.yml` monta a raiz + /docs/ num artefato único.
+site/
+
 # ── Derivados da biblioteca: CONSTRUÍDOS, não armazenados (ADR-0013, issue #8) ─
 # Todo `.prst` e todo `patch.md` de patches/** são deriváveis do defs
 # (`data/defs/`) — o guarda de determinismo (TestH) prova byte a byte, e o job

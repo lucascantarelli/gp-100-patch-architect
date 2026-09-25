@@ -54,7 +54,7 @@ from gp100_architect.infrastructure.defs import carregar_e_validar
 | `tests/` | suíte (histórica em `tests/`, nova em `tests/unit/`) |
 | `reference/` | 24 documentos de **domínio** (timbre, catálogo, dossiês, histórico) |
 | `docs/` | documentação de **engenharia** (ADRs e, na F4, guias) |
-| `.agents/` | 19 agentes + 11 skills do Freebuff — contrato, não se move (ADR-0008) |
+| `.agents/` | 21 agentes + 11 skills do Freebuff — contrato, não se move (ADR-0008) |
 | `.github/` | workflows, templates, labels, automação do board |
 
 ## Ferramentas e portões (ADR-0005, ADR-0006)

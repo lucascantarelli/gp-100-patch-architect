@@ -4,7 +4,8 @@ Por que este teste existe: a classe de erro que o guarda caça (caminho citado
 que não existe, contrato ADR-0008 incompleto, skill fora da curadoria do doc 23)
 quebrava em silêncio — o `tsc` não a vê e o CI só falhava quando o agente já
 estava em produção com o usuário. O teste fixa cada regra com um caso sintético
-em `tmp_path` e a realidade commitada (21 agentes, 11 skills).
+em `tmp_path` e a realidade commitada (21 agentes, 11 skills e os pares
+canônicos skill ↔ prompt do doc 23).
 
 Mesmo padrão do `test_audit_workflows.py`: nenhum teste escreve no repositório;
 os casos sintéticos vivem em `tmp_path` e a realidade é lida, nunca alterada.
@@ -235,6 +236,51 @@ def test_skill_orfa_avisa_mas_nao_reprova(tmp_path: Path) -> None:
     )
     assert not any('skills/' in f for f in falhas)
     assert avisos  # há skills sem citação explícita — e nenhuma reprova
+
+
+# ── regra 6 · par canônico skill gp100-* ↔ prompts/ ─────────────────────────
+
+
+def test_skill_gp100_sem_prompt_canonico_reprova(tmp_path: Path) -> None:
+    """Skill `gp100-*` sem o prompt canônico no git é violação (doc 23, §4)."""
+    pasta = tmp_path / 'gp100-criar-patch'
+    pasta.mkdir()
+    (pasta / 'SKILL.md').write_text(
+        '---\nname: gp100-criar-patch\ndescription: d\n---\n# x', encoding='utf-8'
+    )
+    falhas, _ = auditor.audit(
+        {},
+        {'gp100-criar-patch': pasta},
+        frozenset({'.agents/skills/gp100-criar-patch/SKILL.md'}),
+        registradas={'gp100-criar-patch'},
+    )
+    assert any('prompt canônico' in f for f in falhas), falhas
+
+
+def test_prompt_orfao_sem_skill_reprova() -> None:
+    """Prompt em prompts/ sem skill gp100-* consumidora é violação (doc 23, §4)."""
+    falhas, _ = auditor.audit(
+        {},
+        {},
+        frozenset({'prompts/fluxo-novo.md'}),
+        registradas=set(),
+    )
+    assert any('prompts/fluxo-novo.md` órfão' in f for f in falhas), falhas
+
+
+def test_pares_reais_estao_sincronizados() -> None:
+    """Os 4 pares canônicos do repo real: skill no disco, prompt no git, zero falha."""
+    falhas, _ = auditor.audit(
+        {},
+        {
+            p.name: p
+            for p in sorted((RAIZ / '.agents' / 'skills').iterdir())
+            if (p / 'SKILL.md').is_file()
+        },
+        auditor._rastreados(RAIZ),
+        registradas=auditor._registradas_no_doc(auditor._rastreados(RAIZ)),
+    )
+    assert not any('prompt' in f for f in falhas), falhas
 
 
 # ── a realidade commitada (o guarda de fundo) ────────────────────────────────
